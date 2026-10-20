@@ -322,6 +322,13 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .mcard .me svg { width: 1.3em; height: 1em; }
 .memstat { color: var(--white); font-size: 22px; font-weight: 800; text-align: center; }
 
+/* Leuchtturm-Insel */
+.lk-word { font-size: clamp(42px, 8vw, 64px); font-weight: 900; }
+.lk-word .end-das { color: var(--das); text-decoration: underline; text-decoration-thickness: 5px; }
+.lk-word .end-die { color: var(--die); text-decoration: underline; text-decoration-thickness: 5px; }
+.repeat { color: var(--white); font-size: 21px; font-weight: 800; text-align: center; }
+.art small { display: block; font-size: 15px; font-weight: 800; opacity: .9; }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -1409,13 +1416,108 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     }
   ];
 
+  /* ---------- Leuchtturm-Insel: Artikel üben (auch für Kinder, die Deutsch neu lernen) ----------
+     [Wort, Artikel, Emoji]  – nur Nominativ, Farben: der blau · die rot · das grün */
+  const LT_THEMES = [
+    { id: "schule", name: "Schule", icon: "🎒", color: "#1f6fd1", words: [["Stift","der","✏️"],["Schere","die","✂️"],["Buch","das","📕"],["Heft","das","📒"],["Rucksack","der","🎒"],["Uhr","die","⏰"],["Lineal","das","📏"],["Stuhl","der","🪑"],["Computer","der","💻"],["Papier","das","📄"],["Pinsel","der","🖌️"],["Glocke","die","🔔"]] },
+    { id: "essen", name: "Essen", icon: "🍎", color: "#e63946", words: [["Apfel","der","🍎"],["Banane","die","🍌"],["Brot","das","🍞"],["Käse","der","🧀"],["Milch","die","🥛"],["Ei","das","🥚"],["Tomate","die","🍅"],["Kuchen","der","🍰"],["Eis","das","🍦"],["Pizza","die","🍕"],["Karotte","die","🥕"],["Saft","der","🧃"],["Birne","die","🍐"],["Wasser","das","💧"]] },
+    { id: "kleidung", name: "Kleidung", icon: "👕", color: "#7b4fc9", words: [["Hose","die","👖"],["T-Shirt","das","👕"],["Schuh","der","👟"],["Mütze","die","🧢"],["Schal","der","🧣"],["Kleid","das","👗"],["Jacke","die","🧥"],["Handschuh","der","🧤"],["Socke","die","🧦"],["Hut","der","🎩"],["Stiefel","der","👢"]] },
+    { id: "zuhause", name: "Zuhause", icon: "🏠", color: "#e0a400", words: [["Haus","das","🏠"],["Bett","das","🛏️"],["Tür","die","🚪"],["Fenster","das","🪟"],["Licht","das","💡"],["Mama","die","👩"],["Papa","der","👨"],["Baby","das","👶"],["Oma","die","👵"],["Opa","der","👴"],["Schlüssel","der","🔑"],["Sofa","das","🛋️"],["Badewanne","die","🛁"],["Spiegel","der","🪞"]] },
+    { id: "tiere", name: "Tiere", icon: "🐾", color: "#23964a", words: [["Hund","der","🐶"],["Katze","die","🐱"],["Pferd","das","🐴"],["Maus","die","🐭"],["Vogel","der","🐦"],["Schwein","das","🐷"],["Kuh","die","🐄"],["Fisch","der","🐟"],["Schaf","das","🐑"],["Ente","die","🦆"],["Hase","der","🐰"],["Biene","die","🐝"],["Bär","der","🐻"],["Löwe","der","🦁"],["Schlange","die","🐍"]] },
+    { id: "koerper", name: "Körper", icon: "👃", color: "#d6336c", words: [["Nase","die","👃"],["Ohr","das","👂"],["Mund","der","👄"],["Auge","das","👁️"],["Hand","die","✋"],["Fuß","der","🦶"],["Bein","das","🦵"],["Zahn","der","🦷"],["Arm","der","💪"],["Daumen","der","👍"],["Herz","das","❤️"]] }
+  ];
+  const LT_CHEN = [["Mädchen","das","👧"],["Kätzchen","das","🐱"],["Häuschen","das","🏡"],["Hündchen","das","🐶"],["Bäumchen","das","🌱"],["Eichhörnchen","das","🐿️"],["Märchen","das","📖"],["Kaninchen","das","🐇"],["Schweinchen","das","🐷"],["Gänseblümchen","das","🌼"],["Brötchen","das","🥯"]];
+  const LT_E = [["Blume","die","🌷"],["Tasche","die","👜"],["Banane","die","🍌"],["Tomate","die","🍅"],["Jacke","die","🧥"],["Socke","die","🧦"],["Schere","die","✂️"],["Biene","die","🐝"],["Ente","die","🦆"],["Nase","die","👃"],["Sonne","die","☀️"],["Wolke","die","☁️"],["Rakete","die","🚀"],["Brille","die","👓"],["Kerze","die","🕯️"],["Glocke","die","🔔"],["Karotte","die","🥕"]];
+  const ART_SIGN = { der: "🔵", die: "🔴", das: "🟢" };
+
+  // Artikel-Knöpfe (immer gleiche Farben + Zeichen)
+  function artButtons(stage, o) {
+    const row = el("div", "arts");
+    ["der", "die", "das"].forEach(a => {
+      const b = el("button", "art " + a, `${a}<small>${ART_SIGN[a]}</small>`);
+      b.setAttribute("aria-label", a);
+      b.addEventListener("click", () => {
+        if (L.locked) return;
+        if (a === o.art) {
+          const slot = $("artSlot"); if (slot) { slot.textContent = o.art + " "; slot.className = "c-" + o.art; }
+          award(b, 1); speak(o.art + " " + o.word); hint(praise() + " " + (o.okText || `${o.art} ${o.word}`), true); done(1400);
+        } else {
+          miss(b, o.wrongText ? o.wrongText(a) : "Probier nochmal!");
+          if (o.sayAfterWrong) setTimeout(() => speak(o.art + " " + o.word), 500);
+        }
+      });
+      row.appendChild(b);
+    });
+    stage.appendChild(row);
+  }
+  const markEnd = (w, ending, cls) => w.endsWith(ending) ? `${w.slice(0, -ending.length)}<span class="${cls}">${ending}</span>` : w;
+
+  function themeLevel(t) {
+    return {
+      id: t.id, name: t.name, icon: t.icon, color: t.color,
+      task: (d) => d === "leicht" ? "Hör zu, sprich nach und tippe den Begleiter!" : "der, die oder das?",
+      intro: (d) => d === "leicht" ? "Hör zu und sprich nach: der Stift. Dann tippe den gleichen Begleiter an." : d === "mittel" ? "Schau das Bild an. Welcher Begleiter passt?" : "Ohne Bild – und manchmal sind es viele. Viele heißt immer: die!",
+      ex: (d) => d === "schwer" ? '🖐️ viele → <span class="c-die">die</span>' : `<span class="c-der">der 🔵</span> · <span class="c-die">die 🔴</span> · <span class="c-das">das 🟢</span>`,
+      say: (d) => d === "leicht" ? "Hör gut zu und sprich nach. Dann tippe den gleichen Begleiter an." : d === "mittel" ? "Schau das Bild an. Welcher Begleiter passt? der, die oder das?" : "Jetzt ohne Bild. Und manchmal sind es viele. Bei vielen heißt der Begleiter immer die.",
+      build(d) {
+        const ws = shuffle(t.words).map(w => ({ w: w[0], art: w[1], emo: w[2] }));
+        if (d === "leicht") return ws.slice(0, 10);
+        if (d === "mittel") return ws.slice(0, 12);
+        const pl = shuffle(PLURALS.filter(p => p[0] !== p[2])).slice(0, 3).map(p => ({ w: p[2], art: "die", emo: p[3], plural: true }));
+        return shuffle(ws.slice(0, 9).concat(pl));
+      },
+      render(x, stage, d) {
+        const card = el("div", "card word-card");
+        if (d !== "schwer") card.appendChild(el("div", "emoji-big", x.emo));
+        if (x.plural) card.appendChild(el("div", "emo-row", "🖐️ viele"));
+        if (d === "leicht") card.appendChild(el("div", "lk-word", `<span class="c-${x.art}">${x.art}</span> ${x.w}`));
+        else card.appendChild(el("div", "lk-word", `<span id="artSlot"></span>${x.w}`));
+        stage.appendChild(card);
+        if (d === "leicht") { stage.appendChild(el("div", "repeat", "🗣️ Sprich nach: " + x.art + " " + x.w)); setTimeout(() => speak(x.art + " " + x.w), 300); }
+        artButtons(stage, {
+          art: x.art, word: x.w, sayAfterWrong: d !== "leicht",
+          wrongText: (a) => x.plural ? "Viele → immer die!" : d === "leicht" ? `Schau genau: ${x.art} ${x.w}` : `Hör mal zu: ${x.art} ${x.w}. Probier nochmal!`
+        });
+        L.speakNow = () => speak(d === "leicht" ? x.art + " " + x.w : x.w);
+      }
+    };
+  }
+  const LT_TRICKS = {
+    id: "tricks", name: "Merk-Tricks", icon: "💡", color: "#2a9d8f",
+    task: (d) => d === "leicht" ? "Wörter mit -chen: welcher Begleiter?" : d === "mittel" ? "Wörter mit -e am Ende: welcher Begleiter?" : "Denk an die Tricks!",
+    intro: (d) => d === "leicht" ? "Trick 1: Endet ein Wort mit -chen, heißt es immer das." : d === "mittel" ? "Trick 2: Endet ein Wort mit -e, heißt es meistens die." : "Alle Tricks gemischt: -chen → das · -e → oft die · viele → die",
+    ex: (d) => d === "leicht" ? '<span class="c-das">das</span> Mäd<span class="c-das">chen</span>' : d === "mittel" ? '<span class="c-die">die</span> Blum<span class="c-die">e</span>' : '-chen → <span class="c-das">das</span> · -e → <span class="c-die">die</span> · 🖐️ → <span class="c-die">die</span>',
+    say: (d) => d === "leicht" ? "Trick eins: Endet ein Wort mit chen, heißt es immer das. Das Mädchen, das Kätzchen." : d === "mittel" ? "Trick zwei: Endet ein Wort mit e, heißt es meistens die. Die Blume, die Tasche." : "Alle Tricks gemischt. chen heißt das. e am Ende heißt oft die. Viele heißt immer die.",
+    build(d) {
+      const toX = (a, kind) => a.map(w => ({ w: w[0], art: w[1], emo: w[2], kind }));
+      if (d === "leicht") return toX(shuffle(LT_CHEN).slice(0, 10), "chen");
+      if (d === "mittel") return toX(shuffle(LT_E).slice(0, 12), "e");
+      const pl = shuffle(PLURALS.filter(p => p[0] !== p[2])).slice(0, 4).map(p => ({ w: p[2], art: "die", emo: p[3], kind: "viele" }));
+      return shuffle(toX(shuffle(LT_CHEN).slice(0, 4), "chen").concat(toX(shuffle(LT_E).slice(0, 4), "e"), pl));
+    },
+    render(x, stage, d) {
+      const card = el("div", "card word-card");
+      card.appendChild(el("div", "emoji-big", x.kind === "viele" ? x.emo + x.emo + x.emo : x.emo));
+      if (x.kind === "viele") card.appendChild(el("div", "emo-row", "🖐️ viele"));
+      const shown = d === "schwer" ? x.w : x.kind === "chen" ? markEnd(x.w, "chen", "end-das") : markEnd(x.w, "e", "end-die");
+      card.appendChild(el("div", "lk-word", `<span id="artSlot"></span>${shown}`));
+      stage.appendChild(card);
+      const rule = x.kind === "chen" ? "Trick: -chen → immer das!" : x.kind === "e" ? "Trick: -e am Ende → meistens die!" : "Viele → immer die!";
+      artButtons(stage, { art: x.art, word: x.w, okText: `${x.art} ${x.w} · ${rule}`, wrongText: () => rule });
+      L.speakNow = () => speak(x.w);
+    }
+  };
+  const LTLEVELS = LT_THEMES.map(themeLevel).concat([LT_TRICKS]);
+
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
                   ["mehrzahl", "schwer", 2], ["sortieren", "schwer", 2], ["satz", "mittel", 1], ["satz", "schwer", 1], ["detektiv", "schwer", 1]] },
     { id: "adjektive", name: "Adjektive", sub: "Wiewörter", icon: "🎨", ready: false, levels: [] },
     { id: "lernwoerter", name: "Lernwörter", sub: "Wörter zum Üben", icon: "📝", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
-      bonusPlan: [["salat", "schwer", 2], ["luecke", "schwer", 2], ["blitz", "mittel", 2], ["hoeren", "mittel", 2], ["silben", "schwer", 2]] }
+      bonusPlan: [["salat", "schwer", 2], ["luecke", "schwer", 2], ["blitz", "mittel", 2], ["hoeren", "mittel", 2], ["silben", "schwer", 2]] },
+    { id: "leuchtturm", name: "Leuchtturm", title: "Leuchtturm-Insel", sub: "der, die, das", icon: "💡", ready: true, levels: LTLEVELS, award: "Artikel-Profi",
+      bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] }
   ];
   let CH = CHAPTERS[0];
 
@@ -1548,8 +1650,8 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     sv("ellipse", { rx: r, ry: r * 0.74, fill: "#f3d99b", stroke: "#e2bd6e", "stroke-width": 4, class: "sand" }, g);
     sv("ellipse", { cx: 0, cy: -r * 0.1, rx: r * 0.74, ry: r * 0.48, fill: n.grass || "#86cf7d" }, g);
     (n.deco || []).forEach(d => { const tt = sv("text", { x: d[0] * r, y: d[1] * r, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (d[3] || 0.5) }, g); tt.textContent = d[2]; });
-    const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g);
-    ic.textContent = n.icon;
+    if (n.draw === "lighthouse") drawLighthouse(g, r);
+    else { const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g); ic.textContent = n.icon; }
     if (n.fog) {
       sv("ellipse", { rx: r * 1.25, ry: r * 0.95, class: "fog" }, g);
       const ft = sv("text", { x: 0, y: -r * 0.1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.62 }, g); ft.textContent = n.fogIcon || "🔒";
@@ -1571,6 +1673,18 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     const go = () => { if (n.tap) n.tap(i); };
     g.addEventListener("click", go);
     g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  }
+  function drawLighthouse(g, r) {
+    const s = r / 80, G = sv("g", { transform: `translate(0 ${-r * 0.2}) scale(${s})` }, g);
+    sv("path", { d: "M-6 -78 L-80 -96 L-80 -60 Z", fill: "rgba(255,230,120,.45)" }, G);
+    sv("path", { d: "M6 -78 L80 -96 L80 -60 Z", fill: "rgba(255,230,120,.45)" }, G);
+    sv("path", { d: "M-22 40 L-14 -60 L14 -60 L22 40 Z", fill: "#ffffff", stroke: "#b8c4ce", "stroke-width": 2 }, G);
+    sv("path", { d: "M-20.4 20 L-19 2 L19 2 L20.4 20 Z", fill: "#d62828" }, G);
+    sv("path", { d: "M-17.6 -18 L-16.2 -36 L16.2 -36 L17.6 -18 Z", fill: "#d62828" }, G);
+    sv("rect", { x: -20, y: -66, width: 40, height: 7, rx: 2, fill: "#17324a" }, G);
+    sv("rect", { x: -13, y: -86, width: 26, height: 20, rx: 4, fill: "#ffd75e", stroke: "#17324a", "stroke-width": 3 }, G);
+    sv("path", { d: "M-17 -86 L0 -102 L17 -86 Z", fill: "#d62828", stroke: "#17324a", "stroke-width": 3, "stroke-linejoin": "round" }, G);
+    sv("rect", { x: -6, y: 24, width: 12, height: 16, rx: 6, fill: "#8a5a2b" }, G);
   }
   function restPos(i) { const n = MAP.cfg.nodes[i]; return { x: n.x + n.r * 1.05, y: n.y - n.r * 0.35 }; }
   function placeNemo(x, y, lastX) {
@@ -1627,8 +1741,9 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     $("homeHello").textContent = S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
-    const pos = P ? { bay: [300, 850], nomen: [440, 610], adj: [450, 250], lern: [160, 530], fog: [150, 190], w: 600, h: 980, r: 84 }
-                  : { bay: [500, 515], nomen: [780, 350], adj: [850, 98], lern: [220, 350], fog: [150, 98], w: 1000, h: 640, r: 92 };
+    const lt = CHAPTERS.find(c => c.id === "leuchtturm");
+    const pos = P ? { bay: [300, 880], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [130, 160], lt: [305, 375], w: 600, h: 1000, r: 84 }
+                  : { bay: [500, 515], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [150, 98], lt: [500, 215], w: 1000, h: 640, r: 90 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * 9} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
     const nodes = [
@@ -1642,10 +1757,11 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
         tap: (i) => { S.homeAt = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🎨", "Adjektiv-Inseln", "Wiewörter"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Nemo hier landen!")); })); } },
       { x: pos.lern[0], y: pos.lern[1], r: pos.r, icon: "📝", grass: "#b5e48c", label: "Lernwörter-Inseln", big: true, sub: chapSub(lern),
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Lernwörter", tap: enter(lern) },
+      { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", tap: enter(lt) },
       { x: pos.fog[0], y: pos.fog[1], r: 58, icon: "🏝️", label: "Bald mehr …", big: true, fog: true, fogIcon: "❔", aria: "Neue Inseln kommen bald",
         tap: (i) => { swimTo(i, () => openSheet(c => { sheetTop(c, "❔", "Geheime Inseln", "Hinter dem Nebel"); c.appendChild(el("p", "note", "Hier warten bald neue Abenteuer auf Nemo. 🌫️")); })); } }
     ];
-    const edges = [[0, 1, islandsDoneCount(nom) ? "done" : ""], [1, 2, "faint"], [0, 3, islandsDoneCount(lern) ? "done" : ""], [3, 4, "faint"]];
+    const edges = [[0, 1, islandsDoneCount(nom) ? "done" : ""], [1, 2, "faint"], [0, 3, islandsDoneCount(lern) ? "done" : ""], [3, 5, "faint"], [0, 4, islandsDoneCount(lt) ? "done" : ""]];
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
   }
@@ -1665,7 +1781,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     return { w: P ? 600 : 1000, h: P ? 1000 : 640, pts };
   }
   function renderMap() {
-    $("mapTitle").textContent = `${CH.icon} ${CH.name}-Inseln`;
+    $("mapTitle").textContent = `${CH.icon} ${CH.title || CH.name + "-Inseln"}`;
     show("scrMap");
     const P = portrait(), n = CH.levels.length, lay = snake(n + 2, P), k = P ? 1.15 : 1;
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
