@@ -301,6 +301,15 @@ h1, h2 { margin: 0; text-wrap: balance; }
      Im Link stehen die Platzhalter NEMONAME, NEMOPERLEN und NEMOSTERNE. */
   const FORM_URL = "";
 
+  /* Automatisches Senden im Hintergrund an das Google-Formular der Lehrkraft
+     (nach jeder geschafften Insel). Felder: Name, Perlen, Sterne. */
+  const GFORM = {
+    action: "https://docs.google.com/forms/d/e/1FAIpQLSeYUuBY0Y-MTaH0HBOd3NSZ0F9o0dfNLdjmBAdpbxz8a4vMug/formResponse",
+    name: "entry.974381477",
+    perlen: "entry.983257668",
+    sterne: "entry.904067370"
+  };
+
   /* ---------- word data ---------- */
   // [Wort, Artikel, Emoji, Gruppe]  Gruppe: m = Mensch, t = Tier, p = Pflanze, d = Ding
   const NOUNS = [
@@ -730,6 +739,7 @@ h1, h2 { margin: 0; text-wrap: balance; }
     const stars = per <= 0.15 ? 3 : per <= 0.5 ? 2 : 1;
     const i = L.i;
     S.stars[i] = Math.max(S.stars[i], stars); save();
+    sendResults();
     $("resTitle").textContent = stars === 3 ? "Fantastisch!" : stars === 2 ? "Super gemacht!" : "Geschafft!";
     $("resStars").innerHTML = "⭐".repeat(stars) + '<span class="off">' + "⭐".repeat(3 - stars) + "</span>";
     const next = LEVELS[i + 1];
@@ -748,6 +758,19 @@ h1, h2 { margin: 0; text-wrap: balance; }
     let u = FORM_URL;
     Object.keys(vals).forEach(k => { u = u.split(k).join(encodeURIComponent(vals[k])); });
     return u;
+  }
+  function sendResults() {
+    try {
+      if (!GFORM.action || !window.fetch) return;
+      const names = ["Fischen", "Groß/klein", "der-die-das", "Sortieren", "Profi"];
+      const body = new URLSearchParams();
+      body.append(GFORM.name, S.name || "ohne Namen");
+      body.append(GFORM.perlen, String(S.pearls));
+      body.append(GFORM.sterne, S.stars.map((n, k) => `${names[k]}: ${n}`).join(", "));
+      fetch(GFORM.action, { method: "POST", mode: "no-cors", body })
+        .then(() => { S.unsent = false; save(); })
+        .catch(() => { S.unsent = true; save(); }); // offline: beim nächsten Mal nachholen
+    } catch (e) {}
   }
   function updateSend() {
     const u = resultUrl(), any = S.stars.some(n => n > 0);
@@ -786,6 +809,7 @@ h1, h2 { margin: 0; text-wrap: balance; }
   });
 
   setPearls(false);
+  if (S.unsent) sendResults();
   if (S.name || S.stars.some(s => s > 0)) renderMap(); else show("scrStart");
 })();
 </script>
