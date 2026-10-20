@@ -252,6 +252,41 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .aqua-card .sb { color: #eaf8ff; }
 .voice { background: transparent; color: rgba(255,255,255,0.85); font-size: 16px; padding: 8px; text-decoration: underline; }
 
+/* ocean map */
+.mapwrap { flex: 1; display: flex; justify-content: center; align-items: flex-start; min-height: 0; }
+svg.sea { width: 100%; height: auto; max-height: calc(100vh - 210px); display: block; overflow: visible; }
+svg.sea .isl { cursor: pointer; }
+svg.sea .isl:focus { outline: none; }
+svg.sea .isl:focus-visible .sand { stroke: var(--gold); stroke-width: 8; }
+svg.sea .route { fill: none; stroke: rgba(255,255,255,.8); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 1 17; }
+svg.sea .route.done { stroke: var(--gold); stroke-width: 9; stroke-dasharray: 1 14; }
+svg.sea .route.faint { stroke: rgba(255,255,255,.35); }
+svg.sea .wave { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 3; stroke-linecap: round; }
+svg.sea .lbl rect { fill: var(--sand); stroke: var(--sand-edge); stroke-width: 3; }
+svg.sea .lbl text { font-family: var(--font); font-weight: 900; fill: var(--ink); }
+svg.sea .sub { font-family: var(--font); font-weight: 900; fill: var(--white); stroke: var(--deep); stroke-width: 5px; paint-order: stroke; stroke-linejoin: round; }
+svg.sea .num circle { fill: var(--deep); stroke: var(--sand); stroke-width: 4; }
+svg.sea .num text { font-family: var(--font); font-weight: 900; fill: var(--white); }
+svg.sea .nextring { fill: none; stroke: var(--gold); stroke-width: 7; animation: ring 1.6s ease-in-out infinite; }
+@keyframes ring { 50% { stroke-opacity: .1; } }
+svg.sea .fog { fill: rgba(235,245,250,.75); }
+svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
+@keyframes nbob { 50% { transform: translateY(-7px); } }
+.sheet-back { position: fixed; inset: 0; background: rgba(4,30,52,.45); z-index: 8; }
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; display: flex; justify-content: center; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); animation: up .25s ease-out; }
+@keyframes up { from { transform: translateY(100%); } }
+.sheet .card { width: min(640px, 100%); box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; position: relative; }
+.sh-top { display: flex; align-items: center; gap: 14px; padding-right: 56px; }
+.sh-ic { font-size: 58px; line-height: 1; }
+.sh-nm { font-size: 30px; font-weight: 900; display: block; }
+.sh-sub { font-size: 18px; font-weight: 700; color: var(--muted); display: block; }
+.sh-close { position: absolute; top: 14px; right: 14px; width: 50px; height: 50px; font-size: 22px; }
+.sheet .diff { padding: 12px 4px; }
+.sheet .diff .dl { font-size: 21px; }
+.sheet .diff .ds { font-size: 16px; }
+.sheet .diff .dc { font-size: 14px; font-weight: 800; opacity: .9; }
+.sheet .note { margin: 0; font-size: 20px; font-weight: 700; text-align: center; }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -287,9 +322,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
   <!-- HOME -->
   <section class="screen" id="scrHome" hidden>
-    <div class="head xl">Nemos Übungsspielplatz</div>
+    <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
-    <div class="chapters" id="chapters"></div>
+    <div class="mapwrap" id="homeMap"></div>
     <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button></div>
   </section>
 
@@ -304,13 +339,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   <!-- CHAPTER MAP -->
   <section class="screen" id="scrMap" hidden>
     <div class="head l" id="mapTitle"></div>
-    <div class="legend">
-      <span>🪶 Leicht · 1 <span class="coin sm"></span></span>
-      <span>🪵 Mittel · 2 <span class="coin sm"></span></span>
-      <span>🪨 Schwer · 3 <span class="coin sm"></span></span>
-    </div>
-    <div class="islands" id="islands"></div>
-    <div id="bonusSlot"></div>
+    <div class="head s">Tippe auf eine Insel – Nemo schwimmt hin!</div>
+    <div class="mapwrap" id="chapMap"></div>
     <div class="foot"><button class="big-btn" id="certBtn" hidden>🏆 Meine Urkunde</button></div>
   </section>
 
@@ -370,6 +400,8 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 </div>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
+<div class="sheet-back" id="sheetBack" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"><div class="card" id="sheetCard"></div></div>
 <div class="overlay" id="confirm" hidden>
   <div class="card">
     <h2>Alles löschen?</h2>
@@ -685,7 +717,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   const SCREENS = ["scrStart", "scrHome", "scrAqua", "scrMap", "scrIntro", "scrPlay", "scrResult", "scrCert"];
   let current = "scrStart";
   function show(id) {
-    current = id;
+    current = id; closeSheet();
     SCREENS.forEach(s => $(s).hidden = s !== id);
     const back = $("backBtn");
     back.hidden = (id === "scrStart" || id === "scrHome");
@@ -1196,64 +1228,226 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   }
   function renderAqua() { asking = null; renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
 
-  /* ---------- home ---------- */
-  function renderHome() {
-    $("homeHello").textContent = S.name ? `Hallo ${S.name}! Was möchtest du üben?` : "Was möchtest du üben?";
-    const box = $("chapters"); box.innerHTML = "";
-    CHAPTERS.forEach(ch => {
-      const b = el("button", "chapter");
-      if (ch.ready) {
-        const max = ch.levels.length * 9;
-        b.innerHTML = `<span class="ic">${ch.icon}</span><span class="nm">${ch.name}</span><span class="sb">${ch.sub}</span>
-          <span class="pg"><span>⭐ ${starTotal(ch)} / ${max}</span><span>💎 ${perfectCount(ch)} / ${ch.levels.length}</span>${S.bonus[ch.id] ? "<span>👑 Schatz</span>" : ""}</span>`;
-        b.addEventListener("click", () => { CH = ch; renderMap(); });
-      } else {
-        b.disabled = true;
-        b.innerHTML = `<span class="ic">${ch.icon}</span><span class="nm">${ch.name}</span><span class="sb">${ch.sub}</span><span class="soon">🚧 Bald geht's los!</span>`;
-        b.setAttribute("aria-label", ch.name + ", kommt bald");
-      }
-      box.appendChild(b);
-    });
-    const aq = el("button", "chapter aqua-card", `<span class="ic">🐠</span><span class="nm">Nemos Aquarium</span><span class="sb">${aquaCount()} von ${SHOP.length} Sachen · Münzen ausgeben</span>`);
-    aq.addEventListener("click", renderAqua);
-    box.appendChild(aq);
-    setCoins(false);
-    show("scrHome");
+  /* ---------- Ozean-Karte ---------- */
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const sv = (tag, attrs, parent) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+  const portrait = () => window.innerWidth / Math.max(320, window.innerHeight - 210) < 0.95;
+  const reduceMotion = () => { try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
+  function seeded(n) { return () => { n = (n * 9301 + 49297) % 233280; return n / 233280; }; }
+  function wrapLabel(t) {
+    if (t.length <= 11) return [t];
+    let best = -1;
+    for (let i = 0; i < t.length; i++) if (t[i] === " " || t[i] === "-") { if (best === -1 || Math.abs(i - t.length / 2) < Math.abs(best - t.length / 2)) best = i; }
+    if (best === -1) return [t];
+    return t[best] === "-" ? [t.slice(0, best + 1), t.slice(best + 1)] : [t.slice(0, best), t.slice(best + 1)];
+  }
+  function curve(A, B, i) {
+    const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2, dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy) || 1;
+    const bend = len * 0.16 * (i % 2 ? 1 : -1);
+    return `M${A.x} ${A.y} Q${mx - dy / len * bend} ${my + dx / len * bend} ${B.x} ${B.y}`;
   }
 
-  /* ---------- chapter map ---------- */
+  let MAP = null;
+  function drawSea(container, cfg) {
+    container.innerHTML = "";
+    const svg = sv("svg", { viewBox: `0 0 ${cfg.w} ${cfg.h}`, class: "sea", role: "group", "aria-label": cfg.label }, container);
+    svg.style.aspectRatio = `${cfg.w} / ${cfg.h}`;
+    const rnd = seeded(cfg.seed || 11);
+    for (let i = 0; i < 34; i++) {
+      const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40);
+      if (cfg.nodes.some(n => Math.hypot(n.x - x, n.y - y) < n.r * 2)) continue;
+      sv("path", { d: `M${x - 18} ${y} q9 -9 18 0 q9 -9 18 0`, class: "wave" }, svg);
+    }
+    const edges = cfg.edges.map(([a, b, cls], i) => ({ a, b, el: sv("path", { d: curve(cfg.nodes[a], cfg.nodes[b], i), class: "route " + (cls || "") }, svg) }));
+    cfg.nodes.forEach((n, i) => drawNode(svg, n, i, cfg));
+    const g = sv("g", { "aria-hidden": "true" }, svg);
+    const inner = sv("g", { class: "nemo-in" }, g);
+    const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": cfg.nemo || 62 }, inner);
+    t.textContent = "🦈";
+    MAP = { cfg, svg, edges, nemo: g, at: Math.min(cfg.at || 0, cfg.nodes.length - 1), busy: false, face: 1 };
+    const p = restPos(MAP.at); placeNemo(p.x, p.y);
+  }
+  function drawNode(svg, n, i, cfg) {
+    const g = sv("g", { class: "isl", transform: `translate(${n.x} ${n.y})`, tabindex: "0", role: "button", "aria-label": n.aria || n.label }, svg);
+    const r = n.r;
+    sv("ellipse", { rx: r * 1.34, ry: r * 1.0, fill: "rgba(255,255,255,.22)" }, g);
+    if (n.next) sv("ellipse", { rx: r * 1.34, ry: r * 1.0, class: "nextring" }, g);
+    sv("ellipse", { rx: r, ry: r * 0.74, fill: "#f3d99b", stroke: "#e2bd6e", "stroke-width": 4, class: "sand" }, g);
+    sv("ellipse", { cx: 0, cy: -r * 0.1, rx: r * 0.74, ry: r * 0.48, fill: n.grass || "#86cf7d" }, g);
+    (n.deco || []).forEach(d => { const tt = sv("text", { x: d[0] * r, y: d[1] * r, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (d[3] || 0.5) }, g); tt.textContent = d[2]; });
+    const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g);
+    ic.textContent = n.icon;
+    if (n.fog) {
+      sv("ellipse", { rx: r * 1.25, ry: r * 0.95, class: "fog" }, g);
+      const ft = sv("text", { x: 0, y: -r * 0.1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.62 }, g); ft.textContent = n.fogIcon || "🔒";
+    }
+    if (n.num) {
+      const ng = sv("g", { class: "num", transform: `translate(${-r * 0.98} ${-r * 0.6})` }, g);
+      sv("circle", { r: 19 }, ng);
+      const nt = sv("text", { x: 0, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 22 }, ng); nt.textContent = n.num;
+    }
+    if (n.badge) { const bt = sv("text", { x: r * 0.98, y: -r * 0.62, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 36 }, g); bt.textContent = n.badge; }
+    // Beschriftung
+    const fs = n.big ? 30 : (cfg.fs || 23), lines = n.big ? [n.label] : wrapLabel(n.label);
+    const lw = Math.max(...lines.map(l => l.length)) * fs * 0.58 + 30, lh = lines.length * fs * 1.15 + 14;
+    const ly = r * 0.74 + 10;
+    const lg = sv("g", { class: "lbl" }, g);
+    sv("rect", { x: -lw / 2, y: ly, width: lw, height: lh, rx: Math.min(22, lh / 2) }, lg);
+    lines.forEach((l, k) => { const lt = sv("text", { x: 0, y: ly + 7 + fs * 0.92 + k * fs * 1.15, "text-anchor": "middle", "font-size": fs }, lg); lt.textContent = l; });
+    if (n.sub) { const st = sv("text", { x: 0, y: ly + lh + 26, "text-anchor": "middle", "font-size": n.big ? 24 : 20, class: "sub" }, g); st.textContent = n.sub; }
+    const go = () => { if (n.tap) n.tap(i); };
+    g.addEventListener("click", go);
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  }
+  function restPos(i) { const n = MAP.cfg.nodes[i]; return { x: n.x + n.r * 1.05, y: n.y - n.r * 0.35 }; }
+  function placeNemo(x, y, lastX) {
+    if (lastX != null) { if (x > lastX + 0.3) MAP.face = -1; else if (x < lastX - 0.3) MAP.face = 1; }
+    MAP.nemo.setAttribute("transform", `translate(${x} ${y}) scale(${MAP.face} 1)`);
+  }
+  function legsBetween(from, to) {
+    // kürzester Weg im Routennetz (Breitensuche)
+    const prev = { [from]: -1 }, q = [from];
+    while (q.length) { const v = q.shift(); if (v === to) break; MAP.edges.forEach((e, k) => { const w = e.a === v ? e.b : e.b === v ? e.a : null; if (w != null && !(w in prev)) { prev[w] = v; q.push(w); } }); }
+    const nodes = []; for (let v = to; v !== -1 && v !== undefined; v = prev[v]) nodes.unshift(v);
+    const legs = [];
+    for (let k = 0; k < nodes.length - 1; k++) { const a = nodes[k], b = nodes[k + 1]; const e = MAP.edges.find(x => (x.a === a && x.b === b) || (x.a === b && x.b === a)); if (e) legs.push({ el: e.el, rev: e.a !== a }); }
+    return legs;
+  }
+  function swimTo(to, done) {
+    if (!MAP || MAP.busy) return;
+    if (to === MAP.at || reduceMotion()) { MAP.at = to; const p = restPos(to); placeNemo(p.x, p.y); if (done) done(); return; }
+    const legs = legsBetween(MAP.at, to);
+    const lens = legs.map(l => l.el.getTotalLength()), total = lens.reduce((a, b) => a + b, 0);
+    const A = restPos(MAP.at), B = restPos(to), Ac = MAP.cfg.nodes[MAP.at], Bc = MAP.cfg.nodes[to];
+    const dur = Math.min(2600, Math.max(800, total * 2.1));
+    MAP.busy = true; tone([520, 660], 0.08);
+    const t0 = performance.now(); let lastX = A.x;
+    const step = (now) => {
+      const u = Math.min(1, (now - t0) / dur), e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      let x, y;
+      if (e < 0.08) { const f = e / 0.08; x = A.x + (Ac.x - A.x) * f; y = A.y + (Ac.y - A.y) * f; }
+      else if (e > 0.92 || !legs.length) { const f = Math.max(0, (e - 0.92) / 0.08); x = Bc.x + (B.x - Bc.x) * f; y = Bc.y + (B.y - Bc.y) * f; }
+      else {
+        let d = (e - 0.08) / 0.84 * total, k = 0;
+        while (k < legs.length - 1 && d > lens[k]) { d -= lens[k]; k++; }
+        const pt = legs[k].el.getPointAtLength(legs[k].rev ? lens[k] - d : d); x = pt.x; y = pt.y;
+      }
+      placeNemo(x, y, lastX); lastX = x;
+      if (u < 1) requestAnimationFrame(step);
+      else { MAP.busy = false; MAP.at = to; if (done) done(); }
+    };
+    requestAnimationFrame(step);
+  }
+
+  /* ---------- Aufklapp-Fenster ---------- */
+  function openSheet(build) {
+    const c = $("sheetCard"); c.innerHTML = "";
+    const x = el("button", "iconbtn sh-close", "✕"); x.setAttribute("aria-label", "Schließen"); x.addEventListener("click", closeSheet);
+    c.appendChild(x); build(c);
+    $("sheet").hidden = false; $("sheetBack").hidden = false;
+  }
+  function closeSheet() { const sh = document.getElementById("sheet"); if (sh) { sh.hidden = true; $("sheetBack").hidden = true; } }
+  function sheetTop(c, icon, name, sub) { c.appendChild(el("div", "sh-top", `<span class="sh-ic">${icon}</span><span><span class="sh-nm">${name}</span><span class="sh-sub">${sub}</span></span>`)); }
+
+  /* ---------- Hauptmenü: der Ozean ---------- */
+  function renderHome() {
+    $("homeHello").textContent = S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
+    show("scrHome");
+    const P = portrait(), nom = CHAPTERS[0];
+    const pos = P ? { bay: [300, 820], nomen: [420, 500], adj: [175, 300], fog: [440, 120], w: 600, h: 960 }
+                  : { bay: [500, 500], nomen: [805, 255], adj: [200, 255], fog: [505, 95], w: 1000, h: 640 };
+    const max = nom.levels.length * 9;
+    const nodes = [
+      { x: pos.bay[0], y: pos.bay[1], r: 70, icon: "🐠", grass: "#f4a7b9", label: "Nemos Riff", big: true, sub: `Aquarium · ${aquaCount()}/${SHOP.length}`,
+        deco: [[-0.55, -0.25, "🪸", 0.42], [0.55, -0.2, "🪸", 0.38]], aria: "Nemos Riff mit dem Aquarium",
+        tap: (i) => swimTo(i, renderAqua) },
+      { x: pos.nomen[0], y: pos.nomen[1], r: 96, icon: "🐟", label: "Nomen-Inseln", big: true, sub: `⭐ ${starTotal(nom)}/${max} · 💎 ${perfectCount(nom)}/${nom.levels.length}${S.bonus[nom.id] ? " · 👑" : ""}`,
+        deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen",
+        tap: (i) => { CH = nom; S.homeAt = i; save(); swimTo(i, renderMap); } },
+      { x: pos.adj[0], y: pos.adj[1], r: 86, icon: "🎨", label: "Adjektiv-Inseln", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
+        deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Kapitel Adjektive, kommt bald",
+        tap: (i) => { S.homeAt = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🎨", "Adjektiv-Inseln", "Wiewörter"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Nemo hier landen!")); })); } },
+      { x: pos.fog[0], y: pos.fog[1], r: 62, icon: "🏝️", label: "Bald mehr …", big: true, fog: true, fogIcon: "❔", aria: "Neue Inseln kommen bald",
+        tap: (i) => { swimTo(i, () => openSheet(c => { sheetTop(c, "❔", "Geheime Inseln", "Hinter dem Nebel"); c.appendChild(el("p", "note", "Hier warten bald neue Abenteuer auf Nemo. 🌫️")); })); } }
+    ];
+    const edges = [[0, 1, islandsDoneCount(nom) ? "done" : ""], [0, 2, "faint"], [0, 3, "faint"]];
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64 });
+    setCoins(false);
+  }
+  const islandsDoneCount = (ch) => ch.levels.filter((_, li) => islandDone(ch, li)).length;
+
+  /* ---------- Kapitelkarte: Inselroute ---------- */
+  function snake(N, P) {
+    const cols = P ? 3 : 5, rows = Math.ceil(N / cols);
+    const xs = P ? [110, 300, 490] : [100, 300, 500, 700, 900];
+    const top = P ? 140 : 168, bottom = P ? 850 : 470;
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      const r = Math.floor(i / cols), c = i % cols, col = r % 2 === 0 ? c : cols - 1 - c;
+      const y = rows === 1 ? bottom : bottom - (bottom - top) * r / (rows - 1);
+      pts.push({ x: xs[col], y: y + (c % 2 ? -30 : 16) });
+    }
+    return { w: P ? 600 : 1000, h: P ? 1000 : 640, pts };
+  }
   function renderMap() {
-    $("mapTitle").textContent = `${CH.icon} Kapitel ${CH.name}`;
-    const box = $("islands"); box.innerHTML = "";
+    $("mapTitle").textContent = `${CH.icon} ${CH.name}-Inseln`;
+    show("scrMap");
+    const P = portrait(), n = CH.levels.length, lay = snake(n + 2, P), k = P ? 1.15 : 1;
+    const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
+    const open = bonusOpen(CH), pc = perfectCount(CH);
+    const nodes = [{ ...lay.pts[0], r: 44 * k, icon: "⚓", label: "Start", grass: "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
     CH.levels.forEach((lv, li) => {
-      const card = el("div", "island"); card.style.setProperty("--c", lv.color);
-      const perfect = S.perfect[pkey(CH, li)];
-      card.innerHTML = `<div class="top"><span class="ic">${lv.icon}</span><span class="nm">${lv.name}</span><span class="gem${perfect ? "" : " off"}" title="${perfect ? "fehlerfrei geschafft" : "noch nicht fehlerfrei"}">💎</span></div>`;
+      const st = DK.reduce((a, d) => a + (S.stars[skey(CH, li, d)] || 0), 0);
+      nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/9` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
+        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`,
+        tap: (i) => { S.at = S.at || {}; S.at[CH.id] = i; save(); swimTo(i, () => islandSheet(li)); } });
+    });
+    nodes.push({ ...lay.pts[n + 1], r: 64 * k, icon: S.bonus[CH.id] ? "👑" : "🎁", grass: "#e9c46a", label: "Schatzinsel", fog: !open, fogIcon: "🔒",
+      sub: open ? (S.bonus[CH.id] ? "Schatz gefunden!" : "Offen!") : `💎 ${pc}/${n}`, deco: [[0.55, -0.25, "🌴", 0.45]], aria: "Schatzinsel",
+      tap: (i) => { swimTo(i, () => treasureSheet()); } });
+    const edges = [];
+    for (let k = 0; k < n + 1; k++) edges.push([k, k + 1, k < n ? (islandDone(CH, k) ? "done" : "") : (S.bonus[CH.id] ? "done" : "")]);
+    const at = Math.min((S.at && S.at[CH.id]) || 0, nodes.length - 1);
+    drawSea($("chapMap"), { w: lay.w, h: lay.h, nodes, edges, at, label: `Inselkarte ${CH.name}`, seed: 9, nemo: P ? 58 : 52, fs: P ? 25 : 23 });
+    $("certBtn").hidden = !CH.levels.every((_, li) => islandDone(CH, li));
+    setCoins(false);
+  }
+  function islandSheet(li) {
+    const lv = CH.levels[li];
+    openSheet(c => {
+      sheetTop(c, lv.icon, lv.name, `Insel ${li + 1} von ${CH.levels.length}`);
       const row = el("div", "diffs");
       DK.forEach(d => {
-        const st = S.stars[skey(CH, li, d)] || 0;
-        const b = el("button", "diff " + d, `<span class="di">${DIFFS[d].icon}</span><span class="dl">${DIFFS[d].label}</span><span class="ds">${st ? "⭐".repeat(st) : "–"}</span>`);
+        const st = S.stars[skey(CH, li, d)] || 0, m = DIFFS[d].mult;
+        const b = el("button", "diff " + d, `<span class="di">${DIFFS[d].icon}</span><span class="dl">${DIFFS[d].label}</span><span class="ds">${st ? "⭐".repeat(st) : "–"}</span><span class="dc">${m} ${m === 1 ? "Münze" : "Münzen"}</span>`);
         b.setAttribute("aria-label", `${lv.name}, ${DIFFS[d].label}`);
         b.addEventListener("click", () => openIntro(li, d));
         row.appendChild(b);
       });
-      card.appendChild(row);
-      box.appendChild(card);
+      c.appendChild(row);
+      c.appendChild(el("p", "note", S.perfect[pkey(CH, li)] ? "💎 Diese Insel hast du schon ohne Fehler geschafft!" : "Schaffst du diese Insel ohne Fehler? Dann bekommst du einen 💎."));
     });
-    // Bonus
-    const slot = $("bonusSlot"); slot.innerHTML = "";
-    const open = bonusOpen(CH), pc = perfectCount(CH), n = CH.levels.length;
-    const bc = el("button", "bonus-card");
-    bc.disabled = !open;
-    bc.innerHTML = open
-      ? `<span class="ic">🎁</span><span><span class="nm">Bonus: Nemos Schatztruhe</span><span class="ds">${S.bonus[CH.id] ? "👑 Schatz gefunden! Du kannst nochmal spielen." : "Freigeschaltet! Gemischte Profi-Aufgaben · 3 Münzen pro Aufgabe + Schatz"}</span></span>`
-      : `<span class="ic">🔒</span><span><span class="nm">Bonus: Nemos Schatztruhe</span><span class="ds">Löse alle Inseln einmal ohne Fehler: 💎 ${pc} von ${n}</span></span>`;
-    if (open) bc.addEventListener("click", () => openIntro("bonus", "schwer"));
-    slot.appendChild(bc);
-    $("certBtn").hidden = !CH.levels.every((_, li) => islandDone(CH, li));
-    setCoins(false);
-    show("scrMap");
   }
+  function treasureSheet() {
+    const open = bonusOpen(CH), pc = perfectCount(CH), n = CH.levels.length;
+    openSheet(c => {
+      sheetTop(c, open ? "🎁" : "🔒", "Schatzinsel", "Nemos Schatztruhe");
+      if (open) {
+        c.appendChild(el("p", "note", S.bonus[CH.id] ? "👑 Du hast den Schatz schon gefunden. Willst du nochmal?" : "Die Schatztruhe ist offen! Gemischte Profi-Aufgaben · 3 Münzen pro Aufgabe + Schatz."));
+        const b = el("button", "big-btn", "Zur Schatzsuche 🗺️"); b.addEventListener("click", () => openIntro("bonus", "schwer")); c.appendChild(b);
+      } else {
+        c.appendChild(el("p", "note", `Die Schatzinsel liegt noch im Nebel. Löse jede Insel einmal ohne Fehler: 💎 ${pc} von ${n}.`));
+      }
+    });
+  }
+  let lastP = null, rz = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(rz); rz = setTimeout(() => {
+      const P = portrait(); if (P === lastP) return; lastP = P;
+      if (MAP && MAP.busy) return;
+      if (current === "scrHome") renderHome(); else if (current === "scrMap") renderMap();
+    }, 250);
+  });
 
   /* ---------- bonus level ---------- */
   const BONUS = {
@@ -1394,6 +1588,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   $("voiceBtn").addEventListener("click", nextVoice);
   $("certBack").addEventListener("click", renderMap);
   $("resetBtn").addEventListener("click", () => { $("confirm").hidden = false; });
+  $("sheetBack").addEventListener("click", closeSheet);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+  lastP = portrait();
   $("cNo").addEventListener("click", () => { $("confirm").hidden = true; });
   $("cYes").addEventListener("click", () => {
     S = fresh(); save();
