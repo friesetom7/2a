@@ -385,13 +385,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 (function () {
   "use strict";
 
-  /* ---------- Ergebnisse an das Google-Formular der Lehrkraft (im Hintergrund) ---------- */
-  const GFORM = {
-    action: "https://docs.google.com/forms/d/e/1FAIpQLSeYUuBY0Y-MTaH0HBOd3NSZ0F9o0dfNLdjmBAdpbxz8a4vMug/formResponse",
-    name: "entry.974381477",
-    coins: "entry.983257668",
-    stars: "entry.904067370"
-  };
+  /* ---------- Ergebnisse senden: abgeschaltet (Datenschutz) ----------
+     Es werden keine Daten an Dritte geschickt. Alles bleibt auf diesem Gerät.
+     Für eine spätere, schulkonforme Lösung hier eine Ziel-Adresse und Feldnamen eintragen. */
+  const GFORM = { action: "", name: "", coins: "", stars: "" };
 
   /* ---------- Schwierigkeitsstufen ---------- */
   const DIFFS = {
