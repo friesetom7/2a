@@ -1,5 +1,6 @@
-# Spiele der Klasse 2a
+# Nemos Übungsspielplatz
 
 Lernspiele für die Klasse 2a mit Hai Nemo.
 
-- `nemo/` – Nemos Nomen-Abenteuer
+- Kapitel Nomen (leicht / mittel / schwer, Bonus)
+- Kapitel Adjektive (folgt)
