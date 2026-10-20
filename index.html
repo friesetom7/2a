@@ -214,6 +214,44 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .overlay { position: fixed; inset: 0; background: rgba(4, 30, 52, 0.6); z-index: 10; display: grid; place-items: center; padding: 16px; }
 .overlay .card { max-width: 460px; text-align: center; display: flex; flex-direction: column; gap: 16px; }
 
+/* two big answer buttons (Satz? / Einzahl?) */
+.opts { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; width: min(820px, 100%); }
+.opt { background: var(--sand); font-size: clamp(26px, 4.8vw, 40px); font-weight: 800; padding: 14px 26px; border-radius: 24px; box-shadow: 0 6px 0 var(--sand-edge), 0 10px 20px var(--shadow); min-width: 160px; }
+.opt.small { font-size: clamp(22px, 4vw, 32px); }
+.opt:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--sand-edge); }
+.opt.right { background: #c9f0d4; box-shadow: 0 6px 0 #8fd3a3; }
+.opt.yes { background: #d8f3df; } .opt.no { background: #fde1df; }
+.qline { font-size: clamp(30px, 5.4vw, 48px); font-weight: 900; text-align: center; overflow-wrap: anywhere; color: var(--white); text-shadow: 0 3px 0 var(--deep); }
+.card .qline { color: var(--ink); text-shadow: none; }
+.qline.serif { letter-spacing: .5px; }
+.emo-row { font-size: 64px; line-height: 1.1; text-align: center; }
+
+/* aquarium */
+.tank { position: relative; height: clamp(260px, 42vh, 380px); border-radius: 30px; overflow: hidden; border: 8px solid #d9ecf5; box-shadow: 0 10px 28px var(--shadow), inset 0 0 40px rgba(0,40,80,.35); background: linear-gradient(180deg, #8fdcf2 0%, #39a9d6 45%, #1a73a8 100%); }
+.tank .sand { position: absolute; left: 0; right: 0; bottom: 0; height: 22%; background: linear-gradient(180deg, #f3d99b, #e2bd6e); border-top: 4px solid #f7e3b2; }
+.tank .glint { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, rgba(255,255,255,.1) 0 30px, transparent 30px 90px); pointer-events: none; }
+.tank .item { position: absolute; line-height: 1; transform: translateX(-50%); }
+.tank .deco { bottom: 4%; }
+.tank .swim { animation: tswim linear infinite alternate; }
+.tank .swim span { display: inline-block; }
+@keyframes tswim { from { left: 8%; } to { left: 88%; } }
+.tank .swim.flip span { transform: scaleX(-1); }
+.tank .bob2 { animation: bob 3s ease-in-out infinite; }
+.tank .empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--white); font-size: 22px; font-weight: 800; text-shadow: 0 2px 0 var(--deep); text-align: center; padding: 20px; }
+.shop-title { color: var(--white); font-size: 26px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); }
+.shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.ware { background: var(--sand); border-radius: 22px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); text-align: center; }
+.ware .wi { font-size: 48px; line-height: 1; }
+.ware .wn { font-size: 18px; font-weight: 900; }
+.ware .wp { font-size: 18px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
+.ware.owned { background: #e3f6e8; box-shadow: 0 5px 0 #a9dcb7; }
+.ware.poor { opacity: .55; }
+.ware.ask { background: #fff0c2; box-shadow: 0 5px 0 var(--gold-edge); }
+.ware:active:not(:disabled) { transform: translateY(3px); }
+.aqua-card { background: linear-gradient(180deg, #8fdcf2, #39a9d6); color: var(--white); text-shadow: 0 2px 0 var(--deep); }
+.aqua-card .sb { color: #eaf8ff; }
+.voice { background: transparent; color: rgba(255,255,255,0.85); font-size: 16px; padding: 8px; text-decoration: underline; }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -252,7 +290,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
     <div class="head xl">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="chapters" id="chapters"></div>
-    <div class="foot"><button class="reset" id="resetBtn">Neues Kind / neu starten</button></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button></div>
+  </section>
+
+  <!-- AQUARIUM -->
+  <section class="screen" id="scrAqua" hidden>
+    <div class="head l">🐠 Nemos Aquarium</div>
+    <div class="tank" id="tank"></div>
+    <div class="shop-title">🛒 Laden – tippe zweimal zum Kaufen</div>
+    <div class="shop" id="shop"></div>
   </section>
 
   <!-- CHAPTER MAP -->
@@ -474,6 +520,67 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
     ["meine schwester hat immer gute ideen für spiele.", [1,5,7]]
   ];
 
+  // Einzahl/Mehrzahl: [Einzahl, Artikel, Mehrzahl, Emoji, falsch1, falsch2]
+  const PLURALS = [
+    ["Hund","der","Hunde","🐶","Hunden","Hunds"],["Katze","die","Katzen","🐱","Katzes","Kätze"],["Maus","die","Mäuse","🐭","Mausen","Mause"],
+    ["Baum","der","Bäume","🌳","Baume","Baumen"],["Haus","das","Häuser","🏠","Hause","Hausen"],["Buch","das","Bücher","📕","Buchs","Buche"],
+    ["Ball","der","Bälle","⚽","Balls","Ballen"],["Auto","das","Autos","🚗","Auten","Autoe"],["Kind","das","Kinder","🧒","Kinds","Kinde"],
+    ["Apfel","der","Äpfel","🍎","Apfeln","Apfels"],["Blume","die","Blumen","🌷","Blumes","Blüme"],["Fisch","der","Fische","🐟","Fischen","Fischs"],
+    ["Stuhl","der","Stühle","🪑","Stuhle","Stuhlen"],["Ente","die","Enten","🦆","Entes","Ente"],["Schuh","der","Schuhe","👟","Schuhs","Schühe"],
+    ["Vogel","der","Vögel","🐦","Vogels","Vogeln"],["Hand","die","Hände","✋","Handen","Hands"],["Stern","der","Sterne","⭐","Sternen","Sterns"],
+    ["Bett","das","Betten","🛏️","Bette","Betts"],["Uhr","die","Uhren","⏰","Uhre","Ühre"],["Frosch","der","Frösche","🐸","Froschen","Froschs"],
+    ["Lehrer","der","Lehrer","👨‍🏫","Lehrern","Lehrers"],["Kuh","die","Kühe","🐄","Kuhen","Kuhs"],["Schiff","das","Schiffe","🚢","Schiffen","Schiffs"],
+    ["Pferd","das","Pferde","🐴","Pferden","Pferds"],["Mädchen","das","Mädchen","👧","Mädchens","Mädchenen"],["Zahn","der","Zähne","🦷","Zahne","Zahnen"],
+    ["Tasche","die","Taschen","👜","Tasches","Täschen"]
+  ];
+  const OTHER_ART = { der: ["die", "das"], die: ["der", "das"], das: ["der", "die"] };
+
+  // Versteckte Nomen (alles klein geschrieben)
+  const KLEIN_MITTEL = [
+    ["der hund holt den ball.", [1,4]],["die oma liest ein buch.", [1,4]],["mein bruder isst einen apfel.", [1,4]],
+    ["die katze schläft auf dem sofa.", [1,5]],["lisa malt eine blume.", [0,3]],["der vogel sitzt im baum.", [1,4]],
+    ["wir fahren mit dem bus zur schule.", [4,6]],["das baby trinkt milch.", [1,3]],["im garten wächst eine rose.", [1,4]],
+    ["opa trägt einen hut.", [0,3]],["die ente schwimmt im teich.", [1,4]],["papa kauft brot und käse.", [0,2,4]]
+  ];
+  const KLEIN_SCHWER = [
+    ["am morgen scheint die sonne. tim packt seine tasche und läuft zur schule.", [1,4,5,8,12]],
+    ["im zoo sehen wir einen großen elefanten. er hat viel hunger und frisst heu.", [1,6,10,13]],
+    ["lea hat heute geburtstag. ihre freunde bringen geschenke und einen kuchen mit.", [0,3,5,7,10]],
+    ["nachts ist es im wald ganz still. nur die eule ruft laut.", [4,9]],
+    ["mit großer freude springen die kinder in den see. das wasser ist kalt.", [2,5,8,10]],
+    ["papa backt brot. der duft zieht durch die ganze wohnung.", [0,2,4,9]],
+    ["im herbst sammeln wir kastanien. aus den kastanien basteln wir tiere.", [1,4,7,10]]
+  ];
+
+  // Satz-Werkstatt
+  const SATZ_LEICHT = [
+    ["Der Hund bellt laut.", true],["Die Katze.", false],["Ich spiele gern Fußball.", true],["spielt gern im", false],
+    ["Der Ball rollt weg.", true],["Ball Haus Baum", false],["Mama kocht Suppe.", true],["Im großen Garten.", false],
+    ["Wir lesen ein Buch.", true],["und dann noch", false],["Die Sonne scheint.", true],["Der kleine rote", false],
+    ["Opa schläft.", true],["mit dem Fahrrad", false],["Nemo schwimmt im Meer.", true],["Fisch Wasser Welle", false]
+  ];
+  // [richtig, falsch, Grund]  Grund: s = Satzanfang, n = Nomen
+  const SATZ_MITTEL = [
+    ["Heute regnet es.","heute regnet es.","s"],["Der Hai schwimmt.","der Hai schwimmt.","s"],["Wir gehen in den Zoo.","wir gehen in den Zoo.","s"],
+    ["Morgen ist Sonntag.","morgen ist Sonntag.","s"],["Im Sommer ist es heiß.","im Sommer ist es heiß.","s"],["Mein Opa ist lustig.","mein Opa ist lustig.","s"],
+    ["Dann essen wir Eis.","dann essen wir Eis.","s"],["Es schneit.","es schneit.","s"],["Ich male ein Bild.","ich male ein Bild.","s"],
+    ["Am Abend lesen wir.","am Abend lesen wir.","s"],["Plötzlich bellt der Hund.","plötzlich bellt der Hund.","s"],
+    ["Die Ente quakt.","Die ente quakt.","n"],["Der Vogel singt.","Der vogel singt.","n"],["Das Kind lacht.","Das kind lacht.","n"],
+    ["Mama kauft Brot.","Mama kauft brot.","n"]
+  ];
+  // schwer: Text ohne Punkte – wo fängt ein neuer Satz an?
+  const SATZ_SCHWER = [
+    ["heute scheint die sonne wir gehen in den park dort spielen wir ball", [0,4,8]],
+    ["mein hund heißt bello er spielt gern im garten abends ist er müde", [0,4,9]],
+    ["die kinder malen bilder lena malt einen hai tom malt ein schiff", [0,4,8]],
+    ["es ist winter draußen liegt schnee wir bauen einen schneemann", [0,3,6]],
+    ["oma backt einen kuchen er riecht lecker alle wollen ein stück", [0,4,7]],
+    ["im meer schwimmt nemo er sucht seine freunde zusammen spielen sie verstecken", [0,4,8]],
+    ["am morgen klingelt der wecker papa macht frühstück dann gehen wir los", [0,5,8]]
+  ];
+  // Wörter, die in den Satz-Texten Nomen sind (werden beim Lösen groß geschrieben)
+  const SATZ_NOUNS = ["sonne","park","ball","hund","bello","garten","kinder","bilder","lena","hai","tom","schiff","winter","schnee","schneemann","oma","kuchen","stück","meer","nemo","freunde","verstecken","morgen","wecker","papa","frühstück"];
+
   const GROUPS = {
     m: { name: "Menschen", dat: "den Menschen", icon: "👧" },
     t: { name: "Tiere", dat: "den Tieren", icon: "🐟" },
@@ -492,7 +599,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
   /* ---------- state ---------- */
   const KEY = "nemo-spielplatz-v2";
-  const fresh = () => ({ name: "", coins: 0, stars: {}, perfect: {}, bonus: {}, unsent: false });
+  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, aqua: {}, unsent: false });
   let S = fresh();
   try {
     const raw = localStorage.getItem(KEY);
@@ -522,32 +629,48 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   const sfxBad = () => tone([220, 180], 0.16, "triangle");
   const sfxWin = () => tone([523, 659, 784, 1046], 0.14);
 
-  let voice = null;
-  const NOVELTY = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Zarvox|Whisper|Jester|Organ|Superstar|Trinoids|Good News|Grandma|Grandpa|Oma|Opa|Rocko|Eddy|Reed|Fred|Ralph|Kathy|Junior/i;
-  const NICE = ["Anna", "Petra", "Helena", "Marlene", "Vicki", "Katja", "Hedda", "Google Deutsch", "Sandy", "Flo"];
+  // Stimme: natürlichste deutsche Stimme bevorzugen (Premium/Erweitert), ruhig und langsam.
+  let voice = null, voices = [];
+  const VKEY = "nemo-stimme";
+  const NOVELTY = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Zarvox|Whisper|Jester|Organ|Superstar|Trinoids|Good News|Grandma|Grandpa|Oma|Opa|Rocko|Eddy|Reed|Fred|Ralph|Kathy|Junior|Sandy|Shelley|Flo/i;
+  const NICE = ["Anna", "Petra", "Helena", "Marlene", "Vicki", "Katja", "Hedda", "Google Deutsch", "Yannick", "Markus", "Martin"];
+  const vscore = (v) => {
+    let sc = 0;
+    if (/Premium/i.test(v.name)) sc += 50;
+    if (/Erweitert|Enhanced|Natural|Neural|Online/i.test(v.name)) sc += 35;
+    const i = NICE.findIndex(n => v.name.indexOf(n) !== -1);
+    if (i !== -1) sc += 20 - i;
+    if (/de-DE/i.test(v.lang.replace("_", "-"))) sc += 5;
+    return sc;
+  };
   function pickVoice() {
     try {
-      const vs = speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang) && !NOVELTY.test(v.name));
-      const score = (v) => {
-        let sc = 0;
-        if (/Premium/i.test(v.name)) sc += 40;
-        if (/Erweitert|Enhanced|Natural|Neural|Online/i.test(v.name)) sc += 30;
-        const i = NICE.findIndex(n => v.name.indexOf(n) !== -1);
-        if (i !== -1) sc += 20 - i;
-        if (/de-DE/i.test(v.lang.replace("_", "-"))) sc += 5;
-        return sc;
-      };
-      voice = vs.sort((a, b) => score(b) - score(a))[0] || null;
+      voices = speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang) && !NOVELTY.test(v.name)).sort((a, b) => vscore(b) - vscore(a));
+      let wanted = null; try { wanted = localStorage.getItem(VKEY); } catch (e) {}
+      voice = voices.find(v => v.name === wanted) || voices[0] || null;
+      const vb = document.getElementById("voiceBtn"); if (vb) vb.textContent = "🔊 Stimme: " + (voice ? voice.name : "Standard") + " · ändern";
     } catch (e) {}
   }
   try { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } catch (e) {}
   function speak(text) {
     try {
       speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text.replace(/_+/g, " ... "));
-      u.lang = "de-DE"; u.rate = 0.82; u.pitch = 1.2; u.volume = 1; if (voice) u.voice = voice;
-      speechSynthesis.speak(u);
+      // in kurze Stücke teilen: natürlichere Pausen
+      const parts = text.replace(/_+/g, " … ").replace(/([.!?])\s+/g, "$1|").split("|").filter(Boolean); // ohne Lookbehind (ältere iPads)
+      parts.forEach(p => {
+        const u = new SpeechSynthesisUtterance(p);
+        u.lang = "de-DE"; u.rate = 0.88; u.pitch = 1.0; u.volume = 1; if (voice) u.voice = voice;
+        speechSynthesis.speak(u);
+      });
     } catch (e) {}
+  }
+  function nextVoice() {
+    if (!voices.length) pickVoice();
+    if (!voices.length) { speak("Hallo, ich bin Nemo."); return; }
+    const i = voices.indexOf(voice); voice = voices[(i + 1) % voices.length];
+    try { localStorage.setItem(VKEY, voice.name); } catch (e) {}
+    $("voiceBtn").textContent = "🔊 Stimme: " + voice.name + " · ändern";
+    speak("Hallo, ich bin Nemo. So klinge ich.");
   }
 
   /* ---------- background bubbles ---------- */
@@ -562,15 +685,16 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   })();
 
   /* ---------- screens + feedback ---------- */
-  const SCREENS = ["scrStart", "scrHome", "scrMap", "scrIntro", "scrPlay", "scrResult", "scrCert"];
+  const SCREENS = ["scrStart", "scrHome", "scrAqua", "scrMap", "scrIntro", "scrPlay", "scrResult", "scrCert"];
   let current = "scrStart";
   function show(id) {
     current = id;
     SCREENS.forEach(s => $(s).hidden = s !== id);
     const back = $("backBtn");
     back.hidden = (id === "scrStart" || id === "scrHome");
-    back.textContent = id === "scrMap" ? "🏠" : "🗺️";
-    back.setAttribute("aria-label", id === "scrMap" ? "Zum Menü" : "Zur Karte");
+    const toHome = id === "scrMap" || id === "scrAqua";
+    back.textContent = toHome ? "🏠" : "🗺️";
+    back.setAttribute("aria-label", toHome ? "Zum Menü" : "Zur Karte");
     try { speechSynthesis.cancel(); } catch (e) {}
     window.scrollTo(0, 0);
   }
@@ -609,7 +733,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   let L = null;
   function award(fromEl, factor) {
     const c = L.mult * (factor || 1);
-    S.coins += c; L.earned += c; save(); setCoins(true); flyCoin(fromEl); sfxGood();
+    S.coins += c; S.total = (S.total || 0) + c; L.earned += c; save(); setCoins(true); flyCoin(fromEl); sfxGood();
   }
   function miss(elm, msg) { sfxBad(); L.mistakes++; if (elm) shakeEl(elm); hint(msg); }
   function done(delay) {
@@ -637,8 +761,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       if (L.locked) return;
       const extra = [...sel].filter(i => !o.targets.includes(i)), missing = o.targets.filter(i => !sel.has(i));
       if (!extra.length && !missing.length) {
-        if (o.lower) o.targets.forEach(i => { chips.children[i].textContent = cap(lowerWord(words[i])); });
-        award(ok, o.factor || 1); speak(o.lower ? cap(o.sentence) : o.sentence);
+        if (o.onSolved) o.onSolved(chips, words);
+        else if (o.lower) o.targets.forEach(i => { chips.children[i].textContent = cap(lowerWord(words[i])); });
+        award(ok, o.factor || 1); speak(o.speakSolved || (o.lower ? cap(o.sentence) : o.sentence));
         hint(praise() + " " + o.okText, true); done(1500);
       } else {
         sfxBad(); L.mistakes++; shakeEl(chips);
@@ -651,10 +776,25 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
     L.speakNow = () => speak((o.lower ? o.sentence : o.sentence) + " " + (o.sayExtra || ""));
   }
 
+  // Auswahl-Knöpfe: opts = [{label, correct, wrongText}]
+  function choiceTask(stage, o) {
+    const row = el("div", "opts");
+    shuffle(o.opts).forEach(op => {
+      const b = el("button", "opt" + (o.small ? " small" : "") + (op.cls ? " " + op.cls : ""), op.label);
+      b.addEventListener("click", () => {
+        if (L.locked) return;
+        if (op.correct) { b.classList.add("right"); if (o.onRight) o.onRight(); award(b, o.factor || 1); if (o.okSpeak) speak(o.okSpeak); hint(praise() + " " + (o.okText || ""), true); done(o.delay || 1300); }
+        else miss(b, op.wrongText || o.wrongText || "Probier nochmal!");
+      });
+      row.appendChild(b);
+    });
+    stage.appendChild(row);
+  }
+
   /* ---------- Kapitel Nomen: Inseln ---------- */
   const NOMEN = [
     {
-      name: "Nomen-Fischen", icon: "🎣", color: "#1270a8",
+      id: "fischen", name: "Nomen-Fischen", icon: "🎣", color: "#1270a8",
       task: () => "Tippe alle Nomen an!",
       intro: (d) => d === "schwer" ? "Achtung: Alle Wörter sind klein geschrieben! Finde trotzdem die Nomen." : "Fange nur die Nomen!",
       ex: (d) => d === "schwer" ? "freude ✓ · fröhlich ✗" : "Hund ✓ · laufen ✗",
@@ -697,7 +837,41 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       }
     },
     {
-      name: "Groß oder klein?", icon: "✏️", color: "#d6342f",
+      id: "versteckt", name: "Versteckte Nomen", icon: "🫣", color: "#2a8f8f",
+      task: (d) => d === "leicht" ? "Welches Wort ist ein Nomen?" : "Finde die Nomen – auch wenn sie klein sind!",
+      intro: (d) => d === "leicht" ? "Die Wörter sind klein geschrieben. Welches ist trotzdem ein Nomen?" : d === "mittel" ? "Der Satz ist ganz klein geschrieben. Finde die Nomen!" : "Ein ganzer kleiner Text – ganz klein geschrieben. Ich verrate nicht, wie viele Nomen es sind!",
+      ex: (d) => d === "leicht" ? "hund ✓ · laufen ✗" : "die <b>katze</b> schläft auf dem <b>sofa</b>.",
+      say: (d) => d === "schwer" ? "Ein ganzer Text, alles klein geschrieben. Finde alle Nomen. Achtung: Nicht jedes Wort am Satzanfang ist ein Nomen!" : "Die Wörter sind klein geschrieben. Finde trotzdem die Nomen. Tipp: Kannst du der, die oder das davor sagen?",
+      build(d) {
+        if (d === "leicht") {
+          const ns = shuffle(nounsEasy()).slice(0, 12), os = shuffle(OTHERS_EASY.concat(OTHERS.slice(0, 12)));
+          return ns.map((n, i) => ({ noun: n[0], emo: n[2], other: os[i % os.length] }));
+        }
+        return d === "mittel" ? shuffle(KLEIN_MITTEL).slice(0, 9) : shuffle(KLEIN_SCHWER).slice(0, 6);
+      },
+      render(item, stage, d) {
+        if (d === "leicht") {
+          stage.appendChild(el("div", "emoji-big", item.emo));
+          choiceTask(stage, {
+            opts: [{ label: item.noun.toLowerCase(), correct: true }, { label: item.other, correct: false, wrongText: `„${item.other}“ ist kein Nomen. Sag mal: der ${item.other}? Das klingt komisch.` }],
+            okText: `${item.noun} ist ein Nomen. Also schreibe ich es groß: ${item.noun}!`, okSpeak: item.noun
+          });
+          L.speakNow = () => speak(item.noun.toLowerCase() + " oder " + item.other + "? Welches ist ein Nomen?");
+          return;
+        }
+        const [sent, targets] = item;
+        chipTask(stage, {
+          sentence: sent, targets, lower: true, factor: d === "schwer" ? 3 : 2,
+          countText: d === "schwer" ? "🫣 Wie viele Nomen verstecken sich?" : `🫣 Finde ${targets.length} Nomen`,
+          okText: "Alle versteckten Nomen gefunden!",
+          extraText: (w, i) => i === 0 || /[.]$/.test(sent.split(" ")[i - 1] || "") ? `„${w}“ steht am Satzanfang, ist aber kein Nomen.` : `„${w}“ ist kein Nomen. Der ${w}? Die ${w}? Das passt nicht.`,
+          missText: (m) => `Es versteckt sich noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}. Suche weiter!`,
+          sayExtra: "Finde die Nomen."
+        });
+      }
+    },
+    {
+      id: "grossklein", name: "Groß oder klein?", icon: "✏️", color: "#d6342f",
       task: (d) => d === "schwer" ? "Welche Wörter schreibt man groß?" : "Welches Wort ist richtig?",
       intro: (d) => d === "leicht" ? "Nomen schreibe ich groß!" : d === "mittel" ? "Nomen schreibe ich groß. Alle anderen Wörter klein." : "Der ganze Satz ist klein geschrieben. Tippe alle Wörter an, die groß geschrieben werden.",
       ex: (d) => d === "schwer" ? "<b>D</b>er <b>H</b>ai frisst einen <b>F</b>isch." : "der <b>H</b>ai · er <b>l</b>acht",
@@ -740,7 +914,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       }
     },
     {
-      name: "der, die, das", icon: "👫", color: "#23964a",
+      id: "artikel", name: "der, die, das", icon: "👫", color: "#23964a",
       task: () => "der, die oder das?",
       intro: (d) => d === "schwer" ? "Schwierige Wörter ohne Bild – und lange Wörter wie Haustür!" : "Jedes Nomen hat einen Begleiter. Welcher passt?",
       ex: (d) => d === "schwer" ? 'Haus + <span class="c-die">die</span> Tür → <span class="c-die">die</span> Haustür' : '<span class="c-der">der</span> Hai · <span class="c-die">die</span> Katze · <span class="c-das">das</span> Kind',
@@ -775,7 +949,69 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       }
     },
     {
-      name: "Sortier-Strand", icon: "🧺", color: "#e0a400",
+      id: "mehrzahl", name: "Einer oder viele?", icon: "🔢", color: "#7b4fc9",
+      task: (d) => d === "leicht" ? "Einzahl oder Mehrzahl?" : d === "mittel" ? "Wie heißt die Mehrzahl?" : "Finde die richtige Form!",
+      intro: (d) => d === "leicht" ? "Einzahl heißt: eins. Mehrzahl heißt: viele." : d === "mittel" ? "Wie heißt das Nomen, wenn es viele sind?" : "Mehrzahl oder Einzahl finden – mit Fallen bei Begleiter und Großschreibung!",
+      ex: (d) => d === "leicht" ? "🐟 der Fisch · 🐟🐟🐟 die Fische" : d === "mittel" ? "der Baum → die <b>Bäume</b>" : "die Häuser → <b>das Haus</b>",
+      say: (d) => d === "leicht" ? "Einzahl heißt eins. Mehrzahl heißt viele. In der Mehrzahl ist der Begleiter immer die." : d === "mittel" ? "Wie heißt das Nomen, wenn es viele sind? Tipp: In der Mehrzahl ist der Begleiter immer die." : "Finde die richtige Einzahl oder Mehrzahl. Achte auf den Begleiter und auf die Großschreibung!",
+      build(d) {
+        if (d === "leicht") return shuffle(PLURALS).slice(0, 12).map((p, i) => ({ p, many: i % 2 === 1 })).sort(() => Math.random() - .5);
+        if (d === "mittel") return shuffle(PLURALS).slice(0, 14).map(p => ({ p }));
+        return shuffle(PLURALS).slice(0, 14).map((p, i) => ({ p, back: i % 2 === 0 }));
+      },
+      render(x, stage, d) {
+        const [sg, art, pl, emo, f1, f2] = x.p;
+        if (d === "leicht") {
+          const word = x.many ? "die " + pl : art + " " + sg;
+          stage.appendChild(el("div", "emo-row", x.many ? emo + emo + emo : emo));
+          stage.appendChild(el("div", "qline", word));
+          choiceTask(stage, {
+            opts: [{ label: "☝️ Einzahl", correct: !x.many }, { label: "🖐️ Mehrzahl", correct: x.many }],
+            wrongText: x.many ? `„die ${pl}“ – das sind viele. Also Mehrzahl!` : `„${art} ${sg}“ – das ist nur eins. Also Einzahl!`,
+            okText: x.many ? "Viele → Mehrzahl!" : "Eins → Einzahl!", okSpeak: word
+          });
+          L.speakNow = () => speak(word + ". Einzahl oder Mehrzahl?");
+          return;
+        }
+        if (d === "mittel") {
+          stage.appendChild(el("div", "emo-row", emo + " → " + emo + emo + emo));
+          stage.appendChild(el("div", "qline", `${art} ${sg} → die ?`));
+          choiceTask(stage, {
+            opts: [{ label: "die " + pl, correct: true }, { label: "die " + f1 }, { label: "die " + f2 }].filter((o, i, a) => a.findIndex(z => z.label === o.label) === i),
+            wrongText: `Sag es laut: ein ${sg}, zwei …? Probier nochmal!`,
+            okText: `${art} ${sg} → die ${pl}`, okSpeak: `${art} ${sg}, die ${pl}`
+          });
+          L.speakNow = () => speak(`${art} ${sg}. Wie heißt die Mehrzahl?`);
+          return;
+        }
+        // schwer
+        if (x.back) {
+          stage.appendChild(el("div", "qline", `die ${pl} → ?`));
+          stage.appendChild(el("div", "counter", "Wie heißt die Einzahl?"));
+          const wa = OTHER_ART[art];
+          choiceTask(stage, {
+            small: true,
+            opts: [{ label: `${art} ${sg}`, correct: true }, { label: `${wa[0]} ${sg}`, wrongText: `Der Begleiter stimmt nicht. Sag leise: der ${sg}? die ${sg}? das ${sg}?` },
+                   { label: `${art} ${pl === sg ? f1 : pl}`, wrongText: pl === sg ? "Diese Form gibt es nicht." : `„${pl}“ ist die Mehrzahl. Gesucht ist die Einzahl: nur eins!` }],
+            okText: `die ${pl} → ${art} ${sg}`, okSpeak: `die ${pl}, ${art} ${sg}`
+          });
+          L.speakNow = () => speak(`die ${pl}. Wie heißt die Einzahl?`);
+        } else {
+          stage.appendChild(el("div", "qline", `${art} ${sg} → ?`));
+          stage.appendChild(el("div", "counter", "Wie heißt die Mehrzahl?"));
+          const lower = "die " + pl.charAt(0).toLowerCase() + pl.slice(1);
+          choiceTask(stage, {
+            small: true,
+            opts: [{ label: "die " + pl, correct: true }, { label: "die " + f1 }, { label: art === "die" ? "der " + pl : art + " " + pl, wrongText: "In der Mehrzahl ist der Begleiter immer „die“!" }, { label: lower, wrongText: "Achtung: Nomen schreibe ich immer groß – auch in der Mehrzahl!" }],
+            wrongText: `Sag es laut: ein ${sg}, zwei …?`,
+            okText: `${art} ${sg} → die ${pl}`, okSpeak: `${art} ${sg}, die ${pl}`
+          });
+          L.speakNow = () => speak(`${art} ${sg}. Wie heißt die Mehrzahl?`);
+        }
+      }
+    },
+    {
+      id: "sortieren", name: "Sortier-Strand", icon: "🧺", color: "#e0a400",
       task: () => "In welchen Korb gehört es?",
       intro: (d) => d === "schwer" ? "Schwierige Wörter ohne Bild. Ist es ein Mensch, ein Tier, eine Pflanze oder ein Ding?" : "Ist es ein Mensch, ein Tier, eine Pflanze oder ein Ding?",
       ex: () => "👧 Menschen · 🐟 Tiere · 🌻 Pflanzen · ⚽ Dinge",
@@ -807,7 +1043,55 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       }
     },
     {
-      name: "Detektiv-Riff", icon: "🔍", color: "#7b4fc9",
+      id: "satz", name: "Satz-Werkstatt", icon: "🧱", color: "#c0592b",
+      task: (d) => d === "leicht" ? "Ist das ein ganzer Satz?" : d === "mittel" ? "Welcher Satz ist richtig geschrieben?" : "Wo fängt ein neuer Satz an?",
+      intro: (d) => d === "leicht" ? "Ein Satz erzählt etwas Ganzes. Er fängt groß an und hat am Ende einen Punkt." : d === "mittel" ? "Am Satzanfang schreibe ich groß – und Nomen auch!" : "Hier fehlen alle Punkte! Tippe die Wörter an, mit denen ein neuer Satz beginnt.",
+      ex: (d) => d === "leicht" ? "Der Hund bellt. ✅ · der Hund ❌" : d === "mittel" ? "<b>H</b>eute regnet es." : "… die sonne <b>wir</b> gehen … → … die Sonne. <b>W</b>ir gehen …",
+      say: (d) => d === "leicht" ? "Ein Satz erzählt etwas Ganzes. Er fängt groß an und hat am Ende einen Punkt. Ist das ein ganzer Satz?" : d === "mittel" ? "Am Satzanfang schreibe ich groß, und Nomen auch. Welcher Satz ist richtig geschrieben?" : "Hier fehlen alle Punkte. Lies den Text leise. Wo machst du eine Pause? Tippe die Wörter an, mit denen ein neuer Satz beginnt.",
+      build(d) { return d === "leicht" ? shuffle(SATZ_LEICHT).slice(0, 12) : d === "mittel" ? shuffle(SATZ_MITTEL).slice(0, 12) : shuffle(SATZ_SCHWER).slice(0, 6); },
+      render(item, stage, d) {
+        if (d === "leicht") {
+          const [t, ok] = item;
+          stage.appendChild(el("div", "card word-card", `<div class="qline">${t}</div>`));
+          choiceTask(stage, {
+            opts: [{ label: "✅ Satz", cls: "yes", correct: ok, wrongText: "Hier fehlt etwas. Erzählt das schon etwas Ganzes?" }, { label: "❌ kein Satz", cls: "no", correct: !ok, wrongText: "Doch! Das erzählt etwas Ganzes, fängt groß an und hat einen Punkt." }],
+            okText: ok ? "Das ist ein ganzer Satz!" : "Genau, das ist kein ganzer Satz.", okSpeak: t
+          });
+          L.speakNow = () => speak(t + " Ist das ein ganzer Satz?");
+          return;
+        }
+        if (d === "mittel") {
+          const [right, wrong, why] = item;
+          choiceTask(stage, {
+            small: true,
+            opts: [{ label: right, correct: true }, { label: wrong, wrongText: why === "s" ? "Schau auf den Satzanfang! Das erste Wort schreibe ich groß." : "Schau genau: Ein Nomen ist klein geschrieben!" }],
+            okText: why === "s" ? "Satzanfang groß!" : "Nomen groß!", okSpeak: right
+          });
+          L.speakNow = () => speak("Welcher Satz ist richtig geschrieben?");
+          return;
+        }
+        const [text, starts] = item;
+        const words = text.split(" ");
+        const solvedWords = words.map((w, i) => {
+          let out = (starts.includes(i) || SATZ_NOUNS.includes(w)) ? cap(w) : w;
+          if (starts.includes(i + 1) || i === words.length - 1) out += ".";
+          return out;
+        });
+        chipTask(stage, {
+          sentence: text, targets: starts, lower: true, factor: 3,
+          countText: `🧱 Finde ${starts.length} Satzanfänge`,
+          okText: "Jetzt hat der Text Punkte und große Satzanfänge!",
+          onSolved: (chips) => { solvedWords.forEach((w, i) => { chips.children[i].textContent = w; }); },
+          speakSolved: solvedWords.join(" "),
+          extraText: (w) => `Hier beginnt kein neuer Satz. Lies laut weiter!`,
+          missText: (m) => m.includes(0) ? "Auch das allererste Wort ist ein Satzanfang!" : `Es fehlt noch ${m.length === 1 ? "ein Satzanfang" : m.length + " Satzanfänge"}. Wo machst du beim Lesen eine Pause?`,
+          sayExtra: ""
+        });
+        L.speakNow = () => speak(text.split(" ").join(", ") + ". Wo fängt ein neuer Satz an?");
+      }
+    },
+    {
+      id: "detektiv", name: "Detektiv-Riff", icon: "🔍", color: "#7b4fc9",
       task: () => "Tippe alle Nomen an!",
       intro: (d) => d === "schwer" ? "Lange Sätze, alles klein geschrieben – und ich verrate nicht, wie viele Nomen es sind!" : "Du bist Nomen-Detektiv! Finde alle Nomen im Satz.",
       ex: (d) => d === "schwer" ? "in den <b>ferien</b> fahren wir ans <b>meer</b>." : "Der <b>Hai</b> frisst einen <b>Fisch</b>.",
@@ -833,12 +1117,87 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
   ];
   let CH = CHAPTERS[0];
 
-  const skey = (ch, li, d) => `${ch.id}:${li}:${d}`;
-  const pkey = (ch, li) => `${ch.id}:${li}`;
+  const skey = (ch, li, d) => `${ch.id}:${ch.levels[li].id}:${d}`;
+  const pkey = (ch, li) => `${ch.id}:${ch.levels[li].id}`;
+  const lidx = (ch, id) => ch.levels.findIndex(l => l.id === id);
+  // alte Speicherstände (Inseln nach Nummer) übernehmen
+  (function migrate() {
+    const old = ["fischen", "grossklein", "artikel", "sortieren", "detektiv"]; let changed = false;
+    Object.keys(S.stars).forEach(k => { const m = k.match(/^nomen:(\d):(\w+)$/); if (m) { S.stars[`nomen:${old[+m[1]]}:${m[2]}`] = S.stars[k]; delete S.stars[k]; changed = true; } });
+    Object.keys(S.perfect).forEach(k => { const m = k.match(/^nomen:(\d)$/); if (m) { S.perfect[`nomen:${old[+m[1]]}`] = true; delete S.perfect[k]; changed = true; } });
+    if (S.total == null) { S.total = S.coins; changed = true; }
+    if (!S.aqua) { S.aqua = {}; changed = true; }
+    if (changed) save();
+  })();
   const islandDone = (ch, li) => DK.some(d => S.stars[skey(ch, li, d)] > 0);
   const perfectCount = (ch) => ch.levels.filter((_, li) => S.perfect[pkey(ch, li)]).length;
   const bonusOpen = (ch) => ch.levels.length > 0 && perfectCount(ch) === ch.levels.length;
   const starTotal = (ch) => ch.levels.reduce((a, _, li) => a + DK.reduce((b, d) => b + (S.stars[skey(ch, li, d)] || 0), 0), 0);
+
+  /* ---------- Nemos Aquarium ---------- */
+  // kind: swim = schwimmt hin und her, float = schwebt, deco = liegt auf dem Sand
+  const SHOP = [
+    { id: "seegras", e: "🌿", n: "Seegras", p: 5, k: "deco" },
+    { id: "stein", e: "🪨", n: "Stein", p: 5, k: "deco" },
+    { id: "muschel", e: "🐚", n: "Muschel", p: 8, k: "deco" },
+    { id: "fisch", e: "🐟", n: "Fisch", p: 10, k: "swim" },
+    { id: "garnele", e: "🦐", n: "Garnele", p: 10, k: "swim" },
+    { id: "blasen", e: "🫧", n: "Blubberblasen", p: 10, k: "float" },
+    { id: "koralle", e: "🪸", n: "Koralle", p: 12, k: "deco" },
+    { id: "seestern", e: "⭐", n: "Seestern", p: 12, k: "deco" },
+    { id: "tropenfisch", e: "🐠", n: "Tropenfisch", p: 15, k: "swim" },
+    { id: "krabbe", e: "🦀", n: "Krabbe", p: 15, k: "deco" },
+    { id: "kugelfisch", e: "🐡", n: "Kugelfisch", p: 20, k: "swim" },
+    { id: "qualle", e: "🪼", n: "Qualle", p: 25, k: "float" },
+    { id: "anker", e: "⚓", n: "Anker", p: 25, k: "deco" },
+    { id: "schildkroete", e: "🐢", n: "Schildkröte", p: 30, k: "swim" },
+    { id: "tintenfisch", e: "🦑", n: "Tintenfisch", p: 35, k: "swim" },
+    { id: "krake", e: "🐙", n: "Krake", p: 40, k: "float" },
+    { id: "burg", e: "🏰", n: "Sandburg", p: 45, k: "deco" },
+    { id: "robbe", e: "🦭", n: "Robbe", p: 50, k: "swim" },
+    { id: "delfin", e: "🐬", n: "Delfin", p: 60, k: "swim" },
+    { id: "krone", e: "👑", n: "Krone", p: 70, k: "deco" },
+    { id: "wal", e: "🐋", n: "Wal", p: 90, k: "swim" },
+    { id: "schatz", e: "💰", n: "Schatzsack", p: 100, k: "deco" }
+  ];
+  const aquaCount = () => Object.keys(S.aqua || {}).length;
+  function renderTank() {
+    const t = $("tank"); t.innerHTML = '<div class="glint"></div><div class="sand"></div>';
+    const add = (e, cls, style, size) => { const it = el("div", "item " + cls, `<span>${e}</span>`); Object.assign(it.style, style); it.style.fontSize = size + "px"; t.appendChild(it); };
+    add("🦈", "swim", { top: "30%", animationDuration: "14s" }, 64); // Nemo ist immer da
+    SHOP.forEach(w => {
+      const pos = S.aqua[w.id]; if (!pos) return;
+      if (w.k === "deco") add(w.e, "deco", { left: pos.x + "%" }, w.id === "burg" || w.id === "schatz" ? 58 : 44);
+      else if (w.k === "float") add(w.e, "bob2", { left: pos.x + "%", top: pos.y + "%", animationDelay: -pos.d + "s" }, 46);
+      else add(w.e, "swim", { top: pos.y + "%", animationDuration: pos.t + "s", animationDelay: -pos.d + "s" }, w.id === "wal" ? 72 : 46);
+    });
+    if (!aquaCount()) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm Freunde und Deko im Laden! 🛒"));
+  }
+  let asking = null;
+  function renderShop() {
+    const box = $("shop"); box.innerHTML = "";
+    SHOP.forEach(w => {
+      const owned = !!S.aqua[w.id], poor = !owned && S.coins < w.p, ask = asking === w.id;
+      const b = el("button", "ware" + (owned ? " owned" : poor ? " poor" : "") + (ask ? " ask" : ""));
+      b.innerHTML = `<span class="wi">${w.e}</span><span class="wn">${w.n}</span>` +
+        (owned ? `<span class="wp">✓ im Aquarium</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` : `<span class="wp">${w.p} <span class="coin sm"></span></span>`);
+      b.disabled = owned;
+      b.setAttribute("aria-label", owned ? `${w.n}, schon gekauft` : `${w.n} für ${w.p} Münzen`);
+      b.addEventListener("click", () => {
+        if (owned) return;
+        if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} Münzen. Übe weiter!`); return; }
+        if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
+        asking = null;
+        S.coins -= w.p;
+        S.aqua[w.id] = { x: Math.round(8 + Math.random() * 84), y: Math.round(8 + Math.random() * 52), t: Math.round(9 + Math.random() * 9), d: Math.round(Math.random() * 12) };
+        save(); setCoins(true); sfxWin(); confetti(["🫧", w.e, "✨"]);
+        speak(`Juhu! ${w.n} schwimmt jetzt in deinem Aquarium.`.replace("schwimmt", w.k === "deco" ? "ist" : "schwimmt"));
+        renderTank(); renderShop();
+      });
+      box.appendChild(b);
+    });
+  }
+  function renderAqua() { asking = null; renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
 
   /* ---------- home ---------- */
   function renderHome() {
@@ -858,6 +1217,9 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       }
       box.appendChild(b);
     });
+    const aq = el("button", "chapter aqua-card", `<span class="ic">🐠</span><span class="nm">Nemos Aquarium</span><span class="sb">${aquaCount()} von ${SHOP.length} Sachen · Münzen ausgeben</span>`);
+    aq.addEventListener("click", renderAqua);
+    box.appendChild(aq);
     setCoins(false);
     show("scrHome");
   }
@@ -904,9 +1266,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
     ex: () => "🎣 ✏️ 👫 🧺 🔍 → 🎁",
     say: () => "Gemischte Aufgaben von allen Inseln. Schaffst du alle, öffnet sich die Schatztruhe!",
     build() {
-      const plan = [[0, "mittel", 2], [0, "schwer", 1], [1, "mittel", 2], [1, "schwer", 1], [2, "schwer", 3], [3, "schwer", 3], [4, "mittel", 1], [4, "schwer", 1]];
+      const plan = [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
+                    ["mehrzahl", "schwer", 2], ["sortieren", "schwer", 2], ["satz", "mittel", 1], ["satz", "schwer", 1], ["detektiv", "schwer", 1]];
       const items = [];
-      plan.forEach(([li, d, n]) => { CH.levels[li].build(d).slice(0, n).forEach(it => items.push({ li, d, it })); });
+      plan.forEach(([id, d, n]) => { const li = lidx(CH, id); CH.levels[li].build(d).slice(0, n).forEach(it => items.push({ li, d, it })); });
       return shuffle(items);
     },
     render(x, stage) {
@@ -959,7 +1322,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
     if (L.li === "bonus") {
       const first = !S.bonus[CH.id];
       const chest = 30;
-      S.bonus[CH.id] = true; S.coins += chest; L.earned += chest; save(); setCoins(true);
+      S.bonus[CH.id] = true; S.coins += chest; S.total += chest; L.earned += chest; save(); setCoins(true);
       $("resTitle").textContent = "Schatz gefunden! 👑";
       $("resStars").innerHTML = "🎁✨";
       $("resPerfect").hidden = false; $("resPerfect").innerHTML = `Die Schatztruhe ist offen: +${chest} <span class="coin sm"></span>`;
@@ -970,7 +1333,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       S.stars[k] = Math.max(S.stars[k] || 0, stars);
       if (perfect) {
         const bonusCoins = 5 * DIFFS[L.d].mult;
-        S.coins += bonusCoins; L.earned += bonusCoins;
+        S.coins += bonusCoins; S.total += bonusCoins; L.earned += bonusCoins;
         $("resPerfect").hidden = false; $("resPerfect").innerHTML = `💎 Ohne Fehler! +${bonusCoins} Extra-<span class="coin sm"></span>`;
         S.perfect[pkey(CH, L.li)] = true;
       }
@@ -1003,7 +1366,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
       });
       const body = new URLSearchParams();
       body.append(GFORM.name, S.name || "ohne Namen");
-      body.append(GFORM.coins, String(S.coins));
+      body.append(GFORM.coins, `${S.total || S.coins} gesammelt (${S.coins} übrig)`);
       body.append(GFORM.stars, lines.join(" | "));
       fetch(GFORM.action, { method: "POST", mode: "no-cors", body })
         .then(() => { S.unsent = false; save(); })
@@ -1026,10 +1389,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
     tone([440], 0.01); renderHome();
   });
   $("nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("startBtn").click(); });
-  $("backBtn").addEventListener("click", () => { if (current === "scrMap") renderHome(); else renderMap(); });
+  $("backBtn").addEventListener("click", () => { if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap(); });
+  $("wallet").addEventListener("click", () => { if (current === "scrHome" || current === "scrMap") renderAqua(); });
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
   $("certBtn").addEventListener("click", showCert);
+  $("voiceBtn").addEventListener("click", nextVoice);
   $("certBack").addEventListener("click", renderMap);
   $("resetBtn").addEventListener("click", () => { $("confirm").hidden = false; });
   $("cNo").addEventListener("click", () => { $("confirm").hidden = true; });
