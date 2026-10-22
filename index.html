@@ -51,7 +51,16 @@ button:disabled { cursor: default; }
 
 .app { min-height: 100vh; display: flex; flex-direction: column; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: max(10px, env(safe-area-inset-top, 0px)) 28px; max-width: 1000px; margin: 0 auto; box-sizing: border-box; position: relative; z-index: 1; }
 
-.rays { position: fixed; inset: 0; pointer-events: none; z-index: 0; background: repeating-linear-gradient(100deg, rgba(255,255,255,0.07) 0 40px, rgba(255,255,255,0) 40px 120px); mask-image: linear-gradient(180deg, #000 0%, transparent 60%); -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 60%); }
+.rays { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.rays::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 90px; background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0)); }
+.rays i { position: absolute; top: -25vh; height: 150vh; left: var(--x); width: var(--w); background: linear-gradient(90deg, rgba(255,250,220,0), rgba(255,250,220,.3) 50%, rgba(255,250,220,0)); transform-origin: 50% 0; animation: shaft var(--d) ease-in-out infinite alternate; animation-delay: var(--dl); will-change: transform, opacity; mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.5) 35%, transparent 62%); -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0,0,0,.5) 35%, transparent 62%); }
+.rays i:nth-child(1) { --x: 2%; --w: 10vw; --d: 9s; --dl: -2s; }
+.rays i:nth-child(2) { --x: 17%; --w: 5vw; --d: 7s; --dl: -5s; }
+.rays i:nth-child(3) { --x: 30%; --w: 13vw; --d: 11s; --dl: -1s; }
+.rays i:nth-child(4) { --x: 50%; --w: 6vw; --d: 8s; --dl: -6s; }
+.rays i:nth-child(5) { --x: 63%; --w: 11vw; --d: 10s; --dl: -3s; }
+.rays i:nth-child(6) { --x: 82%; --w: 7vw; --d: 7.5s; --dl: -4s; }
+@keyframes shaft { from { opacity: .3; transform: rotate(-20deg) translateX(-3vw); } to { opacity: 1; transform: rotate(-15deg) translateX(3vw); } }
 .bub { position: fixed; bottom: -40px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.45); background: rgba(255,255,255,0.08); pointer-events: none; z-index: 0; animation: rise linear infinite; }
 @keyframes rise { to { transform: translateY(-115vh) translateX(20px); } }
 
@@ -237,13 +246,14 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .aq-goal.can { color: #145c2c; }
 .tank { position: relative; height: clamp(280px, 46vh, 420px); border-radius: 30px; overflow: hidden; border: 10px solid #e6f4fa; outline: 4px solid #9cc9dc; box-shadow: 0 12px 30px var(--shadow), inset 0 0 50px rgba(0,40,80,.35);
   background: radial-gradient(120% 70% at 50% 0%, #bdf0ff 0%, #5cc4e8 40%, #1f86bd 80%, #146a9a 100%); }
-.tank .rays { position: absolute; inset: 0; background: repeating-linear-gradient(105deg, rgba(255,255,255,.16) 0 26px, transparent 26px 80px); mask-image: linear-gradient(180deg, #000, transparent 75%); -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%); pointer-events: none; }
+.tank .rays { position: absolute; inset: 0 -14%; animation: trays 9s ease-in-out infinite alternate; background: repeating-linear-gradient(105deg, rgba(255,255,255,.16) 0 26px, transparent 26px 80px); mask-image: linear-gradient(180deg, #000, transparent 75%); -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%); pointer-events: none; }
 .tank .gravel { position: absolute; left: 0; right: 0; bottom: 0; height: 17%; background: radial-gradient(circle at 20% 40%, #f4a261 0 5px, transparent 6px) 0 0/34px 22px, radial-gradient(circle at 70% 60%, #e9c46a 0 4px, transparent 5px) 0 0/26px 18px, radial-gradient(circle at 50% 50%, #ffb4a2 0 3px, transparent 4px) 0 0/20px 16px, linear-gradient(180deg, #f6dfa9, #e4bf74); border-top: 4px solid #fbe9c0; }
 .tank .bgplant { position: absolute; bottom: 8%; width: 130px; height: 170px; opacity: .3; filter: saturate(.6); }
 .tank .item { position: absolute; line-height: 0; }
 .tank .item svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 6px 6px rgba(0,30,60,.25)); }
 .tank .deco { bottom: 3%; transform: translateX(-50%); }
 .tank .swim { animation: tswim var(--t) linear infinite alternate; }
+@keyframes trays { from { transform: translateX(-4%); opacity: .55; } to { transform: translateX(4%); opacity: 1; } }
 @keyframes tswim { from { left: 2%; } to { left: calc(98% - var(--w)); } }
 .tank .flip { width: 100%; height: 100%; animation: tflip calc(var(--t) * 2) steps(1, end) infinite; }
 @keyframes tflip { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
@@ -302,7 +312,31 @@ svg.sea .isl:focus-visible .sand { stroke: var(--gold); stroke-width: 8; }
 svg.sea .route { fill: none; stroke: rgba(255,255,255,.8); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 1 17; }
 svg.sea .route.done { stroke: var(--gold); stroke-width: 9; stroke-dasharray: 1 14; }
 svg.sea .route.faint { stroke: rgba(255,255,255,.35); }
-svg.sea .wave { fill: none; stroke: rgba(255,255,255,.3); stroke-width: 3; stroke-linecap: round; }
+svg.sea .wave { fill: none; stroke: rgba(255,255,255,.34); stroke-width: 3; stroke-linecap: round; }
+svg.sea .wv { animation: wv 5s ease-in-out infinite alternate; }
+svg.sea .wv.w2 { animation-duration: 6.4s; animation-delay: -2s; }
+svg.sea .wv.w3 { animation-duration: 4.3s; animation-delay: -1s; }
+@keyframes wv { from { transform: translateX(-8px); opacity: .45; } to { transform: translateX(8px); opacity: 1; } }
+svg.sea .spark { fill: #fff; animation: tw 2.8s ease-in-out infinite; }
+svg.sea .surf { fill: none; stroke: rgba(255,255,255,.8); stroke-width: 4; animation: surf 3.6s ease-out infinite; pointer-events: none; }
+svg.sea .surf.s2 { animation-delay: -1.8s; }
+@keyframes surf { 0% { transform: scale(.97); opacity: .9; } 100% { transform: scale(1.2); opacity: 0; } }
+svg.sea .foam { fill: none; stroke: rgba(255,255,255,.85); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 1 9 2 15; }
+svg.sea .wet { fill: none; stroke: rgba(255,255,255,.5); stroke-width: 2.5; }
+svg.sea .palm { animation: sway 4.8s ease-in-out infinite; }
+@keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2.6deg); } }
+svg.sea .fogc { animation: drift 7s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translateX(-6px); } to { transform: translateX(6px); } }
+svg.sea .beam-f, svg.sea .beam-b, svg.sea .lamp-glow { pointer-events: none; }
+svg.sea .beam-x { animation: beamX 6s linear infinite; }
+svg.sea .beam-f { animation: beamF 6s linear infinite; }
+svg.sea .beam-b { animation: beamB 6s linear infinite; }
+svg.sea .lamp-glow { animation: flash 6s linear infinite; }
+@keyframes beamX { 0%, 100% { transform: scaleX(1); } 12.5% { transform: scaleX(.71); } 25% { transform: scaleX(.03); } 37.5% { transform: scaleX(-.71); } 50% { transform: scaleX(-1); } 62.5% { transform: scaleX(-.71); } 75% { transform: scaleX(-.03); } 87.5% { transform: scaleX(.71); } }
+@keyframes beamF { 0% { opacity: .55; } 25% { opacity: 1; } 50% { opacity: .55; } 51%, 99% { opacity: 0; } 100% { opacity: .55; } }
+@keyframes beamB { 0% { opacity: .45; } 1%, 49% { opacity: 0; } 50% { opacity: .45; } 75% { opacity: .28; } 100% { opacity: .45; } }
+@keyframes flash { 0%, 50%, 100% { opacity: .55; transform: scale(1); } 25% { opacity: 1; transform: scale(1.7); } }
+svg.sea .lbl-sh { fill: rgba(4,30,52,.3); }
 svg.sea .lbl rect { fill: var(--sand); stroke: var(--sand-edge); stroke-width: 3; }
 svg.sea .lbl text { font-family: var(--font); font-weight: 900; fill: var(--ink); }
 svg.sea .sub { font-family: var(--font); font-weight: 900; fill: var(--white); stroke: var(--deep); stroke-width: 5px; paint-order: stroke; stroke-linejoin: round; }
@@ -310,7 +344,6 @@ svg.sea .num circle { fill: var(--deep); stroke: var(--sand); stroke-width: 4; }
 svg.sea .num text { font-family: var(--font); font-weight: 900; fill: var(--white); }
 svg.sea .nextring { fill: none; stroke: var(--gold); stroke-width: 7; animation: ring 1.6s ease-in-out infinite; }
 @keyframes ring { 50% { stroke-opacity: .1; } }
-svg.sea .fog { fill: rgba(235,245,250,.75); }
 svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 @keyframes nbob { 50% { transform: translateY(-7px); } }
 .sheet-back { position: fixed; inset: 0; background: rgba(4,30,52,.45); z-index: 8; }
@@ -414,7 +447,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 </style>
 </head>
 <body>
-<div class="rays" aria-hidden="true"></div>
+<div class="rays" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div id="bubbles" aria-hidden="true"></div>
 
 <div class="app">
@@ -440,7 +473,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Experten 2</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Grafik</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -2347,15 +2380,27 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     container.innerHTML = "";
     const svg = sv("svg", { viewBox: `0 0 ${cfg.w} ${cfg.h}`, class: "sea", role: "group", "aria-label": cfg.label }, container);
     svg.style.aspectRatio = `${cfg.w} / ${cfg.h}`;
+    cfg.pid = container.id || "sea";
+    seaDefs(svg, cfg.pid);
     const rnd = seeded(cfg.seed || 11);
-    for (let i = 0; i < 34; i++) {
+    const free = (x, y, k) => !cfg.nodes.some(n => Math.hypot(n.x - x, n.y - y) < n.r * k);
+    const wg = [1, 2, 3].map(k => sv("g", { class: "wv w" + k }, svg));
+    for (let i = 0; i < 38; i++) {
       const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40);
-      if (cfg.nodes.some(n => Math.hypot(n.x - x, n.y - y) < n.r * 2)) continue;
-      sv("path", { d: `M${x - 18} ${y} q9 -9 18 0 q9 -9 18 0`, class: "wave" }, svg);
+      if (!free(x, y, 1.9)) continue;
+      sv("path", { d: `M${x - 21} ${y} c4 -6 10 -6 14 0 s10 6 14 0 s10 -6 14 0`, class: "wave" }, wg[i % 3]);
+    }
+    for (let i = 0; i < 14; i++) {
+      const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), k = 4 + rnd() * 4;
+      if (!free(x, y, 1.7)) continue;
+      const sp = sv("path", { d: `M${x} ${y - k}L${x + k * .22} ${y - k * .22}L${x + k} ${y}L${x + k * .22} ${y + k * .22}L${x} ${y + k}L${x - k * .22} ${y + k * .22}L${x - k} ${y}L${x - k * .22} ${y - k * .22}Z`, class: "spark" }, svg);
+      sp.style.animationDelay = (-rnd() * 2.8).toFixed(2) + "s";
     }
     const edges = cfg.edges.map(([a, b, cls], i) => ({ a, b, el: sv("path", { d: curve(cfg.nodes[a], cfg.nodes[b], i), class: "route " + (cls || "") }, svg) }));
+    cfg.under = sv("g", { "aria-hidden": "true" }, svg); // Ebene unter den Inseln (hinterer Leuchtturm-Strahl)
     cfg.nodes.forEach((n, i) => drawNode(svg, n, i, cfg));
     const g = sv("g", { "aria-hidden": "true" }, svg);
+    sv("ellipse", { cx: 0, cy: (cfg.nemo || 62) * 0.55, rx: (cfg.nemo || 62) * 0.36, ry: (cfg.nemo || 62) * 0.09, fill: "rgba(4,30,52,.25)" }, g);
     const inner = sv("g", { class: "nemo-in" }, g);
     const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": cfg.nemo || 62 }, inner);
     t.textContent = "🦈";
@@ -2364,17 +2409,44 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   function drawNode(svg, n, i, cfg) {
     const g = sv("g", { class: "isl", transform: `translate(${n.x} ${n.y})`, tabindex: "0", role: "button", "aria-label": n.aria || n.label }, svg);
-    const r = n.r;
-    sv("ellipse", { rx: r * 1.34, ry: r * 1.0, fill: "rgba(255,255,255,.22)" }, g);
+    const r = n.r, P = cfg.pid, U = (id) => `url(#${P}-${id})`;
+    const rnd = seeded(i * 37 + (cfg.seed || 1) * 7 + 11), ph = rnd() * 6.28, ph2 = rnd() * 6.28;
+    // Lagune, Brandung, Schaum
+    sv("ellipse", { cy: r * 0.04, rx: r * 1.46, ry: r * 1.1, fill: U("lagoon") }, g);
     if (n.next) sv("ellipse", { rx: r * 1.34, ry: r * 1.0, class: "nextring" }, g);
-    sv("ellipse", { rx: r, ry: r * 0.74, fill: "#f3d99b", stroke: "#e2bd6e", "stroke-width": 4, class: "sand" }, g);
-    sv("ellipse", { cx: 0, cy: -r * 0.1, rx: r * 0.74, ry: r * 0.48, fill: n.grass || "#86cf7d" }, g);
-    (n.deco || []).forEach(d => { const tt = sv("text", { x: d[0] * r, y: d[1] * r, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (d[3] || 0.5) }, g); tt.textContent = d[2]; });
-    if (n.draw === "lighthouse") drawLighthouse(g, r);
-    else if (n.draw === "reef") drawReef(g, r, n);
-    else { const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g); ic.textContent = n.icon; }
+    if (!n.fog) { sv("ellipse", { cy: r * 0.05, rx: r * 1.04, ry: r * 0.79, class: "surf" }, g); sv("ellipse", { cy: r * 0.05, rx: r * 1.04, ry: r * 0.79, class: "surf s2" }, g); }
+    sv("path", { d: blob(r * 1.03, r * 0.77, r * 0.08, 0.03, 5, ph), class: "wet" }, g);
+    sv("path", { d: blob(r * 1.09, r * 0.83, r * 0.07, 0.025, 5, ph + 0.4), class: "foam" }, g);
+    // Sandstrand mit Kante
+    sv("path", { d: blob(r, r * 0.74, r * 0.1, 0.03, 5, ph), fill: "#cf9d52" }, g);
+    sv("path", { d: blob(r, r * 0.74, 0, 0.03, 5, ph), fill: U("sand"), stroke: "#e0b868", "stroke-width": 3, class: "sand" }, g);
+    if (!n.fog) for (let k = 0; k < 3; k++) {
+      const a = (0.18 + rnd() * 0.64) * Math.PI, q = r * (0.045 + rnd() * 0.035);
+      sv("ellipse", { cx: Math.cos(a) * r * 0.87, cy: Math.sin(a) * r * 0.6, rx: q * 1.35, ry: q, fill: U("rock"), stroke: "rgba(60,70,80,.35)", "stroke-width": 1 }, g);
+    }
+    // Wiese mit Licht und Schatten
+    const gp = blob(r * 0.76, r * 0.5, -r * 0.1, 0.06, 6, ph2);
+    sv("path", { d: gp, fill: n.grass || "#86cf7d", stroke: "rgba(20,80,40,.22)", "stroke-width": 3 }, g);
+    sv("path", { d: gp, fill: U("shade") }, g);
+    sv("path", { d: gp, fill: U("shine") }, g);
+    if (n.draw !== "reef" && !n.fog) for (let k = 0; k < 4; k++) {
+      const a = (k / 4 + rnd() * 0.15) * Math.PI * 2, tx = Math.cos(a) * r * 0.55, ty = -r * 0.1 + Math.sin(a) * r * 0.33, q = r / 90;
+      sv("path", { d: `M${tx - 5 * q} ${ty}L${tx - 2 * q} ${ty - 9 * q}M${tx} ${ty}L${tx + q} ${ty - 12 * q}M${tx + 5 * q} ${ty}L${tx + 4 * q} ${ty - 8 * q}`, stroke: "rgba(20,95,45,.5)", "stroke-width": 2.4 * q, "stroke-linecap": "round", fill: "none" }, g);
+    }
+    (n.deco || []).forEach((d, k) => {
+      if (d[2] === "🌴") { drawPalm(g, d[0] * r, d[1] * r + r * (d[3] || 0.5) * 0.5, r * (d[3] || 0.5) * 1.75, d[0] < 0 ? -1 : 1, P, -(i * 1.3 + k * 0.9)); return; }
+      const tt = sv("text", { x: d[0] * r, y: d[1] * r, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (d[3] || 0.5) }, g); tt.textContent = d[2];
+    });
+    if (n.draw === "lighthouse") drawLighthouse(g, r, P, cfg.under, n);
+    else if (n.draw === "reef") drawReef(g, r, n, P);
+    else {
+      sv("ellipse", { cx: 0, cy: r * 0.2, rx: r * 0.34, ry: r * 0.08, fill: "rgba(10,60,30,.2)" }, g);
+      const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g); ic.textContent = n.icon;
+    }
     if (n.fog) {
-      sv("ellipse", { rx: r * 1.25, ry: r * 0.95, class: "fog" }, g);
+      const fc = sv("g", { class: "fogc" }, g);
+      sv("ellipse", { rx: r * 1.42, ry: r * 1.06, fill: U("fog") }, fc);
+      [[-0.62, -0.16, 0.5], [0.04, -0.4, 0.58], [0.66, -0.1, 0.48], [-0.22, 0.24, 0.52], [0.46, 0.26, 0.44]].forEach(([cx, cy, rr]) => sv("circle", { cx: cx * r, cy: cy * r, r: rr * r, fill: "rgba(244,250,253,.8)" }, fc));
       const ft = sv("text", { x: 0, y: -r * 0.1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.62 }, g); ft.textContent = n.fogIcon || "🔒";
     }
     if (n.num) {
@@ -2388,6 +2460,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const lw = Math.max(...lines.map(l => l.length)) * fs * 0.58 + 30, lh = lines.length * fs * 1.15 + 14;
     const ly = r * 0.74 + 10;
     const lg = sv("g", { class: "lbl" }, g);
+    sv("rect", { x: -lw / 2, y: ly + 4, width: lw, height: lh, rx: Math.min(22, lh / 2), class: "lbl-sh" }, lg);
     sv("rect", { x: -lw / 2, y: ly, width: lw, height: lh, rx: Math.min(22, lh / 2) }, lg);
     lines.forEach((l, k) => { const lt = sv("text", { x: 0, y: ly + 7 + fs * 0.92 + k * fs * 1.15, "text-anchor": "middle", "font-size": fs }, lg); lt.textContent = l; });
     if (n.sub) { const st = sv("text", { x: 0, y: ly + lh + 26, "text-anchor": "middle", "font-size": n.big ? 24 : 20, class: "sub" + (n.subGold ? " gold" : "") }, g); st.textContent = n.sub; }
@@ -2395,7 +2468,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     g.addEventListener("click", go);
     g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   }
-  function drawReef(g, r, n) {
+  function drawReef(g, r, n, P) {
     // Korallen
     const coral = (cx, cy, s, col) => {
       const d = `M${cx} ${cy + s * 0.5} L${cx} ${cy - s * 0.15} M${cx} ${cy + s * 0.15} L${cx - s * 0.32} ${cy - s * 0.22} L${cx - s * 0.4} ${cy - s * 0.5} M${cx - s * 0.32} ${cy - s * 0.22} L${cx - s * 0.12} ${cy - s * 0.42} M${cx} ${cy} L${cx + s * 0.34} ${cy - s * 0.32} L${cx + s * 0.3} ${cy - s * 0.58} M${cx + s * 0.34} ${cy - s * 0.32} L${cx + s * 0.52} ${cy - s * 0.44} M${cx} ${cy - s * 0.15} L${cx + s * 0.06} ${cy - s * 0.52}`;
@@ -2406,7 +2479,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     coral(-r * 0.46, r * 0.24, r * 0.32, "#c77dff");
     // Aquarium-Becken
     const w = r * 1.0, h = r * 0.72, x = -w / 2, y = -r * 0.72;
-    sv("rect", { x, y, width: w, height: h, rx: r * 0.12, fill: "#a9e8ff", stroke: "#ffffff", "stroke-width": 5 }, g);
+    sv("rect", { x: x + 3, y: y + 6, width: w, height: h, rx: r * 0.12, fill: "rgba(4,30,52,.25)" }, g);
+    sv("rect", { x, y, width: w, height: h, rx: r * 0.12, fill: `url(#${P}-glass)`, stroke: "#ffffff", "stroke-width": 5 }, g);
+    [[-0.32, 0.5], [0.34, 0.42]].forEach(([dx, hh]) => sv("path", { d: `M${dx * w} ${y + h * 0.78} q${-r * 0.05} ${-h * hh * 0.5} 0 ${-h * hh} q${r * 0.05} ${-h * hh * 0.25} 0 ${-h * hh * 0.4}`, fill: "none", stroke: "#2f9e5b", "stroke-width": r * 0.05, "stroke-linecap": "round" }, g));
     sv("rect", { x: x + 4, y: y + h * 0.72, width: w - 8, height: h * 0.24, rx: r * 0.06, fill: "#f3d99b" }, g);
     sv("rect", { x: x + w * 0.1, y: y + 6, width: w * 0.12, height: h * 0.55, rx: 4, fill: "rgba(255,255,255,.55)" }, g);
     sv("image", { href: artURI("clownfisch"), x: -r * 0.3, y: y + h * 0.12, width: r * 0.6, height: r * 0.6 }, g);
@@ -2421,17 +2496,79 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       im.style.animationDelay = (-k * 0.4) + "s";
     });
   }
-  function drawLighthouse(g, r) {
-    const s = r / 80, G = sv("g", { transform: `translate(0 ${-r * 0.2}) scale(${s})` }, g);
-    sv("path", { d: "M-6 -78 L-80 -96 L-80 -60 Z", fill: "rgba(255,230,120,.45)" }, G);
-    sv("path", { d: "M6 -78 L80 -96 L80 -60 Z", fill: "rgba(255,230,120,.45)" }, G);
-    sv("path", { d: "M-22 40 L-14 -60 L14 -60 L22 40 Z", fill: "#ffffff", stroke: "#b8c4ce", "stroke-width": 2 }, G);
-    sv("path", { d: "M-20.4 20 L-19 2 L19 2 L20.4 20 Z", fill: "#d62828" }, G);
-    sv("path", { d: "M-17.6 -18 L-16.2 -36 L16.2 -36 L17.6 -18 Z", fill: "#d62828" }, G);
-    sv("rect", { x: -20, y: -66, width: 40, height: 7, rx: 2, fill: "#17324a" }, G);
-    sv("rect", { x: -13, y: -86, width: 26, height: 20, rx: 4, fill: "#ffd75e", stroke: "#17324a", "stroke-width": 3 }, G);
-    sv("path", { d: "M-17 -86 L0 -102 L17 -86 Z", fill: "#d62828", stroke: "#17324a", "stroke-width": 3, "stroke-linejoin": "round" }, G);
-    sv("rect", { x: -6, y: 24, width: 12, height: 16, rx: 6, fill: "#8a5a2b" }, G);
+  function drawLighthouse(g, r, P, under, n) {
+    const s = r / 80, G = sv("g", { transform: `translate(0 ${-r * 0.2}) scale(${s})` }, g), U = (id) => `url(#${P}-${id})`;
+    const lamp = (cls, parent, tf) => {
+      const a = sv("g", { transform: tf }, parent), o = sv("g", { class: cls }, a), x = sv("g", { class: "beam-x" }, o);
+      sv("path", { d: "M0 -10 L215 -60 L215 60 L0 10 Z", fill: U("beam"), opacity: 0.4 }, x);
+      sv("path", { d: "M0 -5 L215 -32 L215 32 L0 5 Z", fill: U("beam") }, x);
+      return a;
+    };
+    lamp("beam-b", under || G, under ? `translate(${n.x} ${n.y - r * 0.2}) scale(${s}) translate(0 -80)` : "translate(0 -80)");
+    sv("ellipse", { cx: 6, cy: 42, rx: 36, ry: 8, fill: "rgba(10,60,30,.25)" }, G);
+    const hw = (y) => 14 + (y + 60) / 100 * 8, band = (y1, y2, fill) => sv("path", { d: `M${-hw(y2)} ${y2}L${-hw(y1)} ${y1}L${hw(y1)} ${y1}L${hw(y2)} ${y2}Z`, fill }, G);
+    sv("path", { d: "M-22 40 L-14 -60 L14 -60 L22 40 Z", fill: U("tower"), stroke: "#9fb0bf", "stroke-width": 2, "stroke-linejoin": "round" }, G);
+    band(-36, -18, U("red")); band(2, 20, U("red"));
+    sv("rect", { x: -3.5, y: -53, width: 7, height: 10, rx: 3.5, fill: "#2c5577", stroke: "#17324a", "stroke-width": 1.5 }, G);
+    sv("rect", { x: -3.5, y: -13, width: 7, height: 10, rx: 3.5, fill: "#2c5577", stroke: "#17324a", "stroke-width": 1.5 }, G);
+    sv("path", { d: "M-6 40 L-6 30 Q0 23 6 30 L6 40 Z", fill: "#8a5a2b", stroke: "#5a3518", "stroke-width": 1.5 }, G);
+    [[-27, 41, 15, 9], [25, 42, 12, 8], [35, 37, 7, 5], [-38, 38, 6, 4]].forEach(([cx, cy, rx, ry]) => sv("ellipse", { cx, cy, rx, ry, fill: U("rock"), stroke: "#6c7a85", "stroke-width": 1.5 }, G));
+    sv("rect", { x: -21, y: -66, width: 42, height: 7, rx: 2, fill: "#17324a" }, G);
+    sv("path", { d: "M-18 -66V-74M-12 -66V-74M-6 -66V-74M0 -66V-74M6 -66V-74M12 -66V-74M18 -66V-74M-19.5 -74H19.5", stroke: "#17324a", "stroke-width": 2.2, "stroke-linecap": "round", fill: "none" }, G);
+    sv("rect", { x: -12, y: -88, width: 24, height: 15, rx: 3, fill: "#fff3b0", stroke: "#17324a", "stroke-width": 3 }, G);
+    sv("circle", { cx: 0, cy: -80, r: 5.5, fill: "#ffffff" }, G);
+    sv("path", { d: "M-4 -88V-73M4 -88V-73", stroke: "#17324a", "stroke-width": 1.8, fill: "none" }, G);
+    sv("path", { d: "M-16 -88 Q-14 -104 0 -106 Q14 -104 16 -88 Z", fill: U("roof"), stroke: "#17324a", "stroke-width": 3, "stroke-linejoin": "round" }, G);
+    sv("circle", { cx: 0, cy: -109, r: 3.5, fill: "#17324a" }, G);
+    const a = lamp("beam-f", G, "translate(0 -80)");
+    sv("circle", { r: 30, fill: U("glow"), class: "lamp-glow" }, a);
+  }
+  // Farbverläufe für Inseln, Palmen und Leuchtturm (je Karte eigene IDs)
+  function seaDefs(svg, P) {
+    const d = sv("defs", {}, svg);
+    const grad = (type, id, attrs, stops) => { const gg = sv(type, Object.assign({ id: P + "-" + id }, attrs), d); stops.forEach(([o, c, a]) => sv("stop", { offset: o, "stop-color": c, "stop-opacity": a == null ? 1 : a }, gg)); };
+    grad("radialGradient", "lagoon", {}, [[0, "#bff6f1", 0.95], [0.6, "#89e4e6", 0.78], [0.8, "#5fcbe0", 0.35], [1, "#3fb4d8", 0]]);
+    grad("radialGradient", "sand", { cx: 0.42, cy: 0.36, r: 0.72 }, [[0, "#fff5d6"], [0.62, "#f3d99b"], [1, "#e2b665"]]);
+    grad("radialGradient", "shine", { cx: 0.36, cy: 0.28, r: 0.7 }, [[0, "#ffffff", 0.55], [0.5, "#ffffff", 0.12], [1, "#ffffff", 0]]);
+    grad("linearGradient", "shade", { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#0a4020", 0], [0.6, "#0a4020", 0], [1, "#0a4020", 0.25]]);
+    grad("radialGradient", "fog", {}, [[0, "#f4fafd", 0.97], [0.62, "#eef6fa", 0.9], [1, "#eef6fa", 0]]);
+    grad("radialGradient", "rock", { cx: 0.35, cy: 0.3, r: 0.8 }, [[0, "#dde3e7"], [1, "#7f8c96"]]);
+    grad("linearGradient", "trunk", {}, [[0, "#6b3f1d"], [0.45, "#b9834d"], [1, "#5e3517"]]);
+    grad("linearGradient", "leaf", { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, "#86dc62"], [1, "#2e8b3a"]]);
+    grad("linearGradient", "tower", {}, [[0, "#c3ced8"], [0.45, "#ffffff"], [1, "#aebccb"]]);
+    grad("linearGradient", "red", {}, [[0, "#a31c1c"], [0.45, "#ec4a4a"], [1, "#961818"]]);
+    grad("linearGradient", "roof", {}, [[0, "#a31c1c"], [0.4, "#f05a5a"], [1, "#8e1616"]]);
+    grad("linearGradient", "beam", {}, [[0, "#fff7c4", 0.9], [0.55, "#fff7c4", 0.35], [1, "#fff7c4", 0]]);
+    grad("radialGradient", "glow", {}, [[0, "#ffffff", 1], [0.35, "#fff1a0", 0.85], [1, "#ffd75e", 0]]);
+    grad("linearGradient", "glass", { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#d4f7ff"], [1, "#5fc3e8"]]);
+  }
+  // Weiche, leicht wellige Inselform (geschlossene Catmull-Rom-Kurve)
+  function blob(rx, ry, cy, amp, lobes, ph) {
+    const N = 28, pts = [];
+    for (let k = 0; k < N; k++) { const a = k / N * Math.PI * 2, f = 1 + amp * Math.sin(lobes * a + ph) + amp * 0.5 * Math.sin((lobes + 3) * a + ph * 1.7); pts.push([Math.cos(a) * rx * f, cy + Math.sin(a) * ry * f]); }
+    const F = (v) => v.toFixed(1);
+    let d = `M${F(pts[0][0])} ${F(pts[0][1])}`;
+    for (let k = 0; k < N; k++) {
+      const p0 = pts[(k - 1 + N) % N], p1 = pts[k], p2 = pts[(k + 1) % N], p3 = pts[(k + 2) % N];
+      d += `C${F(p1[0] + (p2[0] - p0[0]) / 6)} ${F(p1[1] + (p2[1] - p0[1]) / 6)} ${F(p2[0] - (p3[0] - p1[0]) / 6)} ${F(p2[1] - (p3[1] - p1[1]) / 6)} ${F(p2[0])} ${F(p2[1])}`;
+    }
+    return d + "Z";
+  }
+  // Gezeichnete Palme, die sich leicht im Wind wiegt (Fuß bei 0,0; Höhe H)
+  function drawPalm(parent, x, y, H, flip, P, delay) {
+    const k = H / 100, o = sv("g", { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(flip * k).toFixed(3)} ${k.toFixed(3)})` }, parent);
+    sv("ellipse", { cx: 12, cy: 2, rx: 26, ry: 6, fill: "rgba(10,60,30,.25)" }, o);
+    const p = sv("g", { class: "palm" }, o); p.style.animationDelay = delay.toFixed(2) + "s";
+    const leaf = (a, L, m, back) => {
+      const lg = sv("g", { transform: `translate(14 -88) scale(${m} 1) rotate(${a})` }, p);
+      sv("path", { d: `M0 0C${L * .3} ${-L * .24} ${L * .72} ${-L * .2} ${L} ${L * .14}C${L * .68} ${L * .04} ${L * .3} ${L * .1} 0 0Z`, fill: back ? "#2f7a34" : `url(#${P}-leaf)`, stroke: "#1f5e28", "stroke-width": 1.6, "stroke-linejoin": "round" }, lg);
+      sv("path", { d: `M2 0C${L * .35} ${-L * .13} ${L * .7} ${-L * .1} ${L * .96} ${L * .12}`, fill: "none", stroke: back ? "#215a26" : "#3f9a3f", "stroke-width": 1.4, "stroke-linecap": "round" }, lg);
+    };
+    [[-62, 40, 1], [-62, 38, -1], [-16, 46, -1]].forEach(([a, L, m]) => leaf(a, L, m, true));
+    sv("path", { d: "M-6 0C-4 -34 1 -64 10 -88L18 -86C11 -62 7 -34 7 0Z", fill: `url(#${P}-trunk)`, stroke: "#4f2c12", "stroke-width": 1.8, "stroke-linejoin": "round" }, p);
+    for (let t = 1; t <= 5; t++) { const yy = -t * 15, cx = 0.5 + Math.pow(t * 15 / 88, 1.7) * 13.5, w = 6.5 - t * 0.5; sv("path", { d: `M${cx - w} ${yy + 1}Q${cx} ${yy + 4} ${cx + w} ${yy}`, fill: "none", stroke: "#5a3214", "stroke-width": 1.6, opacity: 0.55, "stroke-linecap": "round" }, p); }
+    [[11, -84], [18, -83], [14, -79]].forEach(([cx, cy]) => { sv("circle", { cx, cy, r: 5, fill: "#7a4a1e", stroke: "#4f2c12", "stroke-width": 1.2 }, p); sv("circle", { cx: cx - 1.5, cy: cy - 1.5, r: 1.5, fill: "rgba(255,255,255,.45)" }, p); });
+    [[-20, 54, 1], [18, 48, 1], [-20, 52, -1], [20, 46, -1], [-48, 42, 1]].forEach(([a, L, m]) => leaf(a, L, m, false));
   }
   function restPos(i) { const n = MAP.cfg.nodes[i]; return { x: n.x + n.r * 1.05, y: n.y - n.r * 0.35 }; }
   function placeNemo(x, y, lastX) {
@@ -2539,7 +2676,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     CH.levels.forEach((lv, li) => {
       const st = DK.reduce((a, d) => a + (S.stars[skey(CH, li, d)] || 0), 0);
       nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/${DK.length * 3}` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
-        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`,
+        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: [[0.56, -0.2, "🌴", 0.42]],
         tap: (i) => { S.at = S.at || {}; S.at[CH.id] = i; save(); swimTo(i, () => islandSheet(li)); } });
     });
     nodes.push({ ...lay.pts[n + 1], r: 64 * k, icon: S.bonus[CH.id] ? "👑" : "🎁", grass: "#e9c46a", label: "Schatzinsel", fog: !open, fogIcon: "🔒",
