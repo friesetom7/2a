@@ -349,6 +349,17 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .sslots { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 .sslot { min-width: 96px; height: 72px; border-bottom: 5px solid var(--gold); font-size: 44px; color: var(--white); text-shadow: 0 3px 0 var(--deep); display: grid; place-items: center; padding: 0 8px; }
 
+/* Nemos Riff */
+svg.sea .reef-bub { animation: rbub 2.8s ease-in infinite; }
+@keyframes rbub { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: .9; } 100% { transform: translateY(-46px); opacity: 0; } }
+svg.sea .twinkle { animation: tw 1.8s ease-in-out infinite; }
+@keyframes tw { 50% { opacity: .15; } }
+svg.sea .reef-item { animation: bob 3.2s ease-in-out infinite; }
+svg.sea .sub.gold { fill: var(--gold); }
+svg.sea .shopsign rect { fill: var(--gold); stroke: var(--gold-edge); stroke-width: 3; }
+svg.sea .shopsign text { font-family: var(--font); font-weight: 900; fill: var(--ink); }
+svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -387,7 +398,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Lese-Lagune · 2</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Riff</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -692,15 +703,12 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
   const KEY = "nemo-spielplatz-v2";
   const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, aqua: {}, unsent: false });
   let S = fresh();
-  try {
-    const raw = localStorage.getItem(KEY);
-    if (raw) S = Object.assign(fresh(), JSON.parse(raw));
-    else {
-      const old = localStorage.getItem("finn-nomen-v1"); // Übernahme aus der ersten Version
-      if (old) { const o = JSON.parse(old); S.name = o.name || ""; S.coins = o.pearls || 0; }
-    }
-  } catch (e) {}
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  // Jedes neue Öffnen (QR-Code scannen, neuer Tab) startet bei 0.
+  // Nur innerhalb desselben Tabs bleibt der Stand beim Neuladen erhalten (sessionStorage).
+  // Auf dem iPad bleibt nach dem Schließen nichts gespeichert – auch kein Name.
+  try { localStorage.removeItem(KEY); localStorage.removeItem("finn-nomen-v1"); } catch (e) {}
+  try { const raw = sessionStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) {}
+  const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 
   /* ---------- sound + speech ---------- */
   let ac = null;
@@ -1891,6 +1899,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     sv("ellipse", { cx: 0, cy: -r * 0.1, rx: r * 0.74, ry: r * 0.48, fill: n.grass || "#86cf7d" }, g);
     (n.deco || []).forEach(d => { const tt = sv("text", { x: d[0] * r, y: d[1] * r, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (d[3] || 0.5) }, g); tt.textContent = d[2]; });
     if (n.draw === "lighthouse") drawLighthouse(g, r);
+    else if (n.draw === "reef") drawReef(g, r, n);
     else { const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g); ic.textContent = n.icon; }
     if (n.fog) {
       sv("ellipse", { rx: r * 1.25, ry: r * 0.95, class: "fog" }, g);
@@ -1909,10 +1918,36 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     const lg = sv("g", { class: "lbl" }, g);
     sv("rect", { x: -lw / 2, y: ly, width: lw, height: lh, rx: Math.min(22, lh / 2) }, lg);
     lines.forEach((l, k) => { const lt = sv("text", { x: 0, y: ly + 7 + fs * 0.92 + k * fs * 1.15, "text-anchor": "middle", "font-size": fs }, lg); lt.textContent = l; });
-    if (n.sub) { const st = sv("text", { x: 0, y: ly + lh + 26, "text-anchor": "middle", "font-size": n.big ? 24 : 20, class: "sub" }, g); st.textContent = n.sub; }
+    if (n.sub) { const st = sv("text", { x: 0, y: ly + lh + 26, "text-anchor": "middle", "font-size": n.big ? 24 : 20, class: "sub" + (n.subGold ? " gold" : "") }, g); st.textContent = n.sub; }
     const go = () => { if (n.tap) n.tap(i); };
     g.addEventListener("click", go);
     g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  }
+  function drawReef(g, r, n) {
+    // Korallen
+    const coral = (cx, cy, s, col) => {
+      const d = `M${cx} ${cy + s * 0.5} L${cx} ${cy - s * 0.15} M${cx} ${cy + s * 0.15} L${cx - s * 0.32} ${cy - s * 0.22} L${cx - s * 0.4} ${cy - s * 0.5} M${cx - s * 0.32} ${cy - s * 0.22} L${cx - s * 0.12} ${cy - s * 0.42} M${cx} ${cy} L${cx + s * 0.34} ${cy - s * 0.32} L${cx + s * 0.3} ${cy - s * 0.58} M${cx + s * 0.34} ${cy - s * 0.32} L${cx + s * 0.52} ${cy - s * 0.44} M${cx} ${cy - s * 0.15} L${cx + s * 0.06} ${cy - s * 0.52}`;
+      sv("path", { d, fill: "none", stroke: col, "stroke-width": s * 0.17, "stroke-linecap": "round", "stroke-linejoin": "round" }, g);
+    };
+    coral(-r * 0.74, 0, r * 0.62, "#ff6f9f");
+    coral(r * 0.76, r * 0.04, r * 0.56, "#ff9f43");
+    coral(-r * 0.46, r * 0.24, r * 0.32, "#c77dff");
+    // Aquarium-Becken
+    const w = r * 1.0, h = r * 0.72, x = -w / 2, y = -r * 0.72;
+    sv("rect", { x, y, width: w, height: h, rx: r * 0.12, fill: "#a9e8ff", stroke: "#ffffff", "stroke-width": 5 }, g);
+    sv("rect", { x: x + 4, y: y + h * 0.72, width: w - 8, height: h * 0.24, rx: r * 0.06, fill: "#f3d99b" }, g);
+    sv("rect", { x: x + w * 0.1, y: y + 6, width: w * 0.12, height: h * 0.55, rx: 4, fill: "rgba(255,255,255,.55)" }, g);
+    const f = sv("text", { x: w * 0.06, y: y + h * 0.42, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.38 }, g); f.textContent = "🐠";
+    [[-0.22, 0], [-0.12, 0.9], [0.24, 1.7]].forEach(([dx, dl], k) => {
+      const c = sv("circle", { cx: dx * w, cy: y + h * 0.66, r: 3 + k, fill: "rgba(255,255,255,.9)", class: "reef-bub" }, g); c.style.animationDelay = dl + "s";
+    });
+    const sp = sv("text", { x: w * 0.62, y: y - 4, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.3, class: "twinkle" }, g); sp.textContent = "✨";
+    // gekaufte Sachen schwimmen rund ums Riff
+    (n.items || []).slice(0, 10).forEach((e, k, arr) => {
+      const a = (-200 + (220 / Math.max(1, arr.length - 1)) * k) * Math.PI / 180;
+      const t = sv("text", { x: Math.cos(a) * r * 1.5, y: Math.sin(a) * r * 1.12 - r * 0.1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.34, class: "reef-item" }, g);
+      t.textContent = e; t.style.animationDelay = (-k * 0.4) + "s";
+    });
   }
   function drawLighthouse(g, r) {
     const s = r / 80, G = sv("g", { transform: `translate(0 ${-r * 0.2}) scale(${s})` }, g);
@@ -1982,13 +2017,15 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
     const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen");
-    const pos = P ? { bay: [300, 880], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [118, 160], lt: [305, 375], w: 600, h: 1000, r: 84 }
-                  : { bay: [500, 515], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [165, 112], lt: [500, 215], w: 1000, h: 640, r: 90 };
+    const pos = P ? { bay: [300, 890], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [118, 160], lt: [305, 375], w: 600, h: 1040, r: 84 }
+                  : { bay: [500, 528], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [165, 112], lt: [500, 215], w: 1000, h: 685, r: 90 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * 9} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
+    const canBuy = SHOP.some(w => !S.aqua[w.id] && S.coins >= w.p);
     const nodes = [
-      { x: pos.bay[0], y: pos.bay[1], r: 70, icon: "🐠", grass: "#f4a7b9", label: "Nemos Riff", big: true, sub: `Aquarium · ${aquaCount()}/${SHOP.length}`,
-        deco: [[-0.55, -0.25, "🪸", 0.42], [0.55, -0.2, "🪸", 0.38]], aria: "Nemos Riff mit dem Aquarium",
+      { x: pos.bay[0], y: pos.bay[1], r: pos.r, icon: "🐠", draw: "reef", subGold: canBuy, grass: "#7fdbe8", label: "Nemos Riff", big: true,
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (aquaCount() ? `🐠 ${aquaCount()} von ${SHOP.length} Sachen im Aquarium` : "Sammle Münzen für dein Aquarium!"),
+        items: SHOP.filter(w => S.aqua[w.id]).map(w => w.e), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
         tap: (i) => swimTo(i, renderAqua) },
       { x: pos.nomen[0], y: pos.nomen[1], r: pos.r, icon: "🐟", label: "Nomen-Inseln", big: true, sub: chapSub(nom),
         deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen", tap: enter(nom) },
