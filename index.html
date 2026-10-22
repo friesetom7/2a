@@ -440,7 +440,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Experten</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Experten 2</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1844,14 +1844,14 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
 
   // ----- Nomen -----
-  const NX_FISCH_T = [["das lachen", "das Lachen"], ["beim spielen", "beim Spielen"], ["das schwimmen", "das Schwimmen"], ["zum essen", "zum Essen"], ["das rot", "das Rot"], ["im dunkeln", "im Dunkeln"], ["das singen", "das Singen"], ["beim lesen", "beim Lesen"], ["das gute", "das Gute"], ["viel spaß", "viel Spaß"], ["die freude", "die Freude"], ["das blau", "das Blau"]];
-  const NX_FISCH_F = ["wir lachen", "sie spielen", "ich schwimme", "gern essen", "sehr rot", "es ist dunkel", "laut singen", "sie liest", "gut gemacht", "spaßig", "sich freuen", "ganz blau"];
+  const NX_FISCH_T = [["angst", "Angst"], ["mut", "Mut"], ["freude", "Freude"], ["wut", "Wut"], ["traum", "Traum"], ["idee", "Idee"], ["hunger", "Hunger"], ["durst", "Durst"], ["glück", "Glück"], ["spaß", "Spaß"], ["geburtstag", "Geburtstag"], ["ferien", "Ferien"]];
+  const NX_FISCH_F = ["mutig", "freuen", "wütend", "träumen", "lustig", "schnell", "denken", "heute", "leise", "gestern", "hungrig", "glücklich"];
   const NX_FANTASIE = [["der glumpf frisst am morgen drei plitze.", [1, 4, 6]], ["die kleine zibbel spielt mit einem bolk.", [2, 6]], ["im wald wohnt ein frecher muffling.", [1, 5]], ["lisa schenkt dem pimpel eine glitzerbrumme.", [0, 3, 5]], ["der wunk hat große angst vor dem zappel.", [1, 4, 7]], ["nach der schule füttert tom seinen schnurps.", [2, 4, 6]], ["zwei flumms tanzen fröhlich auf dem mond.", [1, 6]]];
-  const NX_CAPS = [["das lachen der kinder ist laut.", [0, 1, 3]], ["beim schwimmen hat lea viel spaß.", [0, 1, 3, 5]], ["ich freue mich auf das malen.", [0, 5]], ["im dunkeln leuchtet der mond.", [0, 1, 4]], ["tom liebt das klettern im garten.", [0, 3, 5]], ["morgen gehen wir zum turnen.", [0, 4]], ["das rot der rose ist schön.", [0, 1, 3]], ["nach dem essen spielen wir verstecken.", [0, 2, 5]]];
+  const NX_CAPS = [["am montag hat lena großen hunger.", [0, 1, 3, 5]], ["tim hat keine angst vor dem gewitter.", [0, 3, 6]], ["die freude über das geschenk ist groß.", [0, 1, 4]], ["mit viel mut klettert ben auf den baum.", [0, 2, 4, 7]], ["in den ferien fahren wir an die ostsee.", [0, 2, 7]], ["oma hat eine tolle idee für das fest.", [0, 4, 7]], ["nach der pause hat mia großen durst.", [0, 2, 4, 6]], ["zum glück findet paul seinen schlüssel.", [0, 1, 3, 5]]];
   const NX_ART = [["Haifischflosse", "die", "Flosse"], ["Schneemannnase", "die", "Nase"], ["Wasserballspiel", "das", "Spiel"], ["Zahnputzbecher", "der", "Becher"], ["Sonnenblumenkern", "der", "Kern"], ["Fußballschuh", "der", "Schuh"], ["Kinderzimmertür", "die", "Tür"], ["Apfelbaumblatt", "das", "Blatt"], ["Geburtstagskuchen", "der", "Kuchen"], ["Regenbogenfarbe", "die", "Farbe"], ["Bilderbuchseite", "die", "Seite"], ["Tischlein", "das", "-lein"], ["Büchlein", "das", "-lein"], ["Vöglein", "das", "-lein"]];
   const NX_PL = [["der Fußball", "Fußbälle", ["Fußballe", "Fußballs", "Fußbällen"]], ["das Vogelhaus", "Vogelhäuser", ["Vogelhause", "Vogelhäuse", "Vogelhäusen"]], ["die Zahnbürste", "Zahnbürsten", ["Zahnbürstes", "Zahnbürste", "Zähnbürsten"]], ["der Handschuh", "Handschuhe", ["Handschuhs", "Händschuhe", "Handschuhen"]], ["das Bilderbuch", "Bilderbücher", ["Bilderbuchs", "Bilderbuche", "Bilderbüchern"]], ["der Apfelbaum", "Apfelbäume", ["Apfelbaume", "Äpfelbaum", "Apfelbaums"]], ["die Hosentasche", "Hosentaschen", ["Hosentasches", "Hosentäschen", "Hosentasche"]], ["der Schneemann", "Schneemänner", ["Schneemanns", "Schneemanne", "Schneemannen"]], ["die Sandburg", "Sandburgen", ["Sandburge", "Sandbürgen", "Sandburgs"]], ["der Regenschirm", "Regenschirme", ["Regenschirms", "Regenschirmen", "Regenschürme"]], ["das Fahrrad", "Fahrräder", ["Fahrrads", "Fahrrade", "Fahrrädern"]], ["das Kinderzimmer", "Kinderzimmer", ["Kinderzimmers", "Kinderzimmern", "Kinderzimmere"]]];
   const NX_SORT = [["die Feuerwehrfrau", "m", "Sie ist ein Mensch mit einem Beruf."], ["der Goldfisch", "t", "Ein Goldfisch ist ein Tier – nicht aus Gold!"], ["der Kirschbaum", "p", "Ein Baum ist eine Pflanze."], ["das Spielzeugauto", "d", "Ein Spielzeug ist ein Ding."], ["der Teddybär", "d", "Ein Teddybär ist ein Kuscheltier – also ein Ding, kein echtes Tier!"], ["der Schneemann", "d", "Ein Schneemann ist aus Schnee – ein Ding, kein Mensch!"], ["der Löwenzahn", "p", "Löwenzahn ist eine Blume – eine Pflanze, kein Tier!"], ["das Stofftier", "d", "Ein Stofftier ist ein Ding."], ["der Roboter", "d", "Ein Roboter ist eine Maschine – ein Ding."], ["die Bienenkönigin", "t", "Die Bienenkönigin ist eine Biene – ein Tier!"], ["der Hampelmann", "d", "Ein Hampelmann ist ein Spielzeug – ein Ding."], ["der Seestern", "t", "Ein Seestern lebt im Meer – ein Tier!"], ["der Zahnarzt", "m", "Ein Zahnarzt ist ein Mensch."], ["das Seepferdchen", "t", "Ein Seepferdchen ist ein Fisch – ein Tier, kein Pferd!"], ["die Puppe", "d", "Eine Puppe ist ein Spielzeug – ein Ding."], ["das Gänseblümchen", "p", "Ein Gänseblümchen ist eine Blume."]];
-  const NX_DETECT = [["beim schwimmen hat lea viel spaß. das wasser ist warm.", [1, 3, 5, 7]], ["das lachen der kinder ist laut. alle haben gute laune.", [1, 3, 9]], ["nach dem essen gehen wir in den zoo. dort sehen wir viele affen.", [2, 7, 12]], ["im dunkeln hat der kleine hase angst. seine mama tröstet ihn.", [1, 5, 6, 8]], ["zum frühstück isst ben ein brot mit honig. danach putzt er seine zähne.", [1, 3, 5, 7, 12]], ["das malen macht mia großen spaß. sie malt einen bunten drachen.", [1, 3, 5, 10]], ["am morgen ist die luft frisch. die vögel singen im baum.", [1, 4, 7, 10]]];
+  const NX_DETECT = [["am abend hat lea große angst. das gewitter ist laut.", [1, 3, 5, 7]], ["die kinder haben viel spaß. alle lachen über den clown.", [1, 4, 9]], ["nach der schule gehen wir in den zoo. dort sehen wir viele affen.", [2, 7, 12]], ["im wald hat der kleine hase hunger. seine mama bringt ihm eine möhre.", [1, 5, 6, 8, 12]], ["zum frühstück isst ben ein brot mit honig. danach putzt er seine zähne.", [1, 3, 5, 7, 12]], ["heute hat mia eine tolle idee. sie malt einen bunten drachen.", [2, 5, 10]], ["am morgen ist die luft frisch. die vögel singen im baum.", [1, 4, 7, 10]]];
   // Satz-Werkstatt Experte: genau ein Satz ist ganz richtig
   function satzVariants(sent, nouns) {
     const w = sent.split(" "), out = [{ label: sent, correct: true }];
@@ -1865,9 +1865,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const EXPERT = {
     nomen: {
       fischen: {
-        task: () => "Wann ist es ein Nomen? Fange nur die Nomen!",
-        intro: () => XI + "Dasselbe Wort kann ein Nomen sein – oder nicht! Steht ein Begleiter davor (das, beim, zum, im), wird es zum Nomen.",
-        ex: () => "<b>das</b> Lachen ✓ · wir lachen ✗", say: () => "Experten-Aufgabe! Dasselbe Wort kann ein Nomen sein oder nicht. Steht ein Begleiter davor, wie das, beim, zum oder im, dann wird es zum Nomen.",
+        task: () => "Alles klein geschrieben! Fange nur die Nomen!",
+        intro: () => XI + "Alle Wörter sind klein und ohne Begleiter. Auch Gefühle und Dinge, die man nicht anfassen kann, sind Nomen: die Angst, der Mut. Probier: Passt der, die oder das davor?",
+        ex: () => "die <b>angst</b> ✓ · mutig ✗", say: () => "Experten-Aufgabe! Alle Wörter sind klein und ohne Begleiter. Auch Gefühle sind Nomen, zum Beispiel die Angst oder der Mut. Probier aus: Passt der, die oder das davor?",
         build() { const t = shuffle(NX_FISCH_T), f = shuffle(NX_FISCH_F), r = []; for (let i = 0; i < 6; i++) r.push(shuffle([t[i * 2], t[i * 2 + 1], [t[(i * 2 + 7) % 12][0], t[(i * 2 + 7) % 12][1]]].map(x => ({ w: x[0], show: x[1], noun: true })).concat([f[i * 2], f[i * 2 + 1], f[(i * 2 + 7) % 12]].map(x => ({ w: x, noun: false }))))); return r; },
         render(words, stage) {
           const pond = el("div", "pond"); let left = words.filter(x => x.noun).length;
@@ -1875,8 +1875,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
             const b = el("button", "wbub", item.w);
             b.addEventListener("click", () => {
               if (b.classList.contains("got") || L.locked) return;
-              if (item.noun) { b.classList.add("got"); b.textContent = item.show; award(b, 1); speak(item.show); left--; if (left === 0) { hint(praise() + " Begleiter davor → Nomen!", true); done(900); } }
-              else { sfxBad(); L.mistakes++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); hint(`„${item.w}“ – hier steht kein Begleiter davor. Das ist kein Nomen.`); }
+              if (item.noun) { b.classList.add("got"); b.textContent = item.show; award(b, 1); speak(item.show); left--; if (left === 0) { hint(praise() + " Der, die oder das passt davor → Nomen!", true); done(900); } }
+              else { sfxBad(); L.mistakes++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); hint(`„${item.w}“ – der, die oder das passt nicht davor. Das ist kein Nomen.`); }
             });
             pond.appendChild(b);
           });
@@ -1892,10 +1892,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       },
       grossklein: {
         task: () => "Welche Wörter schreibt man groß?",
-        intro: () => XI + "Satzanfang, Nomen – und Wörter, die durch einen Begleiter zum Nomen werden: das Lachen, beim Schwimmen.",
-        ex: () => "<b>D</b>as <b>L</b>achen der <b>K</b>inder ist laut.", say: () => "Experten-Aufgabe! Schreibe groß: den Satzanfang, die Nomen und Wörter mit Begleiter, wie das Lachen oder beim Schwimmen.",
+        intro: () => XI + "Satzanfang, Nomen, Namen – und auch Gefühle wie Angst oder Freude schreibt man groß!",
+        ex: () => "<b>T</b>im hat keine <b>A</b>ngst vor dem <b>G</b>ewitter.", say: () => "Experten-Aufgabe! Schreibe groß: den Satzanfang, die Nomen und die Namen. Auch Gefühle wie Angst oder Freude sind Nomen!",
         build() { return shuffle(NX_CAPS).slice(0, 7); },
-        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, okText: "Groß geschrieben wie ein Profi!", extraText: (w) => `„${w}“ schreibe ich klein.`, missText: (m) => m.includes(0) ? "Denk an den Satzanfang!" : "Es fehlt noch etwas. Steht vor einem Wort ein Begleiter wie das, beim oder zum?", sayExtra: "" }); }
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, okText: "Groß geschrieben wie ein Profi!", extraText: (w) => `„${w}“ schreibe ich klein.`, missText: (m) => m.includes(0) ? "Denk an den Satzanfang!" : "Es fehlt noch etwas. Denk auch an Namen und Gefühle!", sayExtra: "" }); }
       },
       artikel: {
         task: () => "der, die oder das?", intro: () => XI + "Lange Wörter aus drei Teilen! Das letzte Wort entscheidet über den Begleiter. Und: -lein heißt immer das.",
@@ -1929,8 +1929,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         render(x, stage) { const [sent, nouns] = x; choiceTask(stage, { small: true, opts: satzVariants(sent, nouns), okText: "Alles richtig geschrieben!", okSpeak: sent, factor: 2 }); L.speakNow = () => speak("Welcher Satz ist ganz richtig geschrieben?"); }
       },
       detektiv: {
-        task: () => "Finde alle Nomen im Text!", intro: () => XI + "Ein Text mit zwei Sätzen – alles klein. Achtung: Auch Wörter wie „das Lachen“ sind Nomen. Und nicht jedes erste Wort ist ein Nomen!",
-        ex: () => "beim <b>schwimmen</b> hat <b>lea</b> viel <b>spaß</b>.", say: () => "Experten-Aufgabe! Ein Text mit zwei Sätzen, alles klein. Auch Wörter wie das Lachen sind Nomen. Aber nicht jedes erste Wort ist ein Nomen!",
+        task: () => "Finde alle Nomen im Text!", intro: () => XI + "Ein Text mit zwei Sätzen – alles klein. Achtung: Auch Gefühle wie Angst und Spaß sind Nomen. Und nicht jedes erste Wort ist ein Nomen!",
+        ex: () => "am <b>abend</b> hat <b>lea</b> große <b>angst</b>.", say: () => "Experten-Aufgabe! Ein Text mit zwei Sätzen, alles klein. Auch Gefühle wie Angst und Spaß sind Nomen. Aber nicht jedes erste Wort ist ein Nomen!",
         build() { return shuffle(NX_DETECT).slice(0, 6); },
         render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 3, countText: "🔍 Wie viele Nomen findest du?", okText: "Meister-Detektiv! 🔍", extraText: (w) => `„${w}“ ist kein Nomen.`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}.`, sayExtra: "" }); }
       }
