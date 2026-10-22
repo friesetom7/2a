@@ -425,7 +425,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Aquarium</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · ohne Speichern</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -731,12 +731,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const KEY = "nemo-spielplatz-v2";
   const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, aqua: {}, unsent: false });
   let S = fresh();
-  // Jedes neue Öffnen (QR-Code scannen, neuer Tab) startet bei 0.
-  // Nur innerhalb desselben Tabs bleibt der Stand beim Neuladen erhalten (sessionStorage).
-  // Auf dem iPad bleibt nach dem Schließen nichts gespeichert – auch kein Name.
+  // Datenschutz: Das Spiel speichert KEINE Daten der Kinder – weder Name noch Münzen noch Sterne.
+  // Alles liegt nur im Arbeitsspeicher. Jedes Öffnen und jedes Neuladen beginnt bei 0.
+  // Reste älterer Versionen werden beim Start gelöscht.
   try { localStorage.removeItem(KEY); localStorage.removeItem("finn-nomen-v1"); } catch (e) {}
-  try { const raw = sessionStorage.getItem(KEY); if (raw) S = Object.assign(fresh(), JSON.parse(raw)); } catch (e) {}
-  const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  try { sessionStorage.removeItem(KEY); } catch (e) {}
+  const save = () => {};
 
   /* ---------- sound + speech ---------- */
   let ac = null;
