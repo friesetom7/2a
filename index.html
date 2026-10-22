@@ -106,6 +106,28 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .chapter:disabled { opacity: .7; }
 .chapter .soon { background: var(--white); border-radius: 999px; padding: 6px 16px; font-size: 20px; font-weight: 800; }
 .foot { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; align-items: center; }
+/* Auswertung: Ampel + Übe-Muscheln */
+.check-card { gap: 16px; }
+.ichkann { display: flex; align-items: center; gap: 10px; justify-content: center; font-size: clamp(22px, 3.4vw, 28px); font-weight: 900; background: #fff; border: 3px solid var(--sand-edge); border-radius: 20px; padding: 12px 16px; line-height: 1.25; }
+.ichkann .iconbtn { flex: none; }
+.ampel { display: grid; gap: 12px; width: 100%; }
+.amp { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 22px; background: #fff; border: 4px solid var(--sand-edge); font-size: clamp(19px, 2.8vw, 23px); font-weight: 900; text-align: left; box-shadow: 0 5px 0 var(--sand-edge); }
+.amp:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--sand-edge); }
+.amp .dot { width: 50px; height: 50px; border-radius: 50%; flex: none; box-shadow: inset 0 -6px 0 rgba(0,0,0,.18), inset 0 6px 8px rgba(255,255,255,.45); }
+.amp.gruen .dot { background: #2fb64b; } .amp.gelb .dot { background: #ffc83d; } .amp.rot .dot { background: #e5484d; }
+.selfcheck { display: flex; gap: 12px; align-items: flex-start; text-align: left; background: #eaf7ff; border: 3px solid #9fd3ee; border-radius: 18px; padding: 12px 14px; font-size: 18px; font-weight: 800; line-height: 1.35; }
+.selfcheck .sc-dot { width: 30px; height: 30px; border-radius: 50%; flex: none; margin-top: 2px; }
+.selfcheck .sc-dot.gruen { background: #2fb64b; } .selfcheck .sc-dot.gelb { background: #ffc83d; } .selfcheck .sc-dot.rot { background: #e5484d; }
+.selfcheck .tip { display: block; margin-top: 6px; color: #1d6a8f; }
+.shells { background: #fff8e6; border: 3px dashed var(--sand-edge); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.sh-head { font-weight: 900; font-size: 19px; }
+.sh-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.shell-chip { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 2px solid var(--sand-edge); border-radius: 999px; padding: 3px 12px 3px 5px; font-weight: 800; font-size: 17px; max-width: 100%; }
+.shell-chip .si { width: 30px; height: 30px; flex: none; line-height: 0; }
+.shell-chip .si svg { width: 100%; height: 100%; }
+.shell-chip .sl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shell-chip.pearl { border-color: #b9dcf0; background: #f3fbff; }
+.shell-btn { background: linear-gradient(180deg, #ffb3c7, #ff8fb0); }
 #codeInput { font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
 .scan { display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 800; text-align: left; background: #fff; border: 3px dashed var(--sand-edge); border-radius: 18px; padding: 12px 16px; }
 .scan-ic { font-size: 46px; line-height: 1; }
@@ -151,7 +173,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .progress i.on { background: var(--gold); border-color: var(--gold); }
 .taskrow { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 14px; font-size: 18px; font-weight: 900; color: var(--white); }
-.badge.leicht { background: var(--easy); } .badge.mittel { background: var(--mid); } .badge.schwer { background: var(--hard); } .badge.experte { background: #1b2a4a; color: var(--gold); } .badge.bonus { background: #e0a400; }
+.badge.leicht { background: var(--easy); } .badge.mittel { background: var(--mid); } .badge.schwer { background: var(--hard); } .badge.experte { background: #1b2a4a; color: var(--gold); } .badge.bonus { background: #e0a400; } .badge.practice { background: #ff7aa2; }
 .task { color: var(--white); text-align: center; font-size: 27px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); }
 .say { width: 52px; height: 52px; font-size: 24px; }
 .stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
@@ -496,7 +518,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 22.10.</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 22.10. · Muscheln</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -539,6 +561,15 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   </section>
 
   <!-- RESULT -->
+  <section class="screen center" id="scrCheck" hidden>
+    <div class="card intro-card check-card">
+      <div class="nemo" aria-hidden="true">🦈</div>
+      <h2>Wie gut kannst du das?</h2>
+      <div class="ichkann"><span id="chkText"></span><button class="iconbtn" id="chkSay" aria-label="Vorlesen">🔊</button></div>
+      <div class="ampel" id="chkBtns"></div>
+    </div>
+  </section>
+
   <section class="screen center" id="scrResult" hidden>
     <div class="card intro-card">
       <div class="nemo" aria-hidden="true">🦈</div>
@@ -548,6 +579,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       <div class="banner" id="resPerfect" hidden></div>
       <div class="banner gold" id="resBonus" hidden></div>
       <p id="resText"></p>
+      <div class="selfcheck" id="resSelf" hidden></div>
+      <div class="shells" id="resShells" hidden>
+        <div class="sh-head" id="resShellHead">Deine Übe-Muscheln</div>
+        <div class="sh-list" id="resShellList"></div>
+        <button class="big-btn shell-btn" id="resShellBtn">🐚 Muscheln üben</button>
+      </div>
       <div class="btnrow">
         <button class="big-btn ghost" id="resAgain">🔁 Nochmal</button>
         <button class="big-btn" id="resMap">Weiter 🗺️</button>
@@ -958,7 +995,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   })();
 
   /* ---------- screens + feedback ---------- */
-  const SCREENS = ["scrStart", "scrHome", "scrAqua", "scrMap", "scrIntro", "scrPlay", "scrResult", "scrCert"];
+  const SCREENS = ["scrStart", "scrHome", "scrAqua", "scrMap", "scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"];
   let current = "scrStart";
   function show(id) {
     current = id; closeSheet();
@@ -1010,7 +1047,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   function miss(elm, msg) { sfxBad(); L.mistakes++; if (elm) shakeEl(elm); hint(msg); }
   function done(delay) {
-    L.locked = true;
+    L.locked = true; noteItemResult();
     setTimeout(() => { L.pos++; if (L.pos >= L.items.length) finishLevel(); else renderItem(); }, delay);
   }
 
@@ -1099,7 +1136,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
               b.classList.add("got"); b.textContent = item.w; award(b, 1);
               left--; if (left === 0) { hint(praise() + " Alle Nomen gefangen! 🎣", true); done(800); }
             } else {
-              sfxBad(); L.mistakes++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
+              sfxBad(); L.mistakes++; noteMiss(label); b.classList.remove("no"); void b.offsetWidth; b.classList.add("no");
               hint(`„${label}“ ist kein Nomen. Sag mal: der ${label}? die ${label}? Klingt komisch, oder?`);
             }
           });
@@ -2006,7 +2043,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
             b.addEventListener("click", () => {
               if (b.classList.contains("got") || L.locked) return;
               if (item.noun) { b.classList.add("got"); b.textContent = item.show; award(b, 1); speak(item.show); left--; if (left === 0) { hint(praise() + " Der, die oder das passt davor → Nomen!", true); done(900); } }
-              else { sfxBad(); L.mistakes++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); hint(`„${item.w}“ – der, die oder das passt nicht davor. Das ist kein Nomen.`); }
+              else { sfxBad(); L.mistakes++; noteMiss(item.w); b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); hint(`„${item.w}“ – der, die oder das passt nicht davor. Das ist kein Nomen.`); }
             });
             pond.appendChild(b);
           });
@@ -2860,7 +2897,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   function startLevel(li, d) {
     const lv = li === "bonus" ? BONUS : view(levelOf(li), d);
-    L = { li, d, lv, items: lv.build(d), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: li === "bonus" ? 3 : DIFFS[d].mult };
+    L = { li, d, lv, items: lv.build(d), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: li === "bonus" ? 3 : DIFFS[d].mult, wrong: [], pearls: [] };
     const badge = $("playBadge");
     if (li === "bonus") { badge.className = "badge bonus"; badge.textContent = "🎁 Bonus"; }
     else { badge.className = "badge " + d; badge.textContent = `${DIFFS[d].icon} ${DIFFS[d].label}`; }
@@ -2873,11 +2910,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     L.items.forEach((_, k) => p.appendChild(el("i", k < L.pos ? "on" : null)));
   }
   function renderItem() {
-    renderProgress(); L.locked = false; L.speakNow = null;
+    renderProgress(); L.locked = false; L.speakNow = null; L.mAt = L.mistakes; L.missWords = []; L.noted = false;
     const stage = $("stage"); stage.innerHTML = ""; $("hint").innerHTML = "";
     L.lv.render(L.items[L.pos], stage, L.d);
   }
   function finishLevel() {
+    if (L.practice) return finishPractice();
     renderProgress();
     const per = L.mistakes / L.items.length;
     let stars = per <= 0.15 ? 3 : per <= 0.5 ? 2 : 1;
@@ -2894,7 +2932,6 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       $("resStars").innerHTML = "🎁✨";
       $("resPerfect").hidden = false; $("resPerfect").innerHTML = `Die Schatztruhe ist offen: +${chest} <span class="coin sm"></span>`;
       $("resText").textContent = first ? `Du bist ein echter ${CH.name}-Schatzsucher!` : "Super! Du hast den Schatz noch einmal gefunden.";
-      confetti(["💰","👑","💎","⭐","🦈","✨"]);
     } else {
       const k = skey(CH, L.li, L.d);
       S.stars[k] = Math.max(S.stars[k] || 0, stars);
@@ -2909,13 +2946,183 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       $("resTitle").textContent = stars === 3 ? "Fantastisch!" : stars === 2 ? "Super gemacht!" : "Geschafft!";
       $("resStars").innerHTML = starStr(stars);
       $("resText").textContent = perfect ? "" : (stars < 3 ? "Spiel nochmal und hol dir 3 Sterne!" : "Schaffst du es auch ohne Fehler? Dann gibt es einen 💎.");
-      confetti();
     }
     $("resEarned").innerHTML = `+${L.earned} <span class="coin"></span>`;
-    const li = L.li, d = L.d;
-    $("resAgain").onclick = () => startLevel(li, d);
-    show("scrResult"); sfxWin();
-    speak($("resTitle").textContent);
+    const li = L.li, d = L.d, bonus = L.li === "bonus";
+    $("resAgain").hidden = false; $("resAgain").textContent = "🔁 Nochmal"; $("resAgain").onclick = () => startLevel(li, d);
+    $("resSelf").hidden = true;
+    showShells(L.wrong, [], false);
+    flushSave();
+    const reveal = (extra) => {
+      show("scrResult"); sfxWin();
+      if (bonus) confetti(["💰","👑","💎","⭐","🦈","✨"]); else confetti();
+      speak($("resTitle").textContent + (extra ? " " + extra : ""));
+    };
+    if (askAmpel()) openAmpel(stars, (said) => reveal(said)); else { if (!bonus) ampelSession.since++; reveal(""); }
+  }
+
+  /* ---------- Auswertung: Ampel (Selbsteinschätzung) + Übe-Muscheln ---------- */
+  // Ich-kann-Sätze je Insel (kindgerecht, werden vorgelesen)
+  const ICH_KANN = {
+    "nomen:fischen": "Ich erkenne Nomen.",
+    "nomen:versteckt": "Ich finde Nomen, auch wenn sie versteckt sind.",
+    "nomen:grossklein": "Ich weiß, welche Wörter man großschreibt.",
+    "nomen:artikel": "Ich finde den richtigen Begleiter: der, die oder das.",
+    "nomen:mehrzahl": "Ich weiß, wie Nomen in der Mehrzahl heißen.",
+    "nomen:sortieren": "Ich sortiere Nomen nach Menschen, Tieren, Pflanzen und Dingen.",
+    "nomen:satz": "Ich erkenne, ob ein Satz richtig geschrieben ist.",
+    "nomen:detektiv": "Ich finde alle Nomen in einem Satz.",
+    "lernwoerter:salat": "Ich setze meine Lernwörter richtig zusammen.",
+    "lernwoerter:luecke": "Ich weiß, welche Buchstaben in die Lücke gehören.",
+    "lernwoerter:blitz": "Ich erkenne meine Lernwörter auf einen Blick.",
+    "lernwoerter:hoeren": "Ich erkenne meine Lernwörter, wenn ich sie höre.",
+    "lernwoerter:silben": "Ich zerlege meine Lernwörter in Silben.",
+    "lernwoerter:memory": "Ich merke mir, wie meine Lernwörter aussehen.",
+    "leuchtturm:schule": "Ich kenne der, die, das bei Sachen aus der Schule.",
+    "leuchtturm:essen": "Ich kenne der, die, das beim Essen.",
+    "leuchtturm:kleidung": "Ich kenne der, die, das bei Kleidung.",
+    "leuchtturm:zuhause": "Ich kenne der, die, das bei Sachen zu Hause.",
+    "leuchtturm:tiere": "Ich kenne der, die, das bei Tieren.",
+    "leuchtturm:koerper": "Ich kenne der, die, das beim Körper.",
+    "leuchtturm:tricks": "Ich kenne die Merk-Tricks für der, die, das.",
+    "lesen:anlaut": "Ich höre, mit welchem Laut ein Wort anfängt.",
+    "lesen:silbenschiff": "Ich lese Wörter Silbe für Silbe.",
+    "lesen:wortbild": "Ich lese ein Wort und finde das passende Bild.",
+    "lesen:saetze": "Ich lese Sätze und verstehe, was sie sagen.",
+    "lesen:raetsel": "Ich löse Rätsel, weil ich genau lese."
+  };
+  const AMPEL = [["gruen", "Das kann ich sicher.", 3], ["gelb", "Das kann ich schon ein bisschen.", 2], ["rot", "Das übe ich noch.", 1]];
+  // Nur im Arbeitsspeicher: höchstens 2 Ampel-Fragen pro Sitzung (die erste Insel, dann frühestens 2 Inseln später).
+  let ampelSession = { asked: 0, since: 0 };
+  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; }
+  function askAmpel() {
+    if (L.li === "bonus" || L.practice || !ICH_KANN[pkey(CH, L.li)]) return false;
+    return ampelSession.asked === 0 || (ampelSession.asked === 1 && ampelSession.since >= 2);
+  }
+  function openAmpel(stars, then) {
+    ampelSession.asked++; ampelSession.since = 0;
+    const satz = ICH_KANN[pkey(CH, L.li)], box = $("chkBtns");
+    $("chkText").textContent = satz; box.innerHTML = "";
+    $("chkSay").onclick = () => speak(satz);
+    const nWrong = L.wrong.length, n = L.items.length, d = L.d, scored = !!L.lv.score;
+    AMPEL.forEach(([cls, text, val]) => {
+      const b = el("button", "amp " + cls, `<span class="dot" aria-hidden="true"></span><span>${text}</span>`);
+      b.addEventListener("click", () => {
+        tone([val === 3 ? 660 : val === 2 ? 560 : 480], 0.08);
+        const fb = ampelFeedback(val, stars, nWrong, n, scored, d);
+        const sc = $("resSelf"); sc.innerHTML = "";
+        sc.appendChild(el("span", "sc-dot " + cls));
+        const t = el("span", null, ""); t.textContent = fb.text;
+        if (fb.tip) { const tip = el("span", "tip", ""); tip.textContent = fb.tip; t.appendChild(tip); }
+        sc.appendChild(t); sc.hidden = false;
+        then(fb.text + (fb.tip ? " " + fb.tip : ""));
+      });
+      box.appendChild(b);
+    });
+    show("scrCheck");
+    speak("Wie gut kannst du das? " + satz);
+  }
+  function ampelFeedback(self, stars, nWrong, n, scored, d) {
+    const right = Math.max(0, n - nWrong);
+    const fact = scored ? ` Du hast ${stars} ${stars === 1 ? "Stern" : "Sterne"} bekommen.` : ` Du hattest ${right} von ${n} Aufgaben gleich richtig.`;
+    const said = self === 3 ? "Du hast gesagt: Das kann ich sicher." : self === 2 ? "Du hast gesagt: Das kann ich schon ein bisschen." : "Du hast gesagt: Das übe ich noch.";
+    let text;
+    if (self === 3) text = stars === 3 ? said + fact + " Stimmt genau!" : said + fact + (stars === 2 ? " Ein paar Aufgaben waren noch knifflig." : " Das war noch ganz schön knifflig.") + " Die übst du jetzt als Muscheln.";
+    else if (self === 2) text = stars === 3 ? "Du warst dir nicht ganz sicher, dabei hat fast alles geklappt!" + fact + " Du kannst mehr, als du denkst." : stars === 2 ? "Gut eingeschätzt!" + fact + " Noch ein bisschen üben, dann sitzt es." : "Das war noch schwer." + fact + " Übe die Muscheln, dann wird es leichter.";
+    else text = stars === 3 ? "Du dachtest, du musst noch üben, aber es hat super geklappt!" + fact : "Gut eingeschätzt!" + fact + " Üben lohnt sich. Fang mit den Muscheln an.";
+    if (scored && stars < 3 && self !== 1) text = text.replace(" Die übst du jetzt als Muscheln.", " Spiel die Insel ruhig nochmal.").replace(" Übe die Muscheln, dann wird es leichter.", " Spiel die Insel ruhig nochmal.");
+    if (scored) text = text.replace(" Fang mit den Muscheln an.", " Spiel die Insel ruhig nochmal.");
+    const k = DK.indexOf(d), next = DK[k + 1];
+    const tip = stars === 3 && next ? `Tipp: Probier als Nächstes die Stufe ${DIFFS[next].label}.` : "";
+    return { text, tip };
+  }
+  function noteMiss(w) { if (L && L.missWords && w && L.missWords.indexOf(w) < 0) L.missWords.push(w); }
+  const ARTS = /^(der|die|das)$/;
+  // Kurze Beschriftung einer Aufgabe für die Muschel (z. B. „das Kind“, „Die Oma backt einen Kuchen.“)
+  function itemLabel(it) {
+    try {
+      if (it && typeof it === "object" && !Array.isArray(it)) {
+        if (it.it !== undefined && it.li !== undefined) return itemLabel(it.it);
+        if (it.x) return itemLabel(it.x);
+        if (it.w) return (it.art && ARTS.test(it.art) ? it.art + " " : "") + it.w;
+        if (it.noun) return it.noun;
+        if (Array.isArray(it.p)) return `${it.p[1]} ${it.p[0]}`;
+        if (Array.isArray(it.t) && typeof it.t[0] === "string") return it.t[0];
+        return "";
+      }
+      if (Array.isArray(it)) {
+        if (Array.isArray(it[0])) return (typeof it[2] === "string" && ARTS.test(it[2]) ? it[2] + " " : "") + it[0].join("");
+        if (typeof it[0] === "string") {
+          const a = it[0];
+          if (Array.isArray(it[1]) && typeof it[1][0] === "number") {
+            const ws = a.split(" "), st = it[1], noPunct = !/[.!?]$/.test(a);
+            return ws.map((w, i) => {
+              let o = (i === 0 || st.indexOf(i) >= 0 || /[.!?]$/.test(ws[i - 1] || "") || (noPunct && SATZ_NOUNS.indexOf(w) >= 0)) ? cap(w) : w;
+              if (noPunct && (st.indexOf(i + 1) >= 0 || i === ws.length - 1)) o += ".";
+              return o;
+            }).join(" ");
+          }
+          if (/_/.test(a) && typeof it[1] === "string" && !/_/.test(it[1])) return a.replace(/_+/, it[1]);
+          if (typeof it[1] === "string" && ARTS.test(it[1])) return it[1] + " " + a;
+          if (/^(der|die|das) /.test(a) && typeof it[1] === "string" && Array.isArray(it[2])) return `${a}, die ${it[1]}`;
+          if (typeof it[1] === "string" && /\?$/.test(it[1])) return it[1];
+          return a;
+        }
+      }
+    } catch (e) {}
+    return "";
+  }
+  // nach jeder Aufgabe: Fehler gemacht? → Muschel (in der Muschel-Runde: richtig → Perle)
+  function noteItemResult() {
+    if (!L || L.noted || L.lv.score) return;
+    L.noted = true;
+    const it = L.items[L.pos], wrong = L.mistakes > (L.mAt || 0);
+    if (L.practice) {
+      const e = L.entries.find(x => x.it === it) || { it, label: itemLabel(it) };
+      (wrong ? L.wrong : L.pearls).push(e);
+      return;
+    }
+    if (!wrong) return;
+    let lab = L.missWords.length ? L.missWords.join(", ") + " – keine Nomen" : itemLabel(it);
+    lab = String(lab || "Aufgabe " + (L.pos + 1)).replace(/\s+/g, " ").trim();
+    if (lab.length > 60) lab = lab.slice(0, 57) + " …";
+    L.wrong.push({ it, label: lab });
+  }
+  function shellChip(e, pearl) {
+    const c = el("span", "shell-chip" + (pearl ? " pearl" : ""), `<span class="si">${artSVG(pearl ? "perle" : "muschel")}</span>`);
+    const l = el("span", "sl", ""); l.textContent = e.label; c.appendChild(l); c.title = e.label; return c;
+  }
+  function showShells(rest, pearls, practiced) {
+    const box = $("resShells"), list = $("resShellList"); list.innerHTML = "";
+    pearls.forEach(e => list.appendChild(shellChip(e, true)));
+    rest.forEach(e => list.appendChild(shellChip(e, false)));
+    box.hidden = !(rest.length || pearls.length);
+    $("resShellHead").textContent = rest.length ? (practiced ? `Noch ${rest.length === 1 ? "eine Muschel" : rest.length + " Muscheln"} zum Üben` : `${rest.length === 1 ? "Eine Übe-Muschel" : rest.length + " Übe-Muscheln"}: das übst du nochmal`) : "Deine neuen Perlen";
+    const btn = $("resShellBtn");
+    btn.hidden = !rest.length;
+    btn.textContent = practiced ? "🐚 Nochmal üben" : `🐚 ${rest.length === 1 ? "Muschel" : "Muscheln"} üben`;
+    btn.onclick = () => startPractice(rest);
+  }
+  function startPractice(entries) {
+    const prev = L, mixed = shuffle(entries.slice()), list = mixed.slice(0, 6);
+    L = { li: prev.li, d: prev.d, lv: prev.lv, items: list.map(e => e.it), entries: list, later: mixed.slice(6), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: 1, practice: true, wrong: [], pearls: [] };
+    const badge = $("playBadge"); badge.className = "badge practice"; badge.textContent = "🐚 Muschel-Runde";
+    if (L.li !== "bonus") $("taskText").textContent = L.lv.task(L.d);
+    show("scrPlay");
+    renderItem();
+  }
+  function finishPractice() {
+    renderProgress();
+    const n = L.items.length, p = L.pearls.length, rest = L.wrong.concat(L.later || []), li = L.li, d = L.d;
+    $("resPerfect").hidden = true; $("resBonus").hidden = true; $("resSelf").hidden = true;
+    $("resTitle").textContent = p === n ? "Alle Muscheln sind Perlen!" : p ? "Super geübt!" : "Bleib dran!";
+    $("resStars").innerHTML = "";
+    $("resText").textContent = p === n ? "Toll, du hast alle kniffligen Aufgaben geschafft." : `${p} von ${n} Muscheln sind jetzt Perlen.`;
+    $("resEarned").innerHTML = L.earned ? `+${L.earned} <span class="coin"></span>` : "";
+    showShells(rest, L.pearls, true);
+    $("resAgain").hidden = false; $("resAgain").textContent = "🔁 Insel nochmal"; $("resAgain").onclick = () => startLevel(li, d);
+    show("scrResult"); sfxWin(); if (p === n) confetti(["⚪", "✨", "🐚", "⭐"]);
+    speak($("resTitle").textContent + " " + $("resText").textContent);
     flushSave();
   }
 
@@ -2931,7 +3138,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   /* ---------- wiring ---------- */
   $("startBtn").addEventListener("click", () => {
     const n = $("nameInput").value.trim();
-    S.name = n ? cap(n) : ""; save();
+    S.name = n ? cap(n) : ""; save(); resetAmpel();
     tone([440], 0.01); renderHome();
   });
   $("nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("startBtn").click(); });
@@ -2948,7 +3155,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   lastP = portrait();
   $("cNo").addEventListener("click", () => { $("confirm").hidden = true; });
   $("cYes").addEventListener("click", () => {
-    S = fresh(); save();
+    S = fresh(); save(); resetAmpel();
     $("confirm").hidden = true; $("nameInput").value = ""; setCoins(false); show("scrStart");
   });
 
@@ -2968,7 +3175,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function startAccount(j) {
     ACC = { token: j.token || (ACC && ACC.token), kind: j.kind };
     try { sessionStorage.setItem(TKEY, ACC.token); } catch (e) {}
-    S = Object.assign(fresh(), j.stand || {}); normalizeState();
+    S = Object.assign(fresh(), j.stand || {}); normalizeState(); resetAmpel();
     saveOk = true; codeMsg(""); bumpIdle(); setCoins(false); renderHome();
     const t = TIERE[ACC.kind.tier]; speak(`Hallo ${t ? t[1] : ""}! Schön, dass du da bist.`);
   }
@@ -2986,7 +3193,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       clearTimeout(saveTimer); const st = Object.assign({}, S); delete st.name; delete st.unsent;
       api("kind_speichern", { token: tok, stand: st }, true).catch(() => {}).then(() => api("kind_abmelden", { token: tok }, true)).catch(() => {});
     }
-    ACC = null; clearTimeout(idleT); try { sessionStorage.removeItem(TKEY); } catch (e) {}
+    ACC = null; clearTimeout(idleT); resetAmpel(); try { sessionStorage.removeItem(TKEY); } catch (e) {}
     S = fresh(); setCoins(false); $("codeInput").value = ""; $("whoTag").hidden = true; $("saveState").hidden = true;
     show("scrStart"); codeMsg(msg || "", true);
   }
@@ -3000,7 +3207,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       const raw = $("codeInput").value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
       $("codeInput").value = raw.replace(/(.{4})(?=.)/g, "$1-");
     });
-    $("guestBtn").addEventListener("click", () => { ACC = { gast: true }; S = fresh(); codeMsg(""); bumpIdle(); setCoins(false); renderHome(); });
+    $("guestBtn").addEventListener("click", () => { ACC = { gast: true }; S = fresh(); resetAmpel(); codeMsg(""); bumpIdle(); setCoins(false); renderHome(); });
     document.addEventListener("pointerdown", bumpIdle, true);
     document.addEventListener("keydown", bumpIdle, true);
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && ACC && ACC.token) flushSave(true); });
