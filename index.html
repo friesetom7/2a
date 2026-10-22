@@ -117,6 +117,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .diff.leicht { background: var(--easy); box-shadow: 0 5px 0 #2a7ea3; }
 .diff.mittel { background: var(--mid); box-shadow: 0 5px 0 #7a5228; }
 .diff.schwer { background: var(--hard); box-shadow: 0 5px 0 #474e57; }
+.diff.experte { background: linear-gradient(160deg, #1b2a4a, #0b3a5c); box-shadow: 0 5px 0 #08162b; color: var(--gold); }
 .diff:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
 .bonus-card { background: linear-gradient(135deg, #fff4dc, #ffe7a3); border-radius: 28px; padding: 18px; display: flex; align-items: center; gap: 16px; box-shadow: 0 6px 0 var(--gold-edge), 0 12px 24px var(--shadow); text-align: left; width: 100%; box-sizing: border-box; }
 .bonus-card .ic { font-size: 56px; line-height: 1; flex: none; }
@@ -132,7 +133,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .progress i.on { background: var(--gold); border-color: var(--gold); }
 .taskrow { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
 .badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 4px 14px; font-size: 18px; font-weight: 900; color: var(--white); }
-.badge.leicht { background: var(--easy); } .badge.mittel { background: var(--mid); } .badge.schwer { background: var(--hard); } .badge.bonus { background: #e0a400; }
+.badge.leicht { background: var(--easy); } .badge.mittel { background: var(--mid); } .badge.schwer { background: var(--hard); } .badge.experte { background: #1b2a4a; color: var(--gold); } .badge.bonus { background: #e0a400; }
 .task { color: var(--white); text-align: center; font-size: 27px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); }
 .say { width: 52px; height: 52px; font-size: 24px; }
 .stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
@@ -248,10 +249,22 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 @keyframes tflip { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
 .tank .flip.rev { animation-name: tflipr; }
 @keyframes tflipr { 0% { transform: scaleX(-1); } 50% { transform: scaleX(1); } }
-.tank .float { animation: bob 3.4s ease-in-out infinite; transform: translateX(-50%); }
+.tank .float { animation: fbob 3.4s ease-in-out infinite; transform: translateX(-50%); }
+@keyframes fbob { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-10px); } }
 .tank .nemo-fish { font-size: 70px; line-height: 1; }
 .tank .tb { position: absolute; bottom: 12%; width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(255,255,255,.8); background: rgba(255,255,255,.2); animation: tbub linear infinite; }
 @keyframes tbub { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(-340px) translateX(12px); opacity: 0; } }
+.tank .placed { transform: translateX(-50%); }
+.tank.edit { outline-color: var(--gold); outline-width: 6px; }
+.tank.edit .item.placed { cursor: grab; touch-action: none; animation: none; }
+.tank.edit .item.placed::after { content: ""; position: absolute; inset: -4px; border: 3px dashed rgba(255,255,255,.85); border-radius: 16px; }
+.tank.edit .item.dragging { cursor: grabbing; z-index: 5; }
+.tank.edit .item.dragging svg { filter: drop-shadow(0 12px 10px rgba(0,30,60,.4)); transform: scale(1.08); }
+.aq-tools { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.aq-tools .big-btn { font-size: 20px; padding: 10px 22px; align-self: auto; }
+.aq-hint { font-size: 18px; font-weight: 800; color: #145c2c; }
+.ware { position: relative; }
+.ware .wcount { position: absolute; top: 8px; right: 10px; background: var(--deep); color: var(--white); border-radius: 99px; padding: 2px 9px; font-size: 15px; font-weight: 900; }
 .tank .newbie svg { filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 22px var(--gold)); }
 .tank .empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--white); font-size: 23px; font-weight: 800; text-shadow: 0 2px 0 var(--deep); text-align: center; padding: 20px; }
 .shop-title { color: var(--white); font-size: 26px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); margin-top: 6px; }
@@ -309,7 +322,9 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .sh-nm { font-size: 30px; font-weight: 900; display: block; }
 .sh-sub { font-size: 18px; font-weight: 700; color: var(--muted); display: block; }
 .sh-close { position: absolute; top: 14px; right: 14px; width: 50px; height: 50px; font-size: 22px; }
+.sheet .diffs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .sheet .diff { padding: 12px 4px; }
+@media (max-width: 520px) { .sheet .diffs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .sheet .diff .dl { font-size: 21px; }
 .sheet .diff .ds { font-size: 16px; }
 .sheet .diff .dc { font-size: 14px; font-weight: 800; opacity: .9; }
@@ -425,7 +440,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · ohne Speichern</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Experten</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -527,9 +542,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const DIFFS = {
     leicht: { icon: "🪶", label: "Leicht", mult: 1 },
     mittel: { icon: "🪵", label: "Mittel", mult: 2 },
-    schwer: { icon: "🪨", label: "Schwer", mult: 3 }
+    schwer: { icon: "🪨", label: "Schwer", mult: 3 },
+    experte: { icon: "⚓", label: "Experte", mult: 4 }
   };
-  const DK = ["leicht", "mittel", "schwer"];
+  const DK = ["leicht", "mittel", "schwer", "experte"];
 
   /* ---------- Wörter ---------- */
   // [Wort, Artikel, Emoji, Gruppe]  m = Mensch, t = Tier, p = Pflanze, d = Ding
@@ -729,7 +745,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- state ---------- */
   const KEY = "nemo-spielplatz-v2";
-  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, aqua: {}, unsent: false });
+  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, aqua: [], unsent: false });
   let S = fresh();
   // Datenschutz: Das Spiel speichert KEINE Daten der Kinder – weder Name noch Münzen noch Sterne.
   // Alles liegt nur im Arbeitsspeicher. Jedes Öffnen und jedes Neuladen beginnt bei 0.
@@ -1797,6 +1813,297 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   ];
   let CH = CHAPTERS[0];
 
+  /* ---------- Experten-Stufe ⚓: Transferaufgaben auf jeder Insel ----------
+     Jede Insel bekommt hier ihre Experten-Version (gleiche Bausteine, neue und schwerere Aufgaben). */
+  const XI = "🏆 Experten-Aufgabe: ";
+  const lastHint = (last) => last.charAt(0) === "-" ? `Schau auf das Ende: ${last}` : `Das letzte Wort entscheidet: …${last}. Welcher Begleiter passt zu „${last}“?`;
+  function expertMemory(stage, pairs) {
+    const cards = [];
+    pairs.forEach((p, i) => { cards.push({ id: i, html: `<span class="mw">${p[0]}</span>`, say: p[0] }); cards.push({ id: i, html: `<span class="mw" style="font-size:clamp(13px,2.2vw,19px)">${p[1]}</span>` }); });
+    const deck = shuffle(cards);
+    const stat = el("div", "memstat", "Versuche: 0"); stage.appendChild(stat);
+    const grid = el("div", "mem"); grid.style.gridTemplateColumns = "repeat(4, minmax(0, 1fr))"; grid.style.width = "min(700px, 100%)";
+    let open = [], found = 0, busy = false; L.moves = 0;
+    deck.forEach(c => {
+      const b = el("button", "mcard", "🦈");
+      b.addEventListener("click", () => {
+        if (busy || L.locked || b.classList.contains("open") || b.classList.contains("done")) return;
+        b.classList.add("open"); b.innerHTML = c.html; if (c.say) speak(c.say);
+        open.push({ b, c });
+        if (open.length === 2) {
+          L.moves++; stat.textContent = "Versuche: " + L.moves; busy = true;
+          const [p, q] = open;
+          if (p.c.id === q.c.id) setTimeout(() => { p.b.classList.add("done"); q.b.classList.add("done"); award(q.b, 1); open = []; busy = false; found++; if (found === pairs.length) { hint(praise() + ` Alle Paare in ${L.moves} Versuchen!`, true); done(1400); } }, 350);
+          else setTimeout(() => { [p, q].forEach(o => { o.b.classList.remove("open"); o.b.textContent = "🦈"; }); open = []; busy = false; }, 1300);
+        }
+      });
+      grid.appendChild(b);
+    });
+    stage.appendChild(grid);
+    L.speakNow = () => speak("Finde die Paare.");
+  }
+
+  // ----- Nomen -----
+  const NX_FISCH_T = [["das lachen", "das Lachen"], ["beim spielen", "beim Spielen"], ["das schwimmen", "das Schwimmen"], ["zum essen", "zum Essen"], ["das rot", "das Rot"], ["im dunkeln", "im Dunkeln"], ["das singen", "das Singen"], ["beim lesen", "beim Lesen"], ["das gute", "das Gute"], ["viel spaß", "viel Spaß"], ["die freude", "die Freude"], ["das blau", "das Blau"]];
+  const NX_FISCH_F = ["wir lachen", "sie spielen", "ich schwimme", "gern essen", "sehr rot", "es ist dunkel", "laut singen", "sie liest", "gut gemacht", "spaßig", "sich freuen", "ganz blau"];
+  const NX_FANTASIE = [["der glumpf frisst am morgen drei plitze.", [1, 4, 6]], ["die kleine zibbel spielt mit einem bolk.", [2, 6]], ["im wald wohnt ein frecher muffling.", [1, 5]], ["lisa schenkt dem pimpel eine glitzerbrumme.", [0, 3, 5]], ["der wunk hat große angst vor dem zappel.", [1, 4, 7]], ["nach der schule füttert tom seinen schnurps.", [2, 4, 6]], ["zwei flumms tanzen fröhlich auf dem mond.", [1, 6]]];
+  const NX_CAPS = [["das lachen der kinder ist laut.", [0, 1, 3]], ["beim schwimmen hat lea viel spaß.", [0, 1, 3, 5]], ["ich freue mich auf das malen.", [0, 5]], ["im dunkeln leuchtet der mond.", [0, 1, 4]], ["tom liebt das klettern im garten.", [0, 3, 5]], ["morgen gehen wir zum turnen.", [0, 4]], ["das rot der rose ist schön.", [0, 1, 3]], ["nach dem essen spielen wir verstecken.", [0, 2, 5]]];
+  const NX_ART = [["Haifischflosse", "die", "Flosse"], ["Schneemannnase", "die", "Nase"], ["Wasserballspiel", "das", "Spiel"], ["Zahnputzbecher", "der", "Becher"], ["Sonnenblumenkern", "der", "Kern"], ["Fußballschuh", "der", "Schuh"], ["Kinderzimmertür", "die", "Tür"], ["Apfelbaumblatt", "das", "Blatt"], ["Geburtstagskuchen", "der", "Kuchen"], ["Regenbogenfarbe", "die", "Farbe"], ["Bilderbuchseite", "die", "Seite"], ["Tischlein", "das", "-lein"], ["Büchlein", "das", "-lein"], ["Vöglein", "das", "-lein"]];
+  const NX_PL = [["der Fußball", "Fußbälle", ["Fußballe", "Fußballs", "Fußbällen"]], ["das Vogelhaus", "Vogelhäuser", ["Vogelhause", "Vogelhäuse", "Vogelhäusen"]], ["die Zahnbürste", "Zahnbürsten", ["Zahnbürstes", "Zahnbürste", "Zähnbürsten"]], ["der Handschuh", "Handschuhe", ["Handschuhs", "Händschuhe", "Handschuhen"]], ["das Bilderbuch", "Bilderbücher", ["Bilderbuchs", "Bilderbuche", "Bilderbüchern"]], ["der Apfelbaum", "Apfelbäume", ["Apfelbaume", "Äpfelbaum", "Apfelbaums"]], ["die Hosentasche", "Hosentaschen", ["Hosentasches", "Hosentäschen", "Hosentasche"]], ["der Schneemann", "Schneemänner", ["Schneemanns", "Schneemanne", "Schneemannen"]], ["die Sandburg", "Sandburgen", ["Sandburge", "Sandbürgen", "Sandburgs"]], ["der Regenschirm", "Regenschirme", ["Regenschirms", "Regenschirmen", "Regenschürme"]], ["das Fahrrad", "Fahrräder", ["Fahrrads", "Fahrrade", "Fahrrädern"]], ["das Kinderzimmer", "Kinderzimmer", ["Kinderzimmers", "Kinderzimmern", "Kinderzimmere"]]];
+  const NX_SORT = [["die Feuerwehrfrau", "m", "Sie ist ein Mensch mit einem Beruf."], ["der Goldfisch", "t", "Ein Goldfisch ist ein Tier – nicht aus Gold!"], ["der Kirschbaum", "p", "Ein Baum ist eine Pflanze."], ["das Spielzeugauto", "d", "Ein Spielzeug ist ein Ding."], ["der Teddybär", "d", "Ein Teddybär ist ein Kuscheltier – also ein Ding, kein echtes Tier!"], ["der Schneemann", "d", "Ein Schneemann ist aus Schnee – ein Ding, kein Mensch!"], ["der Löwenzahn", "p", "Löwenzahn ist eine Blume – eine Pflanze, kein Tier!"], ["das Stofftier", "d", "Ein Stofftier ist ein Ding."], ["der Roboter", "d", "Ein Roboter ist eine Maschine – ein Ding."], ["die Bienenkönigin", "t", "Die Bienenkönigin ist eine Biene – ein Tier!"], ["der Hampelmann", "d", "Ein Hampelmann ist ein Spielzeug – ein Ding."], ["der Seestern", "t", "Ein Seestern lebt im Meer – ein Tier!"], ["der Zahnarzt", "m", "Ein Zahnarzt ist ein Mensch."], ["das Seepferdchen", "t", "Ein Seepferdchen ist ein Fisch – ein Tier, kein Pferd!"], ["die Puppe", "d", "Eine Puppe ist ein Spielzeug – ein Ding."], ["das Gänseblümchen", "p", "Ein Gänseblümchen ist eine Blume."]];
+  const NX_DETECT = [["beim schwimmen hat lea viel spaß. das wasser ist warm.", [1, 3, 5, 7]], ["das lachen der kinder ist laut. alle haben gute laune.", [1, 3, 9]], ["nach dem essen gehen wir in den zoo. dort sehen wir viele affen.", [2, 7, 12]], ["im dunkeln hat der kleine hase angst. seine mama tröstet ihn.", [1, 5, 6, 8]], ["zum frühstück isst ben ein brot mit honig. danach putzt er seine zähne.", [1, 3, 5, 7, 12]], ["das malen macht mia großen spaß. sie malt einen bunten drachen.", [1, 3, 5, 10]], ["am morgen ist die luft frisch. die vögel singen im baum.", [1, 4, 7, 10]]];
+  // Satz-Werkstatt Experte: genau ein Satz ist ganz richtig
+  function satzVariants(sent, nouns) {
+    const w = sent.split(" "), out = [{ label: sent, correct: true }];
+    const v1 = w.slice(); v1[0] = v1[0].charAt(0).toLowerCase() + v1[0].slice(1); out.push({ label: v1.join(" "), wrongText: "Schau auf den Satzanfang!" });
+    const ni = nouns.find(i => i > 0); if (ni != null) { const v2 = w.slice(); v2[ni] = v2[ni].charAt(0).toLowerCase() + v2[ni].slice(1); out.push({ label: v2.join(" "), wrongText: "Ein Nomen ist klein geschrieben!" }); }
+    out.push({ label: sent.replace(/\.$/, ""), wrongText: "Am Ende fehlt etwas!" });
+    const vi = w.findIndex((x, i) => i > 0 && !nouns.includes(i) && /^[a-zäöü]/.test(x)); if (vi > 0) { const v4 = w.slice(); v4[vi] = v4[vi].charAt(0).toUpperCase() + v4[vi].slice(1); out.push({ label: v4.join(" "), wrongText: "Ein Wort ist groß geschrieben, das gar kein Nomen ist!" }); }
+    return [out[0]].concat(shuffle(out.slice(1)).slice(0, 3));
+  }
+
+  const EXPERT = {
+    nomen: {
+      fischen: {
+        task: () => "Wann ist es ein Nomen? Fange nur die Nomen!",
+        intro: () => XI + "Dasselbe Wort kann ein Nomen sein – oder nicht! Steht ein Begleiter davor (das, beim, zum, im), wird es zum Nomen.",
+        ex: () => "<b>das</b> Lachen ✓ · wir lachen ✗", say: () => "Experten-Aufgabe! Dasselbe Wort kann ein Nomen sein oder nicht. Steht ein Begleiter davor, wie das, beim, zum oder im, dann wird es zum Nomen.",
+        build() { const t = shuffle(NX_FISCH_T), f = shuffle(NX_FISCH_F), r = []; for (let i = 0; i < 6; i++) r.push(shuffle([t[i * 2], t[i * 2 + 1], [t[(i * 2 + 7) % 12][0], t[(i * 2 + 7) % 12][1]]].map(x => ({ w: x[0], show: x[1], noun: true })).concat([f[i * 2], f[i * 2 + 1], f[(i * 2 + 7) % 12]].map(x => ({ w: x, noun: false }))))); return r; },
+        render(words, stage) {
+          const pond = el("div", "pond"); let left = words.filter(x => x.noun).length;
+          words.forEach(item => {
+            const b = el("button", "wbub", item.w);
+            b.addEventListener("click", () => {
+              if (b.classList.contains("got") || L.locked) return;
+              if (item.noun) { b.classList.add("got"); b.textContent = item.show; award(b, 1); speak(item.show); left--; if (left === 0) { hint(praise() + " Begleiter davor → Nomen!", true); done(900); } }
+              else { sfxBad(); L.mistakes++; b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); hint(`„${item.w}“ – hier steht kein Begleiter davor. Das ist kein Nomen.`); }
+            });
+            pond.appendChild(b);
+          });
+          stage.appendChild(pond); L.speakNow = () => speak("Fange nur die Nomen.");
+        }
+      },
+      versteckt: {
+        task: () => "Fantasie-Wörter! Welche sind Nomen?",
+        intro: () => XI + "Diese Wörter gibt es gar nicht! Trotzdem kannst du herausfinden, welche Nomen sind: Achte auf die Begleiter.",
+        ex: () => "der <b>glumpf</b> frisst drei <b>plitze</b>.", say: () => "Experten-Aufgabe! Diese Wörter gibt es gar nicht. Trotzdem findest du die Nomen. Achte auf die Begleiter!",
+        build() { return shuffle(NX_FANTASIE).slice(0, 6); },
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, countText: "🫣 Wie viele Nomen findest du?", okText: "Du erkennst sogar Fantasie-Nomen!", extraText: (w) => `„${w}“ ist kein Nomen. Kannst du der, die oder das davor sagen?`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}.`, sayExtra: "" }); }
+      },
+      grossklein: {
+        task: () => "Welche Wörter schreibt man groß?",
+        intro: () => XI + "Satzanfang, Nomen – und Wörter, die durch einen Begleiter zum Nomen werden: das Lachen, beim Schwimmen.",
+        ex: () => "<b>D</b>as <b>L</b>achen der <b>K</b>inder ist laut.", say: () => "Experten-Aufgabe! Schreibe groß: den Satzanfang, die Nomen und Wörter mit Begleiter, wie das Lachen oder beim Schwimmen.",
+        build() { return shuffle(NX_CAPS).slice(0, 7); },
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, okText: "Groß geschrieben wie ein Profi!", extraText: (w) => `„${w}“ schreibe ich klein.`, missText: (m) => m.includes(0) ? "Denk an den Satzanfang!" : "Es fehlt noch etwas. Steht vor einem Wort ein Begleiter wie das, beim oder zum?", sayExtra: "" }); }
+      },
+      artikel: {
+        task: () => "der, die oder das?", intro: () => XI + "Lange Wörter aus drei Teilen! Das letzte Wort entscheidet über den Begleiter. Und: -lein heißt immer das.",
+        ex: () => 'Haifisch + <span class="c-die">die</span> Flosse → <span class="c-die">die</span> Haifischflosse', say: () => "Experten-Aufgabe! Lange Wörter aus drei Teilen. Das letzte Wort entscheidet über den Begleiter.",
+        build() { return shuffle(NX_ART).slice(0, 12); },
+        render(x, stage) { const [w, art, last] = x; stage.appendChild(el("div", "card word-card", `<div class="w"><b id="artSlot"></b>${w}</div>`)); artButtons(stage, { art, word: w, wrongText: () => last.charAt(0) === "-" ? "Wörter mit -lein haben immer das." : lastHint(last) }); L.speakNow = () => speak(w); }
+      },
+      mehrzahl: {
+        task: () => "Wie heißt die Mehrzahl?", intro: () => XI + "Zusammengesetzte Wörter! Wie heißt die Mehrzahl? Tipp: Das letzte Wort zeigt dir den Weg.",
+        ex: () => "der Fuß<b>ball</b> → die Fuß<b>bälle</b>", say: () => "Experten-Aufgabe! Wie heißt die Mehrzahl von zusammengesetzten Wörtern? Das letzte Wort zeigt dir den Weg.",
+        build() { return shuffle(NX_PL).slice(0, 10); },
+        render(x, stage) { const [sg, pl, wrong] = x; stage.appendChild(el("div", "qline", `${sg} → die ?`)); choiceTask(stage, { small: true, opts: [{ label: "die " + pl, correct: true }].concat(wrong.map(wr => ({ label: "die " + wr }))), wrongText: "Sag es laut: ein … , zwei …? Schau auf das letzte Wort!", okText: `${sg} → die ${pl}`, okSpeak: `${sg}, die ${pl}` }); L.speakNow = () => speak(sg + ". Wie heißt die Mehrzahl?"); }
+      },
+      sortieren: {
+        task: () => "In welchen Korb gehört es?", intro: () => XI + "Achtung, Fallen! Ist ein Teddybär ein Tier? Ist ein Schneemann ein Mensch? Denk genau nach!",
+        ex: () => "der Teddybär → ⚽ Ding!", say: () => "Experten-Aufgabe! Achtung, Fallen! Ist ein Teddybär ein Tier? Ist ein Schneemann ein Mensch? Denk genau nach!",
+        build() { return shuffle(NX_SORT).slice(0, 12); },
+        render(x, stage) {
+          const [w, grp, why] = x; stage.appendChild(el("div", "card word-card", `<div class="w" style="font-size:clamp(34px,6vw,52px)">${w}</div>`));
+          const row = el("div", "baskets");
+          Object.keys(GROUPS).forEach(k => { const g = GROUPS[k]; const b = el("button", "basket", `<span class="bi">${g.icon}</span><span class="bn">${g.name}</span>`);
+            b.addEventListener("click", () => { if (L.locked) return; if (k === grp) { b.classList.add("flash"); award(b, 1); speak(w); hint(praise() + " " + why, true); done(2200); } else miss(b, "Denk genau nach: Lebt es wirklich? Oder ist es nur ein Ding?"); });
+            row.appendChild(b); });
+          stage.appendChild(row); L.speakNow = () => speak(w);
+        }
+      },
+      satz: {
+        task: () => "Nur ein Satz ist ganz richtig. Welcher?", intro: () => XI + "Vier Sätze – nur einer ist ganz richtig: Satzanfang groß, Nomen groß, Punkt am Ende.",
+        ex: () => "✅ Am Abend liest Oma ein Buch.", say: () => "Experten-Aufgabe! Vier Sätze, nur einer ist ganz richtig. Achte auf den Satzanfang, die Nomen und den Punkt.",
+        build() { return shuffle(DETECT).slice(0, 8); },
+        render(x, stage) { const [sent, nouns] = x; choiceTask(stage, { small: true, opts: satzVariants(sent, nouns), okText: "Alles richtig geschrieben!", okSpeak: sent, factor: 2 }); L.speakNow = () => speak("Welcher Satz ist ganz richtig geschrieben?"); }
+      },
+      detektiv: {
+        task: () => "Finde alle Nomen im Text!", intro: () => XI + "Ein Text mit zwei Sätzen – alles klein. Achtung: Auch Wörter wie „das Lachen“ sind Nomen. Und nicht jedes erste Wort ist ein Nomen!",
+        ex: () => "beim <b>schwimmen</b> hat <b>lea</b> viel <b>spaß</b>.", say: () => "Experten-Aufgabe! Ein Text mit zwei Sätzen, alles klein. Auch Wörter wie das Lachen sind Nomen. Aber nicht jedes erste Wort ist ein Nomen!",
+        build() { return shuffle(NX_DETECT).slice(0, 6); },
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 3, countText: "🔍 Wie viele Nomen findest du?", okText: "Meister-Detektiv! 🔍", extraText: (w) => `„${w}“ ist kein Nomen.`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}.`, sayExtra: "" }); }
+      }
+    },
+
+    // ----- Lernwörter -----
+    lernwoerter: {
+      salat: {
+        task: () => "Setze die Mehrzahl zusammen!", intro: () => XI + "Jetzt sind es viele! Setze die Mehrzahl des Lernworts zusammen. Achtung: falsche Buchstaben sind dabei.",
+        ex: () => "🚕 → 🚕🚕 die Taxis", say: () => "Experten-Aufgabe! Setze die Mehrzahl des Lernworts zusammen.",
+        build() { return shuffle(LERN).slice(0, 8); },
+        render(x, stage) { const pl = LERN_PL[x.w]; stage.appendChild(el("div", "pic", picHTML(x) + picHTML(x))); stage.appendChild(el("div", "counter", `${x.art} ${x.w} → die …`)); tileTask(stage, { w: pl, art: "die", extra: x.extra.concat(["n", "e"]).slice(0, 3) }, { extra: true, factor: 1, missText: "Wie heißt es, wenn es viele sind?" }); L.speakNow = () => speak(`${x.art} ${x.w}. Und wenn es viele sind?`); }
+      },
+      luecke: {
+        task: () => "Was fehlt im langen Wort?", intro: () => XI + "Die Lernwörter verstecken sich in langen Wörtern! Was gehört in die Lücke?",
+        ex: () => "Stra<b>ß</b>enbahn · Ta<b>x</b>ifahrer", say: () => "Experten-Aufgabe! Die Lernwörter verstecken sich in langen Wörtern. Was gehört in die Lücke?",
+        build() { return shuffle(LW_COMP).slice(0, 9); },
+        render(x, stage) { const [w, g, right, wrong] = x; stage.appendChild(el("div", "gapword", g.replace("_", `<span class="g" id="gapSlot">?</span>`))); choiceTask(stage, { opts: [{ label: right, correct: true }].concat(wrong.map(o => ({ label: o, wrongText: `${g.replace("_", o)}? Das ist falsch. Welches Lernwort steckt darin?` }))), onRight: () => { const sl = $("gapSlot"); if (sl) sl.textContent = right; }, okText: w, okSpeak: w }); L.speakNow = () => speak(w + ". Was fehlt?"); }
+      },
+      blitz: {
+        task: () => "Schreib das Wort aus dem Kopf!", intro: () => XI + "Das Wort blitzt nur ganz kurz auf – und es ist die Mehrzahl! Setze es dann aus dem Kopf zusammen.",
+        ex: () => "⚡ die Kängurus → ✏️", say: () => "Experten-Aufgabe! Das Wort blitzt nur ganz kurz auf, und es ist die Mehrzahl. Setze es aus dem Kopf zusammen.",
+        build() { return shuffle(LERN).slice(0, 7); },
+        render(x, stage) {
+          const pl = LERN_PL[x.w];
+          const showWord = () => { stage.innerHTML = ""; stage.appendChild(el("div", "counter", "👀 Schau genau!")); stage.appendChild(el("div", "flash", "die " + pl)); const bar = el("div", "timebar", "<i></i>"); stage.appendChild(bar);
+            requestAnimationFrame(() => { const i = bar.firstChild; i.style.transitionDuration = "2s"; requestAnimationFrame(() => { i.style.width = "0%"; }); });
+            L.locked = true; const token = L, at = L.pos; setTimeout(() => { if (L !== token || L.pos !== at || current !== "scrPlay") return; L.locked = false; ask(); }, 2000); };
+          const ask = () => { stage.innerHTML = ""; stage.appendChild(el("div", "counter", "die …")); tileTask(stage, { w: pl, art: "die", extra: x.extra.concat(["e", "n"]).slice(0, 4) }, { extra: true, factor: 1, missText: "Wie sah das Wort aus?" }); };
+          showWord(); L.speakNow = () => speak("Schau genau hin und merk dir das Wort.");
+        }
+      },
+      hoeren: {
+        task: () => "Welches lange Wort hast du gehört?", intro: () => XI + "Hör gut zu: ein langes Wort mit einem Lernwort darin. Welches ist richtig geschrieben?",
+        ex: () => "🔊 „Taxifahrer“", say: () => "Experten-Aufgabe! Hör gut zu. Welches lange Wort ist richtig geschrieben?",
+        build() { return shuffle(LW_COMP).slice(0, 8); },
+        render(x, stage) {
+          const [w, g, right, wrong] = x, play = () => speak(w);
+          const h = el("button", "hear", "🔊"); h.setAttribute("aria-label", "Wort anhören"); h.addEventListener("click", play); stage.appendChild(h); setTimeout(play, 350);
+          choiceTask(stage, { small: true, opts: [{ label: w, correct: true }].concat(wrong.slice(0, 3).map(o => ({ label: g.replace("_", o), wrongText: "Hör nochmal genau hin und denk an das Lernwort!" }))), okText: w, okSpeak: w });
+          L.speakNow = play;
+        }
+      },
+      silben: {
+        task: () => "Wo trennst du das lange Wort?", intro: () => XI + "Lange Wörter mit Lernwörtern darin. Setze alle Trennstriche!",
+        ex: () => "Kän | gu | ru | ba | by", say: () => "Experten-Aufgabe! Setze die Trennstriche in langen Wörtern.",
+        build() { return shuffle(LW_SYLX).slice(0, 7).map(z => ({ w: z[0].join(""), syl: z[0], pic: (LERN.find(l => l.w === z[1]) || LERN[0]).pic })); },
+        render(x, stage, d) { LERNLEVELS.find(l => l.id === "silben").render(x, stage, "schwer"); }
+      },
+      memory: {
+        task: () => "Finde Wort und Erklärung!", intro: () => XI + "Finde das Lernwort und die passende Erklärung. Dafür musst du gut lesen!",
+        ex: () => "Taxi ↔ Damit fährt man gegen Geld.", say: () => "Experten-Aufgabe! Finde das Lernwort und die passende Erklärung.",
+        build() { return [{ pairs: shuffle(LW_DEF).slice(0, 8) }]; },
+        score(L) { const p = 8, m = L.moves || 0; const stars = m <= p * 1.6 ? 3 : m <= p * 2.4 ? 2 : 1; return { stars, perfect: stars === 3 }; },
+        render(item, stage) { expertMemory(stage, item.pairs); }
+      }
+    },
+
+    // ----- Leuchtturm-Insel -----
+    leuchtturm: {},
+
+    // ----- Lese-Lagune -----
+    lesen: {
+      anlaut: {
+        task: () => "Welcher Buchstabe fehlt in der Mitte?", intro: () => XI + "Jetzt fehlt ein Buchstabe mitten im Wort! Sprich das Wort langsam.",
+        ex: () => "🍅 To_ate → m", say: () => "Experten-Aufgabe! Jetzt fehlt ein Buchstabe mitten im Wort. Sprich das Wort langsam.",
+        build() { return shuffle(LX_INLAUT).slice(0, 10); },
+        render(x, stage) {
+          const [g, letter, wrong, emo] = x, word = g.replace("_", letter);
+          stage.appendChild(el("div", "emoji-big", emo)); stage.appendChild(el("div", "rcard read", `<div class="rword">${g.replace("_", '<span style="color:var(--gold-edge)">_</span>')}</div>`));
+          const row = el("div", "letters");
+          shuffle([letter].concat(wrong)).forEach(c => { const b = el("button", "letter read", c); b.addEventListener("click", () => { if (L.locked) return; if (c === letter) { b.classList.add("right"); award(b, 1); speak(word); hint(praise() + " " + word, true); done(1300); } else { miss(b, "Sprich das Wort ganz langsam."); setTimeout(() => speak(word), 600); } }); row.appendChild(b); });
+          stage.appendChild(row); L.speakNow = () => speak("Welcher Buchstabe fehlt in der Mitte?");
+        }
+      },
+      silbenschiff: {
+        task: () => "Lege das lange Wort aus Silben!", intro: () => XI + "Sehr lange Wörter mit vier oder fünf Silben – und zwei Silben sind zu viel!",
+        ex: () => "🐞 Ma · ri · en · kä · fer", say: () => "Experten-Aufgabe! Sehr lange Wörter. Zwei Silben sind zu viel.",
+        build() { return shuffle(LX_SILB).slice(0, 7); },
+        render(x, stage) {
+          const [syls, emo] = x, word = syls.join("");
+          stage.appendChild(el("div", "emoji-big", emo));
+          const slots = el("div", "sslots read"); const slotEls = syls.map(() => { const sp = el("div", "sslot", "&nbsp;"); slots.appendChild(sp); return sp; }); stage.appendChild(slots);
+          let pos = 0; const row = el("div", "tiles");
+          shuffle(syls.concat(shuffle(SYL_EXTRA).slice(0, 2))).forEach(sy => { const t = el("button", "stile read", sy);
+            t.addEventListener("click", () => { if (L.locked || t.classList.contains("used")) return; if (sy === syls[pos]) { t.classList.add("used"); slotEls[pos].textContent = sy; pos++; speak(sy); if (pos === syls.length) { award(slots, 1); setTimeout(() => speak(word), 600); hint(praise() + " " + syls.join(" – "), true); done(1700); } } else miss(t, "Lies nochmal: Welche Silbe kommt jetzt?"); });
+            row.appendChild(t); });
+          stage.appendChild(row); L.speakNow = () => speak("Lege das Wort aus den Silben.");
+        }
+      },
+      wortbild: {
+        task: () => "Lies das ganze Wort! Welches Bild passt?", intro: () => XI + "Lange Wörter aus zwei Teilen. Achtung: Die Bilder zeigen auch die einzelnen Teile. Lies das ganze Wort!",
+        ex: () => "Schneemann → ⛄ (nicht ❄️, nicht 👨)", say: () => "Experten-Aufgabe! Lange Wörter aus zwei Teilen. Die Bilder zeigen auch die einzelnen Teile. Lies das ganze Wort!",
+        build() { return shuffle(LX_WB).slice(0, 9); },
+        render(x, stage) { L.tries = 0; const [w, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rword">${w}</div>`)); picChoice(stage, [right].concat(wrong), right, { factor: 1, okSpeak: w, wrongText: "Das ist nur ein Teil des Wortes. Lies das ganze Wort!" }); L.speakNow = () => speak("Lies das ganze Wort. Welches Bild passt?"); }
+      },
+      saetze: {
+        task: () => "Lies den Text und denk mit!", intro: () => XI + "Die Antwort steht nicht direkt im Text. Du musst selbst nachdenken!",
+        ex: () => "Paul zieht eine dicke Jacke an … → ❄️", say: () => "Experten-Aufgabe! Die Antwort steht nicht direkt im Text. Du musst selbst nachdenken.",
+        build() { return shuffle(LX_TEXTE).slice(0, 6); },
+        render(x, stage) { L.tries = 0; const [text, q, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rtext">${text}</div>`)); stage.appendChild(el("div", "counter read", "❓ " + q)); picChoice(stage, [right].concat(wrong), right, { factor: 1, okSpeak: q, helpText: text + " " + q, wrongText: "Lies nochmal und denk nach: Was passt am besten?" }); L.speakNow = () => speak("Lies den Text und denk mit."); }
+      },
+      raetsel: {
+        task: () => "Lies das Rätsel ganz genau. Wer bin ich?", intro: () => XI + "Knifflige Denk-Rätsel! Lies jeden Satz genau.",
+        ex: () => "Ich habe ein Gesicht, aber keine Nase … → ⏰", say: () => "Experten-Aufgabe! Knifflige Denk-Rätsel. Lies jeden Satz genau.",
+        build() { return shuffle(LX_RAETSEL).slice(0, 6); },
+        render(x, stage) { L.tries = 0; const [text, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rtext">${text}<br><b>Wer bin ich?</b></div>`)); picChoice(stage, [right].concat(wrong), right, { factor: 1, helpText: text + " Wer bin ich?", wrongText: "Lies jeden Satz nochmal genau." }); L.speakNow = () => speak("Lies das Rätsel. Wer bin ich?"); }
+      }
+    }
+  };
+
+  // Daten Lernwörter-Experte
+  const LERN_PL = { Xylophon: "Xylophone", Fahrrad: "Fahrräder", Schmetterling: "Schmetterlinge", Quadrat: "Quadrate", Apotheke: "Apotheken", Fotoapparat: "Fotoapparate", "Känguru": "Kängurus", Pyjama: "Pyjamas", Taxi: "Taxis", "Straße": "Straßen" };
+  const LW_COMP = [["Taxifahrer", "Ta_ifahrer", "x", ["ks", "chs", "gs"]], ["Straßenbahn", "Stra_enbahn", "ß", ["s", "ss", "z"]], ["Kängurubaby", "K_ngurubaby", "ä", ["e", "a", "ö"]], ["Schmetterlingsflügel", "Schme_erlingsflügel", "tt", ["t", "d", "dd"]], ["Apothekerin", "Apo_ekerin", "th", ["t", "tt", "d"]], ["Pyjamahose", "P_jamahose", "y", ["ü", "i", "j"]], ["Xylophonspieler", "_ylophonspieler", "X", ["Ks", "Z", "Chs"]], ["Fahrradklingel", "Fa_radklingel", "hr", ["r", "rr", "h"]], ["Fotoapparattasche", "Fotoa_arattasche", "pp", ["p", "b", "bb"]], ["Quadratmuster", "_adratmuster", "Qu", ["Kw", "Kv", "Q"]]];
+  const LW_SYLX = [[["Kän", "gu", "ru", "ba", "by"], "Känguru"], [["Fahr", "rad", "klin", "gel"], "Fahrrad"], [["Stra", "ßen", "bahn"], "Straße"], [["Ta", "xi", "fah", "rer"], "Taxi"], [["Schmet", "ter", "lings", "flü", "gel"], "Schmetterling"], [["A", "po", "the", "ke", "rin"], "Apotheke"], [["Py", "ja", "ma", "ho", "se"], "Pyjama"], [["Xy", "lo", "phon", "spie", "ler"], "Xylophon"]];
+  const LW_DEF = [["Taxi", "Damit fährt man gegen Geld."], ["Apotheke", "Hier kauft man Medizin."], ["Känguru", "Es springt und hat einen Beutel."], ["Quadrat", "Es hat vier gleich lange Seiten."], ["Xylophon", "Man spielt darauf mit Schlägeln."], ["Pyjama", "Den zieht man zum Schlafen an."], ["Fotoapparat", "Damit macht man Bilder."], ["Schmetterling", "Er war vorher eine Raupe."], ["Fahrrad", "Es hat Pedale und zwei Räder."], ["Straße", "Hier fahren die Autos."]];
+
+  // Daten Leuchtturm-Experte: zusammengesetzte Wörter je Thema + neue Endungen
+  const LT_X = {
+    schule: [["Schulranzen", "der", "Ranzen"], ["Federmäppchen", "das", "Mäppchen"], ["Klassenzimmer", "das", "Zimmer"], ["Tafellappen", "der", "Lappen"], ["Malstift", "der", "Stift"], ["Bastelschere", "die", "Schere"], ["Hausaufgabenheft", "das", "Heft"], ["Pausenbrot", "das", "Brot"], ["Turnschuh", "der", "Schuh"], ["Schulglocke", "die", "Glocke"]],
+    essen: [["Apfelsaft", "der", "Saft"], ["Erdbeereis", "das", "Eis"], ["Käsebrot", "das", "Brot"], ["Tomatensuppe", "die", "Suppe"], ["Bananenmilch", "die", "Milch"], ["Schokoladenkuchen", "der", "Kuchen"], ["Frühstücksei", "das", "Ei"], ["Gemüsepizza", "die", "Pizza"], ["Karottensalat", "der", "Salat"], ["Wassermelone", "die", "Melone"]],
+    kleidung: [["Regenjacke", "die", "Jacke"], ["Badehose", "die", "Hose"], ["Winterschuh", "der", "Schuh"], ["Strickmütze", "die", "Mütze"], ["Wollschal", "der", "Schal"], ["Sommerkleid", "das", "Kleid"], ["Gummistiefel", "der", "Stiefel"], ["Schlafanzug", "der", "Anzug"], ["Unterhemd", "das", "Hemd"], ["Sonnenhut", "der", "Hut"]],
+    zuhause: [["Kinderzimmer", "das", "Zimmer"], ["Haustür", "die", "Tür"], ["Küchenfenster", "das", "Fenster"], ["Nachttischlampe", "die", "Lampe"], ["Sofakissen", "das", "Kissen"], ["Badezimmerspiegel", "der", "Spiegel"], ["Hausschlüssel", "der", "Schlüssel"], ["Gartenhaus", "das", "Haus"], ["Babybett", "das", "Bett"], ["Großmutter", "die", "Mutter"]],
+    tiere: [["Goldfisch", "der", "Fisch"], ["Hauskatze", "die", "Katze"], ["Pferdestall", "der", "Stall"], ["Hasenohr", "das", "Ohr"], ["Bienenhonig", "der", "Honig"], ["Vogelnest", "das", "Nest"], ["Schweineschwanz", "der", "Schwanz"], ["Entenküken", "das", "Küken"], ["Kuhglocke", "die", "Glocke"], ["Löwenbaby", "das", "Baby"]],
+    koerper: [["Nasenspitze", "die", "Spitze"], ["Ohrring", "der", "Ring"], ["Zahnbürste", "die", "Bürste"], ["Fußball", "der", "Ball"], ["Augenbraue", "die", "Braue"], ["Daumennagel", "der", "Nagel"], ["Haarband", "das", "Band"], ["Herzschlag", "der", "Schlag"], ["Handtuch", "das", "Tuch"], ["Kniescheibe", "die", "Scheibe"]],
+    tricks: [["Zeitung", "die", "-ung"], ["Wohnung", "die", "-ung"], ["Übung", "die", "-ung"], ["Rechnung", "die", "-ung"], ["Freiheit", "die", "-heit"], ["Gesundheit", "die", "-heit"], ["Kindheit", "die", "-heit"], ["Fröhlichkeit", "die", "-keit"], ["Sauberkeit", "die", "-keit"], ["Büchlein", "das", "-lein"], ["Vöglein", "das", "-lein"], ["Häuschen", "das", "-chen"]]
+  };
+  Object.keys(LT_X).forEach(id => {
+    const tricks = id === "tricks";
+    EXPERT.leuchtturm[id] = {
+      task: () => "der, die oder das?",
+      intro: () => tricks ? XI + "Neue Tricks! Wörter mit -ung, -heit und -keit haben immer die. Wörter mit -chen und -lein haben immer das." : XI + "Lange Wörter ohne Bild! Das letzte Wort entscheidet über den Begleiter.",
+      ex: () => tricks ? 'Zeit<span class="c-die">ung</span> → <span class="c-die">die</span> · Büch<span class="c-das">lein</span> → <span class="c-das">das</span>' : 'Apfel + <span class="c-der">der</span> Saft → <span class="c-der">der</span> Apfelsaft',
+      say: () => tricks ? "Experten-Aufgabe! Neue Tricks. Wörter mit ung, heit und keit haben immer die. Wörter mit chen und lein haben immer das." : "Experten-Aufgabe! Lange Wörter ohne Bild. Das letzte Wort entscheidet über den Begleiter.",
+      build() { return shuffle(LT_X[id]).slice(0, 10); },
+      render(x, stage) {
+        const [w, art, last] = x;
+        stage.appendChild(el("div", "card word-card", `<div class="lk-word"><span id="artSlot"></span>${w}</div>`));
+        artButtons(stage, { art, word: w, wrongText: () => tricks ? "-ung, -heit, -keit → immer die · -chen, -lein → immer das" : lastHint(last) });
+        L.speakNow = () => speak(w);
+      }
+    };
+  });
+
+  // Daten Lese-Experte
+  const LX_INLAUT = [["Ha_e", "s", ["f", "n"], "🐰"], ["To_ate", "m", ["n", "w"], "🍅"], ["Ba_ane", "n", ["m", "l"], "🍌"], ["I_el", "g", ["k", "b"], "🦔"], ["Lö_e", "w", ["f", "v"], "🦁"], ["Ra_ete", "k", ["g", "t"], "🚀"], ["So_ne", "n", ["m", "l"], "☀️"], ["Ti_er", "g", ["k", "d"], "🐯"], ["Ze_ra", "b", ["p", "d"], "🦓"], ["Ga_el", "b", ["p", "d"], "🍴"], ["Ker_e", "z", ["s", "t"], "🕯️"], ["Ki_i", "w", ["v", "f"], "🥝"]];
+  const LX_SILB = [[["Scho", "ko", "la", "de"], "🍫"], [["Re", "gen", "bo", "gen"], "🌈"], [["Ma", "ri", "en", "kä", "fer"], "🐞"], [["Lo", "ko", "mo", "ti", "ve"], "🚂"], [["Ba", "de", "wan", "ne"], "🛁"], [["Di", "no", "sau", "ri", "er"], "🦕"], [["Was", "ser", "me", "lo", "ne"], "🍉"], [["Son", "nen", "blu", "me"], "🌻"], [["Feu", "er", "wehr", "au", "to"], "🚒"]];
+  const LX_WB = [["Schneemann", "⛄", ["❄️", "👨"]], ["Sonnenblume", "🌻", ["☀️", "🌷"]], ["Feuerwehr", "🚒", ["🔥", "🚑"]], ["Marienkäfer", "🐞", ["🐝", "🦗"]], ["Schneeflocke", "❄️", ["⛄", "☁️"]], ["Handschuh", "🧤", ["✋", "👟"]], ["Flugzeug", "✈️", ["🐦", "🚀"]], ["Eisbär", "🐻‍❄️", ["🍦", "🐻"]], ["Hausschuh", "🥿", ["🏠", "👟"]], ["Regenbogen", "🌈", ["🌧️", "🏹"]]];
+  const LX_TEXTE = [
+    ["Paul zieht seine dicke Jacke an. Er setzt eine Mütze auf. Draußen ist alles weiß.", "Welche Jahreszeit ist es?", "❄️", ["☀️", "🍂"]],
+    ["Mia packt Badehose, Handtuch und Sonnencreme ein. Sie freut sich auf das Wasser.", "Wohin geht Mia?", "🏖️", ["🏫", "⛷️"]],
+    ["Opa schreibt einen Zettel: Milch, Brot, Äpfel. Dann nimmt er seinen Korb.", "Was macht Opa gleich?", "🛒", ["🛏️", "⚽"]],
+    ["Lena gähnt. Sie putzt ihre Zähne und zieht den Schlafanzug an.", "Was macht Lena gleich?", "🛏️", ["🏃", "🍕"]],
+    ["Auf dem Tisch stehen ein Kuchen mit Kerzen und viele Geschenke. Alle singen für Ben.", "Was feiert Ben?", "🎂", ["🎄", "🐣"]],
+    ["Die Blätter werden bunt und fallen vom Baum. Es ist windig. Die Kinder lassen Drachen steigen.", "Welche Jahreszeit ist es?", "🍂", ["☀️", "❄️"]],
+    ["Tim hat Bauchweh und Fieber. Er liegt im Bett. Mama ruft beim Arzt an.", "Wie geht es Tim?", "🤒", ["😄", "🤩"]],
+    ["Es donnert und blitzt. Lisa schaut aus dem Fenster. Sie bleibt lieber drinnen.", "Wie ist das Wetter?", "⛈️", ["☀️", "🌈"]]
+  ];
+  const LX_RAETSEL = [
+    ["Ich habe ein Gesicht, aber keine Nase. Ich habe zwei Zeiger, aber keine Finger.", "⏰", ["🙂", "🖐️", "📕"]],
+    ["Je mehr du wegnimmst, desto größer werde ich.", "🕳️", ["🎈", "🍕", "🧱"]],
+    ["Ich habe Blätter, aber ich bin kein Baum. Ich habe einen Rücken, aber keine Beine.", "📕", ["🌳", "🪑", "🐢"]],
+    ["Ich habe viele Tasten, aber ich bin kein Computer. Wenn man mich drückt, mache ich Musik.", "🎹", ["💻", "📱", "🥁"]],
+    ["Ich komme jede Nacht, aber nie am Tag. Manchmal bin ich ganz rund, manchmal nur halb.", "🌙", ["☀️", "⭐", "💡"]],
+    ["Ich habe Flügel, aber ich bin kein Vogel. Ich habe keine Federn. Viele Menschen sitzen in mir.", "✈️", ["🦋", "🐦", "🎈"]],
+    ["Ich habe Zähne, aber ich kann nicht beißen. Ich mache aus Holz kleine Stücke.", "🪚", ["🦈", "🐶", "🔨"]]
+  ];
+
+  // Experten-Version an die Inseln hängen
+  CHAPTERS.forEach(ch => ch.levels.forEach(lv => { const x = (EXPERT[ch.id] || {})[lv.id]; if (x) lv.expert = x; }));
+  const view = (lv, d) => (d === "experte" && lv.expert) ? Object.assign({}, lv, lv.expert) : lv;
+
+
   const skey = (ch, li, d) => `${ch.id}:${ch.levels[li].id}:${d}`;
   const pkey = (ch, li) => `${ch.id}:${ch.levels[li].id}`;
   const lidx = (ch, id) => ch.levels.findIndex(l => l.id === id);
@@ -1806,7 +2113,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     Object.keys(S.stars).forEach(k => { const m = k.match(/^nomen:(\d):(\w+)$/); if (m) { S.stars[`nomen:${old[+m[1]]}:${m[2]}`] = S.stars[k]; delete S.stars[k]; changed = true; } });
     Object.keys(S.perfect).forEach(k => { const m = k.match(/^nomen:(\d)$/); if (m) { S.perfect[`nomen:${old[+m[1]]}`] = true; delete S.perfect[k]; changed = true; } });
     if (S.total == null) { S.total = S.coins; changed = true; }
-    if (!S.aqua) { S.aqua = {}; changed = true; }
+    if (!Array.isArray(S.aqua)) { S.aqua = []; changed = true; }
     if (changed) save();
   })();
   const islandDone = (ch, li) => DK.some(d => S.stars[skey(ch, li, d)] > 0);
@@ -1841,7 +2148,18 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     anker: `<circle cx="50" cy="18" r="8" fill="none" stroke="#6c757d" stroke-width="7"/><path d="M50 26 L50 84 M34 38 L66 38 M18 64 Q22 84 50 84 Q78 84 82 64" fill="none" stroke="#6c757d" stroke-width="8" stroke-linecap="round"/><path d="M12 66 L18 56 L24 66 Z M76 66 L82 56 L88 66 Z" fill="#6c757d" stroke="#6c757d" stroke-width="3" stroke-linejoin="round"/>`,
     burg: `<path d="M14 90 L14 50 L22 50 L22 44 L30 44 L30 50 L38 50 L38 30 L46 30 L46 24 L54 24 L54 30 L62 30 L62 50 L70 50 L70 44 L78 44 L78 50 L86 50 L86 90 Z" fill="#f2cc8f" ${OL}/><path d="M42 90 L42 74 Q50 64 58 74 L58 90 Z" fill="#8a5a2b" ${OL}/><rect x="46" y="38" width="8" height="10" rx="4" fill="#17324a"/><path d="M50 24 L50 8 L62 12 L50 16" fill="#e63946" ${OL}/>`,
     krone: `<path d="M14 78 L10 34 L32 54 L50 22 L68 54 L90 34 L86 78 Z" fill="#ffd60a" ${OL}/><rect x="14" y="72" width="72" height="12" rx="4" fill="#f4a261" ${OL}/><circle cx="50" cy="56" r="6" fill="#e63946" ${OL}/><circle cx="30" cy="64" r="4.5" fill="#3a86ff" ${OL}/><circle cx="70" cy="64" r="4.5" fill="#2a9d8f" ${OL}/>${SHINE(36, 46, 6, 3)}`,
-    schatztruhe: `<path d="M12 50 L88 50 L88 88 L12 88 Z" fill="#a0522d" ${OL}/><path d="M12 50 Q12 26 50 26 Q88 26 88 50 Z" fill="#c0703a" ${OL}/>${[[26, 46], [40, 42], [56, 42], [70, 46], [48, 34], [33, 38], [64, 37]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="#ffd60a" ${OL}/>`).join("")}<rect x="12" y="50" width="76" height="8" fill="#ffd166" ${OL}/><rect x="44" y="56" width="12" height="14" rx="3" fill="#ffd166" ${OL}/><path d="M30 64 L30 84 M70 64 L70 84" stroke="#6b3a1e" stroke-width="3"/>`
+    schatztruhe: `<path d="M12 50 L88 50 L88 88 L12 88 Z" fill="#a0522d" ${OL}/><path d="M12 50 Q12 26 50 26 Q88 26 88 50 Z" fill="#c0703a" ${OL}/>${[[26, 46], [40, 42], [56, 42], [70, 46], [48, 34], [33, 38], [64, 37]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="#ffd60a" ${OL}/>`).join("")}<rect x="12" y="50" width="76" height="8" fill="#ffd166" ${OL}/><rect x="44" y="56" width="12" height="14" rx="3" fill="#ffd166" ${OL}/><path d="M30 64 L30 84 M70 64 L70 84" stroke="#6b3a1e" stroke-width="3"/>`,
+    schnecke: `<path d="M12 82 Q16 70 34 70 L80 70 Q92 70 90 82 Z" fill="#cdb4db" ${OL}/><path d="M80 70 L84 52 M88 70 L95 55" stroke="#17324a" stroke-width="3" stroke-linecap="round"/><circle cx="84" cy="50" r="4" fill="#17324a"/><circle cx="95" cy="53" r="4" fill="#17324a"/><circle cx="46" cy="50" r="27" fill="#f4a261" ${OL}/><path d="M46 50 m-4 0 a4 4 0 1 1 8 0 a9 9 0 1 1 -18 0 a14 14 0 1 1 28 0 a19 19 0 1 1 -38 0" fill="none" stroke="#c2410c" stroke-width="3.5" stroke-linecap="round"/>${SHINE(36, 34, 6, 3)}`,
+    seeigel: `${[150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345, 0, 15, 30].map(a => { const c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180); return `<path d="M${50 + c * 24} ${62 + s * 24} L${50 + c * 44} ${62 + s * 44}" stroke="#3c096c" stroke-width="4" stroke-linecap="round"/>`; }).join("")}<ellipse cx="50" cy="64" rx="30" ry="24" fill="#7b2cbf" ${OL}/>${SHINE(40, 52, 8, 3)}${EYE(41, 62, 4.5)}${EYE(59, 62, 4.5)}<path d="M44 72 Q50 77 56 72" fill="none" ${OL}/>`,
+    hummer: `<path d="M6 50 L18 38 L20 50 L18 62 Z" fill="#e63946" ${OL}/>${[24, 34, 44].map((x, i) => `<ellipse cx="${x}" cy="50" rx="7" ry="${10 + i}" fill="#e63946" ${OL}/>`).join("")}<path d="M66 42 L80 31 M66 58 L80 69" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><path d="M76 30 Q86 12 97 23 L87 28 L95 34 Q86 41 76 30 Z" fill="#e63946" ${OL}/><path d="M76 70 Q86 88 97 77 L87 72 L95 66 Q86 59 76 70 Z" fill="#e63946" ${OL}/><ellipse cx="60" cy="50" rx="15" ry="13" fill="#e63946" ${OL}/>${SHINE(56, 44, 6, 3)}${EYE(66, 45, 4)}`,
+    muraene: `<path d="M8 76 Q24 44 44 62 Q62 80 78 52" fill="none" stroke="#17324a" stroke-width="21" stroke-linecap="round"/><path d="M8 76 Q24 44 44 62 Q62 80 78 52" fill="none" stroke="#7cb518" stroke-width="15" stroke-linecap="round"/>${[[16, 64], [30, 54], [46, 64], [60, 70]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#4f772d"/>`).join("")}<ellipse cx="83" cy="44" rx="14" ry="11" fill="#7cb518" ${OL}/><path d="M88 50 L97 51" stroke="#17324a" stroke-width="3" stroke-linecap="round"/>${EYE(84, 40, 3.8)}`,
+    pinguin: `<path d="M28 52 Q16 66 24 78" fill="#22303c" ${OL}/><ellipse cx="48" cy="55" rx="25" ry="33" fill="#22303c" ${OL}/><ellipse cx="54" cy="62" rx="15" ry="23" fill="#ffffff"/><path d="M64 37 L81 41 L64 46 Z" fill="#ff9f1c" ${OL}/>${EYE(57, 33, 4.2)}<path d="M38 87 L30 94 L48 94 Z M58 87 L52 94 L69 94 Z" fill="#ff9f1c" ${OL}/>${SHINE(40, 34, 6, 3)}`,
+    regenbogenfisch: `<defs><clipPath id="rbclip"><ellipse cx="55" cy="50" rx="33" ry="21"/></clipPath></defs><path d="M24 50 L6 32 L10 50 L6 68 Z" fill="#c77dff" ${OL}/><g clip-path="url(#rbclip)">${["#ff595e", "#ffca3a", "#8ac926", "#1982c4", "#6a4c93"].map((c, i) => `<rect x="${22 + i * 14}" y="20" width="14" height="60" fill="${c}"/>`).join("")}</g><ellipse cx="55" cy="50" rx="33" ry="21" fill="none" ${OL}/>${SHINE(52, 39, 12, 4)}${EYE(76, 45)}<path d="M88 18 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 Z" fill="#fff" stroke="#ffd60a" stroke-width="1.5"/>`,
+    narwal: `<path d="M86 44 L99 22" stroke="#f1e3c6" stroke-width="6" stroke-linecap="round"/><path d="M88 41 L97 26" stroke="#c9b48a" stroke-width="2" stroke-dasharray="3 3"/><path d="M14 56 Q16 32 50 32 Q82 32 90 52 Q88 72 54 74 Q30 74 22 66 L6 76 L10 58 Z" fill="#a8dadc" ${OL}/>${[[34, 44], [48, 40], [42, 54], [60, 46], [56, 60]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#6c9aa1"/>`).join("")}${SHINE(44, 38, 10, 3)}${EYE(73, 48, 4.5)}`,
+    leuchtqualle: `<circle cx="50" cy="42" r="42" fill="#caf0f8" opacity=".6"/>${[28, 41, 54, 67].map((x, i) => `<path d="M${x} 52 q${i % 2 ? 6 : -6} 10 0 20 q${i % 2 ? -6 : 6} 10 0 20" fill="none" stroke="#48cae4" stroke-width="5" stroke-linecap="round"/>`).join("")}<path d="M18 52 Q18 16 50 16 Q82 16 82 52 Q74 58 66 52 Q58 58 50 52 Q42 58 34 52 Q26 58 18 52 Z" fill="#90e0ef" ${OL}/>${SHINE(40, 28, 10, 5)}${EYE(40, 38, 4.5)}${EYE(60, 38, 4.5)}<path d="M45 45 Q50 49 55 45" fill="none" ${OL}/><path d="M84 12 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z M14 22 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z" fill="#fff"/>`,
+    vulkan: `<circle cx="50" cy="22" r="6" fill="none" stroke="#fff" stroke-width="3"/><circle cx="40" cy="11" r="4" fill="none" stroke="#fff" stroke-width="3"/><circle cx="60" cy="7" r="5" fill="none" stroke="#fff" stroke-width="3"/><path d="M8 94 L36 36 L64 36 L92 94 Z" fill="#8d6e63" ${OL}/><path d="M36 36 Q50 46 64 36 L58 50 Q50 56 42 50 Z" fill="#ff7b00" ${OL}/><path d="M46 52 Q42 64 48 76" stroke="#ff7b00" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M22 80 Q30 74 38 80 M62 70 Q70 66 76 72" fill="none" stroke="#6d4c41" stroke-width="3" stroke-linecap="round"/>`,
+    schiffswrack: `<g transform="rotate(-10 50 60)"><path d="M50 56 L50 16" stroke="#5b3a1a" stroke-width="5" stroke-linecap="round"/><path d="M50 20 L74 28 L66 32 L72 36 L50 42 Z" fill="#e9e1d1" ${OL}/><path d="M8 56 L92 56 L82 82 L20 82 Z" fill="#8a5a2b" ${OL}/><path d="M8 56 L92 56" stroke="#5b3a1a" stroke-width="4"/>${[28, 46, 64].map(x => `<circle cx="${x}" cy="67" r="5.5" fill="#264653" ${OL}/>`).join("")}<path d="M74 60 L70 70 L76 74 L72 82" fill="none" stroke="#17324a" stroke-width="2.5"/></g><path d="M22 94 Q16 78 24 66 Q30 56 24 46" fill="none" stroke="#52b788" stroke-width="7" stroke-linecap="round"/>`,
+    goldnemo: `<path d="M84 10 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 Z M14 14 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z" fill="#fff3b0"/><rect x="26" y="80" width="48" height="14" rx="3" fill="#8a5a2b" ${OL}/><rect x="36" y="66" width="28" height="14" fill="#ffd166" ${OL}/><path d="M48 34 L56 14 L64 35 Z" fill="#ffd60a" ${OL}/><path d="M12 50 Q28 30 60 32 Q82 34 94 46 Q82 56 60 58 Q36 62 22 56 L8 66 L10 52 Z" fill="#ffd60a" ${OL}/><path d="M70 50 L74 54 L78 50 L82 54" fill="none" stroke="#17324a" stroke-width="2.5" stroke-linejoin="round"/>${SHINE(44, 40, 12, 4)}${EYE(78, 42, 4)}`
   };
   const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] || ""}</svg>`;
   const artURI = (id) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${ART[id] || ""}</svg>`);
@@ -1855,59 +2173,112 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     { id: "goldfisch", n: "Goldfisch", p: 10, k: "swim", c: "tiere", z: 78 },
     { id: "seestern", n: "Seestern", p: 12, k: "deco", c: "tiere", z: 56 },
     { id: "koralle", n: "Koralle", p: 12, k: "deco", c: "deko", z: 90 },
+    { id: "schnecke", n: "Schnecke", p: 14, k: "deco", c: "tiere", z: 60 },
     { id: "clownfisch", n: "Clownfisch", p: 15, k: "swim", c: "tiere", z: 76 },
     { id: "krabbe", n: "Krabbe", p: 15, k: "deco", c: "tiere", z: 62 },
+    { id: "seeigel", n: "Seeigel", p: 16, k: "deco", c: "tiere", z: 60 },
     { id: "doktorfisch", n: "Doktorfisch", p: 18, k: "swim", c: "tiere", z: 80 },
-    { id: "perle", n: "Perle", p: 20, k: "deco", c: "schatz", z: 62 },
     { id: "kugelfisch", n: "Kugelfisch", p: 22, k: "float", c: "tiere", z: 74 },
+    { id: "perle", n: "Perle", p: 25, k: "deco", c: "schatz", z: 62 },
     { id: "qualle", n: "Qualle", p: 25, k: "float", c: "tiere", z: 76 },
-    { id: "anker", n: "Anker", p: 25, k: "deco", c: "deko", z: 84 },
+    { id: "anker", n: "Anker", p: 30, k: "deco", c: "deko", z: 84 },
     { id: "seepferdchen", n: "Seepferdchen", p: 30, k: "float", c: "tiere", z: 74 },
-    { id: "schildkroete", n: "Schildkröte", p: 35, k: "swim", c: "tiere", z: 92 },
-    { id: "krake", n: "Krake", p: 40, k: "float", c: "tiere", z: 86 },
-    { id: "burg", n: "Burg", p: 45, k: "deco", c: "deko", z: 110 },
-    { id: "rochen", n: "Rochen", p: 50, k: "swim", c: "tiere", z: 96 },
-    { id: "delfin", n: "Delfin", p: 60, k: "swim", c: "tiere", z: 104 },
-    { id: "uboot", n: "U-Boot", p: 70, k: "swim", c: "deko", z: 104 },
-    { id: "krone", n: "Krone", p: 80, k: "deco", c: "schatz", z: 70 },
-    { id: "wal", n: "Wal", p: 90, k: "swim", c: "tiere", z: 130 },
-    { id: "schatztruhe", n: "Schatztruhe", p: 120, k: "deco", c: "schatz", z: 98 }
+    { id: "schildkroete", n: "Schildkröte", p: 40, k: "swim", c: "tiere", z: 92 },
+    { id: "krake", n: "Krake", p: 45, k: "float", c: "tiere", z: 86 },
+    { id: "hummer", n: "Hummer", p: 50, k: "deco", c: "tiere", z: 84 },
+    { id: "burg", n: "Burg", p: 55, k: "deco", c: "deko", z: 110 },
+    { id: "muraene", n: "Muräne", p: 60, k: "swim", c: "tiere", z: 104 },
+    { id: "rochen", n: "Rochen", p: 60, k: "swim", c: "tiere", z: 96 },
+    { id: "pinguin", n: "Pinguin", p: 70, k: "swim", c: "tiere", z: 84 },
+    { id: "delfin", n: "Delfin", p: 80, k: "swim", c: "tiere", z: 104 },
+    { id: "uboot", n: "U-Boot", p: 95, k: "swim", c: "deko", z: 104 },
+    { id: "krone", n: "Krone", p: 110, k: "deco", c: "schatz", z: 70 },
+    { id: "wal", n: "Wal", p: 125, k: "swim", c: "tiere", z: 130 },
+    { id: "leuchtqualle", n: "Leuchtqualle", p: 135, k: "float", c: "tiere", z: 88 },
+    { id: "regenbogenfisch", n: "Regenbogenfisch", p: 150, k: "swim", c: "tiere", z: 86 },
+    { id: "narwal", n: "Narwal", p: 170, k: "swim", c: "tiere", z: 130 },
+    { id: "schatztruhe", n: "Schatztruhe", p: 180, k: "deco", c: "schatz", z: 98 },
+    { id: "vulkan", n: "Blubber-Vulkan", p: 200, k: "deco", c: "deko", z: 124 },
+    { id: "schiffswrack", n: "Schiffswrack", p: 240, k: "deco", c: "deko", z: 150 },
+    { id: "goldnemo", n: "Goldener Nemo", p: 300, k: "deco", c: "schatz", z: 104 }
   ];
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
-  const owned = (w) => !!(S.aqua && S.aqua[w.id]);
+  const MAX_EACH = 5;
+  const countOf = (w) => (S.aqua || []).filter(a => a.id === w.id).length;
+  const owned = (w) => countOf(w) > 0;
   const aquaCount = () => SHOP.filter(owned).length;
-  let newbie = null;
+  const shopItem = (id) => SHOP.find(w => w.id === id);
+  let newbie = null, editMode = false;
   function renderStat() {
     const n = aquaCount(), box = $("aqStat");
     const next = SHOP.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
-    const can = SHOP.some(w => !owned(w) && S.coins >= w.p);
-    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} gesammelt</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
-      (n === SHOP.length ? `<div class="aq-goal can">👑 Wow! Du hast alles gesammelt!</div>` :
-       can ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
+    const canNew = SHOP.some(w => !owned(w) && S.coins >= w.p);
+    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} Arten · ${S.aqua.length} Sachen im Aquarium</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
+      (n === SHOP.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
+       canNew ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
        `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
+    const tools = el("div", "aq-tools");
+    if (S.aqua.length) {
+      const eb = el("button", "big-btn" + (editMode ? "" : " ghost"), editMode ? "✅ Fertig" : "✋ Einrichten");
+      eb.addEventListener("click", () => { editMode = !editMode; renderStat(); renderTank(); if (editMode) speak("Zieh deine Sachen mit dem Finger an ihren Platz."); });
+      tools.appendChild(eb);
+      if (editMode) tools.appendChild(el("span", "aq-hint", "👆 Zieh deine Sachen mit dem Finger an ihren Platz!"));
+    }
+    box.appendChild(tools);
   }
+  function tankH() { const t = $("tank"); return (t && t.clientHeight) || 360; }
   function renderTank() {
     const t = $("tank");
+    t.classList.toggle("edit", editMode);
     t.innerHTML = `<div class="rays"></div><div class="item bgplant" style="left:2%">${artSVG("seegras")}</div><div class="item bgplant" style="right:3%">${artSVG("seegras")}</div><div class="gravel"></div>`;
     for (let i = 0; i < 6; i++) { const b = el("span", "tb"); b.style.left = (8 + i * 16) + "%"; b.style.animationDuration = (4 + (i % 3)) + "s"; b.style.animationDelay = (-i * 1.3) + "s"; t.appendChild(b); }
-    const own = SHOP.filter(owned);
-    own.filter(w => w.k === "deco").sort((a, b) => b.z - a.z).forEach(w => {
-      const pos = S.aqua[w.id], it = el("div", "item deco" + (newbie === w.id ? " newbie" : ""), artSVG(w.id));
-      it.style.left = pos.x + "%"; it.style.width = it.style.height = w.z + "px"; t.appendChild(it);
-    });
-    own.filter(w => w.k === "float").forEach(w => {
-      const pos = S.aqua[w.id], it = el("div", "item float" + (newbie === w.id ? " newbie" : ""), artSVG(w.id));
-      it.style.left = pos.x + "%"; it.style.top = (8 + pos.y * 0.5) + "%"; it.style.width = it.style.height = w.z + "px"; it.style.animationDelay = (-pos.d) + "s"; t.appendChild(it);
-    });
-    const swimmer = (inner, size, top, secs, delay, rev, isNew) => {
-      const it = el("div", "item swim" + (isNew ? " newbie" : ""), `<div class="flip${rev ? " rev" : ""}">${inner}</div>`);
-      it.style.setProperty("--t", secs + "s"); it.style.setProperty("--w", size + "px");
-      it.style.width = it.style.height = size + "px"; it.style.top = top + "%"; it.style.animationDelay = it.firstChild.style.animationDelay = (-delay) + "s";
+    const order = { deco: 0, float: 1, swim: 2 };
+    const list = S.aqua.slice().sort((a, b) => (order[shopItem(a.id).k] - order[shopItem(b.id).k]) || (shopItem(b.id).z - shopItem(a.id).z));
+    list.forEach(a => {
+      const w = shopItem(a.id); if (!w) return;
+      const isNew = newbie === a.uid;
+      let it;
+      if (editMode || w.k !== "swim") {
+        it = el("div", "item placed" + (w.k === "float" && !editMode ? " float" : "") + (isNew ? " newbie" : ""), artSVG(w.id));
+        it.style.left = a.x + "%"; it.style.top = a.y + "%";
+        if (w.k === "float") it.style.animationDelay = (-a.d) + "s";
+      } else {
+        it = el("div", "item swim" + (isNew ? " newbie" : ""), `<div class="flip">${artSVG(w.id)}</div>`);
+        it.style.setProperty("--t", a.t + "s"); it.style.setProperty("--w", w.z + "px");
+        it.style.top = a.y + "%";
+        const delay = -(a.x / 100) * a.t; it.style.animationDelay = it.firstChild.style.animationDelay = delay + "s";
+      }
+      it.style.width = it.style.height = w.z + "px";
+      if (editMode) makeDraggable(it, a, w);
       t.appendChild(it);
-    };
-    own.filter(w => w.k === "swim").forEach(w => { const pos = S.aqua[w.id]; swimmer(artSVG(w.id), w.z, 6 + pos.y * 0.75, pos.t, pos.d, false, newbie === w.id); });
-    swimmer('<div class="nemo-fish">🦈</div>', 76, 34, 16, 3, true, false); // Nemo ist immer da
-    if (!own.length) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
+    });
+    if (!editMode) {
+      const nm = el("div", "item swim", '<div class="flip rev"><div class="nemo-fish">🦈</div></div>');
+      nm.style.setProperty("--t", "16s"); nm.style.setProperty("--w", "76px"); nm.style.width = nm.style.height = "76px"; nm.style.top = "34%";
+      nm.style.animationDelay = nm.firstChild.style.animationDelay = "-3s"; t.appendChild(nm);
+    }
+    if (!S.aqua.length) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
+  }
+  // Einrichten: Sachen mit dem Finger verschieben
+  function makeDraggable(it, a, w) {
+    let start = null;
+    it.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      const r = $("tank").getBoundingClientRect(), ir = it.getBoundingClientRect();
+      start = { dx: e.clientX - (ir.left + ir.width / 2), dy: e.clientY - ir.top, r };
+      it.classList.add("dragging"); try { it.setPointerCapture(e.pointerId); } catch (er) {}
+    });
+    it.addEventListener("pointermove", (e) => {
+      if (!start) return;
+      const r = start.r, wpx = w.z, hpx = w.z;
+      let cx = e.clientX - start.dx - r.left, ty = e.clientY - start.dy - r.top;
+      cx = Math.max(wpx * 0.3, Math.min(r.width - wpx * 0.3, cx));
+      ty = Math.max(-hpx * 0.2, Math.min(r.height - hpx * 0.8, ty));
+      a.x = Math.round(cx / r.width * 1000) / 10; a.y = Math.round(ty / r.height * 1000) / 10;
+      it.style.left = a.x + "%"; it.style.top = a.y + "%";
+    });
+    const end = () => { if (!start) return; start = null; it.classList.remove("dragging"); tone([620], 0.05); save(); };
+    it.addEventListener("pointerup", end); it.addEventListener("pointercancel", end);
   }
   let asking = null;
   function renderShop() {
@@ -1917,13 +2288,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       box.appendChild(el("div", "head s", title));
       const grid = el("div", "shop");
       SHOP.filter(w => w.c === cat).forEach(w => {
-        const has = owned(w), can = !has && S.coins >= w.p, ask = asking === w.id;
-        const b = el("button", "ware" + (has ? " owned" : can ? " can" : " poor") + (ask ? " ask" : ""));
-        b.innerHTML = `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span>` +
-          (has ? `<span class="wp">✓ Im Aquarium</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` :
-           can ? `<span class="wp">Kaufen · ${w.p} <span class="coin sm"></span></span>` : `<span class="wp">🔒 noch ${w.p - S.coins} <span class="coin sm"></span></span>`);
-        b.disabled = has;
-        b.setAttribute("aria-label", has ? `${w.n}, schon im Aquarium` : `${w.n} für ${w.p} Münzen`);
+        const cnt = countOf(w), full = cnt >= MAX_EACH, can = !full && S.coins >= w.p, ask = asking === w.id;
+        const b = el("button", "ware" + (full ? " owned" : can ? " can" : " poor") + (ask ? " ask" : ""));
+        b.innerHTML = (cnt ? `<span class="wcount">${cnt}×</span>` : "") + `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span>` +
+          (full ? `<span class="wp">✓ ${MAX_EACH}× – voll</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` :
+           can ? `<span class="wp">${cnt ? "Noch einen" : "Kaufen"} · ${w.p} <span class="coin sm"></span></span>` : `<span class="wp">🔒 noch ${w.p - S.coins} <span class="coin sm"></span></span>`);
+        b.disabled = full;
+        b.setAttribute("aria-label", `${w.n} für ${w.p} Münzen` + (cnt ? `, schon ${cnt} im Aquarium` : ""));
         b.addEventListener("click", () => buy(w));
         grid.appendChild(b);
       });
@@ -1931,16 +2302,17 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     });
   }
   function buy(w) {
-    if (owned(w)) return;
+    if (countOf(w) >= MAX_EACH) return;
     if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} Münzen. Übe weiter, dann klappt es!`); return; }
     if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
     asking = null;
     S.coins -= w.p;
-    S.aqua[w.id] = { x: Math.round(10 + Math.random() * 80), y: Math.round(5 + Math.random() * 50), t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) };
+    const h = tankH(), uid = Date.now() + "-" + Math.floor(Math.random() * 1e6);
+    const y = w.k === "deco" ? Math.max(30, Math.round(97 - w.z / h * 100 - Math.random() * 3)) : w.k === "float" ? Math.round(8 + Math.random() * 30) : Math.round(6 + Math.random() * 46);
+    S.aqua.push({ uid, id: w.id, x: Math.round(10 + Math.random() * 80), y, t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) });
     save(); setCoins(true); sfxWin(); confetti(["🫧", "✨", "⭐", "🐚"]);
-    newbie = w.id;
+    newbie = uid;
     renderStat(); renderTank(); renderShop();
-    // große Freude: das Neue groß zeigen
     const c = $("buyCard");
     c.innerHTML = `<div class="bnew">🎉 Neu in deinem Aquarium!</div><div class="bart">${artSVG(w.id)}</div><div class="bname">${w.n}</div>`;
     const ok = el("button", "big-btn", "Anschauen 👀");
@@ -1949,7 +2321,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     $("buyPop").hidden = false;
     speak(`Juhu! ${w.n} ist jetzt in deinem Aquarium.`);
   }
-  function renderAqua() { asking = null; newbie = null; renderStat(); renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
+  function renderAqua() { asking = null; newbie = null; editMode = false; renderStat(); renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
 
   /* ---------- Ozean-Karte ---------- */
   const SVGNS = "http://www.w3.org/2000/svg";
@@ -2119,13 +2491,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen");
     const pos = P ? { bay: [300, 890], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [118, 160], lt: [305, 375], w: 600, h: 1040, r: 84 }
                   : { bay: [500, 528], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [165, 112], lt: [500, 215], w: 1000, h: 685, r: 90 };
-    const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * 9} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
+    const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
-    const canBuy = SHOP.some(w => !S.aqua[w.id] && S.coins >= w.p);
+    const canBuy = SHOP.some(w => !owned(w) && S.coins >= w.p);
     const nodes = [
       { x: pos.bay[0], y: pos.bay[1], r: pos.r, icon: "🐠", draw: "reef", subGold: canBuy, grass: "#7fdbe8", label: "Nemos Riff", big: true,
-        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (aquaCount() ? `🐠 ${aquaCount()} von ${SHOP.length} Sachen im Aquarium` : "Sammle Münzen für dein Aquarium!"),
-        items: SHOP.filter(owned).map(w => w.id), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (S.aqua.length ? `🐠 ${S.aqua.length} Sachen im Aquarium` : "Sammle Münzen für dein Aquarium!"),
+        items: S.aqua.slice(-10).map(a => a.id), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
         tap: (i) => swimTo(i, renderAqua) },
       { x: pos.nomen[0], y: pos.nomen[1], r: pos.r, icon: "🐟", label: "Nomen-Inseln", big: true, sub: chapSub(nom),
         deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen", tap: enter(nom) },
@@ -2166,7 +2538,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const nodes = [{ ...lay.pts[0], r: 44 * k, icon: "⚓", label: "Start", grass: "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
     CH.levels.forEach((lv, li) => {
       const st = DK.reduce((a, d) => a + (S.stars[skey(CH, li, d)] || 0), 0);
-      nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/9` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
+      nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/${DK.length * 3}` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
         next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`,
         tap: (i) => { S.at = S.at || {}; S.at[CH.id] = i; save(); swimTo(i, () => islandSheet(li)); } });
     });
@@ -2240,7 +2612,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   /* ---------- level flow ---------- */
   function levelOf(li) { return li === "bonus" ? BONUS : CH.levels[li]; }
   function openIntro(li, d) {
-    const lv = levelOf(li);
+    const lv = li === "bonus" ? BONUS : view(levelOf(li), d);
     $("inIcon").textContent = lv.icon; $("inTitle").textContent = lv.name;
     const badge = $("inBadge");
     if (li === "bonus") { badge.className = "badge bonus"; badge.innerHTML = `🎁 Bonus · 3 <span class="coin sm"></span> pro Aufgabe`; }
@@ -2251,7 +2623,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     show("scrIntro");
   }
   function startLevel(li, d) {
-    const lv = levelOf(li);
+    const lv = li === "bonus" ? BONUS : view(levelOf(li), d);
     L = { li, d, lv, items: lv.build(d), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: li === "bonus" ? 3 : DIFFS[d].mult };
     const badge = $("playBadge");
     if (li === "bonus") { badge.className = "badge bonus"; badge.textContent = "🎁 Bonus"; }
@@ -2338,7 +2710,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     $("certName").textContent = S.name || "Du";
     $("certAward").textContent = (CH.award || "Profi") + "!";
     const d = new Date();
-    $("certInfo").textContent = `${S.coins} Münzen · ${starTotal(CH)} von ${CH.levels.length * 9} Sternen · ${d.toLocaleDateString("de-DE")}`;
+    $("certInfo").textContent = `${S.coins} Münzen · ${starTotal(CH)} von ${CH.levels.length * DK.length * 3} Sternen · ${d.toLocaleDateString("de-DE")}`;
     show("scrCert"); confetti(); sfxWin();
   }
 
