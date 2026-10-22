@@ -350,6 +350,12 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; display: flex; justify-content: center; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); animation: up .25s ease-out; }
 @keyframes up { from { transform: translateY(100%); } }
 .sheet .card { width: min(640px, 100%); box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; position: relative; }
+.vlist { display: grid; gap: 8px; max-height: 46vh; overflow-y: auto; }
+.vopt { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; text-align: left; padding: 12px 16px; border-radius: 16px; background: #fff; border: 3px solid var(--sand-edge); font-size: 20px; font-weight: 800; }
+.vopt.on { border-color: var(--gold); background: #fff6d6; box-shadow: 0 0 0 3px rgba(255,200,40,.35); }
+.vopt .vq { font-size: 15px; font-weight: 800; color: #6b5a3a; white-space: nowrap; }
+.vopt .vq.q3 { color: #1d7a3a; }
+.vtip { font-size: 16px; }
 .sh-top { display: flex; align-items: center; gap: 14px; padding-right: 56px; }
 .sh-ic { font-size: 58px; line-height: 1; }
 .sh-nm { font-size: 30px; font-weight: 900; display: block; }
@@ -473,7 +479,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Grafik</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Stimme</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -805,48 +811,92 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const sfxBad = () => tone([220, 180], 0.16, "triangle");
   const sfxWin = () => tone([523, 659, 784, 1046], 0.14);
 
-  // Stimme: natürlichste deutsche Stimme bevorzugen (Premium/Erweitert), ruhig und langsam.
+  // Stimme: die menschlichste deutsche Stimme des Geräts wählen.
+  // iPad/Mac: „Premium“ > „Erweitert“ > kompakt · Windows/Edge: „Natural“ (neuronal) · Chrome: Google Deutsch.
+  // Gemerkt wird nur die gewählte Stimme dieses Geräts (keine Spielerdaten).
   let voice = null, voices = [];
   const VKEY = "nemo-stimme";
-  const NOVELTY = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Zarvox|Whisper|Jester|Organ|Superstar|Trinoids|Good News|Grandma|Grandpa|Oma|Opa|Rocko|Eddy|Reed|Fred|Ralph|Kathy|Junior|Sandy|Shelley|Flo/i;
-  const NICE = ["Anna", "Petra", "Helena", "Marlene", "Vicki", "Katja", "Hedda", "Google Deutsch", "Yannick", "Markus", "Martin"];
+  const NOVELTY = /Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Wobble|Zarvox|Whisper|Jester|Organ|Superstar|Trinoids|Good News|Grandma|Grandpa|Oma|Opa|Rocko|Eddy|Reed|Fred|Ralph|Kathy|Junior|Sandy|Shelley|Flo\b|eloquence/i;
+  const NICE = ["Seraphina", "Katja", "Amala", "Anna", "Petra", "Helena", "Marlene", "Vicki", "Louisa", "Google Deutsch", "Yannick", "Conrad", "Florian", "Markus", "Martin", "Viktor", "Killian", "Hans"];
+  const vtext = (v) => (v.name || "") + " " + (v.voiceURI || "");
+  const vqual = (v) => { const t = vtext(v); if (/premium|natural|neural/i.test(t)) return 3; if (/enhanced|erweitert|verbessert|google/i.test(t)) return 2; return 1; };
   const vscore = (v) => {
-    let sc = 0;
-    if (/Premium/i.test(v.name)) sc += 50;
-    if (/Erweitert|Enhanced|Natural|Neural|Online/i.test(v.name)) sc += 35;
+    const t = vtext(v); let sc = 0;
+    if (/premium/i.test(t)) sc += 100;
+    if (/natural|neural/i.test(t)) sc += 90;
+    if (/enhanced|erweitert|verbessert/i.test(t)) sc += 60;
+    if (/google/i.test(t)) sc += 30;
+    if (/compact|kompakt/i.test(t)) sc -= 30;
     const i = NICE.findIndex(n => v.name.indexOf(n) !== -1);
     if (i !== -1) sc += 20 - i;
-    if (/de-DE/i.test(v.lang.replace("_", "-"))) sc += 5;
+    if (/de-DE/i.test((v.lang || "").replace("_", "-"))) sc += 5;
     return sc;
   };
+  const vname = (v) => {
+    if (!v) return "Standard";
+    let n = v.name.replace(/^Microsoft\s+/, "").replace(/\s+Online/, "").replace(/\s+-\s+.*$/, "").replace(/^Google\s+Deutsch$/, "Google-Stimme");
+    const u = v.voiceURI || "";
+    if (/premium/i.test(u) && !/premium/i.test(n)) n += " (Premium)";
+    else if (/enhanced/i.test(u) && !/enhanced|erweitert/i.test(n)) n += " (Erweitert)";
+    if (/de-AT/i.test(v.lang)) n += " · Österreich"; else if (/de-CH/i.test(v.lang)) n += " · Schweiz";
+    return n;
+  };
+  const QLABEL = { 3: "⭐⭐⭐ sehr natürlich", 2: "⭐⭐ natürlich", 1: "⭐ einfach" };
+  function setVoiceBtn() { const vb = document.getElementById("voiceBtn"); if (vb) vb.textContent = "🔊 Stimme: " + vname(voice) + " · ändern"; }
   function pickVoice() {
     try {
-      voices = speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang) && !NOVELTY.test(v.name)).sort((a, b) => vscore(b) - vscore(a));
+      voices = speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang) && !NOVELTY.test(vtext(v))).sort((a, b) => vscore(b) - vscore(a));
       let wanted = null; try { wanted = localStorage.getItem(VKEY); } catch (e) {}
-      voice = voices.find(v => v.name === wanted) || voices[0] || null;
-      const vb = document.getElementById("voiceBtn"); if (vb) vb.textContent = "🔊 Stimme: " + (voice ? voice.name : "Standard") + " · ändern";
+      voice = voices.find(v => v.voiceURI === wanted) || voices.find(v => v.name === wanted) || voices[0] || null;
+      setVoiceBtn();
     } catch (e) {}
   }
   try { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } catch (e) {}
+  // Text so vorbereiten, wie ein Mensch ihn vorlesen würde: keine Emojis/Zeichen, Satzende mit Punkt.
+  function sayable(t) {
+    t = String(t == null ? "" : t).replace(/\s*[→➜]\s*/g, ", ")
+      .replace(/[\uD83C-\uDBFF][\uDC00-\uDFFF]|[←-⇿⌀-⏿☀-➿⬀-⯿️‍]/g, " ")
+      .replace(/\s[–—]\s/g, ", ").replace(/[·•]/g, ", ").replace(/_+/g, " … ")
+      .replace(/\s+([,.!?])/g, "$1").replace(/,\s*,/g, ",").replace(/\s+/g, " ").trim();
+    if (t && /[0-9A-Za-zÄÖÜäöüß)]$/.test(t)) t += ".";
+    return t;
+  }
   function speak(text) {
     try {
       speechSynthesis.cancel();
-      // in kurze Stücke teilen: natürlichere Pausen
-      const parts = text.replace(/_+/g, " … ").replace(/([.!?])\s+/g, "$1|").split("|").filter(Boolean); // ohne Lookbehind (ältere iPads)
+      const q = voice ? vqual(voice) : 1, rate = q === 3 ? 0.94 : q === 2 ? 0.92 : 0.9;
+      // in Sätze teilen (ohne Lookbehind – ältere iPads)
+      const parts = sayable(text).replace(/([.!?])\s+/g, "$1|").split("|").filter(Boolean);
       parts.forEach(p => {
         const u = new SpeechSynthesisUtterance(p);
-        u.lang = "de-DE"; u.rate = 0.88; u.pitch = 1.0; u.volume = 1; if (voice) u.voice = voice;
+        u.lang = voice ? voice.lang : "de-DE"; u.rate = rate; u.pitch = 1.0; u.volume = 1; if (voice) u.voice = voice;
         speechSynthesis.speak(u);
       });
     } catch (e) {}
   }
-  function nextVoice() {
-    if (!voices.length) pickVoice();
-    if (!voices.length) { speak("Hallo, ich bin Nemo."); return; }
-    const i = voices.indexOf(voice); voice = voices[(i + 1) % voices.length];
-    try { localStorage.setItem(VKEY, voice.name); } catch (e) {}
-    $("voiceBtn").textContent = "🔊 Stimme: " + voice.name + " · ändern";
-    speak("Hallo, ich bin Nemo. So klinge ich.");
+  const VSAMPLE = "Hallo! Ich bin Nemo. Schön, dass du da bist. Wollen wir zusammen üben?";
+  function openVoiceSheet() {
+    pickVoice();
+    openSheet(c => {
+      sheetTop(c, "🔊", "Stimme wählen", "Tippe eine Stimme an und hör sie dir an.");
+      if (!voices.length) { c.appendChild(el("p", "note", "Auf diesem Gerät wurde keine deutsche Stimme gefunden. Bitte in den Geräte-Einstellungen eine deutsche Stimme laden.")); return; }
+      const list = el("div", "vlist");
+      voices.slice(0, 10).forEach(v => {
+        const b = el("button", "vopt" + (v === voice ? " on" : ""), `<span class="vn">${v === voice ? "✅ " : ""}${vname(v)}</span><span class="vq q${vqual(v)}">${QLABEL[vqual(v)]}</span>`);
+        b.addEventListener("click", () => {
+          voice = v; try { localStorage.setItem(VKEY, v.voiceURI || v.name); } catch (e) {}
+          setVoiceBtn(); speak(VSAMPLE);
+          list.querySelectorAll(".vopt").forEach(x => { x.classList.remove("on"); const n = x.querySelector(".vn"); n.textContent = n.textContent.replace(/^✅ /, ""); });
+          b.classList.add("on"); b.querySelector(".vn").textContent = "✅ " + vname(v);
+        });
+        list.appendChild(b);
+      });
+      c.appendChild(list);
+      const best = Math.max.apply(null, voices.map(vqual));
+      c.appendChild(el("p", "note vtip", best === 3
+        ? "⭐⭐⭐ klingt am menschlichsten."
+        : "💡 Noch natürlicher: Auf dem iPad unter Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Deutsch eine Stimme mit „Premium“ laden (z. B. Anna) und die Seite neu öffnen. Am Windows-Smartboard: Microsoft Edge benutzen – dort gibt es „Natural“-Stimmen."));
+    });
   }
 
   /* ---------- background bubbles ---------- */
@@ -2863,7 +2913,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
   $("certBtn").addEventListener("click", showCert);
-  $("voiceBtn").addEventListener("click", nextVoice);
+  $("voiceBtn").addEventListener("click", openVoiceSheet);
   $("certBack").addEventListener("click", renderMap);
   $("resetBtn").addEventListener("click", () => { $("confirm").hidden = false; });
   $("sheetBack").addEventListener("click", closeSheet);
