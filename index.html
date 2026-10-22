@@ -227,27 +227,54 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .emo-row { font-size: 64px; line-height: 1.1; text-align: center; }
 
 /* aquarium */
-.tank { position: relative; height: clamp(260px, 42vh, 380px); border-radius: 30px; overflow: hidden; border: 8px solid #d9ecf5; box-shadow: 0 10px 28px var(--shadow), inset 0 0 40px rgba(0,40,80,.35); background: linear-gradient(180deg, #8fdcf2 0%, #39a9d6 45%, #1a73a8 100%); }
-.tank .sand { position: absolute; left: 0; right: 0; bottom: 0; height: 22%; background: linear-gradient(180deg, #f3d99b, #e2bd6e); border-top: 4px solid #f7e3b2; }
-.tank .glint { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, rgba(255,255,255,.1) 0 30px, transparent 30px 90px); pointer-events: none; }
-.tank .item { position: absolute; line-height: 1; transform: translateX(-50%); }
-.tank .deco { bottom: 4%; }
-.tank .swim { animation: tswim linear infinite alternate; }
-.tank .swim span { display: inline-block; }
-@keyframes tswim { from { left: 8%; } to { left: 88%; } }
-.tank .swim.flip span { transform: scaleX(-1); }
-.tank .bob2 { animation: bob 3s ease-in-out infinite; }
-.tank .empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--white); font-size: 22px; font-weight: 800; text-shadow: 0 2px 0 var(--deep); text-align: center; padding: 20px; }
-.shop-title { color: var(--white); font-size: 26px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); }
+.aq-stat { background: var(--sand); border-radius: 22px; padding: 12px 18px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); display: flex; flex-direction: column; gap: 8px; }
+.aq-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 19px; font-weight: 800; }
+.aq-bar { flex: 1; min-width: 140px; height: 16px; border-radius: 99px; background: #e9dcc0; overflow: hidden; }
+.aq-bar i { display: block; height: 100%; background: linear-gradient(90deg, #2bb6c9, #52b788); border-radius: 99px; }
+.aq-goal { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: var(--muted); }
+.aq-goal .art-svg { width: 40px; height: 40px; }
+.aq-goal.can { color: #145c2c; }
+.tank { position: relative; height: clamp(280px, 46vh, 420px); border-radius: 30px; overflow: hidden; border: 10px solid #e6f4fa; outline: 4px solid #9cc9dc; box-shadow: 0 12px 30px var(--shadow), inset 0 0 50px rgba(0,40,80,.35);
+  background: radial-gradient(120% 70% at 50% 0%, #bdf0ff 0%, #5cc4e8 40%, #1f86bd 80%, #146a9a 100%); }
+.tank .rays { position: absolute; inset: 0; background: repeating-linear-gradient(105deg, rgba(255,255,255,.16) 0 26px, transparent 26px 80px); mask-image: linear-gradient(180deg, #000, transparent 75%); -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%); pointer-events: none; }
+.tank .gravel { position: absolute; left: 0; right: 0; bottom: 0; height: 17%; background: radial-gradient(circle at 20% 40%, #f4a261 0 5px, transparent 6px) 0 0/34px 22px, radial-gradient(circle at 70% 60%, #e9c46a 0 4px, transparent 5px) 0 0/26px 18px, radial-gradient(circle at 50% 50%, #ffb4a2 0 3px, transparent 4px) 0 0/20px 16px, linear-gradient(180deg, #f6dfa9, #e4bf74); border-top: 4px solid #fbe9c0; }
+.tank .bgplant { position: absolute; bottom: 8%; width: 130px; height: 170px; opacity: .3; filter: saturate(.6); }
+.tank .item { position: absolute; line-height: 0; }
+.tank .item svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 6px 6px rgba(0,30,60,.25)); }
+.tank .deco { bottom: 3%; transform: translateX(-50%); }
+.tank .swim { animation: tswim var(--t) linear infinite alternate; }
+@keyframes tswim { from { left: 2%; } to { left: calc(98% - var(--w)); } }
+.tank .flip { width: 100%; height: 100%; animation: tflip calc(var(--t) * 2) steps(1, end) infinite; }
+@keyframes tflip { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
+.tank .flip.rev { animation-name: tflipr; }
+@keyframes tflipr { 0% { transform: scaleX(-1); } 50% { transform: scaleX(1); } }
+.tank .float { animation: bob 3.4s ease-in-out infinite; transform: translateX(-50%); }
+.tank .nemo-fish { font-size: 70px; line-height: 1; }
+.tank .tb { position: absolute; bottom: 12%; width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(255,255,255,.8); background: rgba(255,255,255,.2); animation: tbub linear infinite; }
+@keyframes tbub { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(-340px) translateX(12px); opacity: 0; } }
+.tank .newbie svg { filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 22px var(--gold)); }
+.tank .empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--white); font-size: 23px; font-weight: 800; text-shadow: 0 2px 0 var(--deep); text-align: center; padding: 20px; }
+.shop-title { color: var(--white); font-size: 26px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); margin-top: 6px; }
 .shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-.ware { background: var(--sand); border-radius: 22px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); text-align: center; }
-.ware .wi { font-size: 48px; line-height: 1; }
+.ware { background: var(--sand); border-radius: 22px; padding: 12px 8px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); text-align: center; border: 3px solid transparent; }
+.ware .wart { width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffffff, #cdeffd 70%); display: grid; place-items: center; box-shadow: inset 0 -4px 0 rgba(0,60,100,.08); }
+.ware .wart svg { width: 80px; height: 80px; }
 .ware .wn { font-size: 18px; font-weight: 900; }
-.ware .wp { font-size: 18px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
+.ware .wp { font-size: 16px; font-weight: 900; display: flex; align-items: center; gap: 6px; min-height: 26px; }
+.ware.can { border-color: var(--gold); box-shadow: 0 5px 0 var(--gold-edge), 0 0 18px rgba(255,215,94,.7); }
+.ware.can .wp { background: var(--gold); border-radius: 99px; padding: 2px 12px; }
 .ware.owned { background: #e3f6e8; box-shadow: 0 5px 0 #a9dcb7; }
-.ware.poor { opacity: .55; }
-.ware.ask { background: #fff0c2; box-shadow: 0 5px 0 var(--gold-edge); }
+.ware.owned .wp { color: #145c2c; }
+.ware.poor .wart svg { filter: grayscale(.75) opacity(.55); }
+.ware.poor .wp { color: var(--muted); }
+.ware.ask { background: #fff0c2; border-color: var(--gold-edge); animation: nbob 1s ease-in-out infinite; }
 .ware:active:not(:disabled) { transform: translateY(3px); }
+.buy-card { max-width: 420px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.buy-card .bart { width: 200px; height: 200px; animation: pop-in .7s cubic-bezier(.3,1.6,.5,1) both; }
+.buy-card .bart svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 12px var(--shadow)); }
+.buy-card .bnew { font-size: 22px; font-weight: 900; color: var(--muted); }
+.buy-card .bname { font-size: 38px; font-weight: 900; }
+@keyframes pop-in { 0% { transform: scale(.2) rotate(-20deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
 .aqua-card { background: linear-gradient(180deg, #8fdcf2, #39a9d6); color: var(--white); text-shadow: 0 2px 0 var(--deep); }
 .aqua-card .sb { color: #eaf8ff; }
 .ver { color: rgba(255,255,255,.6); font-size: 14px; align-self: center; }
@@ -398,15 +425,15 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Riff</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Aquarium</span></div>
   </section>
 
   <!-- AQUARIUM -->
   <section class="screen" id="scrAqua" hidden>
     <div class="head l">🐠 Nemos Aquarium</div>
+    <div class="aq-stat" id="aqStat"></div>
     <div class="tank" id="tank"></div>
-    <div class="shop-title">🛒 Laden – tippe zweimal zum Kaufen</div>
-    <div class="shop" id="shop"></div>
+    <div id="shop"></div>
   </section>
 
   <!-- CHAPTER MAP -->
@@ -473,6 +500,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 </div>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
+<div class="overlay" id="buyPop" hidden><div class="card buy-card" id="buyCard"></div></div>
 <div class="sheet-back" id="sheetBack" hidden></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"><div class="card" id="sheetCard"></div></div>
 <div class="overlay" id="confirm" hidden>
@@ -1786,70 +1814,142 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const bonusOpen = (ch) => ch.levels.length > 0 && perfectCount(ch) === ch.levels.length;
   const starTotal = (ch) => ch.levels.reduce((a, _, li) => a + DK.reduce((b, d) => b + (S.stars[skey(ch, li, d)] || 0), 0), 0);
 
+  // Bilder für den Laden: eigene Zeichnungen, alle im gleichen Stil, Tiere schauen nach rechts
+  const OL = 'stroke="#17324a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  const EYE = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r || 6}" fill="#fff" ${OL}/><circle cx="${x + 1.2}" cy="${y}" r="${(r || 6) * 0.45}" fill="#17324a"/>`;
+  const SHINE = (x, y, rx, ry) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#fff" opacity=".45"/>`;
+  const ART = {
+    goldfisch: `<path d="M24 50 L6 32 L10 50 L6 68 Z" fill="#ff8c1a" ${OL}/><path d="M42 31 Q54 14 68 31" fill="#ff8c1a" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="21" fill="#ffb703" ${OL}/>${SHINE(50, 40, 12, 4)}<path d="M50 56 Q56 66 46 68" fill="#ff8c1a" ${OL}/>${EYE(74, 45)}<path d="M84 56 Q87 58 84 60" fill="none" ${OL}/>`,
+    clownfisch: `<path d="M24 50 L8 34 L11 50 L8 66 Z" fill="#ff7b00" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="20" fill="#ff7b00" ${OL}/><path d="M40 31 Q35 50 40 69 L49 70 Q44 50 49 30 Z" fill="#fff" ${OL}/><path d="M64 31 Q60 50 64 69 L71 68 Q67 50 71 32 Z" fill="#fff" ${OL}/>${SHINE(52, 39, 8, 3)}${EYE(78, 45, 5.5)}`,
+    doktorfisch: `<path d="M22 50 L6 34 L9 50 L6 66 Z" fill="#ffd60a" ${OL}/><path d="M22 50 Q30 22 58 22 Q86 24 90 50 Q86 76 58 78 Q30 78 22 50 Z" fill="#3a86ff" ${OL}/><path d="M34 40 Q52 30 66 40 Q54 48 40 58 Q30 52 34 40 Z" fill="#17324a"/>${SHINE(58, 30, 10, 3)}${EYE(76, 44)}`,
+    kugelfisch: `<path d="M22 52 L8 40 L10 52 L8 64 Z" fill="#f4a261" ${OL}/>${[0, 40, 80, 120, 160, 200, 240, 280, 320].map(a => { const r1 = 30, r2 = 39, c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180); return `<path d="M${54 + c * r1 - s * 4} ${52 + s * r1 + c * 4} L${54 + c * r2} ${52 + s * r2} L${54 + c * r1 + s * 4} ${52 + s * r1 - c * 4} Z" fill="#e9c46a" ${OL}/>`; }).join("")}<circle cx="54" cy="52" r="30" fill="#ffd166" ${OL}/><path d="M34 62 Q54 78 74 62 Q54 70 34 62 Z" fill="#fff3c4"/>${SHINE(46, 36, 9, 4)}${EYE(66, 46, 6.5)}<circle cx="80" cy="56" r="3" fill="#17324a"/>`,
+    qualle: `${[28, 41, 54, 67].map((x, i) => `<path d="M${x} 52 q${i % 2 ? 6 : -6} 10 0 20 q${i % 2 ? -6 : 6} 10 0 20" fill="none" stroke="#ff8fab" stroke-width="5" stroke-linecap="round"/>`).join("")}<path d="M18 52 Q18 16 50 16 Q82 16 82 52 Q74 58 66 52 Q58 58 50 52 Q42 58 34 52 Q26 58 18 52 Z" fill="#ffafcc" ${OL}/>${SHINE(40, 28, 10, 5)}${EYE(40, 38, 4.5)}${EYE(60, 38, 4.5)}<path d="M45 45 Q50 49 55 45" fill="none" ${OL}/>`,
+    seepferdchen: `<path d="M48 18 Q66 16 66 34 Q66 44 58 50 Q72 60 64 76 Q58 90 46 86 Q36 82 42 72 Q48 77 52 70 Q48 60 42 52 Q34 42 38 30 Q42 18 48 18 Z" fill="#ffd60a" ${OL}/><path d="M64 29 L82 26 L82 33 L64 37 Z" fill="#ffd60a" ${OL}/><path d="M38 34 L28 30 L34 42 Z" fill="#f4a261" ${OL}/>${[44, 54, 62].map(y => `<path d="M${y === 62 ? 58 : 44} ${y} l8 2" stroke="#e9a100" stroke-width="3" stroke-linecap="round"/>`).join("")}${EYE(56, 28, 4.5)}`,
+    schildkroete: `<ellipse cx="30" cy="70" rx="10" ry="6" fill="#95d5b2" ${OL}/><ellipse cx="66" cy="72" rx="10" ry="6" fill="#95d5b2" ${OL}/><circle cx="84" cy="50" r="11" fill="#95d5b2" ${OL}/>${EYE(87, 46, 3.5)}<path d="M14 54 L6 52 L14 60 Z" fill="#95d5b2" ${OL}/><path d="M16 60 Q16 26 48 26 Q80 26 80 60 Z" fill="#52b788" ${OL}/><path d="M36 60 L40 42 L56 42 L60 60 M40 42 L48 30 L56 42 M30 46 L40 42 M66 46 L56 42" fill="none" stroke="#2d6a4f" stroke-width="3" stroke-linejoin="round"/>${SHINE(40, 34, 8, 3)}`,
+    krake: `${[26, 38, 50, 62, 74].map((x, i) => `<path d="M${x} 56 q${(i - 2) * 4} 16 ${(i - 2) * 6} 26 q4 4 8 0" fill="none" stroke="#9d4edd" stroke-width="8" stroke-linecap="round"/>`).join("")}<path d="M22 58 Q20 14 50 14 Q80 14 78 58 Z" fill="#b5179e" ${OL}/>${SHINE(40, 26, 9, 5)}${EYE(40, 40, 6)}${EYE(60, 40, 6)}<path d="M44 50 Q50 55 56 50" fill="none" ${OL}/>`,
+    krabbe: `${[[-1, 0], [-1, 1], [1, 0], [1, 1]].map(([sx, k]) => `<path d="M${50 + sx * 20} ${62 + k * 6} l${sx * 14} ${8 + k * 4}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/>`).join("")}<path d="M30 52 L22 40 M70 52 L78 40" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><path d="M14 40 Q14 24 26 26 L22 36 L30 34 Q30 46 14 40 Z" fill="#e63946" ${OL}/><path d="M86 40 Q86 24 74 26 L78 36 L70 34 Q70 46 86 40 Z" fill="#e63946" ${OL}/><ellipse cx="50" cy="60" rx="26" ry="16" fill="#e63946" ${OL}/><path d="M42 44 L42 36 M58 44 L58 36" stroke="#17324a" stroke-width="3"/>${EYE(42, 34, 4.5)}${EYE(58, 34, 4.5)}${SHINE(44, 54, 8, 3)}`,
+    seestern: `<path d="M50 10 L61 38 L91 39 L67 57 L76 86 L50 69 L24 86 L33 57 L9 39 L39 38 Z" fill="#fb8500" ${OL}/>${[[50, 26], [72, 44], [63, 72], [37, 72], [28, 44], [50, 50]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#ffd166"/>`).join("")}`,
+    rochen: `<path d="M50 28 Q72 38 94 54 Q72 62 50 72 Q28 62 6 54 Q28 38 50 28 Z" fill="#577590" ${OL}/><path d="M50 70 Q54 84 64 94" fill="none" stroke="#17324a" stroke-width="3"/><path d="M50 40 Q66 48 80 54 Q66 58 50 64 Q34 58 20 54 Q34 48 50 40 Z" fill="#8fb3cc"/>${EYE(42, 44, 4)}${EYE(58, 44, 4)}`,
+    delfin: `<path d="M8 60 Q28 30 62 32 Q82 34 92 48 Q84 52 76 52 Q62 64 38 64 L24 78 L24 64 Q14 64 8 60 Z" fill="#8ecae6" ${OL}/><path d="M46 34 L54 18 L60 34 Z" fill="#8ecae6" ${OL}/><path d="M48 60 Q56 70 50 74" fill="#8ecae6" ${OL}/><path d="M36 58 Q56 60 74 50" fill="none" stroke="#fff" stroke-width="4" opacity=".7"/>${EYE(76, 42, 4.5)}`,
+    wal: `<path d="M50 22 q-4 -8 -10 -6 M50 22 q0 -10 0 -14 M50 22 q4 -8 10 -6" fill="none" stroke="#8ecae6" stroke-width="4" stroke-linecap="round"/><path d="M14 54 Q16 28 52 28 Q86 28 92 54 Q90 74 56 76 Q32 76 22 66 L6 76 L10 58 Z" fill="#4361ee" ${OL}/><path d="M26 64 Q56 78 88 60 Q86 72 56 74 Q36 74 26 64 Z" fill="#a9c4ff"/>${SHINE(46, 36, 12, 4)}${EYE(74, 48, 5)}<path d="M78 60 Q84 62 88 58" fill="none" ${OL}/>`,
+    uboot: `<path d="M60 26 L60 14 L72 14" fill="none" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><rect x="48" y="24" width="22" height="14" rx="5" fill="#ffd60a" ${OL}/><path d="M10 54 Q10 36 50 36 Q90 36 92 54 Q90 72 50 72 Q10 72 10 54 Z" fill="#ffd60a" ${OL}/><path d="M10 54 L2 44 L2 64 Z" fill="#f4a261" ${OL}/>${[34, 52, 70].map(x => `<circle cx="${x}" cy="54" r="7" fill="#90e0ef" ${OL}/>`).join("")}${SHINE(40, 42, 14, 3)}`,
+    seegras: `<path d="M30 94 Q20 70 32 52 Q42 36 30 14" fill="none" stroke="#2d6a4f" stroke-width="9" stroke-linecap="round"/><path d="M52 94 Q62 72 50 54 Q40 38 54 20" fill="none" stroke="#52b788" stroke-width="9" stroke-linecap="round"/><path d="M72 94 Q64 76 74 60 Q82 46 72 34" fill="none" stroke="#40916c" stroke-width="9" stroke-linecap="round"/>`,
+    koralle: `<path d="M50 94 L50 52 M50 70 L30 54 L24 30 M30 54 L40 36 M50 58 L70 44 L72 22 M70 44 L84 34 M50 52 L54 22" fill="none" stroke="#ff6f9f" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 94 L50 52 M50 70 L30 54 L24 30 M30 54 L40 36 M50 58 L70 44 L72 22 M70 44 L84 34 M50 52 L54 22" fill="none" stroke="#ffb3c6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>`,
+    muschel: `<path d="M50 84 L18 44 Q22 18 50 16 Q78 18 82 44 Z" fill="#ffc8dd" ${OL}/>${[28, 39, 50, 61, 72].map(x => `<path d="M50 82 L${x} ${x === 50 ? 18 : x < 50 ? 26 + (50 - x) / 2 : 26 + (x - 50) / 2}" stroke="#e5989b" stroke-width="3" stroke-linecap="round"/>`).join("")}<path d="M40 84 L60 84 L56 92 L44 92 Z" fill="#ffafcc" ${OL}/>`,
+    perle: `<path d="M10 58 Q50 92 90 58 Z" fill="#cdb4db" ${OL}/><path d="M12 54 Q50 6 88 54 Q50 40 12 54 Z" fill="#e0c3fc" ${OL}/><circle cx="50" cy="58" r="13" fill="#ffffff" ${OL}/><circle cx="45" cy="53" r="4" fill="#fff" opacity=".9"/>`,
+    steine: `<ellipse cx="34" cy="74" rx="24" ry="16" fill="#adb5bd" ${OL}/><ellipse cx="66" cy="78" rx="20" ry="12" fill="#868e96" ${OL}/><ellipse cx="54" cy="58" rx="16" ry="11" fill="#ced4da" ${OL}/><path d="M24 64 q6 -4 12 0" fill="none" stroke="#52b788" stroke-width="5" stroke-linecap="round"/>${SHINE(28, 68, 7, 3)}`,
+    anker: `<circle cx="50" cy="18" r="8" fill="none" stroke="#6c757d" stroke-width="7"/><path d="M50 26 L50 84 M34 38 L66 38 M18 64 Q22 84 50 84 Q78 84 82 64" fill="none" stroke="#6c757d" stroke-width="8" stroke-linecap="round"/><path d="M12 66 L18 56 L24 66 Z M76 66 L82 56 L88 66 Z" fill="#6c757d" stroke="#6c757d" stroke-width="3" stroke-linejoin="round"/>`,
+    burg: `<path d="M14 90 L14 50 L22 50 L22 44 L30 44 L30 50 L38 50 L38 30 L46 30 L46 24 L54 24 L54 30 L62 30 L62 50 L70 50 L70 44 L78 44 L78 50 L86 50 L86 90 Z" fill="#f2cc8f" ${OL}/><path d="M42 90 L42 74 Q50 64 58 74 L58 90 Z" fill="#8a5a2b" ${OL}/><rect x="46" y="38" width="8" height="10" rx="4" fill="#17324a"/><path d="M50 24 L50 8 L62 12 L50 16" fill="#e63946" ${OL}/>`,
+    krone: `<path d="M14 78 L10 34 L32 54 L50 22 L68 54 L90 34 L86 78 Z" fill="#ffd60a" ${OL}/><rect x="14" y="72" width="72" height="12" rx="4" fill="#f4a261" ${OL}/><circle cx="50" cy="56" r="6" fill="#e63946" ${OL}/><circle cx="30" cy="64" r="4.5" fill="#3a86ff" ${OL}/><circle cx="70" cy="64" r="4.5" fill="#2a9d8f" ${OL}/>${SHINE(36, 46, 6, 3)}`,
+    schatztruhe: `<path d="M12 50 L88 50 L88 88 L12 88 Z" fill="#a0522d" ${OL}/><path d="M12 50 Q12 26 50 26 Q88 26 88 50 Z" fill="#c0703a" ${OL}/>${[[26, 46], [40, 42], [56, 42], [70, 46], [48, 34], [33, 38], [64, 37]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="#ffd60a" ${OL}/>`).join("")}<rect x="12" y="50" width="76" height="8" fill="#ffd166" ${OL}/><rect x="44" y="56" width="12" height="14" rx="3" fill="#ffd166" ${OL}/><path d="M30 64 L30 84 M70 64 L70 84" stroke="#6b3a1e" stroke-width="3"/>`
+  };
+  const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] || ""}</svg>`;
+  const artURI = (id) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${ART[id] || ""}</svg>`);
+
   /* ---------- Nemos Aquarium ---------- */
-  // kind: swim = schwimmt hin und her, float = schwebt, deco = liegt auf dem Sand
+  // k: swim = schwimmt hin und her · float = schwebt · deco = steht auf dem Kies; c = Abteilung im Laden; z = Größe im Becken
   const SHOP = [
-    { id: "seegras", e: "🌿", n: "Seegras", p: 5, k: "deco" },
-    { id: "stein", e: "🪨", n: "Stein", p: 5, k: "deco" },
-    { id: "muschel", e: "🐚", n: "Muschel", p: 8, k: "deco" },
-    { id: "fisch", e: "🐟", n: "Fisch", p: 10, k: "swim" },
-    { id: "garnele", e: "🦐", n: "Garnele", p: 10, k: "swim" },
-    { id: "blasen", e: "🫧", n: "Blubberblasen", p: 10, k: "float" },
-    { id: "koralle", e: "🪸", n: "Koralle", p: 12, k: "deco" },
-    { id: "seestern", e: "⭐", n: "Seestern", p: 12, k: "deco" },
-    { id: "tropenfisch", e: "🐠", n: "Tropenfisch", p: 15, k: "swim" },
-    { id: "krabbe", e: "🦀", n: "Krabbe", p: 15, k: "deco" },
-    { id: "kugelfisch", e: "🐡", n: "Kugelfisch", p: 20, k: "swim" },
-    { id: "qualle", e: "🪼", n: "Qualle", p: 25, k: "float" },
-    { id: "anker", e: "⚓", n: "Anker", p: 25, k: "deco" },
-    { id: "schildkroete", e: "🐢", n: "Schildkröte", p: 30, k: "swim" },
-    { id: "tintenfisch", e: "🦑", n: "Tintenfisch", p: 35, k: "swim" },
-    { id: "krake", e: "🐙", n: "Krake", p: 40, k: "float" },
-    { id: "burg", e: "🏰", n: "Sandburg", p: 45, k: "deco" },
-    { id: "robbe", e: "🦭", n: "Robbe", p: 50, k: "swim" },
-    { id: "delfin", e: "🐬", n: "Delfin", p: 60, k: "swim" },
-    { id: "krone", e: "👑", n: "Krone", p: 70, k: "deco" },
-    { id: "wal", e: "🐋", n: "Wal", p: 90, k: "swim" },
-    { id: "schatz", e: "💰", n: "Schatzsack", p: 100, k: "deco" }
+    { id: "seegras", n: "Seegras", p: 5, k: "deco", c: "deko", z: 96 },
+    { id: "steine", n: "Steine", p: 5, k: "deco", c: "deko", z: 70 },
+    { id: "muschel", n: "Muschel", p: 8, k: "deco", c: "deko", z: 58 },
+    { id: "goldfisch", n: "Goldfisch", p: 10, k: "swim", c: "tiere", z: 78 },
+    { id: "seestern", n: "Seestern", p: 12, k: "deco", c: "tiere", z: 56 },
+    { id: "koralle", n: "Koralle", p: 12, k: "deco", c: "deko", z: 90 },
+    { id: "clownfisch", n: "Clownfisch", p: 15, k: "swim", c: "tiere", z: 76 },
+    { id: "krabbe", n: "Krabbe", p: 15, k: "deco", c: "tiere", z: 62 },
+    { id: "doktorfisch", n: "Doktorfisch", p: 18, k: "swim", c: "tiere", z: 80 },
+    { id: "perle", n: "Perle", p: 20, k: "deco", c: "schatz", z: 62 },
+    { id: "kugelfisch", n: "Kugelfisch", p: 22, k: "float", c: "tiere", z: 74 },
+    { id: "qualle", n: "Qualle", p: 25, k: "float", c: "tiere", z: 76 },
+    { id: "anker", n: "Anker", p: 25, k: "deco", c: "deko", z: 84 },
+    { id: "seepferdchen", n: "Seepferdchen", p: 30, k: "float", c: "tiere", z: 74 },
+    { id: "schildkroete", n: "Schildkröte", p: 35, k: "swim", c: "tiere", z: 92 },
+    { id: "krake", n: "Krake", p: 40, k: "float", c: "tiere", z: 86 },
+    { id: "burg", n: "Burg", p: 45, k: "deco", c: "deko", z: 110 },
+    { id: "rochen", n: "Rochen", p: 50, k: "swim", c: "tiere", z: 96 },
+    { id: "delfin", n: "Delfin", p: 60, k: "swim", c: "tiere", z: 104 },
+    { id: "uboot", n: "U-Boot", p: 70, k: "swim", c: "deko", z: 104 },
+    { id: "krone", n: "Krone", p: 80, k: "deco", c: "schatz", z: 70 },
+    { id: "wal", n: "Wal", p: 90, k: "swim", c: "tiere", z: 130 },
+    { id: "schatztruhe", n: "Schatztruhe", p: 120, k: "deco", c: "schatz", z: 98 }
   ];
-  const aquaCount = () => Object.keys(S.aqua || {}).length;
+  const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
+  const owned = (w) => !!(S.aqua && S.aqua[w.id]);
+  const aquaCount = () => SHOP.filter(owned).length;
+  let newbie = null;
+  function renderStat() {
+    const n = aquaCount(), box = $("aqStat");
+    const next = SHOP.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
+    const can = SHOP.some(w => !owned(w) && S.coins >= w.p);
+    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} gesammelt</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
+      (n === SHOP.length ? `<div class="aq-goal can">👑 Wow! Du hast alles gesammelt!</div>` :
+       can ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
+       `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
+  }
   function renderTank() {
-    const t = $("tank"); t.innerHTML = '<div class="glint"></div><div class="sand"></div>';
-    const add = (e, cls, style, size) => { const it = el("div", "item " + cls, `<span>${e}</span>`); Object.assign(it.style, style); it.style.fontSize = size + "px"; t.appendChild(it); };
-    add("🦈", "swim", { top: "30%", animationDuration: "14s" }, 64); // Nemo ist immer da
-    SHOP.forEach(w => {
-      const pos = S.aqua[w.id]; if (!pos) return;
-      if (w.k === "deco") add(w.e, "deco", { left: pos.x + "%" }, w.id === "burg" || w.id === "schatz" ? 58 : 44);
-      else if (w.k === "float") add(w.e, "bob2", { left: pos.x + "%", top: pos.y + "%", animationDelay: -pos.d + "s" }, 46);
-      else add(w.e, "swim", { top: pos.y + "%", animationDuration: pos.t + "s", animationDelay: -pos.d + "s" }, w.id === "wal" ? 72 : 46);
+    const t = $("tank");
+    t.innerHTML = `<div class="rays"></div><div class="item bgplant" style="left:2%">${artSVG("seegras")}</div><div class="item bgplant" style="right:3%">${artSVG("seegras")}</div><div class="gravel"></div>`;
+    for (let i = 0; i < 6; i++) { const b = el("span", "tb"); b.style.left = (8 + i * 16) + "%"; b.style.animationDuration = (4 + (i % 3)) + "s"; b.style.animationDelay = (-i * 1.3) + "s"; t.appendChild(b); }
+    const own = SHOP.filter(owned);
+    own.filter(w => w.k === "deco").sort((a, b) => b.z - a.z).forEach(w => {
+      const pos = S.aqua[w.id], it = el("div", "item deco" + (newbie === w.id ? " newbie" : ""), artSVG(w.id));
+      it.style.left = pos.x + "%"; it.style.width = it.style.height = w.z + "px"; t.appendChild(it);
     });
-    if (!aquaCount()) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm Freunde und Deko im Laden! 🛒"));
+    own.filter(w => w.k === "float").forEach(w => {
+      const pos = S.aqua[w.id], it = el("div", "item float" + (newbie === w.id ? " newbie" : ""), artSVG(w.id));
+      it.style.left = pos.x + "%"; it.style.top = (8 + pos.y * 0.5) + "%"; it.style.width = it.style.height = w.z + "px"; it.style.animationDelay = (-pos.d) + "s"; t.appendChild(it);
+    });
+    const swimmer = (inner, size, top, secs, delay, rev, isNew) => {
+      const it = el("div", "item swim" + (isNew ? " newbie" : ""), `<div class="flip${rev ? " rev" : ""}">${inner}</div>`);
+      it.style.setProperty("--t", secs + "s"); it.style.setProperty("--w", size + "px");
+      it.style.width = it.style.height = size + "px"; it.style.top = top + "%"; it.style.animationDelay = it.firstChild.style.animationDelay = (-delay) + "s";
+      t.appendChild(it);
+    };
+    own.filter(w => w.k === "swim").forEach(w => { const pos = S.aqua[w.id]; swimmer(artSVG(w.id), w.z, 6 + pos.y * 0.75, pos.t, pos.d, false, newbie === w.id); });
+    swimmer('<div class="nemo-fish">🦈</div>', 76, 34, 16, 3, true, false); // Nemo ist immer da
+    if (!own.length) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
   }
   let asking = null;
   function renderShop() {
     const box = $("shop"); box.innerHTML = "";
-    SHOP.forEach(w => {
-      const owned = !!S.aqua[w.id], poor = !owned && S.coins < w.p, ask = asking === w.id;
-      const b = el("button", "ware" + (owned ? " owned" : poor ? " poor" : "") + (ask ? " ask" : ""));
-      b.innerHTML = `<span class="wi">${w.e}</span><span class="wn">${w.n}</span>` +
-        (owned ? `<span class="wp">✓ im Aquarium</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` : `<span class="wp">${w.p} <span class="coin sm"></span></span>`);
-      b.disabled = owned;
-      b.setAttribute("aria-label", owned ? `${w.n}, schon gekauft` : `${w.n} für ${w.p} Münzen`);
-      b.addEventListener("click", () => {
-        if (owned) return;
-        if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} Münzen. Übe weiter!`); return; }
-        if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
-        asking = null;
-        S.coins -= w.p;
-        S.aqua[w.id] = { x: Math.round(8 + Math.random() * 84), y: Math.round(8 + Math.random() * 52), t: Math.round(9 + Math.random() * 9), d: Math.round(Math.random() * 12) };
-        save(); setCoins(true); sfxWin(); confetti(["🫧", w.e, "✨"]);
-        speak(`Juhu! ${w.n} schwimmt jetzt in deinem Aquarium.`.replace("schwimmt", w.k === "deco" ? "ist" : "schwimmt"));
-        renderTank(); renderShop();
+    box.appendChild(el("div", "shop-title", "🛒 Laden – tippe zweimal zum Kaufen"));
+    SHOP_CATS.forEach(([cat, title]) => {
+      box.appendChild(el("div", "head s", title));
+      const grid = el("div", "shop");
+      SHOP.filter(w => w.c === cat).forEach(w => {
+        const has = owned(w), can = !has && S.coins >= w.p, ask = asking === w.id;
+        const b = el("button", "ware" + (has ? " owned" : can ? " can" : " poor") + (ask ? " ask" : ""));
+        b.innerHTML = `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span>` +
+          (has ? `<span class="wp">✓ Im Aquarium</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` :
+           can ? `<span class="wp">Kaufen · ${w.p} <span class="coin sm"></span></span>` : `<span class="wp">🔒 noch ${w.p - S.coins} <span class="coin sm"></span></span>`);
+        b.disabled = has;
+        b.setAttribute("aria-label", has ? `${w.n}, schon im Aquarium` : `${w.n} für ${w.p} Münzen`);
+        b.addEventListener("click", () => buy(w));
+        grid.appendChild(b);
       });
-      box.appendChild(b);
+      box.appendChild(grid);
     });
   }
-  function renderAqua() { asking = null; renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
+  function buy(w) {
+    if (owned(w)) return;
+    if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} Münzen. Übe weiter, dann klappt es!`); return; }
+    if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
+    asking = null;
+    S.coins -= w.p;
+    S.aqua[w.id] = { x: Math.round(10 + Math.random() * 80), y: Math.round(5 + Math.random() * 50), t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) };
+    save(); setCoins(true); sfxWin(); confetti(["🫧", "✨", "⭐", "🐚"]);
+    newbie = w.id;
+    renderStat(); renderTank(); renderShop();
+    // große Freude: das Neue groß zeigen
+    const c = $("buyCard");
+    c.innerHTML = `<div class="bnew">🎉 Neu in deinem Aquarium!</div><div class="bart">${artSVG(w.id)}</div><div class="bname">${w.n}</div>`;
+    const ok = el("button", "big-btn", "Anschauen 👀");
+    ok.addEventListener("click", () => { $("buyPop").hidden = true; $("tank").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => { newbie = null; renderTank(); }, 5000); });
+    c.appendChild(ok);
+    $("buyPop").hidden = false;
+    speak(`Juhu! ${w.n} ist jetzt in deinem Aquarium.`);
+  }
+  function renderAqua() { asking = null; newbie = null; renderStat(); renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
 
   /* ---------- Ozean-Karte ---------- */
   const SVGNS = "http://www.w3.org/2000/svg";
@@ -1937,16 +2037,16 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     sv("rect", { x, y, width: w, height: h, rx: r * 0.12, fill: "#a9e8ff", stroke: "#ffffff", "stroke-width": 5 }, g);
     sv("rect", { x: x + 4, y: y + h * 0.72, width: w - 8, height: h * 0.24, rx: r * 0.06, fill: "#f3d99b" }, g);
     sv("rect", { x: x + w * 0.1, y: y + 6, width: w * 0.12, height: h * 0.55, rx: 4, fill: "rgba(255,255,255,.55)" }, g);
-    const f = sv("text", { x: w * 0.06, y: y + h * 0.42, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.38 }, g); f.textContent = "🐠";
+    sv("image", { href: artURI("clownfisch"), x: -r * 0.3, y: y + h * 0.12, width: r * 0.6, height: r * 0.6 }, g);
     [[-0.22, 0], [-0.12, 0.9], [0.24, 1.7]].forEach(([dx, dl], k) => {
       const c = sv("circle", { cx: dx * w, cy: y + h * 0.66, r: 3 + k, fill: "rgba(255,255,255,.9)", class: "reef-bub" }, g); c.style.animationDelay = dl + "s";
     });
     const sp = sv("text", { x: w * 0.62, y: y - 4, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.3, class: "twinkle" }, g); sp.textContent = "✨";
     // gekaufte Sachen schwimmen rund ums Riff
-    (n.items || []).slice(0, 10).forEach((e, k, arr) => {
-      const a = (-200 + (220 / Math.max(1, arr.length - 1)) * k) * Math.PI / 180;
-      const t = sv("text", { x: Math.cos(a) * r * 1.5, y: Math.sin(a) * r * 1.12 - r * 0.1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.34, class: "reef-item" }, g);
-      t.textContent = e; t.style.animationDelay = (-k * 0.4) + "s";
+    (n.items || []).slice(0, 10).forEach((id, k, arr) => {
+      const a = (-200 + (220 / Math.max(1, arr.length - 1)) * k) * Math.PI / 180, sz = r * 0.42;
+      const im = sv("image", { href: artURI(id), x: Math.cos(a) * r * 1.5 - sz / 2, y: Math.sin(a) * r * 1.12 - r * 0.1 - sz / 2, width: sz, height: sz, class: "reef-item" }, g);
+      im.style.animationDelay = (-k * 0.4) + "s";
     });
   }
   function drawLighthouse(g, r) {
@@ -2025,7 +2125,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const nodes = [
       { x: pos.bay[0], y: pos.bay[1], r: pos.r, icon: "🐠", draw: "reef", subGold: canBuy, grass: "#7fdbe8", label: "Nemos Riff", big: true,
         sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (aquaCount() ? `🐠 ${aquaCount()} von ${SHOP.length} Sachen im Aquarium` : "Sammle Münzen für dein Aquarium!"),
-        items: SHOP.filter(w => S.aqua[w.id]).map(w => w.e), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
+        items: SHOP.filter(owned).map(w => w.id), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
         tap: (i) => swimTo(i, renderAqua) },
       { x: pos.nomen[0], y: pos.nomen[1], r: pos.r, icon: "🐟", label: "Nomen-Inseln", big: true, sub: chapSub(nom),
         deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen", tap: enter(nom) },
