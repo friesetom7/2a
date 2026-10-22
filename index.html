@@ -387,7 +387,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Lese-Lagune</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Lese-Lagune · 2</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1206,6 +1206,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
      Die Lernwörter stehen hier. Für neue Lernwörter einfach diese Liste ändern.
      gap = schwierige Stelle [Wort mit _ , richtig, falsch1, falsch2]; bad = falsche Schreibweisen; syl = Silben */
   const XYLO = '<svg viewBox="0 0 120 80" aria-hidden="true"><rect x="6" y="58" width="108" height="8" rx="4" fill="#8a5a2b"/><rect x="12" y="10" width="13" height="50" rx="3" fill="#e63946"/><rect x="29" y="15" width="13" height="45" rx="3" fill="#f4a261"/><rect x="46" y="20" width="13" height="40" rx="3" fill="#e9c46a"/><rect x="63" y="25" width="13" height="35" rx="3" fill="#2a9d8f"/><rect x="80" y="30" width="13" height="30" rx="3" fill="#457b9d"/><rect x="97" y="35" width="13" height="25" rx="3" fill="#9b5de5"/><line x1="70" y1="4" x2="104" y2="22" stroke="#6b4423" stroke-width="3" stroke-linecap="round"/><circle cx="68" cy="3" r="5" fill="#d62828"/></svg>';
+  const PYJAMA = '<svg viewBox="0 0 120 90" aria-hidden="true"><defs><pattern id="pjs" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#cfe6ff"/><rect width="4" height="10" fill="#4f7fe0"/></pattern></defs><path d="M19 16 L31 9 Q37 18 43 9 L55 16 L63 33 L53 38 L51 30 L51 82 L23 82 L23 30 L21 38 L11 33 Z" fill="url(#pjs)" stroke="#23407e" stroke-width="2.5" stroke-linejoin="round"/><path d="M31 9 Q37 18 43 9" fill="none" stroke="#23407e" stroke-width="3"/><circle cx="37" cy="36" r="2.6" fill="#fff" stroke="#23407e" stroke-width="1.5"/><circle cx="37" cy="50" r="2.6" fill="#fff" stroke="#23407e" stroke-width="1.5"/><circle cx="37" cy="64" r="2.6" fill="#fff" stroke="#23407e" stroke-width="1.5"/><path d="M70 12 L108 12 L113 84 L95 84 L89 38 L83 84 L65 84 Z" fill="url(#pjs)" stroke="#23407e" stroke-width="2.5" stroke-linejoin="round"/><rect x="70" y="12" width="38" height="7" fill="#23407e"/><path d="M104 2 a7 7 0 1 0 8 9 a5.5 5.5 0 1 1 -8 -9 Z" fill="#ffd75e"/></svg>';
   const LERN = [
     { w: "Xylophon", art: "das", pic: XYLO, gap: ["_ylophon", "X", "Ks", "Z"], gap2: ["Xylo_on", "ph", "f", "v"], bad: ["Xylofon", "Ksylophon", "Xülophon"], syl: ["Xy", "lo", "phon"], extra: ["f", "k"] },
     { w: "Fahrrad", art: "das", pic: "🚲", gap: ["Fa_rad", "hr", "r", "rr"], bad: ["Farrad", "Fahrad", "Fahrrat"], syl: ["Fahr", "rad"], extra: ["h", "t"] },
@@ -1214,7 +1215,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     { w: "Apotheke", art: "die", pic: "💊", gap: ["Apo_eke", "th", "t", "tt"], bad: ["Apoteke", "Apotheeke", "Abotheke"], syl: ["A", "po", "the", "ke"], extra: ["t", "b"] },
     { w: "Fotoapparat", art: "der", pic: "📷", gap: ["Fotoa_arat", "pp", "p", "b"], bad: ["Fotoaparat", "Fotoapparad", "Photoaparat"], syl: ["Fo", "to", "ap", "pa", "rat"], extra: ["b", "d"] },
     { w: "Känguru", art: "das", pic: "🦘", gap: ["K_nguru", "ä", "e", "a"], bad: ["Kenguru", "Känguruh", "Kängeru"], syl: ["Kän", "gu", "ru"], extra: ["e", "h"] },
-    { w: "Pyjama", art: "der", pic: "🛌", gap: ["P_jama", "y", "ü", "i"], bad: ["Püjama", "Pijama", "Pyschama"], syl: ["Py", "ja", "ma"], extra: ["ü", "i"] },
+    { w: "Pyjama", art: "der", pic: PYJAMA, gap: ["P_jama", "y", "ü", "i"], bad: ["Püjama", "Pijama", "Pyschama"], syl: ["Py", "ja", "ma"], extra: ["ü", "i"] },
     { w: "Taxi", art: "das", pic: "🚕", gap: ["Ta_i", "x", "ks", "chs"], bad: ["Taksi", "Tacksi", "Taxie"], syl: ["Ta", "xi"], extra: ["k", "s"] },
     { w: "Straße", art: "die", pic: "🛣️", gap: ["Stra_e", "ß", "s", "ss"], bad: ["Strase", "Strahse", "Schtraße"], syl: ["Stra", "ße"], extra: ["s", "s"] }
   ];
@@ -1248,47 +1249,6 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
   function spellingOpts(x, n) { return shuffle([{ label: x.w, correct: true }].concat(shuffle(x.bad).slice(0, n - 1).map(b => ({ label: b, wrongText: `„${b}“ ist falsch geschrieben. Schau genau hin!` })))); }
 
   const LERNLEVELS = [
-    {
-      id: "memory", name: "Wort-Memory", icon: "🧩", color: "#6c63ff",
-      task: (d) => d === "schwer" ? "Finde Wort und fehlende Buchstaben!" : "Finde die Paare: Wort und Bild!",
-      intro: (d) => d === "schwer" ? "Ein Wort mit Lücke und die fehlenden Buchstaben gehören zusammen." : "Decke zwei Karten auf. Finde das Wort und das passende Bild!",
-      ex: (d) => d === "schwer" ? "K▢nguru ↔ ä" : "Taxi ↔ 🚕",
-      say: (d) => d === "schwer" ? "Ein Wort mit Lücke und die fehlenden Buchstaben gehören zusammen. Finde die Paare!" : "Decke zwei Karten auf. Finde das Wort und das passende Bild!",
-      build(d) { return [{ words: shuffle(LERN).slice(0, d === "leicht" ? 6 : d === "mittel" ? 10 : 8) }]; },
-      score(L) { const p = L.items[0].words.length, m = L.moves || 0; const stars = m <= p * 1.6 ? 3 : m <= p * 2.4 ? 2 : 1; return { stars, perfect: stars === 3 }; },
-      render(item, stage, d) {
-        const words = item.words, cards = [];
-        words.forEach((x, i) => {
-          if (d === "schwer") { cards.push({ id: i, html: `<span class="mw">${x.gap[0].replace("_", "▢")}</span>` }); cards.push({ id: i, html: `<span class="mw" style="font-size:clamp(26px,4.4vw,40px)">${x.gap[1]}</span>` }); }
-          else { cards.push({ id: i, html: `<span class="mw">${x.w}</span>`, say: x.w }); cards.push({ id: i, html: `<span class="me">${picHTML(x)}</span>` }); }
-        });
-        const deck = shuffle(cards), cols = deck.length <= 12 ? 4 : deck.length <= 16 ? 4 : 5;
-        const stat = el("div", "memstat", "Versuche: 0"); stage.appendChild(stat);
-        const grid = el("div", "mem"); grid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`; if (deck.length === 16) grid.style.width = "min(600px, 100%)";
-        let open = [], found = 0, busy = false; L.moves = 0;
-        deck.forEach(c => {
-          const b = el("button", "mcard", "🦈");
-          b.addEventListener("click", () => {
-            if (busy || L.locked || b.classList.contains("open") || b.classList.contains("done")) return;
-            b.classList.add("open"); b.innerHTML = c.html; if (c.say) speak(c.say);
-            open.push({ b, c });
-            if (open.length === 2) {
-              L.moves++; stat.textContent = "Versuche: " + L.moves; busy = true;
-              const [p, q] = open;
-              if (p.c.id === q.c.id) {
-                setTimeout(() => { p.b.classList.add("done"); q.b.classList.add("done"); award(q.b, 1); speak(words[p.c.id].w); open = []; busy = false; found++;
-                  if (found === words.length) { hint(praise() + ` Alle Paare in ${L.moves} Versuchen!`, true); done(1400); } }, 350);
-              } else {
-                setTimeout(() => { [p, q].forEach(o => { o.b.classList.remove("open"); o.b.textContent = "🦈"; }); open = []; busy = false; }, 1000);
-              }
-            }
-          });
-          grid.appendChild(b);
-        });
-        stage.appendChild(grid);
-        L.speakNow = () => speak("Finde die Paare.");
-      }
-    },
     {
       id: "salat", name: "Buchstaben-Salat", icon: "🔤", color: "#e76f51",
       task: () => "Setze das Wort zusammen!",
@@ -1432,6 +1392,47 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
         });
         stage.appendChild(ok);
         L.speakNow = () => speak(x.w);
+      }
+    },
+    {
+      id: "memory", name: "Wort-Memory", icon: "🧩", color: "#6c63ff",
+      task: (d) => d === "schwer" ? "Finde Wort und fehlende Buchstaben!" : "Finde die Paare: Wort und Bild!",
+      intro: (d) => d === "schwer" ? "Ein Wort mit Lücke und die fehlenden Buchstaben gehören zusammen." : "Decke zwei Karten auf. Finde das Wort und das passende Bild!",
+      ex: (d) => d === "schwer" ? "K▢nguru ↔ ä" : "Taxi ↔ 🚕",
+      say: (d) => d === "schwer" ? "Ein Wort mit Lücke und die fehlenden Buchstaben gehören zusammen. Finde die Paare!" : "Decke zwei Karten auf. Finde das Wort und das passende Bild!",
+      build(d) { return [{ words: shuffle(LERN).slice(0, d === "leicht" ? 6 : d === "mittel" ? 10 : 8) }]; },
+      score(L) { const p = L.items[0].words.length, m = L.moves || 0; const stars = m <= p * 1.6 ? 3 : m <= p * 2.4 ? 2 : 1; return { stars, perfect: stars === 3 }; },
+      render(item, stage, d) {
+        const words = item.words, cards = [];
+        words.forEach((x, i) => {
+          if (d === "schwer") { cards.push({ id: i, html: `<span class="mw">${x.gap[0].replace("_", "▢")}</span>` }); cards.push({ id: i, html: `<span class="mw" style="font-size:clamp(26px,4.4vw,40px)">${x.gap[1]}</span>` }); }
+          else { cards.push({ id: i, html: `<span class="mw">${x.w}</span>`, say: x.w }); cards.push({ id: i, html: `<span class="me">${picHTML(x)}</span>` }); }
+        });
+        const deck = shuffle(cards), cols = deck.length <= 12 ? 4 : deck.length <= 16 ? 4 : 5;
+        const stat = el("div", "memstat", "Versuche: 0"); stage.appendChild(stat);
+        const grid = el("div", "mem"); grid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`; if (deck.length === 16) grid.style.width = "min(600px, 100%)";
+        let open = [], found = 0, busy = false; L.moves = 0;
+        deck.forEach(c => {
+          const b = el("button", "mcard", "🦈");
+          b.addEventListener("click", () => {
+            if (busy || L.locked || b.classList.contains("open") || b.classList.contains("done")) return;
+            b.classList.add("open"); b.innerHTML = c.html; if (c.say) speak(c.say);
+            open.push({ b, c });
+            if (open.length === 2) {
+              L.moves++; stat.textContent = "Versuche: " + L.moves; busy = true;
+              const [p, q] = open;
+              if (p.c.id === q.c.id) {
+                setTimeout(() => { p.b.classList.add("done"); q.b.classList.add("done"); award(q.b, 1); speak(words[p.c.id].w); open = []; busy = false; found++;
+                  if (found === words.length) { hint(praise() + ` Alle Paare in ${L.moves} Versuchen!`, true); done(1400); } }, 350);
+              } else {
+                setTimeout(() => { [p, q].forEach(o => { o.b.classList.remove("open"); o.b.textContent = "🦈"; }); open = []; busy = false; }, 1000);
+              }
+            }
+          });
+          grid.appendChild(b);
+        });
+        stage.appendChild(grid);
+        L.speakNow = () => speak("Finde die Paare.");
       }
     }
   ];
