@@ -330,6 +330,25 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .repeat { color: var(--white); font-size: 21px; font-weight: 800; text-align: center; }
 .art small { display: block; font-size: 15px; font-weight: 800; opacity: .9; }
 
+/* Lese-Lagune: gut lesbare Schrift mit einfachem a, Silbenbögen */
+.read { font-family: Futura, "Century Gothic", "Avenir Next", var(--font); font-weight: 600; letter-spacing: .5px; }
+.rcard { background: var(--sand); border-radius: 26px; padding: 18px 30px 26px; box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); text-align: center; max-width: 100%; box-sizing: border-box; }
+.rword { font-size: clamp(46px, 9vw, 76px); color: var(--ink); line-height: 1.3; }
+.rsent { font-size: clamp(30px, 5.4vw, 46px); color: var(--ink); line-height: 1.55; }
+.rtext { font-size: clamp(26px, 4.4vw, 36px); color: var(--ink); line-height: 1.6; text-align: left; max-width: 760px; }
+.sy { position: relative; display: inline-block; padding: 0 2px 12px; }
+.sy::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 0; height: 12px; border: 4px solid currentColor; border-top: none; border-radius: 0 0 60px 60px; opacity: .8; }
+.sy.a { color: #1d4ed8; } .sy.b { color: #c2410c; }
+.sy.plain::after { display: none; }
+.letters { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.letter { min-width: 110px; height: 110px; font-size: 56px; background: var(--sand); border-radius: 26px; box-shadow: 0 6px 0 var(--sand-edge), 0 10px 20px var(--shadow); padding: 0 14px; }
+.letter:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--sand-edge); }
+.letter.right { background: #c9f0d4; box-shadow: 0 6px 0 #8fd3a3; }
+.stile { min-width: 96px; height: 76px; font-size: 38px; background: var(--sand); border-radius: 18px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); padding: 0 14px; }
+.stile.used { visibility: hidden; }
+.sslots { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sslot { min-width: 96px; height: 72px; border-bottom: 5px solid var(--gold); font-size: 44px; color: var(--white); text-shadow: 0 3px 0 var(--deep); display: grid; place-items: center; padding: 0 8px; }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -368,7 +387,7 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 20.10. · Leuchtturm</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="ver">Version 22.10. · Lese-Lagune</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1510,6 +1529,223 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
   };
   const LTLEVELS = LT_THEMES.map(themeLevel).concat([LT_TRICKS]);
 
+  /* ---------- Lese-Lagune: einfache Leseübungen für Leseanfänger ----------
+     Vorgelesen wird nur die Aufgabe – das Lesewort erst nach dem Lösen oder als Hilfe nach 2 Fehlversuchen. */
+  // Anlaute: [Wort, Emoji, Buchstabe, ähnlich klingende Buchstaben]
+  const ANLAUT = [
+    ["Maus","🐭","M",["N","W"]],["Affe","🐒","A",["E","O"]],["Ball","⚽","B",["P","D"]],["Dino","🦕","D",["T","B"]],
+    ["Fisch","🐟","F",["W","S"]],["Gabel","🍴","G",["K","D"]],["Hase","🐰","H",["F","A"]],["Igel","🦔","I",["E","U"]],["Jacke","🧥","J",["G","I"]],
+    ["Kuh","🐄","K",["G","T"]],["Löwe","🦁","L",["R","N"]],["Nase","👃","N",["M","L"]],["Oma","👵","O",["U","A"]],["Pinsel","🖌️","P",["B","T"]],
+    ["Rose","🌹","R",["L","W"]],["Sonne","☀️","S",["Z","F"]],["Tiger","🐯","T",["D","K"]],["Uhr","⏰","U",["O","I"]],["Wal","🐋","W",["F","V"]],
+    ["Zebra","🦓","Z",["S","T"]],["Mond","🌙","M",["N","B"]],["Kerze","🕯️","K",["G","T"]],["Rakete","🚀","R",["L","N"]],["Ente","🦆","E",["A","I"]]
+  ];
+  // Wörter mit Silben: [Silben, Emoji]
+  const SILB2 = [[["Ma","ma"],"👩"],[["Pa","pa"],"👨"],[["O","ma"],"👵"],[["O","pa"],"👴"],[["So","fa"],"🛋️"],[["Na","se"],"👃"],[["Ho","se"],"👖"],
+    [["Ro","se"],"🌹"],[["La","ma"],"🦙"],[["Ha","se"],"🐰"],[["Ti","ger"],"🐯"],[["Ki","wi"],"🥝"],[["I","gel"],"🦔"],[["Ku","chen"],"🍰"],[["Pi","rat"],"🏴‍☠️"],[["Ka","mel"],"🐪"]];
+  const SILB3 = [[["Ba","na","ne"],"🍌"],[["To","ma","te"],"🍅"],[["Me","lo","ne"],"🍉"],[["Ra","ke","te"],"🚀"],[["Ro","bo","ter"],"🤖"],[["Pa","pa","gei"],"🦜"],
+    [["Ka","rot","te"],"🥕"],[["Scho","ko","la","de"],"🍫"],[["Te","le","fon"],"☎️"],[["Kro","ko","dil"],"🐊"]];
+  const SYL_EXTRA = ["mo", "li", "su", "ra", "pe", "lo", "nu", "ki"];
+  // kurze Wörter für Wort-Bild: [Silben, Emoji, Artikel]
+  const WB_EASY = [[["Ei"],"🥚","das"],[["Eis"],"🍦","das"],[["Hut"],"🎩","der"],[["O","ma"],"👵","die"],[["Uhr"],"⏰","die"],[["Au","to"],"🚗","das"],
+    [["Ball"],"⚽","der"],[["Hund"],"🐶","der"],[["Mond"],"🌙","der"],[["Son","ne"],"☀️","die"],[["Maus"],"🐭","die"],[["Fisch"],"🐟","der"],[["Ro","se"],"🌹","die"],[["Na","se"],"👃","die"],[["Baum"],"🌳","der"],[["Haus"],"🏠","das"]];
+  // ähnliche Wörter – ganz genau lesen
+  const WB_SIMILAR = [[["Hose","👖"],["Rose","🌹"],["Dose","🥫"]],[["Hase","🐰"],["Vase","🏺"],["Nase","👃"]],[["Maus","🐭"],["Haus","🏠"]],[["Mund","👄"],["Hund","🐶"]],
+    [["Kuh","🐄"],["Schuh","👟"]],[["Wal","🐋"],["Schal","🧣"]],[["Tanne","🌲"],["Kanne","🫖"],["Wanne","🛁"]],[["Igel","🦔"],["Kegel","🎳"]],[["Bein","🦵"],["Stein","🪨"]],[["Mond","🌙"],["Hund","🐶"]]];
+  // Stimmt das?  [Satz, stimmt, Emoji]
+  const STIMMT = [["Ein Fisch kann schwimmen.",true,"🐟"],["Die Sonne ist gelb.",true,"☀️"],["Eine Kuh gibt Milch.",true,"🐄"],["Im Winter ist es kalt.",true,"⛄"],
+    ["Ein Vogel hat Federn.",true,"🐦"],["Eis ist kalt.",true,"🍦"],["Ein Hund kann bellen.",true,"🐶"],["Eine Kuh kann fliegen.",false,"🐄"],["Die Banane ist blau.",false,"🍌"],
+    ["Ein Hund macht Miau.",false,"🐶"],["Im Sommer schneit es.",false,"☀️"],["Ein Auto hat Flügel.",false,"🚗"],["Fische wohnen im Baum.",false,"🐟"],["Der Mond ist eckig.",false,"🌙"]];
+  // kleine Texte mit Frage: [Text, Frage, richtiges Bild, falsche Bilder]
+  const TEXTE = [
+    ["Tom hat einen Hund. Der Hund heißt Bello. Bello mag Wurst.", "Was mag Bello?", "🌭", ["🍎","🐟"]],
+    ["Lisa geht in den Zoo. Dort sieht sie einen Löwen. Der Löwe brüllt laut.", "Welches Tier sieht Lisa?", "🦁", ["🐘","🐒"]],
+    ["Es regnet. Mia nimmt ihren Schirm mit. Sie trägt auch Gummistiefel.", "Was nimmt Mia mit?", "☂️", ["🕶️","🎈"]],
+    ["Opa backt einen Kuchen. Heute hat Oma Geburtstag. Sie freut sich sehr.", "Wer hat Geburtstag?", "👵", ["👴","👶"]],
+    ["Ben spielt im Garten. Er klettert auf einen Baum. Oben sitzt ein Vogel.", "Wo sitzt der Vogel?", "🌳", ["🏠","🚗"]],
+    ["Nemo schwimmt im Meer. Er sucht seinen Freund, den Krebs. Der Krebs ist unter einem Stein.", "Wo ist der Krebs?", "🪨", ["🐚","🚢"]],
+    ["Im Winter liegt viel Schnee. Die Kinder bauen einen Schneemann. Er bekommt eine Karotte als Nase.", "Was ist die Nase?", "🥕", ["🍌","🍎"]],
+    ["Ella hat Hunger. Sie isst eine Banane. Danach trinkt sie Wasser.", "Was isst Ella?", "🍌", ["🍕","🍰"]]
+  ];
+  // Rätsel: [Text, richtig, falsch...]
+  const RAETSEL = {
+    leicht: [["Ich bin gelb und krumm.","🍌",["🍎","🥕"]],["Ich mache Miau.","🐱",["🐶","🐄"]],["Ich mache Wau wau.","🐶",["🐱","🐦"]],["Ich mache Muh.","🐄",["🐷","🐑"]],
+      ["Ich bin am Himmel und warm.","☀️",["🌧️","⛄"]],["Ich bin kalt und süß.","🍦",["🔥","🍕"]],["Ich habe vier Räder.","🚗",["🚲","⛵"]],["Ich kann schwimmen.","🐟",["🪑","🎈"]],
+      ["Ich zeige die Zeit.","⏰",["📕","👟"]],["Ich bin rot und rund.","🍎",["🍌","🥒"]]],
+    mittel: [["Ich bin ein Tier. Ich habe lange Ohren. Ich mag Möhren.","🐰",["🐟","🐦"]],["Ich bin grün. Ich wohne im Teich. Ich mache Quak.","🐸",["🐢","🐍"]],
+      ["Ich bin weiß. Ich falle im Winter vom Himmel.","❄️",["🌧️","🍂"]],["Man liest mich. Ich habe viele Seiten.","📕",["📺","🎈"]],
+      ["Ich habe zwei Räder. Man tritt in die Pedale.","🚲",["🚗","⛵"]],["Ich bin ein Tier. Ich bin sehr groß. Ich habe einen Rüssel.","🐘",["🦒","🐭"]],
+      ["Ich bin süß. Bienen machen mich.","🍯",["🧀","🍞"]],["Ich leuchte in der Nacht. Ich bin nicht die Sonne.","🌙",["☀️","🌈"]]],
+    schwer: [["Ich bin ein Tier. Ich kann nicht fliegen. Ich trage mein Haus auf dem Rücken.","🐢",["🐦","🐝","🐶"]],["Ich bin rund. Ich bin kein Obst. Kinder spielen mit mir.","⚽",["🍊","🍎","🎲"]],
+      ["Ich bin kalt. Man kann mich nicht essen. Ich stehe im Winter im Garten und habe eine Karottennase.","⛄",["🍦","🧊","🌲"]],
+      ["Ich bin ein Vogel. Ich kann nicht fliegen, aber gut schwimmen. Ich lebe im Eis.","🐧",["🦆","🦉","🐟"]],
+      ["Ich bin gelb. Ich bin keine Banane. Ich bin sehr sauer.","🍋",["🍌","🌽","☀️"]],["Ich bin ein Tier. Ich bin nicht klein. Ich habe einen sehr langen Hals.","🦒",["🐘","🐍","🐭"]],
+      ["Ich habe Blätter, aber ich bin kein Baum. In mir stehen Geschichten.","📕",["🌳","🍃","📺"]]]
+  };
+
+  const sylHTML = (syls, arcs) => syls.map((sy, i) => `<span class="sy ${arcs ? (i % 2 ? "b" : "a") : "plain"}">${sy}</span>`).join("");
+  // nach 2 Fehlversuchen liest Nemo vor
+  function readHelp(text) { L.tries = (L.tries || 0) + 1; if (L.tries >= 2) { setTimeout(() => speak(text), 500); return " Nemo liest es dir vor. Hör gut zu!"; } return " Lies nochmal ganz langsam."; }
+  function picChoice(stage, opts, right, o) {
+    const row = el("div", "pics");
+    shuffle(opts).forEach(e => {
+      const b = el("button", "picbtn", e);
+      b.addEventListener("click", () => {
+        if (L.locked) return;
+        if (e === right) { b.classList.add("right"); award(b, o.factor || 1); if (o.okSpeak) speak(o.okSpeak); hint(praise() + (o.okText ? " " + o.okText : ""), true); done(1400); }
+        else miss(b, (o.wrongText || "Das passt nicht.") + readHelp(o.helpText || o.okSpeak || ""));
+      });
+      row.appendChild(b);
+    });
+    stage.appendChild(row);
+  }
+
+  const LESELEVELS = [
+    {
+      id: "anlaut", name: "Anlaut-Strand", icon: "🔤", color: "#1f6fd1",
+      task: (d) => d === "schwer" ? "Welcher Buchstabe fehlt?" : "Mit welchem Buchstaben fängt das Wort an?",
+      intro: (d) => d === "schwer" ? "Schau das Bild an und lies das Wort. Der erste Buchstabe fehlt!" : "Hör gut zu: Mit welchem Laut fängt das Wort an?",
+      ex: (d) => d === "schwer" ? "🐭 _aus → M" : "🐭 Maus → M",
+      say: (d) => d === "schwer" ? "Schau das Bild an und lies das Wort. Welcher Buchstabe fehlt am Anfang?" : "Hör gut zu. Mit welchem Laut fängt das Wort an? Tippe den Buchstaben an.",
+      build(d) { return shuffle(ANLAUT).slice(0, d === "leicht" ? 10 : 12); },
+      render(x, stage, d) {
+        const [w, emo, letter, sim] = x;
+        stage.appendChild(el("div", "emoji-big", emo));
+        if (d === "schwer") stage.appendChild(el("div", "rcard read", `<div class="rword"><span style="color:var(--gold-edge)">_</span>${w.slice(1)}</div>`));
+        else { const h = el("button", "hear", "🔊"); h.setAttribute("aria-label", "Wort anhören"); h.addEventListener("click", () => speak(w)); stage.appendChild(h); setTimeout(() => speak(w), 350); }
+        const opts = [letter].concat(d === "leicht" ? sim.slice(0, 1) : sim.slice(0, 2));
+        const row = el("div", "letters");
+        shuffle(opts).forEach(c => {
+          const b = el("button", "letter read", d === "schwer" ? c : `${c}${c.toLowerCase()}`);
+          b.addEventListener("click", () => {
+            if (L.locked) return;
+            if (c === letter) { b.classList.add("right"); award(b, d === "leicht" ? 1 : 2); speak(w); hint(praise() + ` ${w} fängt mit ${letter} an.`, true); done(1300); }
+            else { miss(b, `Hör nochmal genau hin: ${w}`); setTimeout(() => speak(w), 500); }
+          });
+          row.appendChild(b);
+        });
+        stage.appendChild(row);
+        L.speakNow = () => speak(d === "schwer" ? "Welcher Buchstabe fehlt am Anfang?" : w);
+      }
+    },
+    {
+      id: "silbenschiff", name: "Silben-Schiff", icon: "⛵", color: "#c2410c",
+      task: (d) => d === "leicht" ? "Lies die Silben. Welches Bild passt?" : "Lege das Wort aus Silben!",
+      intro: (d) => d === "leicht" ? "Lies Silbe für Silbe. Die Bögen helfen dir: Ma – ma." : d === "mittel" ? "Schau das Bild an. Lege das Wort aus den Silben." : "Lange Wörter! Achtung: Eine Silbe ist zu viel.",
+      ex: (d) => d === "leicht" ? `<span class="read">${sylHTML(["Ma","ma"], true)}</span>` : "🍌 → Ba · na · ne",
+      say: (d) => d === "leicht" ? "Lies Silbe für Silbe. Die Bögen helfen dir. Welches Bild passt?" : d === "mittel" ? "Schau das Bild an. Lege das Wort aus den Silben." : "Lange Wörter. Lege das Wort aus den Silben. Achtung, eine Silbe ist zu viel.",
+      build(d) { return d === "schwer" ? shuffle(SILB3).slice(0, 8) : shuffle(SILB2).slice(0, 10); },
+      render(x, stage, d) {
+        const [syls, emo] = x, word = syls.join("");
+        L.tries = 0;
+        if (d === "leicht") {
+          stage.appendChild(el("div", "rcard read", `<div class="rword">${sylHTML(syls, true)}</div>`));
+          const others = shuffle(SILB2.filter(z => z[1] !== emo)).slice(0, 2).map(z => z[1]);
+          picChoice(stage, [emo].concat(others), emo, { okSpeak: word, helpText: syls.join(" … ") + " … " + word, wrongText: "Das passt nicht." });
+          L.speakNow = () => speak("Lies die Silben. Welches Bild passt?");
+          return;
+        }
+        stage.appendChild(el("div", "emoji-big", emo));
+        const slots = el("div", "sslots read"); const slotEls = syls.map(() => { const sp = el("div", "sslot", "&nbsp;"); slots.appendChild(sp); return sp; });
+        stage.appendChild(slots);
+        let pos = 0;
+        const pool = shuffle(syls.concat(d === "schwer" ? shuffle(SYL_EXTRA).slice(0, 1) : []));
+        const row = el("div", "tiles");
+        pool.forEach(sy => {
+          const t = el("button", "stile read", sy);
+          t.addEventListener("click", () => {
+            if (L.locked || t.classList.contains("used")) return;
+            if (sy === syls[pos]) { t.classList.add("used"); slotEls[pos].textContent = sy; pos++; speak(sy);
+              if (pos === syls.length) { award(slots, d === "mittel" ? 2 : 3); setTimeout(() => speak(word), 600); hint(praise() + " " + syls.join(" – "), true); done(1600); } }
+            else miss(t, pos === 0 ? "Welche Silbe kommt am Anfang? Schau auf den großen Buchstaben." : "Lies nochmal: Welche Silbe kommt jetzt?");
+          });
+          row.appendChild(t);
+        });
+        stage.appendChild(row);
+        L.speakNow = () => speak("Lege das Wort aus den Silben.");
+      }
+    },
+    {
+      id: "wortbild", name: "Wort-Bild-Hafen", icon: "🖼️", color: "#2a9d8f",
+      task: (d) => d === "schwer" ? "Lies ganz genau! Welches Bild passt?" : "Lies das Wort. Welches Bild passt?",
+      intro: (d) => d === "leicht" ? "Lies das Wort. Die Silbenbögen helfen dir." : d === "mittel" ? "Lies das Wort – jetzt ohne Bögen." : "Die Wörter sehen fast gleich aus: Hose, Rose, Dose. Lies ganz genau!",
+      ex: (d) => d === "schwer" ? "Hose 👖 · Rose 🌹 · Dose 🥫" : `<span class="read">${sylHTML(["Son","ne"], d === "leicht")}</span> → ☀️`,
+      say: (d) => d === "schwer" ? "Die Wörter sehen fast gleich aus. Lies ganz genau! Welches Bild passt?" : "Lies das Wort. Welches Bild passt?",
+      build(d) {
+        if (d !== "schwer") return shuffle(WB_EASY).slice(0, d === "leicht" ? 10 : 12);
+        const items = [];
+        shuffle(WB_SIMILAR).forEach(g => { const t = g[Math.floor(Math.random() * g.length)]; items.push({ g, t }); });
+        return items.slice(0, 10);
+      },
+      render(x, stage, d) {
+        L.tries = 0;
+        if (d === "schwer") {
+          const { g, t } = x, extra = g.length < 3 ? [shuffle(WB_EASY.filter(z => !g.some(q => q[1] === z[1])))[0][1]] : [];
+          stage.appendChild(el("div", "rcard read", `<div class="rword">${t[0]}</div>`));
+          picChoice(stage, g.map(q => q[1]).concat(extra), t[1], { factor: 3, okSpeak: t[0], wrongText: "Schau nochmal auf den ersten Buchstaben!" });
+          L.speakNow = () => speak("Lies ganz genau! Welches Bild passt?");
+          return;
+        }
+        const [syls, emo] = x, word = syls.join("");
+        stage.appendChild(el("div", "rcard read", `<div class="rword">${sylHTML(syls, d === "leicht")}</div>`));
+        const others = shuffle(WB_EASY.filter(z => z[1] !== emo)).slice(0, d === "leicht" ? 2 : 3).map(z => z[1]);
+        picChoice(stage, [emo].concat(others), emo, { factor: d === "leicht" ? 1 : 2, okSpeak: word, wrongText: "Das passt nicht." });
+        L.speakNow = () => speak("Lies das Wort. Welches Bild passt?");
+      }
+    },
+    {
+      id: "saetze", name: "Satz-Bucht", icon: "📖", color: "#7b4fc9",
+      task: (d) => d === "leicht" ? "Lies den Satz. Welches Bild passt?" : d === "mittel" ? "Lies den Satz. Stimmt das?" : "Lies den kleinen Text und beantworte die Frage!",
+      intro: (d) => d === "leicht" ? "Lies den kurzen Satz und tippe das passende Bild an." : d === "mittel" ? "Lies den Satz. Stimmt das oder stimmt das nicht?" : "Lies den Text ganz genau. Dann kommt eine Frage.",
+      ex: (d) => d === "leicht" ? "Das ist ein Hut. → 🎩" : d === "mittel" ? "Eine Kuh kann fliegen. ❌" : "📖 Text → ❓ Frage → 🖼️",
+      say: (d) => d === "leicht" ? "Lies den Satz und tippe das passende Bild an." : d === "mittel" ? "Lies den Satz. Stimmt das, oder stimmt das nicht?" : "Lies den Text ganz genau. Dann beantworte die Frage.",
+      build(d) {
+        if (d === "leicht") return shuffle(WB_EASY).slice(0, 10);
+        if (d === "mittel") return shuffle(STIMMT).slice(0, 12);
+        return shuffle(TEXTE).slice(0, 6);
+      },
+      render(x, stage, d) {
+        L.tries = 0;
+        if (d === "leicht") {
+          const [syls, emo, art] = x, word = syls.join(""), ein = art === "die" ? "eine" : "ein", sent = `Das ist ${ein} ${word}.`;
+          stage.appendChild(el("div", "rcard read", `<div class="rsent">${sent}</div>`));
+          const other = shuffle(WB_EASY.filter(z => z[1] !== emo))[0][1];
+          picChoice(stage, [emo, other], emo, { okSpeak: sent, wrongText: "Das passt nicht." });
+          L.speakNow = () => speak("Lies den Satz. Welches Bild passt?");
+          return;
+        }
+        if (d === "mittel") {
+          const [sent, ok, emo] = x;
+          stage.appendChild(el("div", "emoji-big", emo));
+          stage.appendChild(el("div", "rcard read", `<div class="rsent">${sent}</div>`));
+          choiceTask(stage, { opts: [{ label: "✅ stimmt", cls: "yes", correct: ok }, { label: "❌ stimmt nicht", cls: "no", correct: !ok }],
+            wrongText: "Lies nochmal genau!", okText: ok ? "Ja, das stimmt!" : "Genau, das stimmt nicht!", okSpeak: sent, factor: 2 });
+          L.speakNow = () => speak("Lies den Satz. Stimmt das?");
+          return;
+        }
+        const [text, q, right, wrong] = x;
+        stage.appendChild(el("div", "rcard read", `<div class="rtext">${text}</div>`));
+        stage.appendChild(el("div", "counter read", "❓ " + q));
+        picChoice(stage, [right].concat(wrong), right, { factor: 3, okSpeak: q, helpText: text + " " + q, wrongText: "Schau nochmal in den Text." });
+        L.speakNow = () => speak("Lies den Text. Dann beantworte die Frage.");
+      }
+    },
+    {
+      id: "raetsel", name: "Rätsel-Riff", icon: "❓", color: "#e0a400",
+      task: () => "Lies das Rätsel. Wer bin ich?",
+      intro: (d) => d === "leicht" ? "Ein kurzes Rätsel. Lies es und rate!" : d === "mittel" ? "Ein Rätsel mit mehreren Sätzen. Lies alles!" : "Knifflige Rätsel – achte auf das Wort „nicht“!",
+      ex: () => "Ich bin gelb und krumm. → 🍌",
+      say: (d) => d === "schwer" ? "Lies das Rätsel ganz genau. Achte auf das Wort nicht. Wer bin ich?" : "Lies das Rätsel. Wer bin ich?",
+      build(d) { return shuffle(RAETSEL[d]).slice(0, d === "schwer" ? 7 : 8); },
+      render(x, stage, d) {
+        L.tries = 0;
+        const [text, right, wrong] = x;
+        stage.appendChild(el("div", "rcard read", `<div class="${d === "leicht" ? "rsent" : "rtext"}">${text}<br><b>Wer bin ich?</b></div>`));
+        picChoice(stage, [right].concat(wrong), right, { factor: d === "leicht" ? 1 : d === "mittel" ? 2 : 3, helpText: text + " Wer bin ich?", wrongText: "Das passt nicht ganz." });
+        L.speakNow = () => speak("Lies das Rätsel. Wer bin ich?");
+      }
+    }
+  ];
+
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
@@ -1518,7 +1754,9 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     { id: "lernwoerter", name: "Lernwörter", sub: "Wörter zum Üben", icon: "📝", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
       bonusPlan: [["salat", "schwer", 2], ["luecke", "schwer", 2], ["blitz", "mittel", 2], ["hoeren", "mittel", 2], ["silben", "schwer", 2]] },
     { id: "leuchtturm", name: "Leuchtturm", title: "Leuchtturm-Insel", sub: "der, die, das", icon: "💡", ready: true, levels: LTLEVELS, award: "Artikel-Profi",
-      bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] }
+      bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] },
+    { id: "lesen", name: "Lesen", title: "Lese-Lagune", sub: "Lesen üben", icon: "📖", ready: true, levels: LESELEVELS, award: "Lese-Profi",
+      bonusPlan: [["anlaut", "schwer", 2], ["silbenschiff", "schwer", 2], ["wortbild", "schwer", 2], ["saetze", "mittel", 2], ["raetsel", "mittel", 2]] }
   ];
   let CH = CHAPTERS[0];
 
@@ -1742,9 +1980,9 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
     $("homeHello").textContent = S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
-    const lt = CHAPTERS.find(c => c.id === "leuchtturm");
-    const pos = P ? { bay: [300, 880], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [130, 160], lt: [305, 375], w: 600, h: 1000, r: 84 }
-                  : { bay: [500, 515], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [150, 98], lt: [500, 215], w: 1000, h: 640, r: 90 };
+    const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen");
+    const pos = P ? { bay: [300, 880], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [118, 160], lt: [305, 375], w: 600, h: 1000, r: 84 }
+                  : { bay: [500, 515], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [165, 112], lt: [500, 215], w: 1000, h: 640, r: 90 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * 9} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
     const nodes = [
@@ -1759,10 +1997,10 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
       { x: pos.lern[0], y: pos.lern[1], r: pos.r, icon: "📝", grass: "#b5e48c", label: "Lernwörter-Inseln", big: true, sub: chapSub(lern),
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Lernwörter", tap: enter(lern) },
       { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", tap: enter(lt) },
-      { x: pos.fog[0], y: pos.fog[1], r: 58, icon: "🏝️", label: "Bald mehr …", big: true, fog: true, fogIcon: "❔", aria: "Neue Inseln kommen bald",
-        tap: (i) => { swimTo(i, () => openSheet(c => { sheetTop(c, "❔", "Geheime Inseln", "Hinter dem Nebel"); c.appendChild(el("p", "note", "Hier warten bald neue Abenteuer auf Nemo. 🌫️")); })); } }
+      { x: pos.fog[0], y: pos.fog[1], r: pos.r * 0.85, icon: "📖", grass: "#9ad1d4", label: "Lese-Lagune", big: true, sub: chapSub(lese),
+        deco: [[-0.55, -0.25, "🐚", 0.4], [0.55, -0.25, "🌴", 0.44]], aria: "Lese-Lagune: Lesen üben", tap: enter(lese) }
     ];
-    const edges = [[0, 1, islandsDoneCount(nom) ? "done" : ""], [1, 2, "faint"], [0, 3, islandsDoneCount(lern) ? "done" : ""], [3, 5, "faint"], [0, 4, islandsDoneCount(lt) ? "done" : ""]];
+    const edges = [[0, 1, islandsDoneCount(nom) ? "done" : ""], [1, 2, "faint"], [0, 3, islandsDoneCount(lern) ? "done" : ""], [3, 5, islandsDoneCount(lese) ? "done" : ""], [0, 4, islandsDoneCount(lt) ? "done" : ""]];
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
   }
