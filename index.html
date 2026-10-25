@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nemos Übungsspielplatz</title>
+<title>Nemos Spielplatz</title>
 <style>
 /* Layout: one-screen ocean app. Top bar (back, coins), then one screen at a time:
    start → home (chapters) → chapter map (islands × difficulty) → intro → play → result. */
@@ -228,6 +228,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .chip { background: var(--sand); font-size: clamp(26px, 4.6vw, 40px); font-weight: 800; padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); border: 4px solid transparent; }
 .chip.on { background: var(--gold); border-color: #fff3c4; box-shadow: 0 5px 0 var(--gold-edge); }
 .chip.miss { border-color: var(--bad); }
+.chip.fixed { background: #e3f6e8; border-color: var(--good); color: var(--good); }
+.rs-tip { color: var(--white); font-size: clamp(19px, 3.4vw, 26px); font-weight: 800; background: rgba(255,255,255,.16); padding: 6px 18px; border-radius: 18px; }
+.rs-sent { font-size: clamp(24px, 4.4vw, 38px); font-weight: 800; text-align: center; max-width: 860px; line-height: 1.55; box-sizing: border-box; }
+.rs-sent .gap { min-width: 130px; }
+.markslot { display: inline-block; min-width: .9em; margin-left: 6px; border-bottom: 5px dashed var(--gold); color: #b8860b; text-align: center; line-height: 1; }
+.opt.markbtn { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 128px; padding: 10px 20px; }
+.markbtn .mk { font-size: clamp(46px, 8vw, 66px); line-height: 1; font-weight: 900; }
+.markbtn small { font-size: 16px; font-weight: 800; opacity: .7; }
+.rs-ear { font-size: 22px; }
 .counter { color: var(--white); font-size: 23px; font-weight: 800; text-align: center; }
 
 /* intro / result */
@@ -299,9 +308,10 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .tank .item { position: absolute; line-height: 0; }
 .tank .item svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 6px 6px rgba(0,30,60,.25)); }
 .tank .deco { bottom: 3%; transform: translateX(-50%); }
-.tank .swim { animation: tswim var(--t) linear infinite alternate; }
+.tank .swim { left: 2%; width: calc(96% - var(--w)); animation: tswim var(--t) linear infinite alternate; will-change: transform; pointer-events: none; }
+.tank .swim > .flip { width: var(--w); }
 @keyframes trays { from { transform: translateX(-4%); opacity: .55; } to { transform: translateX(4%); opacity: 1; } }
-@keyframes tswim { from { left: 2%; } to { left: calc(98% - var(--w)); } }
+@keyframes tswim { from { transform: translateX(0); } to { transform: translateX(100%); } }
 .tank .flip { width: 100%; height: 100%; animation: tflip calc(var(--t) * 2) steps(1, end) infinite; }
 @keyframes tflip { 0% { transform: scaleX(1); } 50% { transform: scaleX(-1); } }
 .tank .flip.rev { animation-name: tflipr; }
@@ -328,7 +338,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
 .ware { background: var(--sand); border-radius: 22px; padding: 12px 8px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); text-align: center; border: 3px solid transparent; }
 .ware .wart { width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffffff, #cdeffd 70%); display: grid; place-items: center; box-shadow: inset 0 -4px 0 rgba(0,60,100,.08); }
-.ware .wart svg { width: 80px; height: 80px; }
+.ware .wart svg { width: 80px; height: 80px; filter: drop-shadow(0 5px 4px rgba(0,40,70,.28)); }
 .ware .wn { font-size: 18px; font-weight: 900; }
 .ware .wp { font-size: 16px; font-weight: 900; display: flex; align-items: center; gap: 6px; min-height: 26px; }
 .ware.can { border-color: var(--gold); box-shadow: 0 5px 0 var(--gold-edge), 0 0 18px rgba(255,215,94,.7); }
@@ -352,6 +362,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 
 /* ocean map */
 .mapwrap { flex: 1; display: flex; justify-content: center; align-items: flex-start; min-height: 0; }
+#homeMap, #chapMap { width: min(calc(100vw - 32px), 1240px); align-self: center; }
 svg.sea { width: 100%; height: auto; max-height: calc(100vh - 210px); display: block; overflow: visible; }
 svg.sea .isl { cursor: pointer; }
 svg.sea .isl:focus { outline: none; }
@@ -491,6 +502,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
   .pond { gap: 10px; }
+  .slots { gap: 4px; }
+  .slot { min-width: 33px; font-size: 34px; height: 54px; line-height: 54px; }
+  .tile { width: 56px; height: 56px; font-size: 30px; }
+  .opt.markbtn { min-width: 96px; padding: 8px 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
@@ -512,7 +527,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   <!-- START -->
   <section class="screen start center" id="scrStart">
     <div class="nemo" aria-hidden="true">🦈</div>
-    <div class="head xl">Nemos<br>Übungsspielplatz</div>
+    <div class="head xl">Nemos<br>Spielplatz</div>
     <div class="card" id="nameCard">
       <label for="nameInput">Wie heißt du?</label>
       <input id="nameInput" type="text" maxlength="16" autocomplete="off" autocapitalize="words" placeholder="Dein Vorname">
@@ -530,10 +545,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   <!-- HOME -->
   <section class="screen" id="scrHome" hidden>
-    <div class="head l">Nemos Übungsspielplatz</div>
+    <div class="head l">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Experten-Inseln</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Rechtschreib-Inseln</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1986,6 +2001,323 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     }
   ];
 
+  /* ---------- Kapitel Rechtschreibung: 10 Inseln für Klasse 2 ----------
+     Lücken-Wörter: [Wort, Muster mit _, richtig, [falsch …], Bild, Tipp, Artikel]
+     Lücken-Sätze:  [Satz mit ___, richtig, [falsch …], Tipp]
+     Fehler-Sätze:  [Satz, [Fehler-Positionen], [Verbesserungen]] */
+  const RS_DOPPEL = [["Sonne", "So_e", "nn", ["n", "hn"], "☀️"], ["Ball", "Ba_", "ll", ["l", "hl"], "⚽"], ["Mutter", "Mu_er", "tt", ["t", "dd"], "👩"], ["Tasse", "Ta_e", "ss", ["s", "ß"], "☕"],
+    ["Suppe", "Su_e", "pp", ["p", "bb"], "🍲"], ["Hammer", "Ha_er", "mm", ["m", "hm"], "🔨"], ["Brille", "Bri_e", "ll", ["l", "hl"], "👓"], ["Teller", "Te_er", "ll", ["l", "hl"], "🍽️"],
+    ["Pfanne", "Pfa_e", "nn", ["n", "hn"], "🍳"], ["Affe", "A_e", "ff", ["f", "v"], "🐒"], ["Schiff", "Schi_", "ff", ["f", "v"], "🚢"], ["Koffer", "Ko_er", "ff", ["f", "v"], "🧳"],
+    ["Robbe", "Ro_e", "bb", ["b", "pp"], "🦭"], ["Bett", "Be_", "tt", ["t", "dd"], "🛏️"], ["Wasser", "Wa_er", "ss", ["s", "ß"], "💧"], ["Butter", "Bu_er", "tt", ["t", "dd"], "🧈"], ["Wolle", "Wo_e", "ll", ["l", "hl"], "🧶"]];
+  const RS_DOPPEL_X = [["Im ___ ist es heiß.", "Sommer", ["Somer", "Sohmer"]], ["Wir fahren mit dem ___ den Berg hinunter.", "Schlitten", ["Schliten", "Schlieten"]], ["Ich esse die Suppe mit dem ___.", "Löffel", ["Löfel", "Löffl"]],
+    ["Bei ___ und Blitz bleiben wir im Haus.", "Gewitter", ["Gewiter", "Gewieter"]], ["Unter dem Baum ist ___.", "Schatten", ["Schaten", "Schahten"]], ["Die ___ hat acht Beine.", "Spinne", ["Spine", "Spihne"]],
+    ["Der ___ wohnt in einer Burg.", "Ritter", ["Riter", "Rieter"]], ["Wir rudern mit dem ___.", "Paddel", ["Padel", "Pahdel"]], ["Papa schneidet das Brot mit dem ___.", "Messer", ["Meser", "Mäser"]]];
+  const RS_CK = [{ w: "Socke", art: "die", pic: "🧦", extra: ["k", "g"] }, { w: "Glocke", art: "die", pic: "🔔", extra: ["k", "g"] }, { w: "Schnecke", art: "die", pic: "🐌", extra: ["k", "g"] },
+    { w: "Jacke", art: "die", pic: "🧥", extra: ["k", "g"] }, { w: "Brücke", art: "die", pic: "🌉", extra: ["k", "g"] }, { w: "Wecker", art: "der", pic: "⏰", extra: ["k", "a"] },
+    { w: "Rucksack", art: "der", pic: "🎒", extra: ["k", "g"] }, { w: "Zucker", art: "der", pic: "🍬", extra: ["k", "a"] }, { w: "Dackel", art: "der", pic: "🐕", extra: ["k", "g"] }];
+  const RS_CK_GAP = [["Socke", "So_e", "ck", ["k", "kk"], "🧦"], ["Glocke", "Glo_e", "ck", ["k", "kk"], "🔔"], ["Jacke", "Ja_e", "ck", ["k", "kk"], "🧥"], ["Zucker", "Zu_er", "ck", ["k", "kk"], "🍬"],
+    ["Wecker", "We_er", "ck", ["k", "kk"], "⏰"], ["Schnecke", "Schne_e", "ck", ["k", "kk"], "🐌"], ["Gurke", "Gur_e", "k", ["ck", "g"], "🥒"], ["Wolke", "Wol_e", "k", ["ck", "g"], "☁️"],
+    ["Anker", "An_er", "k", ["ck", "g"], "⚓"], ["Zirkus", "Zir_us", "k", ["ck", "g"], "🎪"], ["Onkel", "On_el", "k", ["ck", "g"], "👨"]];
+  const RS_CK_X = [["Die ___ sticht mich in den Arm.", "Mücke", ["Müke", "Mükke"]], ["Im dunklen Schloss leuchtet eine ___.", "Fackel", ["Fakel", "Fakkel"]], ["Am Morgen backt der ___ frische Brötchen.", "Bäcker", ["Bäker", "Bäkker"]],
+    ["Ich stelle mich in die ___.", "Ecke", ["Eke", "Ekke"]], ["Im hohen Gras sitzt eine ___.", "Zecke", ["Zeke", "Zekke"]], ["Die ___ ist sauer.", "Gurke", ["Gurcke", "Gurkke"]],
+    ["Im ___ gibt es Clowns.", "Zirkus", ["Zircus", "Zirckus"]], ["Wir laden unser ___ ins Auto.", "Gepäck", ["Gepäk", "Gepäkk"]], ["Am Himmel zieht eine dunkle ___ vorbei.", "Wolke", ["Wolcke", "Wolkke"]]];
+  const RS_TZ1 = [["Die Kaze schläft auf dem Sofa.", [1], ["Katze"]], ["Ich ziehe meine Müze an.", [3], ["Mütze"]], ["Der Spaz pickt die Krümel auf.", [1], ["Spatz"]],
+    ["Nach dem Regen springe ich in die Pfüze.", [7], ["Pfütze"]], ["Am Abend sehe ich einen Bliz am Himmel.", [5], ["Blitz"]], ["Der Hund sizt vor der Tür.", [2], ["sitzt"]],
+    ["Wir spielen auf dem Spielplaz.", [4], ["Spielplatz"]], ["Die Kinder rennen schnell zum Plaz.", [5], ["Platz"]], ["Lena hat einen langen Saz geschrieben.", [4], ["Satz"]]];
+  const RS_TZ2 = [["Die Kerze brennt neben der Kaze.", [5], ["Katze"]], ["Das Holz liegt neben der Pfüze.", [5], ["Pfütze"]], ["Im Wald wächst ein Pilz, der Spaz sitzt darauf.", [6], ["Spatz"]],
+    ["Mein Herz klopft, wenn es bliz.", [5], ["blitzt"]], ["Oma tanzt mit ihrer roten Müze.", [5], ["Mütze"]], ["Die Pflanze braucht Wasser, denn die Hize ist groß.", [6], ["Hitze"]],
+    ["Der Ranzen liegt auf meinem Plaz.", [5], ["Platz"]], ["Der Hund kraz an der Tür.", [2], ["kratzt"]]];
+  const RS_TZ3 = [["Die Kaze und der Spaz spielen.", [1, 4], ["Katze", "Spatz"]], ["Ich size mit meiner Müze im Garten.", [1, 4], ["sitze", "Mütze"]], ["Der Bliz macht der Kaze Angst.", [1, 4], ["Blitz", "Katze"]],
+    ["Auf dem Plaz ist eine große Pfüze.", [2, 6], ["Platz", "Pfütze"]], ["Mein Herz hüpft, denn die Kaze ist wieder da und jagt den Spaz.", [5, 12], ["Katze", "Spatz"]], ["Die Hize ist groß, ich size im Schatten.", [1, 5], ["Hitze", "sitze"]]];
+  const RS_TZ_X = [["Mein Hertz klopft ganz schnell.", [1], ["Herz"]], ["Im Wald wächst ein Piltz.", [4], ["Pilz"]], ["Die Kaze trinkt Milch.", [1], ["Katze"]],
+    ["Auf dem Tisch steht eine Kertze.", [5], ["Kerze"]], ["Wir tantzen und lachen.", [1], ["tanzen"]], ["Ich gieße die Pflantze und setze mich auf meinen Plaz.", [3, 9], ["Pflanze", "Platz"]],
+    ["Gib mir bitte das Saltz.", [4], ["Salz"]], ["Der Hund kraz am Holtz.", [2, 4], ["kratzt", "Holz"]]];
+  const RS_IE = [["Biene", "B_ne", "ie", ["i", "ih"], "🐝"], ["Brief", "Br_f", "ie", ["i", "ih"], "✉️"], ["Ziege", "Z_ge", "ie", ["i", "ih"], "🐐"], ["Spiegel", "Sp_gel", "ie", ["i", "ih"], "🪞"],
+    ["Fliege", "Fl_ge", "ie", ["i", "ih"], "🪰"], ["Stiefel", "St_fel", "ie", ["i", "ih"], "👢"], ["Knie", "Kn_", "ie", ["i", "ih"], "🦵"], ["Wiese", "W_se", "ie", ["i", "ih"], "🌼"],
+    ["Fisch", "F_sch", "i", ["ie", "ih"], "🐟"], ["Kind", "K_nd", "i", ["ie", "ih"], "🧒"], ["Ring", "R_ng", "i", ["ie", "ih"], "💍"], ["Milch", "M_lch", "i", ["ie", "ih"], "🥛"],
+    ["Kiste", "K_ste", "i", ["ie", "ih"], "📦"], ["Pilz", "P_lz", "i", ["ie", "ih"], "🍄"]];
+  const RS_IE_SATZ = [["Die ___ summt um die Blume.", "Biene", ["Bine"]], ["Ich schreibe einen ___ an Oma.", "Brief", ["Brif"]], ["Die ___ meckert im Stall.", "Ziege", ["Zige"]],
+    ["Im ___ sehe ich mich.", "Spiegel", ["Spigel"]], ["Im Wasser schwimmt ein ___.", "Fisch", ["Fiesch"]], ["Das ___ spielt im Sand.", "Kind", ["Kiend"]],
+    ["Die Kuh frisst Gras auf der ___.", "Wiese", ["Wise"]], ["Ich trinke ein Glas ___.", "Milch", ["Mielch"]], ["Bei Regen ziehe ich meine ___ an.", "Stiefel", ["Stifel"]], ["Mama trägt einen goldenen ___.", "Ring", ["Rieng"]]];
+  const RS_IE_X = [["Ich male auf ___.", "Papier", ["Papir", "Papihr"]], ["Wir ___ draußen Fußball.", "spielen", ["spilen", "spihlen"]], ["Im Zoo sehen wir einen ___.", "Tiger", ["Tieger", "Tihger"], "Merkwort: Tiger schreibt man nur mit i!"],
+    ["Der ___ hat Stacheln.", "Igel", ["Iegel", "Ihgel"], "Merkwort: Igel schreibt man nur mit i!"], ["Am Abend gehen wir ins ___.", "Kino", ["Kieno", "Kihno"], "Merkwort: Kino schreibt man nur mit i!"],
+    ["Die Kinder ___ ein Lied.", "singen", ["siengen", "sihngen"]], ["Ich habe ___ Bücher.", "viele", ["vile", "vihle"]], ["Opa spielt ___.", "Klavier", ["Klavir", "Klawier"]], ["Der Hund ___ an der Leine.", "zieht", ["ziht", "zit"]]];
+  const RS_VL = [["Hund", "Hun_", "d", ["t"], "🐕", "die Hunde"], ["Wald", "Wal_", "d", ["t"], "🌲", "die Wälder"], ["Hand", "Han_", "d", ["t"], "✋", "die Hände"], ["Kleid", "Klei_", "d", ["t"], "👗", "die Kleider"],
+    ["Pferd", "Pfer_", "d", ["t"], "🐴", "die Pferde"], ["Bild", "Bil_", "d", ["t"], "🖼️", "die Bilder"], ["Mund", "Mun_", "d", ["t"], "👄", "die Münder"], ["Brot", "Bro_", "t", ["d"], "🍞", "die Brote"],
+    ["Zelt", "Zel_", "t", ["d"], "⛺", "die Zelte"], ["Berg", "Ber_", "g", ["k"], "⛰️", "die Berge"], ["Zug", "Zu_", "g", ["k"], "🚂", "die Züge"], ["Weg", "We_", "g", ["k"], "🛤️", "die Wege"],
+    ["Korb", "Kor_", "b", ["p"], "🧺", "die Körbe"], ["Kalb", "Kal_", "b", ["p"], "🐄", "die Kälber"], ["Bank", "Ban_", "k", ["g"], "🪑", "die Bänke"]];
+  const RS_VL_X = [["Der Ball ist ___.", "rund", ["runt"], "rund – runde"], ["Die Banane ist ___.", "gelb", ["gelp"], "gelb – gelbe"], ["Am Abend wird es ___.", "kalt", ["kald"], "kalt – kälter"],
+    ["Der Löwe ist sehr ___.", "stark", ["starg"], "stark – stärker"], ["Mein Bruder ist acht Jahre ___.", "alt", ["ald"], "alt – älter"], ["Wir fliegen mit dem ___ in den Urlaub.", "Flugzeug", ["Flugzeuk"], "Flugzeug – die Flugzeuge"],
+    ["Am ___ bauen wir eine Sandburg.", "Strand", ["Strant"], "Strand – die Strände"], ["Der Zauberer hat einen ___.", "Zauberstab", ["Zauberstap"], "Stab – die Stäbe"], ["Meine Schwester ist sehr ___.", "klug", ["kluk"], "klug – kluge"]];
+  const RS_AB = [["Bäume", "B_me", "äu", ["eu"], "🌳", "der Baum"], ["Mäuse", "M_se", "äu", ["eu"], "🐭", "die Maus"], ["Häuser", "H_ser", "äu", ["eu"], "🏘️", "das Haus"], ["Kräuter", "Kr_ter", "äu", ["eu"], "🌿", "das Kraut"],
+    ["Hände", "H_nde", "ä", ["e"], "🙌", "die Hand"], ["Äpfel", "_pfel", "Ä", ["E"], "🍎", "der Apfel"], ["Bälle", "B_lle", "ä", ["e"], "⚽", "der Ball"], ["Gläser", "Gl_ser", "ä", ["e"], "🥛", "das Glas"],
+    ["Räder", "R_der", "ä", ["e"], "🚲", "das Rad"], ["Blätter", "Bl_tter", "ä", ["e"], "🍂", "das Blatt"], ["Zähne", "Z_hne", "ä", ["e"], "🦷", "der Zahn"], ["Wälder", "W_lder", "ä", ["e"], "🌲", "der Wald"],
+    ["Feuer", "F_er", "eu", ["äu"], "🔥", "Kein au-Wort verwandt – also eu."], ["Eule", "_le", "Eu", ["Äu"], "🦉", "Kein au-Wort verwandt – also Eu."]];
+  const RS_AB_X = [["Viele ___ stehen im Stall.", "Kälber", ["Kelber"], "das Kalb"], ["In der Küche hängen zwei ___.", "Schränke", ["Schrenke"], "der Schrank"], ["Auf dem Bauernhof leben viele ___.", "Gänse", ["Gense"], "die Gans"],
+    ["Der Bauer trägt zwei schwere ___.", "Säcke", ["Secke"], "der Sack"], ["Nachts habe ich schöne ___.", "Träume", ["Treume"], "der Traum"], ["Nach dem Essen sind unsere ___ dick.", "Bäuche", ["Beuche"], "der Bauch"],
+    ["Wir reisen durch viele ___.", "Länder", ["Lender"], "das Land"], ["Im Garten wachsen viele ___.", "Sträucher", ["Streucher"], "der Strauch"], ["Am Lagerfeuer singen alle ___.", "Leute", ["Läute"], "Kein au-Wort verwandt – also eu."]];
+  const RS_SP = [["Spinne", "_inne", "Sp", ["Schp", "Sch"], "🕷️"], ["Stern", "_ern", "St", ["Scht", "Sch"], "⭐"], ["Stuhl", "_uhl", "St", ["Scht", "Sch"], "🪑"], ["Stein", "_ein", "St", ["Scht", "Sch"], "🪨"],
+    ["Spiegel", "_iegel", "Sp", ["Schp", "Sch"], "🪞"], ["Stiefel", "_iefel", "St", ["Scht", "Sch"], "👢"], ["Stift", "_ift", "St", ["Scht", "Sch"], "✏️"], ["Spatz", "_atz", "Sp", ["Schp", "Sch"], "🐦"],
+    ["Stadt", "_adt", "St", ["Scht", "Sch"], "🏙️"], ["Spiel", "_iel", "Sp", ["Schp", "Sch"], "🎲"], ["Straße", "_raße", "St", ["Scht", "Sch"], "🛣️"]];
+  const RS_SP_X = [["Wir ___ im Garten Verstecken.", "spielen", ["schpielen", "spiehlen"]], ["Der Frosch kann weit ___.", "springen", ["schpringen", "sprinken"]], ["Im Mäppchen liegt ein ___.", "Bleistift", ["Bleischtift", "Bleistieft"]],
+    ["An der ___ wartet der Bus.", "Haltestelle", ["Halteschtelle", "Haltestele"]], ["Die Kinder ___ an der Ampel.", "stehen", ["schtehen", "steen"]], ["Am Abend sehen wir viele ___.", "Sterne", ["Schterne", "Stärne"]],
+    ["Nach der Schule gehen wir auf den ___.", "Spielplatz", ["Schpielplatz", "Spielplaz"]], ["Ich lege die Bücher auf einen ___.", "Stapel", ["Schtapel", "Stappel"]]];
+  const RS_V = [["Vogel", "_ogel", "V", ["F", "W"], "🐦"], ["Vater", "_ater", "V", ["F", "W"], "👨"], ["vier", "_ier", "v", ["f", "w"], "4️⃣"], ["Vorsicht", "_orsicht", "V", ["F", "W"], "⚠️"],
+    ["Vollmond", "_ollmond", "V", ["F", "W"], "🌕"], ["Verkehr", "_erkehr", "V", ["F", "W"], "🚦"], ["Fisch", "_isch", "F", ["V", "W"], "🐟"], ["Fuß", "_uß", "F", ["V", "W"], "🦶"],
+    ["Feder", "_eder", "F", ["V", "W"], "🪶"], ["Fenster", "_enster", "F", ["V", "W"], "🪟"], ["Feuer", "_euer", "F", ["V", "W"], "🔥"], ["Fahne", "_ahne", "F", ["V", "W"], "🚩"]];
+  const RS_V2 = [["Der Fogel singt im Baum.", [1], ["Vogel"]], ["Mein Fater liest die Zeitung.", [1], ["Vater"]], ["Ich habe fier Stifte.", [2], ["vier"]], ["Wir haben fiel Spaß.", [2], ["viel"]],
+    ["Das Glas ist foll.", [3], ["voll"]], ["Der Ball liegt for dem Tor.", [3], ["vor"]], ["Das Geschenk ist fon Oma.", [3], ["von"]], ["Forsicht, das Auto kommt!", [0], ["Vorsicht,"]]];
+  const RS_V3 = [["Der Fogel sitzt for dem Fenster.", [1, 3], ["Vogel", "vor"]], ["Mein Fater hat fier Fische.", [1, 3], ["Vater", "vier"]], ["Wir haben fiel Spaß fon früh bis spät.", [2, 4], ["viel", "von"]],
+    ["Der Korb ist foll mit fier Äpfeln.", [3, 5], ["voll", "vier"]], ["Forsicht, der Fogel fliegt!", [0, 2], ["Vorsicht,", "Vogel"]], ["Fier Kinder sitzen for der Tür.", [0, 3], ["Vier", "vor"]]];
+  const RS_V_X = [["Ich habe meine Mütze ___.", "vergessen", ["fergessen", "vergesen"]], ["Wir spielen ___.", "Verstecken", ["Ferstecken", "Verstekken"]], ["Ich darf meinen Schlüssel nicht ___.", "verlieren", ["ferlieren", "verliren"]],
+    ["Am Himmel leuchtet der ___.", "Vollmond", ["Follmond", "Volmond"]], ["___, die Herdplatte ist heiß!", "Vorsicht", ["Forsicht", "Vorsich"]], ["Auf der Straße ist viel ___.", "Verkehr", ["Ferkehr", "Verker"]],
+    ["Ich habe ___ Geschwister.", "vier", ["fier", "vir"]], ["Die Lehrerin liest uns eine Geschichte ___.", "vor", ["for", "vohr"]]];
+  const RS_ER = [["Leiter", "Leit_", "er", ["a", "r"], "🪜", null, "die"], ["Messer", "Mess_", "er", ["a", "r"], "🔪", null, "das"], ["Teller", "Tell_", "er", ["a", "r"], "🍽️", null, "der"],
+    ["Fenster", "Fenst_", "er", ["a", "r"], "🪟", null, "das"], ["Butter", "Butt_", "er", ["a", "r"], "🧈", null, "die"], ["Feder", "Fed_", "er", ["a", "r"], "🪶", null, "die"],
+    ["Hammer", "Hamm_", "er", ["a", "r"], "🔨", null, "der"], ["Tiger", "Tig_", "er", ["a", "r"], "🐯", null, "der"], ["Eimer", "Eim_", "er", ["a", "r"], "🪣", null, "der"],
+    ["Lehrer", "Lehr_", "er", ["a", "r"], "🧑‍🏫", null, "der"], ["Winter", "Wint_", "er", ["a", "r"], "❄️", null, "der"], ["Kinder", "Kind_", "er", ["a", "r"], "🧒", null, "die"]];
+  const RS_ER_X = [["Meine ___ ist zehn Jahre alt.", "Schwester", ["Schwesta", "Schwestr"]], ["Mein ___ spielt Fußball.", "Bruder", ["Bruda", "Brudr"]], ["Heute ist schönes ___.", "Wetter", ["Wetta", "Weter"]],
+    ["Der ___ zaubert einen Hasen aus dem Hut.", "Zauberer", ["Zaubera", "Zauberr"]], ["Im ___ gehen wir ins Freibad.", "Sommer", ["Somma", "Somer"]], ["Wir essen Brot mit ___.", "Butter", ["Butta", "Buter"]],
+    ["Der ___ bringt uns die Post.", "Briefträger", ["Briefträga", "Brifträger"]], ["Papa arbeitet am ___.", "Computer", ["Computa", "Kompjuter"]]];
+  const RS_Z1 = [["Wie heißt du", "?"], ["Ich heiße Lena", "."], ["Wo wohnst du", "?"], ["Heute scheint die Sonne", "."], ["Hast du einen Hund", "?"], ["Mein Hund heißt Bello", "."],
+    ["Wann gehen wir los", "?"], ["Ich mag Eis", "."], ["Spielst du mit mir", "?"], ["Der Ball ist rot", "."]];
+  const RS_Z2 = [["Pass auf", "!"], ["Komm schnell her", "!"], ["Hilfe", "!"], ["Hör sofort auf", "!"], ["Wo ist mein Stift", "?"], ["Ich gehe in die Schule", "."],
+    ["Lauf schnell weg", "!"], ["Wer hat das gemacht", "?"], ["Wir essen heute Nudeln", "."], ["Hurra, wir haben gewonnen", "!"]];
+  const RS_Z3 = [["Kommst du morgen zu meinem Geburtstag", "?"], ["Vorsicht, die Herdplatte ist heiß", "!"], ["Im Herbst fallen die Blätter von den Bäumen", "."], ["Darf ich heute länger aufbleiben", "?"],
+    ["Sei bitte leise", "!"], ["Unser Hund schläft gern in seinem Körbchen", "."], ["Warum ist der Himmel blau", "?"], ["Juhu, es schneit", "!"], ["Nach der Schule mache ich meine Hausaufgaben", "."], ["Hast du meinen Turnbeutel gesehen", "?"]];
+  const RS_Z_X = [["Ich frage mich, ob es morgen regnet", ".", "Hier wird nicht gefragt, sondern erzählt, was jemand denkt. Also Punkt."], ["Weißt du, wo mein Hut ist", "?", "Weißt du …? ist eine Frage."],
+    ["Ich weiß nicht, wie spät es ist", ".", "Das ist keine Frage, sondern eine Aussage."], ["Kannst du mir bitte helfen", "?", "Das ist eine Frage."], ["Oh nein, mein Eis ist runtergefallen", "!", "Hier ruft jemand erschrocken."],
+    ["Sei leise, das Baby schläft", "!", "Das ist eine Aufforderung."], ["Mama sagt, dass wir gleich essen", ".", "Hier wird erzählt, was jemand sagt."], ["Wer hat meinen Radiergummi genommen", "?", "Mit Wer fängt eine Frage an."]];
+
+  function rsFixed(x) { return x[0].split(" ").map((w, i) => { const k = x[1].indexOf(i); return k < 0 ? w : x[2][k] + (/[.!?]$/.test(w) && !/[.!?,]$/.test(x[2][k]) ? w.slice(-1) : ""); }).join(" "); }
+  // Beschriftung für die Übe-Muscheln: verbesserter Satz bzw. Satz mit Satzzeichen
+  [RS_TZ1, RS_TZ2, RS_TZ3, RS_TZ_X, RS_V2, RS_V3].forEach(l => l.forEach(x => { x.lab = rsFixed(x); }));
+  [RS_Z1, RS_Z2, RS_Z3, RS_Z_X].forEach(l => l.forEach(x => { x.lab = x[0] + x[1]; }));
+  const rsWrong = (pat, w) => pat.replace("_", w);
+  function rsGap(stage, x, n, o) {
+    const word = x[0], pat = x[1], right = x[2], wrongs = x[3], pic = x[4], tip = x[5];
+    if (pic) stage.appendChild(el("div", "emoji-big", pic));
+    stage.appendChild(el("div", "gapword", pat.replace("_", `<span class="g" id="gapSlot">?</span>`)));
+    if (tip && o.tip) stage.appendChild(el("div", "rs-tip", "💡 " + tip));
+    const why = o.why ? o.why(x) : "Probier nochmal!";
+    const opts = [{ label: right, correct: true }].concat(wrongs.slice(0, n - 1).map(w => ({ label: w, wrongText: `${rsWrong(pat, w)}? Das stimmt nicht. ${why}` })));
+    choiceTask(stage, { opts, onRight: () => { const sl = $("gapSlot"); if (sl) sl.textContent = right; }, okText: word, okSpeak: word, factor: o.factor || 1 });
+    L.speakNow = () => speak(word);
+  }
+  function rsWhole(stage, x, n, o) {
+    const word = x[0], pat = x[1], wrongs = x[3], pic = x[4];
+    if (pic && o.pic) stage.appendChild(el("div", "emoji-big", pic));
+    if (o.ear) { const b = el("button", "big-btn ghost rs-ear", "🔊 Nochmal hören"); b.addEventListener("click", () => speak(word)); stage.appendChild(b); setTimeout(() => speak(word), 450); }
+    const why = o.why ? " " + o.why(x) : "";
+    const opts = [{ label: word, correct: true }].concat(wrongs.slice(0, n - 1).map(w => ({ label: rsWrong(pat, w), wrongText: `„${rsWrong(pat, w)}“ ist falsch geschrieben.${why}` })));
+    choiceTask(stage, { small: true, opts, okText: word, okSpeak: word, factor: o.factor || 2 });
+    L.speakNow = () => speak(word);
+  }
+  function rsSentence(stage, x, o) {
+    const sent = x[0], right = x[1], wrongs = x[2], tip = x[3], full = sent.replace("___", right);
+    stage.appendChild(el("div", "card rs-sent", sent.replace("___", `<span class="gap" id="gapSlot">&nbsp;</span>`)));
+    const opts = [{ label: right, correct: true }].concat(wrongs.map(w => ({ label: w, wrongText: `„${w}“ ist falsch geschrieben.` + (tip ? " Tipp: " + tip : "") })));
+    choiceTask(stage, { small: true, opts, onRight: () => { const sl = $("gapSlot"); if (sl) sl.textContent = right; }, okText: full, okSpeak: full, factor: o.factor || 2 });
+    L.speakNow = () => speak(sent.replace("___", "…"));
+  }
+  function rsDetect(stage, x, o) {
+    const sent = x[0], targets = x[1], fixed = rsFixed(x);
+    chipTask(stage, { sentence: sent, targets, factor: o.factor || 2, countText: targets.length > 1 ? `🔎 ${targets.length} Fehler verstecken sich` : "🔎 Ein Fehler versteckt sich",
+      okText: "Gefunden und verbessert!", extraText: (w) => `„${w}“ ist richtig geschrieben.`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Fehler" : m.length + " Fehler"}.`, sayExtra: "",
+      onSolved: (chips) => { targets.forEach((i, k) => { const c = chips.children[i]; c.textContent = fixed.split(" ")[i]; c.classList.add("fixed"); }); }, speakSolved: fixed });
+    L.speakNow = () => speak("Finde das falsch geschriebene Wort.");
+  }
+  function rsMark(stage, x, marks, o) {
+    const sent = x[0], mark = x[1], why = x[2], names = { ".": "Punkt", "?": "Fragezeichen", "!": "Ausrufezeichen" };
+    stage.appendChild(el("div", "card rs-sent", `${sent}<span class="markslot" id="markSlot">&nbsp;</span>`));
+    const def = mark === "?" ? "Wird hier etwas gefragt?" : mark === "!" ? "Wird hier gerufen oder etwas befohlen?" : "Wird hier etwas erzählt?";
+    const row = el("div", "opts");
+    marks.forEach(m => {
+      const b = el("button", "opt markbtn", `<span class="mk">${m}</span><small>${names[m]}</small>`);
+      b.addEventListener("click", () => {
+        if (L.locked) return;
+        if (m === mark) { b.classList.add("right"); const s = $("markSlot"); if (s) s.textContent = mark; award(b, o.factor || 1); speak(sent + mark); hint(praise() + " " + names[mark] + "!", true); done(1400); }
+        else miss(b, why || def);
+      });
+      row.appendChild(b);
+    });
+    stage.appendChild(row);
+    L.speakNow = () => speak(sent + " …");
+  }
+  const rsTiles = (x) => ({ w: x[0], art: x[6], pic: x[4], extra: ["a", "r"] });
+
+  const RSLEVELS = [
+    {
+      id: "doppel", name: "Doppel-Bucht", icon: "👯", color: "#3a86ff",
+      task: (d) => d === "schwer" ? "Welches Wort ist richtig geschrieben?" : "Einer oder zwei? Was fehlt?",
+      intro: (d) => "Hör genau hin: Ist der Laut vor der Lücke kurz? Dann schreibst du den Mitlaut danach meistens doppelt: Son-ne, Mut-ter." + (d === "schwer" ? " Jetzt ohne Lücke: Welches Wort ist richtig?" : ""),
+      ex: () => "So<b>nn</b>e · Ba<b>ll</b> · Mu<b>tt</b>er",
+      say: () => "Hör genau hin: Ist der Laut kurz? Dann schreibst du den Mitlaut danach meistens doppelt. Sonne, Mutter.",
+      build(d) { return shuffle(RS_DOPPEL).slice(0, d === "leicht" ? 8 : 10); },
+      render(x, stage, d) {
+        if (d === "schwer") return rsWhole(stage, x, 3, { pic: true, why: () => "Sprich langsam: Klingt der Laut kurz? Dann doppelt!" });
+        rsGap(stage, x, d === "leicht" ? 2 : 3, { why: () => "Sprich das Wort langsam und klatsche die Silben: Son-ne." });
+      },
+      expert: {
+        task: () => "Welches Wort ist richtig geschrieben?", intro: () => XI + "Neue, längere Wörter! Kurzer Laut – doppelter Mitlaut. Welches Wort passt richtig geschrieben in den Satz?",
+        ex: () => "Im <b>Sommer</b> ist es heiß.", say: () => "Experten-Aufgabe! Neue, längere Wörter. Welches Wort ist richtig geschrieben?",
+        build() { return shuffle(RS_DOPPEL_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "ck", name: "ck-Klippe", icon: "🧦", color: "#e76f51",
+      task: (d) => d === "mittel" ? "ck oder k?" : "Lege das Wort mit den Buchstaben!",
+      intro: (d) => d === "mittel" ? "Nach einem kurzen Laut schreibst du ck: So-cke. Nach l, n, r – das merke ja – steht nie ck: Gur-ke, Wol-ke." : d === "leicht" ? "Lege das Wort Buchstabe für Buchstabe. Achte auf das ck!" : "Lege das Wort. Achtung: Es sind falsche Buchstaben dabei!",
+      ex: (d) => d === "mittel" ? "So<b>ck</b>e · Gur<b>k</b>e" : "S · o · c · k · e",
+      say: (d) => d === "mittel" ? "Nach einem kurzen Laut schreibst du c k. Nach l, n, r steht nie c k." : "Lege das Wort Buchstabe für Buchstabe. Achte auf das c k.",
+      build(d) { return d === "mittel" ? shuffle(RS_CK_GAP).slice(0, 10) : shuffle(RS_CK).slice(0, d === "leicht" ? 6 : 8); },
+      render(x, stage, d) {
+        if (d === "mittel") return rsGap(stage, x, 2, { why: (y) => y[2] === "ck" ? "Der Laut davor ist kurz – also ck." : "Nach l, n, r steht nie ck." });
+        stage.appendChild(el("div", "emoji-big", x.pic));
+        tileTask(stage, x, { ghost: d === "leicht", extra: d === "schwer", factor: d === "leicht" ? 1 : 2 });
+        L.speakNow = () => speak(x.art + " " + x.w);
+      },
+      expert: {
+        task: () => "ck oder k? Welches Wort ist richtig?", intro: () => XI + "Neue Wörter mit ck und k. Denk an die Regel: Nach l, n, r steht nie ck!",
+        ex: () => "die Mü<b>ck</b>e · die Wol<b>k</b>e", say: () => "Experten-Aufgabe! Neue Wörter mit c k und k. Nach l, n, r steht nie c k.",
+        build() { return shuffle(RS_CK_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "tz", name: "tz-Detektiv", icon: "🔎", color: "#f77f00",
+      task: (d) => d === "schwer" ? "Finde beide Fehler!" : "Finde das falsch geschriebene Wort!",
+      intro: (d) => "Nach einem kurzen Laut schreibst du tz: Kat-ze, Müt-ze. Nach l, n, r steht nie tz: Pilz, Herz. " + (d === "schwer" ? "In jedem Satz stecken zwei Fehler!" : "In jedem Satz steckt ein Fehler. Tippe ihn an und dann auf Fertig."),
+      ex: () => "Die <s>Kaze</s> → Ka<b>tz</b>e",
+      say: (d) => "Nach einem kurzen Laut schreibst du t z. Nach l, n, r steht nie t z. " + (d === "schwer" ? "In jedem Satz stecken zwei Fehler." : "In jedem Satz steckt ein Fehler."),
+      build(d) { return shuffle(d === "leicht" ? RS_TZ1 : d === "mittel" ? RS_TZ2 : RS_TZ3).slice(0, d === "schwer" ? 6 : 8); },
+      render(x, stage, d) { rsDetect(stage, x, { factor: d === "leicht" ? 1 : 2 }); },
+      expert: {
+        task: () => "Finde die Fehler: tz oder z?", intro: () => XI + "Jetzt sind auch Wörter falsch, die zu viel haben: Hertz statt Herz! Nach l, n, r steht nie tz.",
+        ex: () => "<s>Hertz</s> → Her<b>z</b>", say: () => "Experten-Aufgabe! Auch Wörter mit zu viel t sind falsch. Nach l, n, r steht nie t z.",
+        build() { return shuffle(RS_TZ_X).slice(0, 7); }, render(x, stage) { rsDetect(stage, x, { factor: 3 }); }
+      }
+    },
+    {
+      id: "ie", name: "ie-Insel", icon: "🐝", color: "#ffb703",
+      task: (d) => d === "leicht" ? "i oder ie?" : d === "mittel" ? "Welches Wort passt in den Satz?" : "Hör gut zu! Welches Wort hörst du?",
+      intro: (d) => "Hörst du ein langes i wie in Biene? Dann schreibst du meistens ie. Ein kurzes i wie in Fisch schreibst du nur mit i." + (d === "schwer" ? " Jetzt hörst du das Wort nur!" : ""),
+      ex: () => "B<b>ie</b>ne · F<b>i</b>sch",
+      say: (d) => "Hörst du ein langes i wie in Biene? Dann schreibst du meistens i e. Ein kurzes i wie in Fisch schreibst du nur mit i.",
+      build(d) { return d === "mittel" ? shuffle(RS_IE_SATZ).slice(0, 8) : shuffle(RS_IE).slice(0, d === "leicht" ? 8 : 10); },
+      render(x, stage, d) {
+        if (d === "leicht") return rsGap(stage, x, 2, { why: (y) => y[2] === "ie" ? "Das i klingt lang – also ie." : "Das i klingt kurz – also nur i." });
+        if (d === "mittel") return rsSentence(stage, x, { factor: 2 });
+        rsWhole(stage, x, 3, { ear: true, why: (y) => y[2] === "ie" ? "Hör genau: Das i klingt lang." : "Hör genau: Das i klingt kurz." });
+      },
+      expert: {
+        task: () => "i oder ie? Achtung, Merkwörter!", intro: () => XI + "Neue Wörter – und Merkwörter, die man trotz langem i nur mit i schreibt: Tiger, Igel, Kino.",
+        ex: () => "Pap<b>ie</b>r · T<b>i</b>ger", say: () => "Experten-Aufgabe! Neue Wörter und Merkwörter wie Tiger, Igel und Kino.",
+        build() { return shuffle(RS_IE_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "verlaengern", name: "Verlänger-Riff", icon: "↔️", color: "#2a9d8f",
+      task: (d) => d === "schwer" ? "Welches Wort ist richtig?" : "Verlängere das Wort! Was fehlt?",
+      intro: (d) => "Am Wortende hörst du oft t, k oder p. Verlängere das Wort, dann hörst du es: Hund – die Hunde. Also d!" + (d === "leicht" ? " Der Tipp steht dabei." : " Jetzt ohne Tipp: Verlängere selbst!"),
+      ex: () => "Hun<b>d</b> → die Hun<b>d</b>e",
+      say: () => "Am Wortende hörst du oft t, k oder p. Verlängere das Wort, dann hörst du es. Hund, die Hunde. Also d.",
+      build(d) { return shuffle(RS_VL).slice(0, d === "leicht" ? 8 : 10); },
+      render(x, stage, d) {
+        if (d === "schwer") return rsWhole(stage, x, 2, { pic: true, why: (y) => `Verlängere: ${y[5]}!` });
+        rsGap(stage, x, 2, { tip: d === "leicht", why: (y) => `Verlängere: ${y[5]}!` });
+      },
+      expert: {
+        task: () => "Verlängere! Welches Wort ist richtig?", intro: () => XI + "Der Trick klappt auch bei Wiewörtern: rund – runde, kalt – kälter. Verlängere im Kopf!",
+        ex: () => "run<b>d</b> → run<b>d</b>e", say: () => "Experten-Aufgabe! Der Verlänger-Trick klappt auch bei Wiewörtern. Rund, runde.",
+        build() { return shuffle(RS_VL_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "ableiten", name: "Ableite-Lagune", icon: "🌳", color: "#52b788",
+      task: (d) => d === "schwer" ? "Welches Wort ist richtig?" : "ä oder e? äu oder eu?",
+      intro: (d) => "Gibt es ein verwandtes Wort mit a oder au? Dann schreibst du ä oder äu: Baum – Bäume, Hand – Hände." + (d === "leicht" ? " Das verwandte Wort steht dabei." : " Jetzt suchst du es selbst!"),
+      ex: () => "B<b>au</b>m → B<b>äu</b>me",
+      say: () => "Gibt es ein verwandtes Wort mit a oder a u? Dann schreibst du ä oder ä u. Baum, Bäume.",
+      build(d) { return shuffle(RS_AB).slice(0, d === "leicht" ? 8 : 10); },
+      render(x, stage, d) {
+        const why = (y) => /^Kein/.test(y[5]) ? y[5] : `Denk an: ${y[5]}!`;
+        if (d === "schwer") return rsWhole(stage, x, 2, { pic: true, why });
+        rsGap(stage, x, 2, { tip: d === "leicht", why });
+      },
+      expert: {
+        task: () => "ä oder e? Leite ab!", intro: () => XI + "Neue Wörter! Suche selbst das verwandte Wort mit a oder au.",
+        ex: () => "Kal<b>b</b> → K<b>ä</b>lber", say: () => "Experten-Aufgabe! Suche selbst das verwandte Wort mit a oder a u.",
+        build() { return shuffle(RS_AB_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "spst", name: "Sp-St-Strand", icon: "🕷️", color: "#8338ec",
+      task: (d) => d === "schwer" ? "Hör gut zu! Welches Wort ist richtig?" : "Wie fängt das Wort an?",
+      intro: (d) => "Du sprichst schp und scht, aber du schreibst Sp und St: Spinne, Stern!" + (d === "schwer" ? " Jetzt hörst du das Wort nur." : ""),
+      ex: () => "<b>Sp</b>inne · <b>St</b>ern",
+      say: () => "Du sprichst schp und scht, aber du schreibst S p und S t. Spinne, Stern.",
+      build(d) { return shuffle(RS_SP).slice(0, d === "leicht" ? 8 : 10); },
+      render(x, stage, d) {
+        if (d === "schwer") return rsWhole(stage, x, 3, { ear: true, why: () => "Du hörst schp oder scht – du schreibst aber Sp oder St." });
+        rsGap(stage, x, d === "leicht" ? 2 : 3, { why: () => "Du hörst schp oder scht – du schreibst aber Sp oder St." });
+      },
+      expert: {
+        task: () => "sp oder st – auch mitten im Wort!", intro: () => XI + "Sp und St gibt es auch in Tunwörtern und langen Wörtern: springen, Bleistift, Haltestelle.",
+        ex: () => "Blei<b>st</b>ift · <b>sp</b>ringen", say: () => "Experten-Aufgabe! S p und S t gibt es auch mitten im Wort. Bleistift, springen.",
+        build() { return shuffle(RS_SP_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "vogel", name: "Vogel-Felsen", icon: "🐦", color: "#219ebc",
+      task: (d) => d === "leicht" ? "F oder V?" : d === "mittel" ? "Finde das falsch geschriebene Wort!" : "Finde beide Fehler!",
+      intro: (d) => "Manche Wörter schreibt man mit V, obwohl man f hört: Vogel, Vater, vier, viel, von, vor, voll. Die musst du dir merken!" + (d === "leicht" ? "" : d === "mittel" ? " In jedem Satz steckt ein Fehler." : " In jedem Satz stecken zwei Fehler."),
+      ex: () => "<b>V</b>ogel · <b>V</b>ater · <b>v</b>ier",
+      say: () => "Manche Wörter schreibt man mit V, obwohl man f hört. Vogel, Vater, vier, viel, von, vor, voll.",
+      build(d) { return d === "leicht" ? shuffle(RS_V).slice(0, 10) : shuffle(d === "mittel" ? RS_V2 : RS_V3).slice(0, d === "mittel" ? 8 : 6); },
+      render(x, stage, d) {
+        if (d === "leicht") return rsGap(stage, x, 2, { why: (y) => /^[Vv]/.test(y[0]) ? "Das ist ein Merkwort mit V!" : "Hier schreibst du ganz normal F." });
+        rsDetect(stage, x, { factor: 2 });
+      },
+      expert: {
+        task: () => "V-Wörter: Welches ist richtig?", intro: () => XI + "Wörter mit ver- und vor- schreibt man auch mit v: vergessen, verlieren, Vorsicht.",
+        ex: () => "<b>v</b>ergessen · <b>V</b>orsicht", say: () => "Experten-Aufgabe! Wörter mit ver und vor schreibt man auch mit v.",
+        build() { return shuffle(RS_V_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "er", name: "er-Ecke", icon: "🪜", color: "#bc6c25",
+      task: (d) => d === "leicht" ? "er oder a?" : d === "mittel" ? "Welches Wort ist richtig?" : "Lege das Wort!",
+      intro: (d) => "Am Wortende hörst du oft ein a – du schreibst aber er: Leiter, Messer, Tiger." + (d === "schwer" ? " Lege das Wort. Achtung: falsche Buchstaben!" : ""),
+      ex: () => "Leit<b>er</b> · Mess<b>er</b>",
+      say: () => "Am Wortende hörst du oft ein a. Du schreibst aber e r. Leiter, Messer, Tiger.",
+      build(d) { const l = shuffle(RS_ER).slice(0, d === "leicht" ? 8 : d === "mittel" ? 10 : 7); return d === "schwer" ? l.map(rsTiles) : l; },
+      render(x, stage, d) {
+        if (d === "schwer") { stage.appendChild(el("div", "emoji-big", x.pic)); tileTask(stage, x, { extra: true, factor: 2 }); L.speakNow = () => speak(x.art + " " + x.w); return; }
+        if (d === "mittel") return rsWhole(stage, x, 3, { pic: true, why: () => "Am Ende schreibst du er." });
+        rsGap(stage, x, 2, { why: () => "Du hörst a, aber du schreibst er." });
+      },
+      expert: {
+        task: () => "er oder a? Welches Wort ist richtig?", intro: () => XI + "Neue Wörter mit er – auch lange Wörter wie Briefträger!",
+        ex: () => "Schwest<b>er</b> · Brud<b>er</b>", say: () => "Experten-Aufgabe! Neue Wörter mit e r am Ende.",
+        build() { return shuffle(RS_ER_X).slice(0, 8); }, render(x, stage) { rsSentence(stage, x, { factor: 2 }); }
+      }
+    },
+    {
+      id: "zeichen", name: "Satzzeichen-Hafen", icon: "❓", color: "#e63946",
+      task: (d) => d === "leicht" ? "Punkt oder Fragezeichen?" : "Welches Satzzeichen passt?",
+      intro: (d) => "Am Ende eines Satzes steht ein Satzzeichen: Punkt beim Erzählen, Fragezeichen bei einer Frage" + (d === "leicht" ? "." : ", Ausrufezeichen beim Rufen oder Befehlen."),
+      ex: (d) => d === "leicht" ? "Wie heißt du<b>?</b> · Ich heiße Lena<b>.</b>" : "Pass auf<b>!</b> · Wo bist du<b>?</b>",
+      say: (d) => "Am Ende eines Satzes steht ein Satzzeichen. Punkt beim Erzählen, Fragezeichen bei einer Frage" + (d === "leicht" ? "." : ", Ausrufezeichen beim Rufen oder Befehlen."),
+      build(d) { return shuffle(d === "leicht" ? RS_Z1 : d === "mittel" ? RS_Z2 : RS_Z3).slice(0, 10); },
+      render(x, stage, d) { rsMark(stage, x, d === "leicht" ? [".", "?"] : [".", "?", "!"], { factor: d === "leicht" ? 1 : 2 }); },
+      expert: {
+        task: () => "Knifflig: Welches Satzzeichen passt?", intro: () => XI + "Nicht jeder Satz mit „wie“ oder „ob“ ist eine Frage! Lies genau.",
+        ex: () => "Ich weiß nicht, wo er ist<b>.</b>", say: () => "Experten-Aufgabe! Nicht jeder Satz mit wie oder ob ist eine Frage. Lies genau.",
+        build() { return shuffle(RS_Z_X).slice(0, 8); }, render(x, stage) { rsMark(stage, x, [".", "?", "!"], { factor: 2 }); }
+      }
+    }
+  ];
+
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
@@ -1996,7 +2328,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     { id: "leuchtturm", name: "Leuchtturm", title: "Leuchtturm-Insel", sub: "der, die, das", icon: "💡", ready: true, levels: LTLEVELS, award: "Artikel-Profi",
       bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] },
     { id: "lesen", name: "Lesen", title: "Lese-Lagune", sub: "Lesen üben", icon: "📖", ready: true, levels: LESELEVELS, award: "Lese-Profi",
-      bonusPlan: [["anlaut", "schwer", 2], ["silbenschiff", "schwer", 2], ["wortbild", "schwer", 2], ["saetze", "mittel", 2], ["raetsel", "mittel", 2]] }
+      bonusPlan: [["anlaut", "schwer", 2], ["silbenschiff", "schwer", 2], ["wortbild", "schwer", 2], ["saetze", "mittel", 2], ["raetsel", "mittel", 2]] },
+    { id: "rechtschreibung", name: "Rechtschreib", title: "Rechtschreib-Inseln", sub: "Richtig schreiben", icon: "✍️", ready: true, levels: RSLEVELS, award: "Rechtschreib-Profi",
+      bonusPlan: [["doppel", "schwer", 1], ["ck", "schwer", 1], ["tz", "mittel", 1], ["ie", "schwer", 1], ["verlaengern", "schwer", 1], ["ableiten", "schwer", 1],
+                  ["spst", "schwer", 1], ["vogel", "mittel", 1], ["er", "schwer", 1], ["zeichen", "schwer", 1]] }
   ];
   let CH = CHAPTERS[0];
 
@@ -2309,12 +2644,33 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const starTotal = (ch) => ch.levels.reduce((a, _, li) => a + DK.reduce((b, d) => b + (S.stars[skey(ch, li, d)] || 0), 0), 0);
 
   // Bilder für den Laden: eigene Zeichnungen, alle im gleichen Stil, Tiere schauen nach rechts
-  const OL = 'stroke="#17324a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  const OL = 'stroke="#17324a" stroke-opacity=".72" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"';
   const EYE = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r || 6}" fill="#fff" ${OL}/><circle cx="${x + 1.2}" cy="${y}" r="${(r || 6) * 0.45}" fill="#17324a"/>`;
   const SHINE = (x, y, rx, ry) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#fff" opacity=".45"/>`;
   const SPARK = (x, y, k) => `<path d="M${x} ${y - k}L${x + k * .25} ${y - k * .25}L${x + k} ${y}L${x + k * .25} ${y + k * .25}L${x} ${y + k}L${x - k * .25} ${y + k * .25}L${x - k} ${y}L${x - k * .25} ${y - k * .25}Z" fill="#fff" stroke="#ffd60a" stroke-width="1.5" stroke-linejoin="round"/>`;
+  // 3D-Optik: Jede Farbfläche bekommt Licht von oben links und Schatten unten rechts (eigener Verlauf je Fläche).
+  // Die Experten-Schätze glänzen zusätzlich (Licht-Filter). Weiß (Glanzlichter, Augen) und Dunkelblau (Pupillen) bleiben flach.
+  const hexRgb = (h) => { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+  const mixHex = (h, t, k) => "#" + hexRgb(h).map((v, i) => Math.round(v + (t[i] - v) * k).toString(16).padStart(2, "0")).join("");
+  const FLAT = { "#17324a": 1, "#fff": 1, "#ffffff": 1 };
+  const TREASURE_IDS = { kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1 };
+  let art3d = 0;
+  function shade3d(markup, glossy) {
+    const uid = "s" + (++art3d), cols = {}; let defs = "", n = 0;
+    const out = markup.replace(/fill="(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, (m, c) => {
+      const k = c.toLowerCase(); if (FLAT[k]) return m;
+      if (!cols[k]) {
+        cols[k] = uid + "c" + (n++);
+        defs += `<radialGradient id="${cols[k]}" cx="38%" cy="30%" r="80%" fx="30%" fy="22%"><stop offset="0" stop-color="${mixHex(k, [255, 255, 255], .55)}"/><stop offset=".48" stop-color="${k}"/><stop offset="1" stop-color="${mixHex(k, [12, 22, 44], .34)}"/></radialGradient>`;
+      }
+      return `fill="url(#${cols[k]})"`;
+    });
+    if (!glossy) return `<defs>${defs}</defs>${out}`;
+    defs += `<filter id="${uid}g" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="b"/><feSpecularLighting in="b" surfaceScale="6" specularConstant="1.2" specularExponent="30" lighting-color="#ffffff" result="sp"><fePointLight x="0" y="0" z="45"/></feSpecularLighting><feComposite in="sp" in2="SourceAlpha" operator="in" result="sp2"/><feComposite in="SourceGraphic" in2="sp2" operator="arithmetic" k1="0" k2="1" k3=".85" k4="0"/></filter>`;
+    return `<defs>${defs}</defs><g filter="url(#${uid}g)">${out}</g>`;
+  }
   const SEAL = (() => { let pts = ""; for (let i = 0; i < 32; i++) { const a = i * Math.PI / 16, r = i % 2 ? 50 : 58; pts += `${(60 + Math.cos(a) * r).toFixed(1)},${(62 + Math.sin(a) * r).toFixed(1)} `; }
-    return `<svg viewBox="0 0 120 150" class="seal" aria-hidden="true"><path d="M40 100 L28 146 L46 134 L56 148 L62 104 Z M80 100 L92 146 L74 134 L64 148 L58 104 Z" fill="#d62828" ${OL}/><polygon points="${pts}" fill="#ffc300" ${OL}/><circle cx="60" cy="62" r="38" fill="#ffd60a" stroke="#e0a400" stroke-width="4"/><path d="M60 42 V84 M48 50 H72 M40 70 Q42 84 60 86 Q78 84 80 70 M40 70 L34 75 M80 70 L86 75" fill="none" stroke="#17324a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="37" r="5" fill="none" stroke="#17324a" stroke-width="4"/></svg>`; })();
+    return `<svg viewBox="0 0 120 150" class="seal" aria-hidden="true">${shade3d(`<path d="M40 100 L28 146 L46 134 L56 148 L62 104 Z M80 100 L92 146 L74 134 L64 148 L58 104 Z" fill="#d62828" ${OL}/><polygon points="${pts}" fill="#ffc300" ${OL}/><circle cx="60" cy="62" r="38" fill="#ffd60a" stroke="#e0a400" stroke-width="4"/><path d="M60 42 V84 M48 50 H72 M40 70 Q42 84 60 86 Q78 84 80 70 M40 70 L34 75 M80 70 L86 75" fill="none" stroke="#17324a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="37" r="5" fill="none" stroke="#17324a" stroke-width="4"/>`, true)}</svg>`; })();
   const ART = {
     // ---- neu: weitere Tiere ----
     garnele: `<path d="M74 34 Q90 20 96 8 M76 36 Q96 32 98 22" fill="none" stroke="#e76f51" stroke-width="2.5" stroke-linecap="round"/><path d="M84 44 Q78 28 58 28 Q34 30 26 46 Q20 60 30 70 L20 82 L36 80 L38 70 Q30 60 38 52 Q50 46 68 52 Q80 52 84 44 Z" fill="#ff8fa3" ${OL}/><path d="M46 31 Q42 42 48 50 M58 29 Q56 40 62 49 M36 38 Q33 48 39 54" fill="none" stroke="#e5577a" stroke-width="2.5"/>${[48, 58, 68].map(x => `<path d="M${x} 52 l-3 11" stroke="#17324a" stroke-width="2.5" stroke-linecap="round"/>`).join("")}${SHINE(56, 35, 9, 3)}${EYE(74, 38, 4.5)}`,
@@ -2347,6 +2703,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     zauberpferdchen: `<circle cx="52" cy="52" r="46" fill="#ffc8dd" opacity=".35"/>${[["#ff595e", 40, 28], ["#ffca3a", 36, 38], ["#8ac926", 37, 48], ["#1982c4", 41, 58]].map(([c, x, y]) => `<path d="M${x} ${y} L${x - 12} ${y - 2} L${x - 3} ${y + 9} Z" fill="${c}" ${OL}/>`).join("")}<path d="M48 18 Q66 16 66 34 Q66 44 58 50 Q72 60 64 76 Q58 90 46 86 Q36 82 42 72 Q48 77 52 70 Q48 60 42 52 Q34 42 38 30 Q42 18 48 18 Z" fill="#cdb4db" ${OL}/><path d="M64 29 L82 26 L82 33 L64 37 Z" fill="#cdb4db" ${OL}/><path d="M44 19 L45 8 L50 14 L55 6 L58 14 L63 9 L62 21 Z" fill="#ffd60a" ${OL}/>${SHINE(54, 60, 6, 3)}${EYE(56, 29, 4.5)}${SPARK(82, 12, 6)}${SPARK(20, 80, 5)}${SPARK(84, 70, 4)}`,
     goldleuchtturm: `<path d="M50 20 L6 6 L6 30 Z M50 20 L94 6 L94 30 Z" fill="#fff3b0" opacity=".75"/><path d="M28 96 Q26 84 40 82 L60 82 Q74 84 72 96 Z" fill="#adb5bd" ${OL}/><path d="M38 84 L42 32 L58 32 L62 84 Z" fill="#fff" ${OL}/><path d="M39.3 70 L40.2 58 L59.8 58 L60.7 70 Z M40.8 48 L41.4 40 L58.6 40 L59.2 48 Z" fill="#ffc300"/><rect x="36" y="27" width="28" height="5" rx="1.5" fill="#17324a"/><rect x="42" y="15" width="16" height="12" rx="2" fill="#fff3b0" ${OL}/><circle cx="50" cy="21" r="3.5" fill="#ffd60a"/><path d="M40 15 L50 5 L60 15 Z" fill="#ffc300" ${OL}/><path d="M46 84 L46 76 Q50 72 54 76 L54 84 Z" fill="#8a5a2b" ${OL}/>${SPARK(84, 44, 6)}${SPARK(16, 50, 5)}`,
     leseschildkroete: `<ellipse cx="30" cy="70" rx="10" ry="6" fill="#95d5b2" ${OL}/><ellipse cx="66" cy="72" rx="10" ry="6" fill="#95d5b2" ${OL}/><circle cx="84" cy="50" r="11" fill="#95d5b2" ${OL}/><circle cx="87" cy="46" r="5.5" fill="#fff" stroke="#17324a" stroke-width="2.5"/><circle cx="88" cy="46" r="2" fill="#17324a"/><path d="M81.5 46 L77 44" stroke="#17324a" stroke-width="2.5" stroke-linecap="round"/><path d="M14 54 L6 52 L14 60 Z" fill="#95d5b2" ${OL}/><path d="M16 60 Q16 26 48 26 Q80 26 80 60 Z" fill="#52b788" ${OL}/><path d="M36 60 L40 42 L56 42 L60 60 M40 42 L48 32 L56 42 M30 46 L40 42 M66 46 L56 42" fill="none" stroke="#2d6a4f" stroke-width="3" stroke-linejoin="round"/><rect x="33" y="18" width="30" height="8" rx="2" fill="#e63946" ${OL}/><rect x="29" y="10" width="34" height="8" rx="2" fill="#3a86ff" ${OL}/><rect x="35" y="2" width="26" height="8" rx="2" fill="#ffd60a" ${OL}/>${SPARK(88, 22, 6)}`,
+    schreibkrake: `<circle cx="48" cy="50" r="46" fill="#e0c3fc" opacity=".35"/><path d="M33 56 Q22 70 26 84 Q28 92 34 87 Q31 76 40 61 Z" fill="#9d4edd" ${OL}/><path d="M42 60 Q38 76 42 90 Q46 95 49 89 Q45 78 50 62 Z" fill="#9d4edd" ${OL}/><path d="M53 61 Q60 74 56 88 Q56 95 62 90 Q66 76 59 59 Z" fill="#9d4edd" ${OL}/><path d="M28 52 Q14 60 10 74 Q8 82 15 79 Q18 66 33 58 Z" fill="#9d4edd" ${OL}/><path d="M60 56 Q70 66 76 74 Q79 78 74 80 Q67 70 56 62 Z" fill="#9d4edd" ${OL}/><path d="M48 3 L64 18 L32 18 Z" fill="#c77dff" ${OL}/><path d="M48 9 Q71 11 71 38 Q71 58 48 62 Q25 58 25 38 Q25 11 48 9 Z" fill="#c77dff" ${OL}/><circle cx="36" cy="24" r="3" fill="#f3d9ff"/><circle cx="60" cy="22" r="2.6" fill="#f3d9ff"/><circle cx="64" cy="33" r="2" fill="#f3d9ff"/><circle cx="31" cy="34" r="2" fill="#f3d9ff"/>${SHINE(40, 20, 7, 4)}${EYE(40, 40, 6)}${EYE(57, 40, 6)}<path d="M42 51 Q49 57 55 51" fill="none" stroke="#17324a" stroke-width="2.6" stroke-linecap="round"/><circle cx="34" cy="48" r="3" fill="#ff8fab" opacity=".7"/><circle cx="63" cy="48" r="3" fill="#ff8fab" opacity=".7"/><path d="M71 84 Q78 52 97 28 Q94 58 77 85 Z" fill="#ffd60a" ${OL}/><path d="M73 84 L94 36" stroke="#c99700" stroke-width="2" stroke-linecap="round"/><path d="M70 92 L72 83 L77 86 Z" fill="#17324a"/><circle cx="62" cy="95" r="2.4" fill="#3a0ca3"/><circle cx="55" cy="97" r="1.6" fill="#3a0ca3"/>${SPARK(88, 14, 6)}${SPARK(14, 18, 5)}`,
     goldfisch: `<path d="M24 50 L6 32 L10 50 L6 68 Z" fill="#ff8c1a" ${OL}/><path d="M42 31 Q54 14 68 31" fill="#ff8c1a" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="21" fill="#ffb703" ${OL}/>${SHINE(50, 40, 12, 4)}<path d="M50 56 Q56 66 46 68" fill="#ff8c1a" ${OL}/>${EYE(74, 45)}<path d="M84 56 Q87 58 84 60" fill="none" ${OL}/>`,
     clownfisch: `<path d="M24 50 L8 34 L11 50 L8 66 Z" fill="#ff7b00" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="20" fill="#ff7b00" ${OL}/><path d="M40 31 Q35 50 40 69 L49 70 Q44 50 49 30 Z" fill="#fff" ${OL}/><path d="M64 31 Q60 50 64 69 L71 68 Q67 50 71 32 Z" fill="#fff" ${OL}/>${SHINE(52, 39, 8, 3)}${EYE(78, 45, 5.5)}`,
     doktorfisch: `<path d="M22 50 L6 34 L9 50 L6 66 Z" fill="#ffd60a" ${OL}/><path d="M22 50 Q30 22 58 22 Q86 24 90 50 Q86 76 58 78 Q30 78 22 50 Z" fill="#3a86ff" ${OL}/><path d="M34 40 Q52 30 66 40 Q54 48 40 58 Q30 52 34 40 Z" fill="#17324a"/>${SHINE(58, 30, 10, 3)}${EYE(76, 44)}`,
@@ -2382,8 +2739,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     schiffswrack: `<g transform="rotate(-10 50 60)"><path d="M50 56 L50 16" stroke="#5b3a1a" stroke-width="5" stroke-linecap="round"/><path d="M50 20 L74 28 L66 32 L72 36 L50 42 Z" fill="#e9e1d1" ${OL}/><path d="M8 56 L92 56 L82 82 L20 82 Z" fill="#8a5a2b" ${OL}/><path d="M8 56 L92 56" stroke="#5b3a1a" stroke-width="4"/>${[28, 46, 64].map(x => `<circle cx="${x}" cy="67" r="5.5" fill="#264653" ${OL}/>`).join("")}<path d="M74 60 L70 70 L76 74 L72 82" fill="none" stroke="#17324a" stroke-width="2.5"/></g><path d="M22 94 Q16 78 24 66 Q30 56 24 46" fill="none" stroke="#52b788" stroke-width="7" stroke-linecap="round"/>`,
     goldnemo: `<path d="M84 10 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 Z M14 14 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z" fill="#fff3b0"/><rect x="26" y="80" width="48" height="14" rx="3" fill="#8a5a2b" ${OL}/><rect x="36" y="66" width="28" height="14" fill="#ffd166" ${OL}/><path d="M48 34 L56 14 L64 35 Z" fill="#ffd60a" ${OL}/><path d="M12 50 Q28 30 60 32 Q82 34 94 46 Q82 56 60 58 Q36 62 22 56 L8 66 L10 52 Z" fill="#ffd60a" ${OL}/><path d="M70 50 L74 54 L78 50 L82 54" fill="none" stroke="#17324a" stroke-width="2.5" stroke-linejoin="round"/>${SHINE(44, 40, 12, 4)}${EYE(78, 42, 4)}`
   };
-  const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] || ""}</svg>`;
-  const artURI = (id) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${ART[id] || ""}</svg>`);
+  const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`;
+  const artURI = (id) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`);
 
   /* ---------- Nemos Aquarium ---------- */
   // k: swim = schwimmt hin und her · float = schwebt · deco = steht auf dem Kies; c = Abteilung im Laden; z = Größe im Becken
@@ -2452,7 +2809,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     { id: "kristallstern", n: "Kristall-Seestern", art: "der", pr: "Er", ch: "nomen", k: "deco", z: 76 },
     { id: "zauberpferdchen", n: "Zauber-Seepferdchen", art: "das", pr: "Es", ch: "lernwoerter", k: "float", z: 88 },
     { id: "goldleuchtturm", n: "Goldener Leuchtturm", art: "der", pr: "Er", ch: "leuchtturm", k: "deco", z: 116 },
-    { id: "leseschildkroete", n: "Bücher-Schildkröte", art: "die", pr: "Sie", ch: "lesen", k: "swim", z: 98 }
+    { id: "leseschildkroete", n: "Bücher-Schildkröte", art: "die", pr: "Sie", ch: "lesen", k: "swim", z: 98 },
+    { id: "schreibkrake", n: "Schreib-Tintenfisch", art: "der", pr: "Er", ch: "rechtschreibung", k: "float", z: 92 }
   ];
   const treasureOf = (ch) => TREASURES.find(t => t.ch === ch.id);
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
@@ -2506,13 +2864,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         it.style.top = a.y + "%";
         const delay = -(a.x / 100) * a.t; it.style.animationDelay = it.firstChild.style.animationDelay = delay + "s";
       }
-      it.style.width = it.style.height = w.z + "px";
+      it.style.height = w.z + "px"; if (!it.classList.contains("swim")) it.style.width = w.z + "px";
       if (editMode) makeDraggable(it, a, w);
       t.appendChild(it);
     });
     if (!editMode) {
       const nm = el("div", "item swim", '<div class="flip rev"><div class="nemo-fish">🦈</div></div>');
-      nm.style.setProperty("--t", "16s"); nm.style.setProperty("--w", "76px"); nm.style.width = nm.style.height = "76px"; nm.style.top = "34%";
+      nm.style.setProperty("--t", "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = "34%";
       nm.style.animationDelay = nm.firstChild.style.animationDelay = "-3s"; t.appendChild(nm);
     }
     if (!S.aqua.length) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
@@ -2862,9 +3220,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     updateFoot();
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
-    const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen");
-    const pos = P ? { bay: [300, 890], nomen: [455, 655], adj: [490, 150], lern: [145, 625], fog: [118, 160], lt: [305, 375], w: 600, h: 1040, r: 84 }
-                  : { bay: [500, 528], nomen: [790, 350], adj: [850, 98], lern: [210, 350], fog: [165, 112], lt: [500, 215], w: 1000, h: 685, r: 90 };
+    const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen"), rs = CHAPTERS.find(c => c.id === "rechtschreibung");
+    // Hochformat: zwei Spalten, Nemos Riff unten. Querformat: Nemos Riff links, rechts zwei Reihen mit je drei Inseln.
+    const pos = P ? { bay: [300, 1030], nomen: [455, 795], adj: [460, 135], lern: [135, 770], fog: [150, 165], lt: [455, 480], rs: [150, 440], w: 600, h: 1195, r: 84 }
+                  : { bay: [218, 335], nomen: [860, 470], adj: [1170, 115], lern: [535, 465], fog: [540, 140], lt: [860, 175], rs: [1176, 470], w: 1340, h: 640, r: 90 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
     const canBuy = SHOP.some(w => !owned(w) && S.coins >= w.p);
@@ -2882,9 +3241,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Lernwörter", tap: enter(lern) },
       { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", tap: enter(lt) },
       { x: pos.fog[0], y: pos.fog[1], r: pos.r * 0.85, icon: "📖", grass: "#9ad1d4", label: "Lese-Lagune", big: true, sub: chapSub(lese),
-        deco: [[-0.55, -0.25, "🐚", 0.4], [0.55, -0.25, "🌴", 0.44]], aria: "Lese-Lagune: Lesen üben", tap: enter(lese) }
+        deco: [[-0.55, -0.25, "🐚", 0.4], [0.55, -0.25, "🌴", 0.44]], aria: "Lese-Lagune: Lesen üben", tap: enter(lese) },
+      { x: pos.rs[0], y: pos.rs[1], r: pos.r * 0.9, icon: "✍️", grass: "#ffd6a5", label: "Rechtschreib-Inseln", big: true, sub: chapSub(rs),
+        deco: [[-0.52, -0.3, "✏️", 0.42], [0.54, -0.28, "🌴", 0.44]], aria: "Rechtschreib-Inseln: richtig schreiben", tap: enter(rs) }
     ];
-    const edges = [[0, 1, islandsDoneCount(nom) ? "done" : ""], [1, 2, "faint"], [0, 3, islandsDoneCount(lern) ? "done" : ""], [3, 5, islandsDoneCount(lese) ? "done" : ""], [0, 4, islandsDoneCount(lt) ? "done" : ""]];
+    const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
+    const edges = P ? [[0, 3, dn(lern)], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, "faint"]]
+                    : [[0, 3, dn(lern)], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, "faint"]];
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
   }
@@ -2892,21 +3255,23 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- Kapitelkarte: Inselroute ---------- */
   function snake(N, P) {
-    const cols = P ? 3 : (N > 10 ? 6 : 5), rows = Math.ceil(N / cols);
-    const xs = P ? [110, 300, 490] : Array.from({ length: cols }, (_, i) => Math.round(90 + i * 820 / (cols - 1)));
-    const top = P ? 140 : 168, bottom = P ? 850 : 470;
+    // Querformat mit vielen Inseln: zwei lange Reihen auf einer breiteren Karte. Hochformat: drei Spalten, bei vielen Reihen höher.
+    const wide = !P && N > 10, cols = P ? 3 : (wide ? Math.ceil(N / 2) : 5), rows = Math.ceil(N / cols);
+    const W = P ? 600 : (wide ? 180 + (cols - 1) * 195 : 1000);
+    const xs = P ? [110, 300, 490] : Array.from({ length: cols }, (_, i) => Math.round(90 + i * (W - 180) / (cols - 1)));
+    const top = P ? 140 : 168, bottom = P ? Math.max(850, top + (rows - 1) * 225) : 470;
     const pts = [];
     for (let i = 0; i < N; i++) {
       const r = Math.floor(i / cols), c = i % cols, col = r % 2 === 0 ? c : cols - 1 - c;
       const y = rows === 1 ? bottom : bottom - (bottom - top) * r / (rows - 1);
       pts.push({ x: xs[col], y: y + (c % 2 ? -30 : 16) });
     }
-    return { w: P ? 600 : 1000, h: P ? 1000 : 640, pts };
+    return { w: W, h: P ? bottom + 150 : 640, pts };
   }
   function renderMap() {
     $("mapTitle").textContent = `${CH.icon} ${CH.title || CH.name + "-Inseln"}`;
     show("scrMap");
-    const P = portrait(), n = CH.levels.length, lay = snake(n + 3, P), k = P ? 1.15 : (n + 3 > 10 ? 0.92 : 1);
+    const P = portrait(), n = CH.levels.length, lay = snake(n + 3, P), k = P ? 1.15 : 1;
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
     const open = bonusOpen(CH), pc = perfectCount(CH);
     const nodes = [{ ...lay.pts[0], r: 44 * k, icon: "⚓", label: "Start", grass: "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
@@ -3137,7 +3502,17 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     "lesen:silbenschiff": "Ich lese Wörter Silbe für Silbe.",
     "lesen:wortbild": "Ich lese ein Wort und finde das passende Bild.",
     "lesen:saetze": "Ich lese Sätze und verstehe, was sie sagen.",
-    "lesen:raetsel": "Ich löse Rätsel, weil ich genau lese."
+    "lesen:raetsel": "Ich löse Rätsel, weil ich genau lese.",
+    "rechtschreibung:doppel": "Ich höre, wann ich einen Mitlaut doppelt schreibe.",
+    "rechtschreibung:ck": "Ich weiß, wann ich ck oder k schreibe.",
+    "rechtschreibung:tz": "Ich weiß, wann ich tz oder z schreibe.",
+    "rechtschreibung:ie": "Ich höre, ob ich i oder ie schreibe.",
+    "rechtschreibung:verlaengern": "Ich verlängere Wörter, um am Ende richtig zu schreiben.",
+    "rechtschreibung:ableiten": "Ich finde verwandte Wörter und schreibe ä und äu richtig.",
+    "rechtschreibung:spst": "Ich schreibe Sp und St, obwohl ich schp und scht höre.",
+    "rechtschreibung:vogel": "Ich kenne die Wörter mit V wie Vogel.",
+    "rechtschreibung:er": "Ich schreibe er am Wortende, obwohl ich a höre.",
+    "rechtschreibung:zeichen": "Ich setze den richtigen Punkt, das Fragezeichen oder das Ausrufezeichen."
   };
   const AMPEL = [["gruen", "Das kann ich sicher.", 3], ["gelb", "Das kann ich schon ein bisschen.", 2], ["rot", "Das übe ich noch.", 1]];
   // Nur im Arbeitsspeicher: höchstens 2 Ampel-Fragen pro Sitzung (die erste Insel, dann frühestens 2 Inseln später).
@@ -3189,6 +3564,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   // Kurze Beschriftung einer Aufgabe für die Muschel (z. B. „das Kind“, „Die Oma backt einen Kuchen.“)
   function itemLabel(it) {
     try {
+      if (it && it.lab) return it.lab;
       if (it && typeof it === "object" && !Array.isArray(it)) {
         if (it.it !== undefined && it.li !== undefined) return itemLabel(it.it);
         if (it.x) return itemLabel(it.x);
