@@ -354,6 +354,30 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .buy-card .bart svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 12px var(--shadow)); }
 .buy-card .bnew { font-size: 22px; font-weight: 900; color: var(--muted); }
 .buy-card .bname { font-size: 38px; font-weight: 900; }
+/* Merk- und Tipp-Karten */
+.overlay.rule-pop { z-index: 12; }
+.rule-pop .card.rule-card { max-width: 660px; width: 100%; box-sizing: border-box; gap: 12px; border-top: 12px solid var(--rc, #1270a8); max-height: calc(100vh - 32px); overflow-y: auto; animation: rc-in .3s cubic-bezier(.3,1.4,.5,1) both; }
+@keyframes rc-in { from { transform: translateY(24px) scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+.rc-top { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rc-chip { font-size: 17px; font-weight: 900; padding: 5px 14px; border-radius: 999px; background: var(--gold); color: var(--ink); box-shadow: 0 3px 0 var(--gold-edge); }
+.rc-chip.tipp { background: #a5e6da; box-shadow: 0 3px 0 #53b3a2; }
+.rc-isl { font-size: 18px; font-weight: 800; color: var(--muted); }
+.rc-t { margin: 0; font-size: clamp(26px, 4.6vw, 36px); line-height: 1.15; }
+.rc-s { margin: 0; font-size: clamp(19px, 3.2vw, 24px); line-height: 1.45; font-weight: 600; }
+.rc-s b { background: #fff0b3; border-radius: 6px; padding: 0 3px; }
+.rc-ex { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.rc-e { background: #fff; border-radius: 20px; padding: 12px 14px 10px; box-shadow: 0 4px 0 var(--sand-edge), 0 8px 16px var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; flex: 1 1 150px; max-width: 100%; box-sizing: border-box; }
+.rc-ex.four .rc-e { flex-basis: 120px; }
+.rc-pic { font-size: 46px; line-height: 1; }
+.rc-w { font-size: clamp(24px, 4.2vw, 32px); font-weight: 900; color: var(--ink); line-height: 1.35; }
+.rc-sub { font-size: 17px; font-weight: 800; color: var(--muted); }
+.rc-e .rh { background: #ffe066; border-radius: 6px; box-shadow: inset 0 -3px 0 #f2c200; padding: 0 1px; }
+.rsyl { display: inline-block; padding: 0 2px 5px; margin: 0 1px; border-bottom: 3px solid #3a86ff; border-radius: 0 0 50% 50% / 0 0 14px 14px; }
+.rc-sub .rsyl { border-bottom-width: 2px; padding-bottom: 3px; }
+.ra-der { color: var(--der); } .ra-die { color: var(--die); } .ra-das { color: var(--das); }
+.rc-v { font-size: clamp(16px, 2.8vw, 19px); font-weight: 800; background: rgba(255,255,255,.7); border: 2px dashed var(--sand-edge); border-radius: 16px; padding: 8px 14px; }
+.rule-card .btnrow { justify-content: center; flex-wrap: wrap; }
+.iconbtn.rulebtn { background: #fff3c4; }
 @keyframes pop-in { 0% { transform: scale(.2) rotate(-20deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
 .aqua-card { background: linear-gradient(180deg, #8fdcf2, #39a9d6); color: var(--white); text-shadow: 0 2px 0 var(--deep); }
 .aqua-card .sb { color: #eaf8ff; }
@@ -506,6 +530,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   .slot { min-width: 33px; font-size: 34px; height: 54px; line-height: 54px; }
   .tile { width: 56px; height: 56px; font-size: 30px; }
   .opt.markbtn { min-width: 96px; padding: 8px 12px; }
+  .rule-pop .card.rule-card { padding: 16px 14px; gap: 10px; }
+  .rc-t { font-size: 24px; } .rc-s { font-size: 17px; line-height: 1.4; }
+  .rc-ex { gap: 8px; } .rc-e { padding: 8px 8px 7px; flex-basis: 120px; } .rc-pic { font-size: 36px; } .rc-w { font-size: 22px; }
+  .rule-card .big-btn { font-size: 21px; padding: 12px 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
@@ -548,7 +576,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Rechtschreib-Inseln</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Merk-Karten</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -576,6 +604,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       <p id="inText"></p>
       <div class="ex" id="inEx"></div>
       <div class="btnrow">
+        <button class="iconbtn say rulebtn" id="inRule" aria-label="Merk-Karte zeigen">💡</button>
         <button class="iconbtn say" id="inSay" aria-label="Vorlesen">🔊</button>
         <button class="big-btn" id="inGo">Start</button>
       </div>
@@ -585,7 +614,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   <!-- PLAY -->
   <section class="screen" id="scrPlay" hidden>
     <div class="progress" id="progress"></div>
-    <div class="taskrow"><span class="badge" id="playBadge"></span><span class="task" id="taskText"></span><button class="iconbtn say" id="taskSay" aria-label="Vorlesen">🔊</button></div>
+    <div class="taskrow"><span class="badge" id="playBadge"></span><span class="task" id="taskText"></span><button class="iconbtn say" id="taskSay" aria-label="Vorlesen">🔊</button><button class="iconbtn say rulebtn" id="taskRule" aria-label="Merk-Karte zeigen">💡</button></div>
     <div class="stage" id="stage"></div>
     <div class="hint" id="hint" aria-live="polite"></div>
   </section>
@@ -640,6 +669,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 <div class="overlay" id="buyPop" hidden><div class="card buy-card" id="buyCard"></div></div>
+<div class="overlay rule-pop" id="rulePop" hidden role="dialog" aria-modal="true" aria-labelledby="ruleTitle"><div class="card rule-card" id="ruleCard"></div></div>
 <div class="sheet-back" id="sheetBack" hidden></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"><div class="card" id="sheetCard"></div></div>
 <div class="overlay" id="confirm" hidden>
@@ -1037,6 +1067,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     back.textContent = toHome ? "🏠" : "🗺️";
     back.setAttribute("aria-label", toHome ? "Zum Menü" : "Zur Karte");
     try { speechSynthesis.cancel(); } catch (e) {}
+    const rp = $("rulePop"); if (rp) rp.hidden = true;
     window.scrollTo(0, 0);
   }
   function setCoins(bump) {
@@ -3396,6 +3427,10 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     $("inGo").onclick = () => startLevel(li, d);
     $("inSay").onclick = () => speak(lv.say(d));
     show("scrIntro");
+    // Merk-/Tipp-Karte: beim ersten Besuch der Insel automatisch, sonst über 💡
+    const ro = li !== "bonus" && li !== "expert" ? ruleOf(CH, li) : null;
+    $("inRule").hidden = !ro; $("inRule").onclick = () => openRule(CH, li, false);
+    if (ro && !ruleSeen[ruleKey(CH, ro.lv)]) openRule(CH, li, true);
   }
   function startLevel(li, d) {
     const lv = li === "bonus" ? BONUS : li === "expert" ? EXPERTISLE : view(levelOf(li), d);
@@ -3416,6 +3451,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     renderProgress(); L.locked = false; L.speakNow = null; L.mAt = L.mistakes; L.missWords = []; L.noted = false;
     const stage = $("stage"); stage.innerHTML = ""; $("hint").innerHTML = "";
     L.lv.render(L.items[L.pos], stage, L.d);
+    updateRuleBtn();
   }
   function finishLevel() {
     if (L.practice) return finishPractice();
@@ -3514,10 +3550,149 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     "rechtschreibung:er": "Ich schreibe er am Wortende, obwohl ich a höre.",
     "rechtschreibung:zeichen": "Ich setze den richtigen Punkt, das Fragezeichen oder das Ausrufezeichen."
   };
+  /* ---------- Merk- und Tipp-Karten: eine kurze Regel (merk) bzw. Strategie (tipp) zu jeder Insel ----------
+     Beispiele: [Bild, Wort, Zusatzzeile]. Im Wort: *…* = markierte Stelle, | = Silbengrenze (zeichnet Silbenbögen),
+     der/die/das werden in den Begleiter-Farben gezeigt. Gemerkt wird nur im Arbeitsspeicher (nichts gespeichert). */
+  const RULES = {
+    "nomen:fischen": { k: "merk", t: "Was ist ein Nomen?", s: "Nomen sind Namen für <b>Menschen, Tiere, Pflanzen und Dinge</b>. Vor ein Nomen passt <b>der</b>, <b>die</b> oder <b>das</b>.",
+      ex: [["🧒", "das Kind"], ["🐶", "der Hund"], ["🌷", "die Blume"], ["⚽", "der Ball"]], v: "🔎 Probe: Passt der, die oder das davor? Dann ist es ein Nomen." },
+    "nomen:versteckt": { k: "merk", t: "Nomen erkennen – auch klein geschrieben", s: "Auch wenn alles klein geschrieben ist: Mach die <b>Begleiter-Probe</b>. Passt der, die oder das davor, ist es ein Nomen.",
+      ex: [["🐱", "die *k*atze", "passt ✓"], ["🌳", "der *b*aum", "passt ✓"], ["✨", "das *s*chön", "passt nicht ✗"]] },
+    "nomen:grossklein": { k: "merk", t: "Nomen schreibe ich groß", s: "Nomen schreibe ich mit einem <b>großen</b> Anfangsbuchstaben. Die meisten anderen Wörter schreibe ich <b>klein</b>.",
+      ex: [["🐟", "der *F*isch", "groß"], ["🏠", "das *H*aus", "groß"], ["🏊", "*s*chwimmen", "klein"]] },
+    "nomen:artikel": { k: "merk", t: "Jedes Nomen hat einen Begleiter", s: "Die Begleiter heißen <b>der</b>, <b>die</b> und <b>das</b>. Sprich das Nomen laut mit dem Begleiter. Was klingt richtig?",
+      ex: [["🥄", "der Löffel"], ["🍴", "die Gabel"], ["🔪", "das Messer"]], v: "🔵 der · 🔴 die · 🟢 das" },
+    "nomen:mehrzahl": { k: "merk", t: "Einzahl und Mehrzahl", s: "<b>Einzahl</b> heißt: eins. <b>Mehrzahl</b> heißt: viele. In der Mehrzahl heißt der Begleiter immer <b>die</b>.",
+      ex: [["🍎", "der Apfel", "die *Ä*pfel"], ["🐶", "der Hund", "die Hund*e*"], ["🚗", "das Auto", "die Auto*s*"]] },
+    "nomen:sortieren": { k: "merk", t: "Vier Nomen-Gruppen", s: "Nomen sind Namen für <b>Menschen</b>, <b>Tiere</b>, <b>Pflanzen</b> und <b>Dinge</b>.",
+      ex: [["👩‍🏫", "die Lehrerin", "Mensch"], ["🐸", "der Frosch", "Tier"], ["🌹", "die Rose", "Pflanze"], ["✏️", "der Stift", "Ding"]] },
+    "nomen:satz": { k: "merk", t: "So sieht ein Satz aus", s: "Ein Satz fängt <b>groß</b> an und hört mit einem <b>Punkt</b> auf. Nomen schreibe ich auch im Satz groß.",
+      ex: [["🐱", "*D*ie *K*atze schläft*.*"], ["🐶", "*M*ein *H*und bellt*.*"]], say: "So sieht ein Satz aus. Ein Satz fängt groß an und hört mit einem Punkt auf. Nomen schreibe ich auch im Satz groß. Zum Beispiel: Die Katze schläft. Mein Hund bellt." },
+    "nomen:detektiv": { k: "tipp", t: "So findest du alle Nomen", s: "Geh Wort für Wort durch den Satz. Frag bei jedem Wort: Passt <b>der</b>, <b>die</b> oder <b>das</b> davor?",
+      ex: [["🔍", "Der *Hund* spielt mit dem *Ball*."]], v: "Tipp: Das erste Wort im Satz ist auch groß – aber nicht immer ein Nomen!", say: "So findest du alle Nomen. Geh Wort für Wort durch den Satz. Frag bei jedem Wort: Passt der, die oder das davor? Zum Beispiel: Der Hund spielt mit dem Ball. Hund und Ball sind Nomen. Das erste Wort im Satz ist auch groß, aber nicht immer ein Nomen!" },
+
+    "lernwoerter:salat": { k: "tipp", t: "Lernwörter genau anschauen", s: "Schau dir das Wort genau an und <b>sprich leise mit</b>, Silbe für Silbe, Buchstabe für Buchstabe.",
+      ex: [["🏫", "Schu|le", "S · c · h · u · l · e"], ["🛣️", "Stra|ße", "S · t · r · a · ß · e"]] },
+    "lernwoerter:luecke": { k: "tipp", t: "Die knifflige Stelle", s: "Jedes Lernwort hat eine <b>knifflige Stelle</b>. Schau sie dir besonders gut an und merk sie dir.",
+      ex: [["🛣️", "Stra*ß*e"], ["🔑", "Schlü*ss*el"], ["⏰", "U*h*r"]] },
+    "lernwoerter:blitz": { k: "tipp", t: "Wörter wie ein Foto merken", s: "Schau das Wort an wie ein Foto: Wie fängt es an? Wie lang ist es? Dann mach die Augen zu und sieh es im Kopf.",
+      ex: [["📸", "*Sch*ule", "Anfang merken"], ["📸", "Fahr|rad", "Silben merken"]] },
+    "lernwoerter:hoeren": { k: "tipp", t: "Genau hinhören", s: "Hör dir das Wort an und <b>sprich es langsam nach</b>. Schwing dabei die Silben mit der Hand mit.",
+      ex: [["🍌", "Ba|na|ne"], ["👜", "Ta|sche"], ["🚂", "Zug"]] },
+    "lernwoerter:silben": { k: "merk", t: "Silben klatschen", s: "Sprich das Wort langsam und <b>klatsche</b> bei jeder Silbe. In jeder Silbe steckt ein Selbstlaut wie a, e, i, o oder u.",
+      ex: [["🐟", "Fisch", "1 Silbe"], ["☀️", "Son|ne", "2 Silben"], ["🍌", "Ba|na|ne", "3 Silben"]] },
+    "lernwoerter:memory": { k: "tipp", t: "Gut merken beim Memory", s: "Sag das Wort leise, wenn du eine Karte aufdeckst. Dann merkst du dir besser, wo sie liegt.",
+      ex: [["🃏", "Hund", "gehört zu 🐶"], ["🃏", "Stra_e", "gehört zu ß"]], say: "Gut merken beim Memory. Sag das Wort leise, wenn du eine Karte aufdeckst. Dann merkst du dir besser, wo sie liegt. Zum Beispiel: Das Wort Hund gehört zum Bild vom Hund. Und Straße mit Lücke gehört zum scharfen s." },
+
+    "leuchtturm:schule": { k: "tipp", t: "der, die oder das?", s: "Sprich das Wort laut mit <b>der</b>, mit <b>die</b> und mit <b>das</b>. Was klingt richtig?",
+      ex: [["✏️", "der Stift"], ["✂️", "die Schere"], ["📕", "das Buch"]], v: "🔵 der · 🔴 die · 🟢 das" },
+    "leuchtturm:essen": { k: "tipp", t: "Den Begleiter immer mitlernen", s: "Lerne ein Nomen immer mit seinem Begleiter: nicht nur Apfel, sondern <b>der Apfel</b>.",
+      ex: [["🍎", "der Apfel"], ["🍌", "die Banane"], ["🍞", "das Brot"]], v: "🔵 der · 🔴 die · 🟢 das" },
+    "leuchtturm:kleidung": { k: "tipp", t: "Laut sprechen hilft", s: "Sag das Wort laut mit dem Begleiter. Was klingt richtig?",
+      ex: [["👟", "der Schuh"], ["👖", "die Hose"], ["👗", "das Kleid"]], v: "👟👟 Sind es viele? Dann heißt es immer: die Schuhe!" },
+    "leuchtturm:zuhause": { k: "tipp", t: "Menschen und ihre Begleiter", s: "Bei Menschen hilft dir oft, ob es ein Mann oder eine Frau ist: <b>der</b> Papa, <b>die</b> Mama. Aber: <b>das</b> Baby!",
+      ex: [["👨", "der Papa"], ["👩", "die Mama"], ["👶", "das Baby"]] },
+    "leuchtturm:tiere": { k: "tipp", t: "Auch Tiere haben Begleiter", s: "Jedes Tier hat seinen festen Begleiter. Sprich ihn laut mit.",
+      ex: [["🐶", "der Hund"], ["🐱", "die Katze"], ["🐴", "das Pferd"]], v: "🔵 der · 🔴 die · 🟢 das" },
+    "leuchtturm:koerper": { k: "tipp", t: "Zeigen und sprechen", s: "Zeig auf dich selbst und sag laut: die Nase, das Ohr, der Mund. So merkst du dir die Begleiter.",
+      ex: [["👃", "die Nase"], ["👂", "das Ohr"], ["👄", "der Mund"]] },
+    "leuchtturm:tricks": { k: "merk", t: "Drei Merk-Tricks", s: "Endet ein Wort mit <b>-chen</b>, heißt es immer <b>das</b>. Endet es mit <b>-e</b>, heißt es meistens <b>die</b>. Sind es <b>viele</b>, heißt es immer <b>die</b>.",
+      ex: [["🐰", "das Häs*chen*", "-chen → das"], ["🌹", "die Ros*e*", "-e → meistens die"], ["🐶🐶", "die Hunde", "viele → die"]],
+      say: "Drei Merk-Tricks. Endet ein Wort mit chen, heißt es immer das: das Häschen. Endet es mit e, heißt es meistens die: die Rose. Sind es viele, heißt es immer die: die Hunde." },
+
+    "lesen:anlaut": { k: "tipp", t: "Den ersten Laut hören", s: "Sprich das Wort langsam und zieh den Anfang lang: Mmmmaus. Was hörst du zuerst?",
+      ex: [["🐭", "*M*aus"], ["🍌", "*B*anane"], ["🦒", "*G*iraffe"]] },
+    "lesen:silbenschiff": { k: "tipp", t: "Lies in Silben", s: "Lies <b>Silbe für Silbe</b> und schwing mit der Hand einen Bogen. Dann setz die Silben zusammen.",
+      ex: [["🍅", "To|ma|te"], ["🦒", "Gi|raf|fe"], ["🚲", "Fahr|rad"]] },
+    "lesen:wortbild": { k: "tipp", t: "Ganz genau lesen", s: "Lies jedes Wort <b>bis zum Ende</b>. Manche Wörter sehen fast gleich aus!",
+      ex: [["👖", "*H*ose"], ["🌹", "*R*ose"], ["🥫", "*D*ose"]] },
+    "lesen:saetze": { k: "tipp", t: "Sätze verstehen", s: "Lies den Satz bis zum Punkt. Mach dir ein <b>Bild im Kopf</b>: Wer macht was?",
+      ex: [["🐶", "Der Hund schläft.", "Wer? der Hund · Was? schläft"]], say: "Sätze verstehen. Lies den Satz bis zum Punkt. Mach dir ein Bild im Kopf: Wer macht was? Zum Beispiel: Der Hund schläft. Wer? Der Hund. Was macht er? Er schläft." },
+    "lesen:raetsel": { k: "tipp", t: "Rätsel lösen", s: "Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei <b>nicht</b>: Es dreht alles um!",
+      ex: [["❓", "Ich bin gelb und krumm.", "die Banane 🍌"]], say: "Rätsel lösen. Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei nicht: Es dreht alles um! Zum Beispiel: Ich bin gelb und krumm. Das ist die Banane." },
+
+    "rechtschreibung:doppel": { k: "merk", t: "Kurzer Laut – doppelter Mitlaut", s: "Sprich das Wort in Silben. Klingt der Laut vor der Lücke <b>kurz</b>? Dann schreibst du den Mitlaut danach <b>doppelt</b>.",
+      ex: [["☀️", "So*n|n*e"], ["👩", "Mu*t|t*er"], ["☕", "Ta*s|s*e"]], v: "Langer Laut wie bei Ho-se? Dann nur ein Mitlaut." },
+    "rechtschreibung:ck": { k: "merk", t: "ck nach kurzem Laut", s: "Nach einem <b>kurzen</b> Laut schreibst du <b>ck</b>. Nach <b>l, n, r</b> schreibst du nur <b>k</b>.",
+      ex: [["🧦", "So|*ck*e"], ["🔔", "Glo|*ck*e"], ["🥒", "Gur|*k*e", "nach r: nur k"]], v: "🎵 Nach l, n, r – das merke ja – steht nie tz und nie ck!" },
+    "rechtschreibung:tz": { k: "merk", t: "tz nach kurzem Laut", s: "Nach einem <b>kurzen</b> Laut schreibst du <b>tz</b>. Nach <b>l, n, r</b> schreibst du nur <b>z</b>.",
+      ex: [["🐱", "Ka*t|z*e"], ["🧢", "Mü*t|z*e"], ["❤️", "Her*z*", "nach r: nur z"]], v: "🎵 Nach l, n, r – das merke ja – steht nie tz und nie ck!" },
+    "rechtschreibung:ie": { k: "merk", t: "Langes i – ie", s: "Klingt das i <b>lang</b> wie bei Biene? Dann schreibst du meistens <b>ie</b>. Klingt es <b>kurz</b> wie bei Fisch, schreibst du nur <b>i</b>.",
+      ex: [["🐝", "B*ie*|ne", "langes i"], ["✉️", "Br*ie*f", "langes i"], ["🐟", "F*i*sch", "kurzes i"]], v: "Merkwörter: Tiger, Igel und Kino haben ein langes i – aber nur i!" },
+    "rechtschreibung:verlaengern": { k: "merk", t: "Verlängern hilft", s: "Am Wortende klingt d wie t, g wie k und b wie p. <b>Verlängere</b> das Wort, dann hörst du, was du schreibst.",
+      ex: [["🐕", "Hun*d*", "die Hun|*d*e"], ["⛰️", "Ber*g*", "die Ber|*g*e"], ["🧺", "Kor*b*", "die Kör|*b*e"]] },
+    "rechtschreibung:ableiten": { k: "merk", t: "ä und äu: verwandte Wörter", s: "Gibt es ein verwandtes Wort mit <b>a</b> oder <b>au</b>? Dann schreibst du <b>ä</b> oder <b>äu</b>.",
+      ex: [["🌳", "B*äu*|me", "der B*au*m"], ["🙌", "H*ä*n|de", "die H*a*nd"], ["🐭", "M*äu*|se", "die M*au*s"]], v: "Kein verwandtes Wort mit a oder au? Dann e oder eu: Feuer, Eule." },
+    "rechtschreibung:spst": { k: "merk", t: "Sp und St am Anfang", s: "Am Wortanfang sprichst du <b>schp</b> und <b>scht</b>. Du schreibst aber <b>Sp</b> und <b>St</b>.",
+      ex: [["🕷️", "*Sp*in|ne", "du hörst: schp"], ["⭐", "*St*ern", "du hörst: scht"], ["🪑", "*St*uhl", "du hörst: scht"]],
+      say: "Sp und St am Anfang. Am Wortanfang sprichst du schp und scht. Du schreibst aber S p und S t. Zum Beispiel: Spinne, Stern, Stuhl." },
+    "rechtschreibung:vogel": { k: "merk", t: "Merkwörter mit V", s: "Diese Wörter schreibt man mit <b>V</b>, obwohl man f hört. Die musst du dir merken.",
+      ex: [["🐦", "*V*o|gel"], ["👨", "*V*a|ter"], ["4️⃣", "*v*ier"]], v: "Auch: viel, von, vor, voll – und Wörter mit ver- und vor-." },
+    "rechtschreibung:er": { k: "merk", t: "er am Wortende", s: "Am Wortende hörst du oft ein <b>a</b>. Du schreibst aber <b>er</b>.",
+      ex: [["🪜", "Lei|t*er*"], ["🔪", "Mes|s*er*"], ["🐯", "Ti|g*er*"]] },
+    "rechtschreibung:zeichen": { k: "merk", t: "Punkt, Fragezeichen, Ausrufezeichen", s: "Am Satzende steht ein Satzzeichen: ein <b>Punkt</b>, wenn du etwas erzählst, ein <b>Fragezeichen</b>, wenn du fragst, ein <b>Ausrufezeichen</b>, wenn du rufst oder etwas befiehlst.",
+      ex: [["🗣️", "Ich heiße Lena*.*", "erzählen"], ["❓", "Wie heißt du*?*", "fragen"], ["📣", "Pass auf*!*", "rufen"]],
+      say: "Punkt, Fragezeichen, Ausrufezeichen. Am Satzende steht ein Satzzeichen: ein Punkt, wenn du etwas erzählst. Ich heiße Lena. Ein Fragezeichen, wenn du fragst. Wie heißt du? Ein Ausrufezeichen, wenn du rufst oder etwas befiehlst. Pass auf!" }
+  };
+  let ruleSeen = {};
+  const ruleKey = (ch, lv) => ch.id + ":" + lv.id;
+  function ruleOf(ch, li) { const lv = typeof li === "number" ? ch.levels[li] : null, r = lv && RULES[ruleKey(ch, lv)]; return r ? { r, lv } : null; }
+  const rPlain = (s) => s.replace(/[*|]/g, "");
+  // Wort-Markup → HTML: Begleiter farbig, *markiert*, Sil|ben mit Bögen
+  function rWord(str) {
+    return str.split(" ").map(tok => {
+      if (/^(der|die|das)$/.test(tok)) return `<span class="ra ra-${tok}">${tok}</span>`;
+      const syl = tok.indexOf("|") >= 0; let out = "", cur = "", hl = false;
+      const flush = () => { if (hl) cur += "</span>"; out += syl ? `<span class="rsyl">${cur}</span>` : cur; cur = hl ? '<span class="rh">' : ""; };
+      for (const c of Array.from(tok)) {
+        if (c === "*") { hl = !hl; cur += hl ? '<span class="rh">' : "</span>"; }
+        else if (c === "|") flush();
+        else cur += c;
+      }
+      if (hl) cur += "</span>";
+      out += syl ? `<span class="rsyl">${cur}</span>` : cur;
+      return out.replace(/<span class="rh"><\/span>/g, "");
+    }).join(" ");
+  }
+  function ruleSay(r) {
+    if (r.say) return r.say;
+    const strip = (h) => h.replace(/<[^>]+>/g, "");
+    const ex = r.ex.map(e => rPlain(e[1]) + (e[2] ? " – " + rPlain(e[2]) : "")).join(", ");
+    const t = /[.!?]$/.test(r.t) ? r.t : r.t + ".", v = r.v && !/^🔵/.test(r.v) ? " " + strip(r.v) : "";
+    return `${t} ${strip(r.s)} Zum Beispiel: ${ex}.${v}`;
+  }
+  // auto = beim ersten Besuch (zwei Knöpfe), sonst über 💡 (ein Knopf „Weiter“)
+  function openRule(ch, li, auto) {
+    const o = ruleOf(ch, li); if (!o) return false;
+    const { r, lv } = o, tipp = r.k === "tipp", card = $("ruleCard");
+    ruleSeen[ruleKey(ch, lv)] = 1;
+    card.style.setProperty("--rc", lv.color || "#1270a8");
+    card.innerHTML = `<div class="rc-top"><span class="rc-chip${tipp ? " tipp" : ""}">${tipp ? "🧭 Tipp-Karte" : "💡 Merk-Karte"}</span><span class="rc-isl">${lv.icon} ${lv.name}</span></div>
+      <h2 class="rc-t" id="ruleTitle">${r.t}</h2><p class="rc-s">${r.s}</p>
+      <div class="rc-ex${r.ex.length > 3 ? " four" : ""}">${r.ex.map(e => `<div class="rc-e">${e[0] ? `<div class="rc-pic">${e[0]}</div>` : ""}<div class="rc-w">${rWord(e[1])}</div>${e[2] ? `<div class="rc-sub">${rWord(e[2])}</div>` : ""}</div>`).join("")}</div>
+      ${r.v ? `<div class="rc-v">${r.v}</div>` : ""}
+      <div class="btnrow"><button class="iconbtn say" id="rcSay" aria-label="Vorlesen">🔊</button>${auto ? `<button class="big-btn ghost" id="rcKnow">Kenn ich schon</button><button class="big-btn" id="rcGo">Verstanden! 👍</button>` : `<button class="big-btn" id="rcGo">Weiter ▶</button>`}</div>`;
+    const pop = $("rulePop"); pop.hidden = false;
+    const close = () => { pop.hidden = true; try { speechSynthesis.cancel(); } catch (e) {} };
+    $("rcSay").onclick = () => speak(ruleSay(r));
+    $("rcGo").onclick = close; if (auto) $("rcKnow").onclick = close;
+    pop.onclick = (e) => { if (e.target === pop) close(); };
+    setTimeout(() => { try { $("rcGo").focus({ preventScroll: true }); } catch (e) {} }, 50);
+    setTimeout(() => { if (!pop.hidden) speak(ruleSay(r)); }, 300);
+    return true;
+  }
+  // 💡 im Spiel: Karte der Insel, zu der die aktuelle Aufgabe gehört (auch auf Schatz- und Experten-Insel)
+  function currentRuleLi() {
+    if (!L) return null;
+    if (typeof L.li === "number") return L.li;
+    const it = L.items && L.items[L.pos]; return it && typeof it.li === "number" ? it.li : null;
+  }
+  function updateRuleBtn() { const b = $("taskRule"); if (b) b.hidden = !ruleOf(CH, currentRuleLi()); }
+
   const AMPEL = [["gruen", "Das kann ich sicher.", 3], ["gelb", "Das kann ich schon ein bisschen.", 2], ["rot", "Das übe ich noch.", 1]];
   // Nur im Arbeitsspeicher: höchstens 2 Ampel-Fragen pro Sitzung (die erste Insel, dann frühestens 2 Inseln später).
   let ampelSession = { asked: 0, since: 0 };
-  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; }
+  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; ruleSeen = {}; }
   function askAmpel() {
     if (L.li === "bonus" || L.li === "expert" || L.practice || !ICH_KANN[pkey(CH, L.li)]) return false;
     return ampelSession.asked === 0 || (ampelSession.asked === 1 && ampelSession.since >= 2);
@@ -3682,6 +3857,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   $("wallet").addEventListener("click", () => { if (current === "scrHome" || current === "scrMap") renderAqua(); });
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
+  $("taskRule").addEventListener("click", () => openRule(CH, currentRuleLi(), false));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("rulePop").hidden) { $("rulePop").hidden = true; try { speechSynthesis.cancel(); } catch (x) {} } });
   $("certBtn").addEventListener("click", showCert);
   $("resCert").addEventListener("click", showExpertCert);
   $("voiceBtn").addEventListener("click", openVoiceSheet);
