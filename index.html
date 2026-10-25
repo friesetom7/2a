@@ -247,6 +247,22 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .cert { max-width: 640px; text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; border: 8px double var(--sand-edge); }
 .cert .nm { font-size: clamp(40px, 8vw, 60px); font-weight: 900; color: var(--sea); }
 .cert p { margin: 0; font-size: 25px; font-weight: 700; }
+.cert-ic { font-size: 70px; line-height: 1; }
+.cert .seal { width: 110px; height: 138px; display: block; }
+.cert.gold { border: 10px double #e0a400; background: radial-gradient(circle at 50% 0%, #fffbea, #fff1b8 70%); box-shadow: 0 0 0 4px #fff7d6, 0 14px 40px rgba(224,164,0,.35); }
+.cert.gold #certAward { color: #9a6b00; }
+.cert.gold #certTitle { color: #9a6b00; letter-spacing: .5px; }
+.gold-btn { background: linear-gradient(180deg, #ffe066, #ffc300); }
+.popstar { position: fixed; z-index: 6; font-size: 32px; pointer-events: none; animation: popstar .8s ease-out forwards; }
+@keyframes popstar { to { transform: translateY(-60px) scale(1.4); opacity: 0; } }
+.x-treasure { display: flex; gap: 14px; align-items: center; text-align: left; background: #f1f3ff; border: 3px solid #b8c0ff; border-radius: 18px; padding: 10px 14px; font-size: 18px; line-height: 1.35; }
+.x-treasure .xt-art { width: 76px; height: 76px; flex: none; line-height: 0; }
+.xt-art svg, .rb-art svg, .ex-art svg { width: 100%; height: 100%; }
+.rb-art { display: inline-block; width: 44px; height: 44px; vertical-align: middle; line-height: 0; }
+.ex-art { display: inline-block; width: 52px; height: 52px; vertical-align: middle; line-height: 0; }
+.ware.treasure.locked .wart svg { filter: grayscale(1); opacity: .4; }
+.ware.treasure.locked .wp { color: var(--muted); }
+.ware.treasure.won { border-color: var(--gold); background: #fff6d6; box-shadow: 0 5px 0 var(--gold-edge), 0 0 14px rgba(255,215,94,.6); }
 
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
 .confetti span { position: absolute; top: -60px; font-size: 40px; animation: fall 2.4s ease-in forwards; }
@@ -392,9 +408,8 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .sh-nm { font-size: 30px; font-weight: 900; display: block; }
 .sh-sub { font-size: 18px; font-weight: 700; color: var(--muted); display: block; }
 .sh-close { position: absolute; top: 14px; right: 14px; width: 50px; height: 50px; font-size: 22px; }
-.sheet .diffs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.sheet .diffs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .sheet .diff { padding: 12px 4px; }
-@media (max-width: 520px) { .sheet .diffs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .sheet .diff .dl { font-size: 21px; }
 .sheet .diff .ds { font-size: 16px; }
 .sheet .diff .dc { font-size: 14px; font-weight: 800; opacity: .9; }
@@ -518,7 +533,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Übungsspielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 22.10. · Muscheln</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Experten-Inseln</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -585,6 +600,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         <div class="sh-list" id="resShellList"></div>
         <button class="big-btn shell-btn" id="resShellBtn">🐚 Muscheln üben</button>
       </div>
+      <button class="big-btn gold-btn" id="resCert" hidden>🏅 Experten-Urkunde</button>
       <div class="btnrow">
         <button class="big-btn ghost" id="resAgain">🔁 Nochmal</button>
         <button class="big-btn" id="resMap">Weiter 🗺️</button>
@@ -594,11 +610,11 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   <!-- CERTIFICATE -->
   <section class="screen center" id="scrCert" hidden>
-    <div class="card cert">
-      <div style="font-size:70px">🏆</div>
-      <p>Urkunde</p>
+    <div class="card cert" id="certCard">
+      <div class="cert-ic" id="certIcon">🏆</div>
+      <p id="certTitle">Urkunde</p>
       <div class="nm" id="certName"></div>
-      <p>ist jetzt ein echter</p>
+      <p id="certLead">ist jetzt ein echter</p>
       <h2 style="font-size:42px" id="certAward">Nomen-Profi!</h2>
       <p id="certInfo"></p>
       <p style="font-size:20px">🦈 Nemo und die Klasse 2a gratulieren!</p>
@@ -637,7 +653,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     schwer: { icon: "🪨", label: "Schwer", mult: 3 },
     experte: { icon: "⚓", label: "Experte", mult: 4 }
   };
-  const DK = ["leicht", "mittel", "schwer", "experte"];
+  const DK = ["leicht", "mittel", "schwer"]; // „Experte“ gibt es als eigene Experten-Insel pro Kapitel
 
   /* ---------- Wörter ---------- */
   // [Wort, Artikel, Emoji, Gruppe]  m = Mensch, t = Tier, p = Pflanze, d = Ding
@@ -837,7 +853,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- state ---------- */
   const KEY = "nemo-spielplatz-v2";
-  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, aqua: [] });
+  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [] });
   let S = fresh();
   // Datenschutz:
   //  - Ohne Schulserver (z. B. GitHub-Version) speichert das Spiel NICHTS: alles nur im Arbeitsspeicher, jedes Öffnen beginnt bei 0.
@@ -1021,6 +1037,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       setTimeout(() => p.remove(), 650);
     } catch (e) {}
   }
+  function popStar(fromEl) {
+    try { const r = fromEl.getBoundingClientRect(), p = el("div", "popstar", "⭐"); p.style.left = (r.left + r.width / 2 - 16) + "px"; p.style.top = (r.top + r.height / 2 - 16) + "px"; document.body.appendChild(p); setTimeout(() => p.remove(), 800); } catch (e) {}
+  }
   function confetti(items) {
     const box = $("confetti"); items = items || ["🐟","🐠","⭐","🫧","🦈","🐚","✨"];
     for (let i = 0; i < 26; i++) {
@@ -1043,6 +1062,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   let L = null;
   function award(fromEl, factor) {
     const c = L.mult * (factor || 1);
+    if (!c) { sfxGood(); popStar(fromEl); return; } // Experten-Insel: Sterne statt Münzen
     S.coins += c; S.total = (S.total || 0) + c; L.earned += c; save(); setCoins(true); flyCoin(fromEl); sfxGood();
   }
   function miss(elm, msg) { sfxBad(); L.mistakes++; if (elm) shakeEl(elm); hint(msg); }
@@ -2292,7 +2312,41 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const OL = 'stroke="#17324a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
   const EYE = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r || 6}" fill="#fff" ${OL}/><circle cx="${x + 1.2}" cy="${y}" r="${(r || 6) * 0.45}" fill="#17324a"/>`;
   const SHINE = (x, y, rx, ry) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#fff" opacity=".45"/>`;
+  const SPARK = (x, y, k) => `<path d="M${x} ${y - k}L${x + k * .25} ${y - k * .25}L${x + k} ${y}L${x + k * .25} ${y + k * .25}L${x} ${y + k}L${x - k * .25} ${y + k * .25}L${x - k} ${y}L${x - k * .25} ${y - k * .25}Z" fill="#fff" stroke="#ffd60a" stroke-width="1.5" stroke-linejoin="round"/>`;
+  const SEAL = (() => { let pts = ""; for (let i = 0; i < 32; i++) { const a = i * Math.PI / 16, r = i % 2 ? 50 : 58; pts += `${(60 + Math.cos(a) * r).toFixed(1)},${(62 + Math.sin(a) * r).toFixed(1)} `; }
+    return `<svg viewBox="0 0 120 150" class="seal" aria-hidden="true"><path d="M40 100 L28 146 L46 134 L56 148 L62 104 Z M80 100 L92 146 L74 134 L64 148 L58 104 Z" fill="#d62828" ${OL}/><polygon points="${pts}" fill="#ffc300" ${OL}/><circle cx="60" cy="62" r="38" fill="#ffd60a" stroke="#e0a400" stroke-width="4"/><path d="M60 42 V84 M48 50 H72 M40 70 Q42 84 60 86 Q78 84 80 70 M40 70 L34 75 M80 70 L86 75" fill="none" stroke="#17324a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="37" r="5" fill="none" stroke="#17324a" stroke-width="4"/></svg>`; })();
   const ART = {
+    // ---- neu: weitere Tiere ----
+    garnele: `<path d="M74 34 Q90 20 96 8 M76 36 Q96 32 98 22" fill="none" stroke="#e76f51" stroke-width="2.5" stroke-linecap="round"/><path d="M84 44 Q78 28 58 28 Q34 30 26 46 Q20 60 30 70 L20 82 L36 80 L38 70 Q30 60 38 52 Q50 46 68 52 Q80 52 84 44 Z" fill="#ff8fa3" ${OL}/><path d="M46 31 Q42 42 48 50 M58 29 Q56 40 62 49 M36 38 Q33 48 39 54" fill="none" stroke="#e5577a" stroke-width="2.5"/>${[48, 58, 68].map(x => `<path d="M${x} 52 l-3 11" stroke="#17324a" stroke-width="2.5" stroke-linecap="round"/>`).join("")}${SHINE(56, 35, 9, 3)}${EYE(74, 38, 4.5)}`,
+    meeresschnecke: `<path d="M8 72 Q10 58 28 58 L74 56 Q92 56 94 68 Q94 76 80 76 L18 78 Q8 78 8 72 Z" fill="#7b2cbf" ${OL}/>${[20, 30, 40, 50, 60, 70].map((x, i) => `<path d="M${x} 58 Q${x - 4} ${44 - (i % 2) * 7} ${x + 2} ${36 - (i % 2) * 7} Q${x + 8} ${46} ${x + 6} 57" fill="${i % 2 ? "#ffbe0b" : "#ff9f1c"}" ${OL}/>`).join("")}<path d="M82 57 L85 42 M89 58 L95 45" stroke="#ff9f1c" stroke-width="4.5" stroke-linecap="round"/><path d="M14 73 L88 71" stroke="#fff" stroke-width="3" opacity=".55"/>${EYE(84, 64, 3.5)}`,
+    kofferfisch: `<path d="M22 50 L8 38 L10 50 L8 62 Z" fill="#ffd60a" ${OL}/><rect x="22" y="30" width="62" height="42" rx="14" fill="#ffd60a" ${OL}/>${[[34, 40], [48, 38], [60, 41], [38, 54], [52, 52], [64, 57], [32, 64], [48, 65]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#17324a"/>`).join("")}<path d="M50 72 Q54 82 46 82" fill="#ffd60a" ${OL}/>${SHINE(46, 34, 12, 3)}${EYE(74, 44, 5)}<circle cx="86" cy="57" r="2.5" fill="#17324a"/>`,
+    papageifisch: `<path d="M22 50 L6 34 Q12 50 6 66 Z" fill="#ff70a6" ${OL}/><path d="M44 27 Q54 12 70 28" fill="#ff70a6" ${OL}/><path d="M22 50 Q30 26 60 26 Q84 28 92 50 Q84 72 60 74 Q30 74 22 50 Z" fill="#2ec4b6" ${OL}/><path d="M40 29 Q46 50 40 71 M56 27 Q62 50 56 73" fill="none" stroke="#ff70a6" stroke-width="5" opacity=".9"/><path d="M84 44 Q97 47 93 56 Q87 59 84 54" fill="#f1f1f1" ${OL}/>${SHINE(58, 34, 11, 3)}${EYE(76, 42, 5)}`,
+    feuerfisch: `<defs><clipPath id="ffclip"><ellipse cx="54" cy="50" rx="32" ry="17"/></clipPath></defs><path d="M30 40 Q36 8 50 5 Q64 8 72 36 Z" fill="#ffb4a2" opacity=".6"/>${[[32, 12], [42, 6], [52, 5], [62, 9], [70, 18]].map(([x, y]) => `<path d="M${(x + 50) / 2} 38 L${x} ${y}" stroke="#d62828" stroke-width="3" stroke-linecap="round"/>`).join("")}<path d="M44 60 Q26 92 12 86 Q22 70 40 56 Z" fill="#ffb4a2" ${OL}/><path d="M22 52 L8 40 L10 52 L8 64 Z" fill="#f4a261" ${OL}/><ellipse cx="54" cy="50" rx="32" ry="17" fill="#fff1e6"/><g clip-path="url(#ffclip)">${[30, 40, 50, 60, 70, 80].map(x => `<path d="M${x} 32 Q${x - 5} 50 ${x} 68" fill="none" stroke="#d62828" stroke-width="5"/>`).join("")}</g><ellipse cx="54" cy="50" rx="32" ry="17" fill="none" ${OL}/>${EYE(76, 46, 5)}`,
+    seeotter: `<path d="M2 66 Q14 60 26 66 T50 66 T74 66 T98 66" fill="none" stroke="#90e0ef" stroke-width="3" stroke-linecap="round"/><path d="M8 58 Q2 50 12 47 L22 52" fill="#8d5a3b" ${OL}/><path d="M16 56 Q20 40 50 40 Q76 40 80 52 Q76 66 50 66 Q22 66 16 56 Z" fill="#a47148" ${OL}/><path d="M28 55 Q50 46 72 52 Q60 61 36 61 Z" fill="#e6ccb2"/><ellipse cx="22" cy="44" rx="6" ry="4" fill="#8d5a3b" ${OL}/><path d="M71 32 Q73 27 77 31" fill="#a47148" ${OL}/><circle cx="80" cy="44" r="14" fill="#a47148" ${OL}/><circle cx="85" cy="48" r="7" fill="#e6ccb2"/><circle cx="89" cy="46" r="2.5" fill="#17324a"/>${EYE(78, 40, 3.5)}<path d="M52 41 Q58 28 66 41 Z" fill="#ffafcc" ${OL}/><circle cx="54" cy="43" r="4" fill="#8d5a3b" ${OL}/><circle cx="64" cy="43" r="4" fill="#8d5a3b" ${OL}/>`,
+    anglerfisch: `<path d="M20 52 L6 40 L8 52 L6 64 Z" fill="#3d405b" ${OL}/><path d="M20 52 Q24 26 54 24 Q82 24 90 44 L72 52 L90 60 Q82 78 54 78 Q24 78 20 52 Z" fill="#3d405b" ${OL}/><path d="M90 44 L72 52 L90 60 Z" fill="#9d0208"/>${[[86, 45.8], [81, 48], [76, 50.2]].map(([x, y]) => `<path d="M${x - 2} ${y + 0.9} L${x + 2} ${y - 0.9} L${x} ${y + 4} Z" fill="#fff"/><path d="M${x - 2} ${104 - y - 0.9} L${x + 2} ${104 - y + 0.9} L${x} ${104 - y - 4} Z" fill="#fff"/>`).join("")}<path d="M90 44 L72 52 L90 60" fill="none" ${OL}/><path d="M58 26 Q64 6 84 12" fill="none" stroke="#17324a" stroke-width="3" stroke-linecap="round"/><circle cx="86" cy="14" r="10" fill="#ffd60a" opacity=".35"/><circle cx="86" cy="14" r="5" fill="#fff3b0" ${OL}/>${SHINE(44, 34, 10, 3)}${EYE(64, 38, 5.5)}`,
+    schwertfisch: `<path d="M16 50 L2 34 L6 50 L2 66 Z" fill="#457b9d" ${OL}/><path d="M40 38 L50 18 L58 37 Z" fill="#457b9d" ${OL}/><path d="M14 50 Q26 34 56 36 L66 40 L98 45 L66 49 Q58 62 38 62 Q22 60 14 50 Z" fill="#5fa8d3" ${OL}/><path d="M24 54 Q44 58 62 50" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/><path d="M40 58 Q46 68 38 70" fill="#457b9d" ${OL}/>${EYE(58, 43, 4)}`,
+    mondfisch: `<path d="M34 30 L40 4 L52 26 Z" fill="#adb5bd" ${OL}/><path d="M34 70 L40 96 L52 74 Z" fill="#adb5bd" ${OL}/><path d="M22 50 Q22 22 54 22 Q84 24 86 50 Q84 76 54 78 Q22 78 22 50 Z" fill="#ced4da" ${OL}/><path d="M23 38 Q12 50 23 62" fill="#adb5bd" ${OL}/>${[[40, 40], [48, 60], [60, 36], [36, 56]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#adb5bd"/>`).join("")}${SHINE(52, 31, 13, 4)}${EYE(72, 44, 5)}<ellipse cx="84" cy="56" rx="2.5" ry="3.5" fill="#17324a"/>`,
+    seekuh: `<path d="M18 52 Q2 40 4 56 Q6 74 20 62 Z" fill="#8d99ae" ${OL}/><path d="M18 56 Q22 34 54 34 Q84 34 90 52 Q92 66 74 68 Q50 72 30 68 Q20 64 18 56 Z" fill="#a3aab8" ${OL}/><path d="M58 64 Q60 78 50 80" fill="#8d99ae" ${OL}/><ellipse cx="86" cy="58" rx="8" ry="6.5" fill="#c9ced8" ${OL}/><path d="M89 60 l6 1 M89 63 l6 4" stroke="#17324a" stroke-width="1.5" stroke-linecap="round"/>${SHINE(46, 40, 12, 3)}${EYE(76, 48, 3.5)}`,
+    hammerhai: `<path d="M18 50 L4 34 L8 50 L4 66 Z" fill="#8d99ae" ${OL}/><path d="M44 40 L52 22 L58 39 Z" fill="#8d99ae" ${OL}/><path d="M18 50 Q30 36 60 38 L74 41 L74 59 L60 62 Q30 64 18 50 Z" fill="#a8b2c1" ${OL}/><path d="M72 28 Q79 25 84 28 L86 72 Q79 75 72 72 Z" fill="#a8b2c1" ${OL}/><path d="M26 56 Q46 60 70 54" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/><path d="M44 60 Q50 72 42 74" fill="#8d99ae" ${OL}/>${EYE(80, 32, 3)}${EYE(80, 68, 3)}`,
+    orca: `<path d="M14 52 L2 40 L6 52 L2 64 Z" fill="#212529" ${OL}/><path d="M44 32 L50 8 L60 31 Z" fill="#212529" ${OL}/><path d="M14 52 Q20 32 54 30 Q86 30 94 50 Q90 66 60 68 Q30 70 14 52 Z" fill="#212529" ${OL}/><path d="M30 58 Q54 70 88 58 Q84 66 58 66 Q38 66 30 58 Z" fill="#fff"/><ellipse cx="72" cy="42" rx="7" ry="4" fill="#fff"/><path d="M48 64 Q54 76 46 78" fill="#212529" ${OL}/>${EYE(83, 47, 3)}${SHINE(40, 36, 10, 3)}`,
+    // ---- neu: Deko ----
+    anemone: `<path d="M30 94 Q28 72 36 62 L64 62 Q72 72 70 94 Z" fill="#e85d75" ${OL}/>${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 24 + i * 6.5, tx = x + (i % 2 ? 5 : -5), ty = 26 + (i % 3) * 7; return `<path d="M${x} 64 Q${x - 6 + (i % 3) * 4} 46 ${tx} ${ty}" fill="none" stroke="#ff8fab" stroke-width="6" stroke-linecap="round"/><circle cx="${tx}" cy="${ty}" r="3.5" fill="#ffd166"/>`; }).join("")}<ellipse cx="50" cy="63" rx="20" ry="5" fill="#c9184a"/>`,
+    flaschenpost: `<g transform="rotate(-32 50 62)"><rect x="16" y="50" width="56" height="26" rx="11" fill="#95d5b2" fill-opacity=".85" ${OL}/><rect x="70" y="56" width="15" height="14" rx="3" fill="#95d5b2" ${OL}/><rect x="84" y="57" width="8" height="12" rx="2" fill="#bc8a5f" ${OL}/><rect x="26" y="56" width="34" height="14" rx="7" fill="#fff3c4" ${OL}/><path d="M33 63 h20" stroke="#bc8a5f" stroke-width="2"/>${SHINE(40, 54, 14, 2.5)}</g>`,
+    algenwald: `${[[18, "#2d6a4f"], [34, "#40916c"], [50, "#52b788"], [66, "#2d6a4f"], [82, "#40916c"]].map(([x, c], i) => `<path d="M${x} 98 Q${x - 8} 76 ${x} 56 Q${x + 8} 36 ${x} ${12 + (i % 2) * 10}" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round"/>${[80, 62, 44, 28].map((y, k) => `<path d="M${x} ${y} q${k % 2 ? 10 : -10} -6 ${k % 2 ? 14 : -14} -2 q${k % 2 ? -6 : 6} 6 ${k % 2 ? -14 : 14} 2" fill="${c}"/>`).join("")}`).join("")}`,
+    steuerrad: `${[0, 1, 2, 3, 4, 5, 6, 7].map(i => { const a = i * Math.PI / 4, c = Math.cos(a), s = Math.sin(a); return `<path d="M${50 + c * 10} ${50 + s * 10} L${50 + c * 43} ${50 + s * 43}" stroke="#7f5539" stroke-width="7" stroke-linecap="round"/><circle cx="${50 + c * 43}" cy="${50 + s * 43}" r="5" fill="#9c6644" ${OL}/>`; }).join("")}<circle cx="50" cy="50" r="30" fill="none" stroke="#9c6644" stroke-width="9"/><circle cx="50" cy="50" r="34.5" fill="none" stroke="#17324a" stroke-width="2.5"/><circle cx="50" cy="50" r="25.5" fill="none" stroke="#17324a" stroke-width="2.5"/><circle cx="50" cy="50" r="10" fill="#ddb892" ${OL}/>`,
+    taucherhelm: `<path d="M16 94 Q14 76 28 72 L72 72 Q86 76 84 94 Z" fill="#b08968" ${OL}/><circle cx="50" cy="44" r="32" fill="#e9c46a" ${OL}/><circle cx="50" cy="46" r="20" fill="#d4a017" ${OL}/><circle cx="50" cy="46" r="15" fill="#90e0ef" ${OL}/>${[[50, 16], [26, 32], [74, 32], [24, 58], [76, 58]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#b08968" ${OL}/>`).join("")}<path d="M43 40 Q47 36 53 37" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>${SHINE(38, 24, 9, 3)}`,
+    riesenmuschel: `<path d="M10 70 Q12 30 50 26 Q88 30 90 70 Z" fill="#cdb4db" ${OL}/>${[24, 37, 50, 63, 76].map(x => `<path d="M50 70 L${x} ${x === 50 ? 28 : 34}" stroke="#a084ca" stroke-width="3"/>`).join("")}<path d="M8 70 Q50 96 92 70 Q50 82 8 70 Z" fill="#b8c0ff" ${OL}/><circle cx="50" cy="66" r="10" fill="#fff" ${OL}/>${SHINE(46, 62, 4, 3)}${SPARK(66, 52, 6)}`,
+    ruine: `<rect x="8" y="84" width="84" height="10" rx="2" fill="#d6ccc2" ${OL}/><rect x="16" y="76" width="68" height="9" rx="2" fill="#e3d5ca" ${OL}/><path d="M20 24 L42 24 L42 31 L20 31 Z" fill="#e3d5ca" ${OL}/><rect x="25" y="31" width="12" height="45" fill="#f5ebe0" ${OL}/><path d="M29 34 V73 M33 34 V73" stroke="#d6ccc2" stroke-width="2"/><path d="M44 76 L44 56 L48 52 L52 57 L56 53 L56 76 Z" fill="#f5ebe0" ${OL}/><path d="M64 76 L64 44 L68 40 L72 46 L76 41 L76 76 Z" fill="#f5ebe0" ${OL}/><path d="M68 48 V73 M72 48 V73" stroke="#d6ccc2" stroke-width="2"/><path d="M86 76 q-4 -10 0 -18 q4 -8 0 -16" stroke="#52b788" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M14 76 q4 -8 0 -14" stroke="#52b788" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+    kristallhoehle: `<path d="M6 94 Q4 40 30 22 Q50 8 70 22 Q96 40 94 94 Z" fill="#6c757d" ${OL}/><path d="M28 94 Q28 54 50 46 Q72 54 72 94 Z" fill="#212f45"/><ellipse cx="52" cy="86" rx="20" ry="8" fill="#7bdff2" opacity=".35"/>${[[40, 94, 7, 26, "#c77dff"], [54, 94, 7, 34, "#7bdff2"], [64, 94, 5, 20, "#c77dff"], [18, 62, 6, 18, "#7bdff2"], [82, 68, 6, 16, "#c77dff"], [70, 34, 5, 14, "#7bdff2"]].map(([x, y, w, h, c]) => `<path d="M${x - w} ${y} L${x - w} ${y - h * 0.7} L${x} ${y - h} L${x + w} ${y - h * 0.7} L${x + w} ${y} Z" fill="${c}" ${OL}/><path d="M${x} ${y - h} L${x} ${y}" stroke="#fff" stroke-width="1.5" opacity=".7"/>`).join("")}${SPARK(30, 30, 5)}`,
+    // ---- neu: Schätze ----
+    muenzen: `<path d="M8 90 Q20 56 50 50 Q80 56 92 90 Z" fill="#ffc300" ${OL}/>${[[30, 78], [50, 72], [70, 78], [40, 63], [60, 63], [24, 88], [76, 88], [50, 86]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="8" ry="4" fill="#ffd60a" ${OL}/>`).join("")}<ellipse cx="72" cy="48" rx="9" ry="12" fill="#ffd60a" ${OL}/><path d="M72 42 v12" stroke="#e0a400" stroke-width="3" stroke-linecap="round"/>${SPARK(30, 50, 6)}${SPARK(88, 36, 5)}`,
+    diamant: `<path d="M18 40 L32 22 L68 22 L82 40 L50 88 Z" fill="#a2d2ff" ${OL}/><path d="M32 22 L40 40 L18 40 Z M68 22 L60 40 L82 40 Z" fill="#cde8ff"/><path d="M40 40 L50 22 L60 40 Z" fill="#e7f3ff"/><path d="M18 40 L82 40 M32 22 L40 40 L50 22 L60 40 L68 22 M40 40 L50 88 L60 40" fill="none" stroke="#17324a" stroke-width="2" stroke-linejoin="round"/><path d="M18 40 L32 22 L68 22 L82 40 L50 88 Z" fill="none" ${OL}/>${SPARK(84, 16, 7)}${SPARK(14, 70, 5)}`,
+    thron: `<path d="M18 62 Q14 16 50 12 Q86 16 82 62 Z" fill="#ffafcc" ${OL}/>${[26, 38, 50, 62, 74].map(x => `<path d="M50 62 L${x} ${x === 50 ? 14 : 20}" stroke="#f08cae" stroke-width="3"/>`).join("")}<circle cx="50" cy="11" r="5" fill="#fff" ${OL}/><rect x="16" y="58" width="68" height="14" rx="6" fill="#d62828" ${OL}/><rect x="20" y="72" width="60" height="10" rx="3" fill="#ffc300" ${OL}/><path d="M26 82 L24 94 M74 82 L76 94" stroke="#e0a400" stroke-width="6" stroke-linecap="round"/>${SHINE(36, 62, 10, 2.5)}${SPARK(88, 22, 5)}`,
+    // ---- Experten-Schätze (nur auf der Experten-Insel zu gewinnen) ----
+    kristallstern: `<circle cx="50" cy="50" r="46" fill="#bde0fe" opacity=".35"/><path d="M50 10 L61 38 L91 39 L67 57 L76 86 L50 69 L24 86 L33 57 L9 39 L39 38 Z" fill="#9bf6ff" ${OL}/><path d="M50 10 L61 38 L50 50 Z M9 39 L39 38 L50 50 Z M76 86 L50 69 L50 50 Z" fill="#fff" opacity=".5"/><path d="M50 10 L50 50 M91 39 L50 50 M76 86 L50 50 M24 86 L50 50 M9 39 L50 50" stroke="#fff" stroke-width="2" opacity=".9"/>${SPARK(86, 14, 7)}${SPARK(14, 16, 5)}${SPARK(88, 78, 5)}`,
+    zauberpferdchen: `<circle cx="52" cy="52" r="46" fill="#ffc8dd" opacity=".35"/>${[["#ff595e", 40, 28], ["#ffca3a", 36, 38], ["#8ac926", 37, 48], ["#1982c4", 41, 58]].map(([c, x, y]) => `<path d="M${x} ${y} L${x - 12} ${y - 2} L${x - 3} ${y + 9} Z" fill="${c}" ${OL}/>`).join("")}<path d="M48 18 Q66 16 66 34 Q66 44 58 50 Q72 60 64 76 Q58 90 46 86 Q36 82 42 72 Q48 77 52 70 Q48 60 42 52 Q34 42 38 30 Q42 18 48 18 Z" fill="#cdb4db" ${OL}/><path d="M64 29 L82 26 L82 33 L64 37 Z" fill="#cdb4db" ${OL}/><path d="M44 19 L45 8 L50 14 L55 6 L58 14 L63 9 L62 21 Z" fill="#ffd60a" ${OL}/>${SHINE(54, 60, 6, 3)}${EYE(56, 29, 4.5)}${SPARK(82, 12, 6)}${SPARK(20, 80, 5)}${SPARK(84, 70, 4)}`,
+    goldleuchtturm: `<path d="M50 20 L6 6 L6 30 Z M50 20 L94 6 L94 30 Z" fill="#fff3b0" opacity=".75"/><path d="M28 96 Q26 84 40 82 L60 82 Q74 84 72 96 Z" fill="#adb5bd" ${OL}/><path d="M38 84 L42 32 L58 32 L62 84 Z" fill="#fff" ${OL}/><path d="M39.3 70 L40.2 58 L59.8 58 L60.7 70 Z M40.8 48 L41.4 40 L58.6 40 L59.2 48 Z" fill="#ffc300"/><rect x="36" y="27" width="28" height="5" rx="1.5" fill="#17324a"/><rect x="42" y="15" width="16" height="12" rx="2" fill="#fff3b0" ${OL}/><circle cx="50" cy="21" r="3.5" fill="#ffd60a"/><path d="M40 15 L50 5 L60 15 Z" fill="#ffc300" ${OL}/><path d="M46 84 L46 76 Q50 72 54 76 L54 84 Z" fill="#8a5a2b" ${OL}/>${SPARK(84, 44, 6)}${SPARK(16, 50, 5)}`,
+    leseschildkroete: `<ellipse cx="30" cy="70" rx="10" ry="6" fill="#95d5b2" ${OL}/><ellipse cx="66" cy="72" rx="10" ry="6" fill="#95d5b2" ${OL}/><circle cx="84" cy="50" r="11" fill="#95d5b2" ${OL}/><circle cx="87" cy="46" r="5.5" fill="#fff" stroke="#17324a" stroke-width="2.5"/><circle cx="88" cy="46" r="2" fill="#17324a"/><path d="M81.5 46 L77 44" stroke="#17324a" stroke-width="2.5" stroke-linecap="round"/><path d="M14 54 L6 52 L14 60 Z" fill="#95d5b2" ${OL}/><path d="M16 60 Q16 26 48 26 Q80 26 80 60 Z" fill="#52b788" ${OL}/><path d="M36 60 L40 42 L56 42 L60 60 M40 42 L48 32 L56 42 M30 46 L40 42 M66 46 L56 42" fill="none" stroke="#2d6a4f" stroke-width="3" stroke-linejoin="round"/><rect x="33" y="18" width="30" height="8" rx="2" fill="#e63946" ${OL}/><rect x="29" y="10" width="34" height="8" rx="2" fill="#3a86ff" ${OL}/><rect x="35" y="2" width="26" height="8" rx="2" fill="#ffd60a" ${OL}/>${SPARK(88, 22, 6)}`,
     goldfisch: `<path d="M24 50 L6 32 L10 50 L6 68 Z" fill="#ff8c1a" ${OL}/><path d="M42 31 Q54 14 68 31" fill="#ff8c1a" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="21" fill="#ffb703" ${OL}/>${SHINE(50, 40, 12, 4)}<path d="M50 56 Q56 66 46 68" fill="#ff8c1a" ${OL}/>${EYE(74, 45)}<path d="M84 56 Q87 58 84 60" fill="none" ${OL}/>`,
     clownfisch: `<path d="M24 50 L8 34 L11 50 L8 66 Z" fill="#ff7b00" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="20" fill="#ff7b00" ${OL}/><path d="M40 31 Q35 50 40 69 L49 70 Q44 50 49 30 Z" fill="#fff" ${OL}/><path d="M64 31 Q60 50 64 69 L71 68 Q67 50 71 32 Z" fill="#fff" ${OL}/>${SHINE(52, 39, 8, 3)}${EYE(78, 45, 5.5)}`,
     doktorfisch: `<path d="M22 50 L6 34 L9 50 L6 66 Z" fill="#ffd60a" ${OL}/><path d="M22 50 Q30 22 58 22 Q86 24 90 50 Q86 76 58 78 Q30 78 22 50 Z" fill="#3a86ff" ${OL}/><path d="M34 40 Q52 30 66 40 Q54 48 40 58 Q30 52 34 40 Z" fill="#17324a"/>${SHINE(58, 30, 10, 3)}${EYE(76, 44)}`,
@@ -2367,20 +2421,52 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     { id: "schatztruhe", n: "Schatztruhe", p: 180, k: "deco", c: "schatz", z: 98 },
     { id: "vulkan", n: "Blubber-Vulkan", p: 200, k: "deco", c: "deko", z: 124 },
     { id: "schiffswrack", n: "Schiffswrack", p: 240, k: "deco", c: "deko", z: 150 },
-    { id: "goldnemo", n: "Goldener Nemo", p: 300, k: "deco", c: "schatz", z: 104 }
+    { id: "goldnemo", n: "Goldener Nemo", p: 300, k: "deco", c: "schatz", z: 104 },
+    { id: "garnele", n: "Garnele", p: 12, k: "deco", c: "tiere", z: 56 },
+    { id: "anemone", n: "Seeanemone", p: 18, k: "deco", c: "deko", z: 74 },
+    { id: "meeresschnecke", n: "Meeresschnecke", p: 20, k: "deco", c: "tiere", z: 66 },
+    { id: "flaschenpost", n: "Flaschenpost", p: 24, k: "deco", c: "deko", z: 66 },
+    { id: "kofferfisch", n: "Kofferfisch", p: 28, k: "swim", c: "tiere", z: 72 },
+    { id: "algenwald", n: "Algenwald", p: 32, k: "deco", c: "deko", z: 116 },
+    { id: "papageifisch", n: "Papageifisch", p: 36, k: "swim", c: "tiere", z: 86 },
+    { id: "feuerfisch", n: "Feuerfisch", p: 48, k: "float", c: "tiere", z: 90 },
+    { id: "steuerrad", n: "Steuerrad", p: 55, k: "deco", c: "deko", z: 84 },
+    { id: "taucherhelm", n: "Taucherhelm", p: 65, k: "deco", c: "deko", z: 84 },
+    { id: "seeotter", n: "Seeotter", p: 75, k: "float", c: "tiere", z: 92 },
+    { id: "riesenmuschel", n: "Riesenmuschel", p: 85, k: "deco", c: "schatz", z: 92 },
+    { id: "anglerfisch", n: "Anglerfisch", p: 90, k: "swim", c: "tiere", z: 90 },
+    { id: "schwertfisch", n: "Schwertfisch", p: 115, k: "swim", c: "tiere", z: 124 },
+    { id: "mondfisch", n: "Mondfisch", p: 140, k: "swim", c: "tiere", z: 112 },
+    { id: "ruine", n: "Tempel-Ruine", p: 150, k: "deco", c: "deko", z: 132 },
+    { id: "seekuh", n: "Seekuh", p: 165, k: "swim", c: "tiere", z: 124 },
+    { id: "hammerhai", n: "Hammerhai", p: 195, k: "swim", c: "tiere", z: 124 },
+    { id: "muenzen", n: "Goldmünzen-Berg", p: 220, k: "deco", c: "schatz", z: 96 },
+    { id: "orca", n: "Orca", p: 260, k: "swim", c: "tiere", z: 142 },
+    { id: "kristallhoehle", n: "Kristall-Höhle", p: 280, k: "deco", c: "deko", z: 142 },
+    { id: "diamant", n: "Riesen-Diamant", p: 350, k: "deco", c: "schatz", z: 84 },
+    { id: "thron", n: "Muschel-Thron", p: 420, k: "deco", c: "schatz", z: 116 }
   ];
+  SHOP.sort((a, b) => a.p - b.p);
+  // Experten-Schätze: gibt es nur auf der Experten-Insel des Kapitels (nicht im Laden zu kaufen)
+  const TREASURES = [
+    { id: "kristallstern", n: "Kristall-Seestern", art: "der", pr: "Er", ch: "nomen", k: "deco", z: 76 },
+    { id: "zauberpferdchen", n: "Zauber-Seepferdchen", art: "das", pr: "Es", ch: "lernwoerter", k: "float", z: 88 },
+    { id: "goldleuchtturm", n: "Goldener Leuchtturm", art: "der", pr: "Er", ch: "leuchtturm", k: "deco", z: 116 },
+    { id: "leseschildkroete", n: "Bücher-Schildkröte", art: "die", pr: "Sie", ch: "lesen", k: "swim", z: 98 }
+  ];
+  const treasureOf = (ch) => TREASURES.find(t => t.ch === ch.id);
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   const MAX_EACH = 5;
   const countOf = (w) => (S.aqua || []).filter(a => a.id === w.id).length;
   const owned = (w) => countOf(w) > 0;
   const aquaCount = () => SHOP.filter(owned).length;
-  const shopItem = (id) => SHOP.find(w => w.id === id);
+  const shopItem = (id) => SHOP.find(w => w.id === id) || TREASURES.find(w => w.id === id);
   let newbie = null, editMode = false;
   function renderStat() {
     const n = aquaCount(), box = $("aqStat");
     const next = SHOP.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
     const canNew = SHOP.some(w => !owned(w) && S.coins >= w.p);
-    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} Arten · ${S.aqua.length} Sachen im Aquarium</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
+    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} Arten · ${S.aqua.length} Sachen im Aquarium · 🏆 ${TREASURES.filter(owned).length}/${TREASURES.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
       (n === SHOP.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
        canNew ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
        `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
@@ -2394,6 +2480,11 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     box.appendChild(tools);
   }
   function tankH() { const t = $("tank"); return (t && t.clientHeight) || 360; }
+  function newInstance(w) {
+    const h = tankH(), uid = Date.now() + "-" + Math.floor(Math.random() * 1e6);
+    const y = w.k === "deco" ? Math.max(30, Math.round(97 - w.z / h * 100 - Math.random() * 3)) : w.k === "float" ? Math.round(8 + Math.random() * 30) : Math.round(6 + Math.random() * 46);
+    return { uid, id: w.id, x: Math.round(10 + Math.random() * 80), y, t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) };
+  }
   function renderTank() {
     const t = $("tank");
     t.classList.toggle("edit", editMode);
@@ -2467,6 +2558,17 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       });
       box.appendChild(grid);
     });
+    box.appendChild(el("div", "head s", "🏆 Experten-Schätze – nur auf den Experten-Inseln"));
+    const tg = el("div", "shop");
+    TREASURES.forEach(w => {
+      const ch = CHAPTERS.find(c => c.id === w.ch), where = ch ? (ch.title || ch.name + "-Inseln") : "", got = owned(w);
+      const b = el("button", "ware treasure " + (got ? "won" : "locked"));
+      b.innerHTML = `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span><span class="wp">${got ? "✓ gewonnen" : "🔒 " + where}</span>`;
+      b.setAttribute("aria-label", `${w.n}: ${got ? "gewonnen" : "nur auf der Experten-Insel der " + where}`);
+      b.addEventListener("click", () => speak(got ? `${w.n}. Den Schatz hast du auf der Experten-Insel gewonnen!` : `${w.n}. Diesen Schatz gibt es nur auf der Experten-Insel der ${where}.`));
+      tg.appendChild(b);
+    });
+    box.appendChild(tg);
   }
   function buy(w) {
     if (countOf(w) >= MAX_EACH) return;
@@ -2474,9 +2576,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
     asking = null;
     S.coins -= w.p;
-    const h = tankH(), uid = Date.now() + "-" + Math.floor(Math.random() * 1e6);
-    const y = w.k === "deco" ? Math.max(30, Math.round(97 - w.z / h * 100 - Math.random() * 3)) : w.k === "float" ? Math.round(8 + Math.random() * 30) : Math.round(6 + Math.random() * 46);
-    S.aqua.push({ uid, id: w.id, x: Math.round(10 + Math.random() * 80), y, t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) });
+    const inst = newInstance(w), uid = inst.uid;
+    S.aqua.push(inst);
     save(); setCoins(true); sfxWin(); confetti(["🫧", "✨", "⭐", "🐚"]);
     newbie = uid;
     renderStat(); renderTank(); renderShop();
@@ -2791,8 +2892,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- Kapitelkarte: Inselroute ---------- */
   function snake(N, P) {
-    const cols = P ? 3 : 5, rows = Math.ceil(N / cols);
-    const xs = P ? [110, 300, 490] : [100, 300, 500, 700, 900];
+    const cols = P ? 3 : (N > 10 ? 6 : 5), rows = Math.ceil(N / cols);
+    const xs = P ? [110, 300, 490] : Array.from({ length: cols }, (_, i) => Math.round(90 + i * 820 / (cols - 1)));
     const top = P ? 140 : 168, bottom = P ? 850 : 470;
     const pts = [];
     for (let i = 0; i < N; i++) {
@@ -2805,7 +2906,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function renderMap() {
     $("mapTitle").textContent = `${CH.icon} ${CH.title || CH.name + "-Inseln"}`;
     show("scrMap");
-    const P = portrait(), n = CH.levels.length, lay = snake(n + 2, P), k = P ? 1.15 : 1;
+    const P = portrait(), n = CH.levels.length, lay = snake(n + 3, P), k = P ? 1.15 : (n + 3 > 10 ? 0.92 : 1);
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
     const open = bonusOpen(CH), pc = perfectCount(CH);
     const nodes = [{ ...lay.pts[0], r: 44 * k, icon: "⚓", label: "Start", grass: "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
@@ -2818,8 +2919,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     nodes.push({ ...lay.pts[n + 1], r: 64 * k, icon: S.bonus[CH.id] ? "👑" : "🎁", grass: "#e9c46a", label: "Schatzinsel", fog: !open, fogIcon: "🔒",
       sub: open ? (S.bonus[CH.id] ? "Schatz gefunden!" : "Offen!") : `💎 ${pc}/${n}`, deco: [[0.55, -0.25, "🌴", 0.45]], aria: "Schatzinsel",
       tap: (i) => { swimTo(i, () => treasureSheet()); } });
+    const xs = S.expert[CH.id] || 0;
+    nodes.push({ ...lay.pts[n + 2], r: 62 * k, icon: "⚓", grass: "#b8c0ff", label: "Experten-Insel", sub: xs ? `⭐ ${xs}/3${xs >= 2 ? " · 🏆" : ""}` : "Für Profis!", subGold: xs >= 2,
+      badge: xs >= 2 ? "🏆" : "", deco: [[-0.56, -0.22, "🌴", 0.42]], aria: "Experten-Insel: die schwersten Aufgaben, Schatz statt Münzen", tap: (i) => swimTo(i, () => expertSheet()) });
     const edges = [];
     for (let k = 0; k < n + 1; k++) edges.push([k, k + 1, k < n ? (islandDone(CH, k) ? "done" : "") : (S.bonus[CH.id] ? "done" : "")]);
+    edges.push([n + 1, n + 2, xs >= 2 ? "done" : ""]);
     const at = Math.min((S.at && S.at[CH.id]) || 0, nodes.length - 1);
     drawSea($("chapMap"), { w: lay.w, h: lay.h, nodes, edges, at, label: `Inselkarte ${CH.name}`, seed: 9, nemo: P ? 58 : 52, fs: P ? 25 : 23 });
     $("certBtn").hidden = !CH.levels.every((_, li) => islandDone(CH, li));
@@ -2853,6 +2958,17 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       }
     });
   }
+  function expertSheet() {
+    const t = treasureOf(CH), xs = S.expert[CH.id] || 0;
+    openSheet(c => {
+      sheetTop(c, "⚓", "Experten-Insel", CH.title || CH.name + "-Inseln");
+      if (t) c.appendChild(el("div", "x-treasure", `<span class="xt-art">${artSVG(t.id)}</span><span><b>${xs >= 2 ? "Gewonnen" : "Zu gewinnen"}: ${t.n}</b><br>${xs >= 2 ? `${t.pr} ist schon in deinem Aquarium.` : "Nur hier – nicht im Laden!"}</span>`));
+      c.appendChild(el("p", "note", "Die schwersten Aufgaben von allen Inseln. Keine Münzen – dafür ab 2 Sternen ein Schatz und eine goldene Urkunde."));
+      const b = el("button", "big-btn", xs ? "Nochmal versuchen ⚓" : "Los geht's ⚓"); b.addEventListener("click", () => openIntro("expert", "experte")); c.appendChild(b);
+      if (xs >= 2) { const u = el("button", "big-btn ghost", "🏅 Experten-Urkunde"); u.addEventListener("click", showExpertCert); c.appendChild(u); }
+      if (xs) c.appendChild(el("p", "note", `Dein bester Versuch: ${"⭐".repeat(xs)}`));
+    });
+  }
   let lastP = null, rz = null;
   window.addEventListener("resize", () => {
     clearTimeout(rz); rz = setTimeout(() => {
@@ -2882,13 +2998,34 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     }
   };
 
+  /* ---------- Experten-Insel: je Kapitel, immer offen, keine Münzen ---------- */
+  const EXPERT_TASKS = 12;
+  const expertText = () => { const t = treasureOf(CH); return `Die schwersten Aufgaben von allen ${CH.title || CH.name + "-Inseln"}. Hier gibt es keine Münzen. Dafür wartet ${t ? t.art + " " + t.n : "ein besonderer Schatz"} für dein Aquarium und eine goldene Urkunde. Du brauchst mindestens 2 Sterne.`; };
+  const EXPERTISLE = {
+    name: "Experten-Insel", icon: "⚓", color: "#1b2a4a",
+    task: () => "",
+    intro: expertText,
+    ex: () => { const t = treasureOf(CH); return t ? `<span class="ex-art">${artSVG(t.id)}</span> ${t.n}` : "⚓"; },
+    say: expertText,
+    build() {
+      const pool = CH.levels.map((lv, li) => ({ lv, li })).filter(x => x.lv.expert && !view(x.lv, "experte").score);
+      if (!pool.length) return [];
+      const per = Math.floor(EXPERT_TASKS / pool.length); let extra = EXPERT_TASKS - per * pool.length;
+      const items = [];
+      shuffle(pool.slice()).forEach(({ lv, li }) => { const n = Math.max(1, per + (extra-- > 0 ? 1 : 0)); view(lv, "experte").build("experte").slice(0, n).forEach(it => items.push({ li, d: "experte", it })); });
+      return shuffle(items);
+    },
+    render(x, stage) { const lv = view(CH.levels[x.li], "experte"); $("taskText").textContent = lv.task("experte"); lv.render(x.it, stage, "experte"); }
+  };
+
   /* ---------- level flow ---------- */
-  function levelOf(li) { return li === "bonus" ? BONUS : CH.levels[li]; }
+  function levelOf(li) { return li === "bonus" ? BONUS : li === "expert" ? EXPERTISLE : CH.levels[li]; }
   function openIntro(li, d) {
-    const lv = li === "bonus" ? BONUS : view(levelOf(li), d);
+    const lv = li === "bonus" ? BONUS : li === "expert" ? EXPERTISLE : view(levelOf(li), d);
     $("inIcon").textContent = lv.icon; $("inTitle").textContent = lv.name;
     const badge = $("inBadge");
     if (li === "bonus") { badge.className = "badge bonus"; badge.innerHTML = `🎁 Bonus · 3 <span class="coin sm"></span> pro Aufgabe`; }
+    else if (li === "expert") { badge.className = "badge experte"; badge.textContent = "⚓ Experten-Insel · Schatz statt Münzen"; }
     else { badge.className = "badge " + d; badge.innerHTML = `${DIFFS[d].icon} ${DIFFS[d].label} · ${DIFFS[d].mult} <span class="coin sm"></span> pro Aufgabe`; }
     $("inText").textContent = lv.intro(d); $("inEx").innerHTML = lv.ex(d);
     $("inGo").onclick = () => startLevel(li, d);
@@ -2896,10 +3033,11 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     show("scrIntro");
   }
   function startLevel(li, d) {
-    const lv = li === "bonus" ? BONUS : view(levelOf(li), d);
-    L = { li, d, lv, items: lv.build(d), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: li === "bonus" ? 3 : DIFFS[d].mult, wrong: [], pearls: [] };
+    const lv = li === "bonus" ? BONUS : li === "expert" ? EXPERTISLE : view(levelOf(li), d);
+    L = { li, d, lv, items: lv.build(d), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: li === "bonus" ? 3 : li === "expert" ? 0 : DIFFS[d].mult, wrong: [], pearls: [] };
     const badge = $("playBadge");
     if (li === "bonus") { badge.className = "badge bonus"; badge.textContent = "🎁 Bonus"; }
+    else if (li === "expert") { badge.className = "badge experte"; badge.textContent = "⚓ Experten-Insel"; }
     else { badge.className = "badge " + d; badge.textContent = `${DIFFS[d].icon} ${DIFFS[d].label}`; }
     $("taskText").textContent = lv.task(d);
     show("scrPlay");
@@ -2922,7 +3060,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     let perfect = L.mistakes === 0;
     if (L.li !== "bonus" && L.lv.score) { const sc = L.lv.score(L); stars = sc.stars; perfect = sc.perfect; }
     const wasOpen = bonusOpen(CH);
-    $("resPerfect").hidden = true; $("resBonus").hidden = true;
+    $("resPerfect").hidden = true; $("resBonus").hidden = true; $("resCert").hidden = true;
 
     if (L.li === "bonus") {
       const first = !S.bonus[CH.id];
@@ -2932,6 +3070,16 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       $("resStars").innerHTML = "🎁✨";
       $("resPerfect").hidden = false; $("resPerfect").innerHTML = `Die Schatztruhe ist offen: +${chest} <span class="coin sm"></span>`;
       $("resText").textContent = first ? `Du bist ein echter ${CH.name}-Schatzsucher!` : "Super! Du hast den Schatz noch einmal gefunden.";
+    } else if (L.li === "expert") {
+      const t = treasureOf(CH), before = S.expert[CH.id] || 0, passed = stars >= 2, firstWin = passed && before < 2;
+      S.expert[CH.id] = Math.max(before, stars);
+      if (firstWin && t && !owned(t)) S.aqua.push(newInstance(t));
+      save();
+      $("resTitle").textContent = passed ? (stars === 3 ? "Echte Expertenleistung!" : "Experten-Insel geschafft!") : "Fast geschafft!";
+      $("resStars").innerHTML = starStr(stars);
+      if (passed && t) { $("resBonus").hidden = false; $("resBonus").innerHTML = `<span class="rb-art">${artSVG(t.id)}</span> ` + (firstWin ? `Neuer Schatz: ${t.n}! ${t.pr} ist jetzt in deinem Aquarium.` : `Dein Experten-Schatz: ${t.n}`); }
+      $("resText").textContent = passed ? "" : "Für den Experten-Schatz brauchst du mindestens 2 Sterne. Übe die Muscheln und versuch es nochmal!";
+      $("resCert").hidden = !passed;
     } else {
       const k = skey(CH, L.li, L.d);
       S.stars[k] = Math.max(S.stars[k] || 0, stars);
@@ -2947,15 +3095,15 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       $("resStars").innerHTML = starStr(stars);
       $("resText").textContent = perfect ? "" : (stars < 3 ? "Spiel nochmal und hol dir 3 Sterne!" : "Schaffst du es auch ohne Fehler? Dann gibt es einen 💎.");
     }
-    $("resEarned").innerHTML = `+${L.earned} <span class="coin"></span>`;
-    const li = L.li, d = L.d, bonus = L.li === "bonus";
+    $("resEarned").innerHTML = L.li === "expert" ? "⚓ Schatz statt Münzen" : `+${L.earned} <span class="coin"></span>`;
+    const li = L.li, d = L.d, bonus = L.li === "bonus" || L.li === "expert", expertWin = L.li === "expert" && stars >= 2;
     $("resAgain").hidden = false; $("resAgain").textContent = "🔁 Nochmal"; $("resAgain").onclick = () => startLevel(li, d);
     $("resSelf").hidden = true;
     showShells(L.wrong, [], false);
     flushSave();
     const reveal = (extra) => {
       show("scrResult"); sfxWin();
-      if (bonus) confetti(["💰","👑","💎","⭐","🦈","✨"]); else confetti();
+      if (expertWin) confetti(["⭐", "🏅", "⚓", "💎", "✨"]); else if (L.li === "bonus") confetti(["💰","👑","💎","⭐","🦈","✨"]); else if (L.li !== "expert") confetti();
       speak($("resTitle").textContent + (extra ? " " + extra : ""));
     };
     if (askAmpel()) openAmpel(stars, (said) => reveal(said)); else { if (!bonus) ampelSession.since++; reveal(""); }
@@ -2996,7 +3144,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   let ampelSession = { asked: 0, since: 0 };
   function resetAmpel() { ampelSession = { asked: 0, since: 0 }; }
   function askAmpel() {
-    if (L.li === "bonus" || L.practice || !ICH_KANN[pkey(CH, L.li)]) return false;
+    if (L.li === "bonus" || L.li === "expert" || L.practice || !ICH_KANN[pkey(CH, L.li)]) return false;
     return ampelSession.asked === 0 || (ampelSession.asked === 1 && ampelSession.since >= 2);
   }
   function openAmpel(stars, then) {
@@ -3033,7 +3181,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     if (scored && stars < 3 && self !== 1) text = text.replace(" Die übst du jetzt als Muscheln.", " Spiel die Insel ruhig nochmal.").replace(" Übe die Muscheln, dann wird es leichter.", " Spiel die Insel ruhig nochmal.");
     if (scored) text = text.replace(" Fang mit den Muscheln an.", " Spiel die Insel ruhig nochmal.");
     const k = DK.indexOf(d), next = DK[k + 1];
-    const tip = stars === 3 && next ? `Tipp: Probier als Nächstes die Stufe ${DIFFS[next].label}.` : "";
+    const tip = stars === 3 ? (next ? `Tipp: Probier als Nächstes die Stufe ${DIFFS[next].label}.` : "Tipp: Wag dich auf die Experten-Insel!") : "";
     return { text, tip };
   }
   function noteMiss(w) { if (L && L.missWords && w && L.missWords.indexOf(w) < 0) L.missWords.push(w); }
@@ -3105,14 +3253,14 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   function startPractice(entries) {
     const prev = L, mixed = shuffle(entries.slice()), list = mixed.slice(0, 6);
-    L = { li: prev.li, d: prev.d, lv: prev.lv, items: list.map(e => e.it), entries: list, later: mixed.slice(6), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: 1, practice: true, wrong: [], pearls: [] };
+    L = { li: prev.li, d: prev.d, lv: prev.lv, items: list.map(e => e.it), entries: list, later: mixed.slice(6), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: prev.li === "expert" ? 0 : 1, practice: true, wrong: [], pearls: [] };
     const badge = $("playBadge"); badge.className = "badge practice"; badge.textContent = "🐚 Muschel-Runde";
-    if (L.li !== "bonus") $("taskText").textContent = L.lv.task(L.d);
+    if (L.li !== "bonus" && L.li !== "expert") $("taskText").textContent = L.lv.task(L.d);
     show("scrPlay");
     renderItem();
   }
   function finishPractice() {
-    renderProgress();
+    renderProgress(); $("resCert").hidden = true;
     const n = L.items.length, p = L.pearls.length, rest = L.wrong.concat(L.later || []), li = L.li, d = L.d;
     $("resPerfect").hidden = true; $("resBonus").hidden = true; $("resSelf").hidden = true;
     $("resTitle").textContent = p === n ? "Alle Muscheln sind Perlen!" : p ? "Super geübt!" : "Bleib dran!";
@@ -3127,8 +3275,20 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
 
   /* ---------- certificate ---------- */
+  function certWho() { const t = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null; return S.name || (t ? t[1] + " " + t[0] : ""); }
+  function showExpertCert() {
+    const who = certWho(), xs = S.expert[CH.id] || 0, t = treasureOf(CH), d = new Date();
+    $("certCard").classList.add("gold"); $("certIcon").innerHTML = SEAL; $("certTitle").textContent = "Goldene Experten-Urkunde";
+    $("certName").textContent = who || "Du"; $("certLead").textContent = who ? "hat die Experten-Insel geschafft:" : "hast die Experten-Insel geschafft:";
+    $("certAward").textContent = CH.title || CH.name + "-Inseln";
+    $("certInfo").textContent = `${"⭐".repeat(xs)} · ${t ? "Experten-Schatz: " + t.n + " · " : ""}${d.toLocaleDateString("de-DE")}`;
+    show("scrCert"); confetti(["⭐", "🏅", "✨", "⚓", "💎"]); sfxWin();
+  }
   function showCert() {
-    $("certName").textContent = S.name || "Du";
+    const who = certWho();
+    $("certCard").classList.remove("gold"); $("certIcon").textContent = "🏆"; $("certTitle").textContent = "Urkunde";
+    $("certLead").textContent = who ? "ist jetzt ein echter" : "bist jetzt ein echter";
+    $("certName").textContent = who || "Du";
     $("certAward").textContent = (CH.award || "Profi") + "!";
     const d = new Date();
     $("certInfo").textContent = `${S.coins} Münzen · ${starTotal(CH)} von ${CH.levels.length * DK.length * 3} Sternen · ${d.toLocaleDateString("de-DE")}`;
@@ -3147,6 +3307,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
   $("certBtn").addEventListener("click", showCert);
+  $("resCert").addEventListener("click", showExpertCert);
   $("voiceBtn").addEventListener("click", openVoiceSheet);
   $("certBack").addEventListener("click", renderMap);
   $("resetBtn").addEventListener("click", () => { if (SCHOOL && ACC) { schoolLogout(ACC.gast ? "" : "Tschüss! Dein Spielstand ist gespeichert."); return; } $("confirm").hidden = false; });
@@ -3168,7 +3329,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   function codeMsg(t, ok) { const m = $("codeMsg"); m.hidden = !t; m.textContent = t || ""; m.className = "login-msg" + (ok ? " ok" : ""); }
   function normalizeState() {
-    ["stars", "perfect", "bonus"].forEach(k => { if (!S[k] || typeof S[k] !== "object" || Array.isArray(S[k])) S[k] = {}; });
+    ["stars", "perfect", "bonus", "expert"].forEach(k => { if (!S[k] || typeof S[k] !== "object" || Array.isArray(S[k])) S[k] = {}; });
     if (!Array.isArray(S.aqua)) S.aqua = [];
     S.coins = +S.coins || 0; S.total = S.total == null ? S.coins : +S.total || 0; S.name = "";
   }
