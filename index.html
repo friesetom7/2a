@@ -576,7 +576,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Merk-Karten</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Neue Münzen</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -694,10 +694,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   /* ---------- Schwierigkeitsstufen ---------- */
   const DIFFS = {
     leicht: { icon: "🪶", label: "Leicht", mult: 1 },
-    mittel: { icon: "🪵", label: "Mittel", mult: 2 },
-    schwer: { icon: "🪨", label: "Schwer", mult: 3 },
+    mittel: { icon: "🪵", label: "Mittel", mult: 1.5 },
+    schwer: { icon: "🪨", label: "Schwer", mult: 2 },
     experte: { icon: "⚓", label: "Experte", mult: 4 }
   };
+  // Münzen pro Aufgabe als Text: 1½ statt 1,5
+  const multText = (m) => (Math.floor(m) || "") + (m % 1 ? "½" : "");
   const DK = ["leicht", "mittel", "schwer"]; // „Experte“ gibt es als eigene Experten-Insel pro Kapitel
 
   /* ---------- Wörter ---------- */
@@ -1105,10 +1107,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function shakeEl(e) { e.classList.remove("shake"); void e.offsetWidth; e.classList.add("shake"); }
 
   /* ---------- running level ---------- */
-  let L = null;
+  let L = null, coinCarry = 0;
   function award(fromEl, factor) {
-    const c = L.mult * (factor || 1);
-    if (!c) { sfxGood(); popStar(fromEl); return; } // Experten-Insel: Sterne statt Münzen
+    const raw = L.mult * (factor || 1);
+    if (!raw) { sfxGood(); popStar(fromEl); return; } // Experten-Insel: Sterne statt Münzen
+    // Halbe Münzen (Stufe mittel: 1½) werden im Hintergrund gesammelt → abwechselnd 1 und 2 ganze Münzen
+    coinCarry += raw; const c = Math.floor(coinCarry + 1e-9); coinCarry -= c;
     S.coins += c; S.total = (S.total || 0) + c; L.earned += c; save(); setCoins(true); flyCoin(fromEl); sfxGood();
   }
   function miss(elm, msg) { sfxBad(); L.mistakes++; if (elm) shakeEl(elm); hint(msg); }
@@ -3333,7 +3337,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       const row = el("div", "diffs");
       DK.forEach(d => {
         const st = S.stars[skey(CH, li, d)] || 0, m = DIFFS[d].mult;
-        const b = el("button", "diff " + d, `<span class="di">${DIFFS[d].icon}</span><span class="dl">${DIFFS[d].label}</span><span class="ds">${st ? "⭐".repeat(st) : "–"}</span><span class="dc">${m} ${m === 1 ? "Münze" : "Münzen"}</span>`);
+        const b = el("button", "diff " + d, `<span class="di">${DIFFS[d].icon}</span><span class="dl">${DIFFS[d].label}</span><span class="ds">${st ? "⭐".repeat(st) : "–"}</span><span class="dc">${multText(m)} ${m === 1 ? "Münze" : "Münzen"}</span>`);
         b.setAttribute("aria-label", `${lv.name}, ${DIFFS[d].label}`);
         b.addEventListener("click", () => openIntro(li, d));
         row.appendChild(b);
@@ -3422,7 +3426,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const badge = $("inBadge");
     if (li === "bonus") { badge.className = "badge bonus"; badge.innerHTML = `🎁 Bonus · 3 <span class="coin sm"></span> pro Aufgabe`; }
     else if (li === "expert") { badge.className = "badge experte"; badge.textContent = "⚓ Experten-Insel · Schatz statt Münzen"; }
-    else { badge.className = "badge " + d; badge.innerHTML = `${DIFFS[d].icon} ${DIFFS[d].label} · ${DIFFS[d].mult} <span class="coin sm"></span> pro Aufgabe`; }
+    else { badge.className = "badge " + d; badge.innerHTML = `${DIFFS[d].icon} ${DIFFS[d].label} · ${multText(DIFFS[d].mult)} <span class="coin sm"></span> pro Aufgabe`; }
     $("inText").textContent = lv.intro(d); $("inEx").innerHTML = lv.ex(d);
     $("inGo").onclick = () => startLevel(li, d);
     $("inSay").onclick = () => speak(lv.say(d));
@@ -3485,7 +3489,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       const k = skey(CH, L.li, L.d);
       S.stars[k] = Math.max(S.stars[k] || 0, stars);
       if (perfect) {
-        const bonusCoins = 5 * DIFFS[L.d].mult;
+        const bonusCoins = Math.round(5 * DIFFS[L.d].mult);
         S.coins += bonusCoins; S.total += bonusCoins; L.earned += bonusCoins;
         $("resPerfect").hidden = false; $("resPerfect").innerHTML = `💎 Ohne Fehler! +${bonusCoins} Extra-<span class="coin sm"></span>`;
         S.perfect[pkey(CH, L.li)] = true;
@@ -3692,7 +3696,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const AMPEL = [["gruen", "Das kann ich sicher.", 3], ["gelb", "Das kann ich schon ein bisschen.", 2], ["rot", "Das übe ich noch.", 1]];
   // Nur im Arbeitsspeicher: höchstens 2 Ampel-Fragen pro Sitzung (die erste Insel, dann frühestens 2 Inseln später).
   let ampelSession = { asked: 0, since: 0 };
-  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; ruleSeen = {}; }
+  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; ruleSeen = {}; coinCarry = 0; }
   function askAmpel() {
     if (L.li === "bonus" || L.li === "expert" || L.practice || !ICH_KANN[pkey(CH, L.li)]) return false;
     return ampelSession.asked === 0 || (ampelSession.asked === 1 && ampelSession.since >= 2);
