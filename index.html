@@ -576,7 +576,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Neue Münzen</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Korrekturen</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -724,12 +724,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const EASY = ["Mama","Papa","Oma","Opa","Baby","Kind","Hund","Katze","Maus","Fisch","Hai","Kuh","Pferd","Ente","Baum","Rose","Tulpe","Ball","Buch","Auto","Haus","Stuhl","Uhr","Bett","Schuh","Stift"];
   const nounsEasy = () => NOUNS.filter(n => EASY.includes(n[0]));
 
-  const OTHERS_EASY = ["und","rot","laufen","mit","klein","groß","oder","blau","malen","essen","lacht","gern","singen","leise","bei","schön"];
-  const OTHERS = ["laufen","rot","und","schön","springt","groß","lacht","schnell","mit","klein","singen","leise","oder","blau","malen","gern","essen","lustig","spielt","weich","hüpfen","bei","müde","schreibt",
+  const OTHERS_EASY = ["und","rot","laufen","mit","klein","groß","oder","blau","malen","kocht","lacht","gern","singen","leise","bei","schön"];
+  const OTHERS = ["laufen","rot","und","schön","springt","groß","lacht","schnell","mit","klein","singen","leise","oder","blau","malen","gern","kocht","lustig","spielt","weich","hüpfen","bei","müde","schreibt",
     "grün","tanzen","laut","auf","schwimmt","kalt","lesen","heiß","unter","fliegt","dick","rennen","süß","neben","klettert","nass","trinken","wild","aber","bunt"];
   // schwer: abstrakte Nomen + knifflige andere Wörter (alles klein angezeigt)
   const HARD_NOUNS = ["Freude","Angst","Zeit","Mut","Glück","Traum","Ferien","Geburtstag","Wetter","Musik","Hunger","Durst","Spaß","Idee","Frage","Woche","Nacht","Geschenk","Pause","Wut","Ruhe","Lärm","Sommer","Winter","Name","Witz"];
-  const HARD_OTHERS = ["fröhlich","mutig","träumen","fragen","hungrig","durstig","wütend","ruhig","lieb","schenken","glücklich","ängstlich","heute","gestern","immer","sehr","weil","dann","über","durch","ohne","morgens","nachts","lustig","witzig","laut","spielen","sommerlich","schnell","leider"];
+  const HARD_OTHERS = ["fröhlich","mutig","träumen","fragen","hungrig","durstig","wütend","ruhig","lieb","schenken","glücklich","ängstlich","heute","gestern","immer","sehr","weil","dann","über","durch","ohne","morgens","nachts","lustig","witzig","frech","spielen","sommerlich","schnell","leider"];
 
   // Lücken-Sätze: [Satz, richtig, falsch, Emoji, istNomen]
   const GAPS = [
@@ -836,7 +836,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   ];
   const OTHER_ART = { der: ["die", "das"], die: ["der", "das"], das: ["der", "die"] };
 
-  // Versteckte Nomen (alles klein geschrieben)
+  // Versteckte Nomen (alles kleingeschrieben)
   const KLEIN_MITTEL = [
     ["der hund holt den ball.", [1,4]],["die oma liest ein buch.", [1,4]],["mein bruder isst einen apfel.", [1,4]],
     ["die katze schläft auf dem sofa.", [1,5]],["lisa malt eine blume.", [0,3]],["der vogel sitzt im baum.", [1,4]],
@@ -871,7 +871,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   ];
   // schwer: Text ohne Punkte – wo fängt ein neuer Satz an?
   const SATZ_SCHWER = [
-    ["heute scheint die sonne wir gehen in den park dort spielen wir ball", [0,4,8]],
+    ["heute scheint die sonne wir gehen in den park dort spielen wir ball", [0,4,9]],
     ["mein hund heißt bello er spielt gern im garten abends ist er müde", [0,4,9]],
     ["die kinder malen bilder lena malt einen hai tom malt ein schiff", [0,4,8]],
     ["es ist winter draußen liegt schnee wir bauen einen schneemann", [0,3,6]],
@@ -879,7 +879,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     ["im meer schwimmt nemo er sucht seine freunde zusammen spielen sie verstecken", [0,4,8]],
     ["am morgen klingelt der wecker papa macht frühstück dann gehen wir los", [0,5,8]]
   ];
-  // Wörter, die in den Satz-Texten Nomen sind (werden beim Lösen groß geschrieben)
+  // Wörter, die in den Satz-Texten Nomen sind (werden beim Lösen großgeschrieben)
   const SATZ_NOUNS = ["sonne","park","ball","hund","bello","garten","kinder","bilder","lena","hai","tom","schiff","winter","schnee","schneemann","oma","kuchen","stück","meer","nemo","freunde","verstecken","morgen","wecker","papa","frühstück"];
 
   const GROUPS = {
@@ -1026,7 +1026,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     pickVoice();
     openSheet(c => {
       sheetTop(c, "🔊", "Stimme wählen", "Tippe eine Stimme an und hör sie dir an.");
-      if (!voices.length) { c.appendChild(el("p", "note", "Auf diesem Gerät wurde keine deutsche Stimme gefunden" + (localVoicesOnly ? ", die auf dem Gerät selbst läuft (Online-Stimmen sind aus Datenschutzgründen aus)" : "") + ". Bitte in den Geräte-Einstellungen eine deutsche Stimme laden.")); return; }
+      if (!voices.length) { c.appendChild(el("p", "note", "Auf diesem Gerät wurde keine deutsche Stimme gefunden" + (localVoicesOnly ? ", die auf dem Gerät selbst läuft (Online-Stimmen sind aus Datenschutzgründen abgeschaltet)" : "") + ". Bitte in den Geräte-Einstellungen eine deutsche Stimme laden.")); return; }
       const list = el("div", "vlist");
       voices.slice(0, 10).forEach(v => {
         const b = el("button", "vopt" + (v === voice ? " on" : ""), `<span class="vn">${v === voice ? "✅ " : ""}${vname(v)}</span><span class="vq q${vqual(v)}">${QLABEL[vqual(v)]}</span>`);
@@ -1176,9 +1176,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     {
       id: "fischen", name: "Nomen-Fischen", icon: "🎣", color: "#1270a8",
       task: () => "Tippe alle Nomen an!",
-      intro: (d) => d === "schwer" ? "Achtung: Alle Wörter sind klein geschrieben! Finde trotzdem die Nomen." : "Fange nur die Nomen!",
+      intro: (d) => d === "schwer" ? "Achtung: Alle Wörter sind kleingeschrieben! Finde trotzdem die Nomen." : "Fange nur die Nomen!",
       ex: (d) => d === "schwer" ? "freude ✓ · fröhlich ✗" : "Hund ✓ · laufen ✗",
-      say: (d) => d === "schwer" ? "Achtung! Alle Wörter sind klein geschrieben. Finde trotzdem die Nomen. Auch Gefühle und Zeiten können Nomen sein, zum Beispiel die Freude oder der Sommer." : "Fange nur die Nomen! Tipp: Kannst du der, die oder das davor sagen?",
+      say: (d) => d === "schwer" ? "Achtung! Alle Wörter sind kleingeschrieben. Finde trotzdem die Nomen. Auch Gefühle und Zeiten können Nomen sein, zum Beispiel die Freude oder der Sommer." : "Fange nur die Nomen! Tipp: Kannst du der, die oder das davor sagen?",
       build(d) {
         const cfg = { leicht: { rounds: 8, size: 4 }, mittel: { rounds: 10, size: 6 }, schwer: { rounds: 10, size: 9 } }[d];
         const nounPool = d === "leicht" ? shuffle(nounsEasy().map(n => n[0])) : d === "mittel" ? shuffle(NOUNS.map(n => n[0])) : shuffle(HARD_NOUNS.concat(shuffle(NOUNS.map(n => n[0])).slice(0, 20)));
@@ -1219,9 +1219,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     {
       id: "versteckt", name: "Versteckte Nomen", icon: "🫣", color: "#2a8f8f",
       task: (d) => d === "leicht" ? "Welches Wort ist ein Nomen?" : "Finde die Nomen – auch wenn sie klein sind!",
-      intro: (d) => d === "leicht" ? "Die Wörter sind klein geschrieben. Welches ist trotzdem ein Nomen?" : d === "mittel" ? "Der Satz ist ganz klein geschrieben. Finde die Nomen!" : "Ein ganzer kleiner Text – ganz klein geschrieben. Ich verrate nicht, wie viele Nomen es sind!",
+      intro: (d) => d === "leicht" ? "Die Wörter sind kleingeschrieben. Welches ist trotzdem ein Nomen?" : d === "mittel" ? "Der Satz ist ganz kleingeschrieben. Finde die Nomen!" : "Ein ganzer kleiner Text – ganz kleingeschrieben. Ich verrate nicht, wie viele Nomen es sind!",
       ex: (d) => d === "leicht" ? "hund ✓ · laufen ✗" : "die <b>katze</b> schläft auf dem <b>sofa</b>.",
-      say: (d) => d === "schwer" ? "Ein ganzer Text, alles klein geschrieben. Finde alle Nomen. Achtung: Nicht jedes Wort am Satzanfang ist ein Nomen!" : "Die Wörter sind klein geschrieben. Finde trotzdem die Nomen. Tipp: Kannst du der, die oder das davor sagen?",
+      say: (d) => d === "schwer" ? "Ein ganzer Text, alles kleingeschrieben. Finde alle Nomen. Achtung: Nicht jedes Wort am Satzanfang ist ein Nomen!" : "Die Wörter sind kleingeschrieben. Finde trotzdem die Nomen. Tipp: Kannst du der, die oder das davor sagen?",
       build(d) {
         if (d === "leicht") {
           const ns = shuffle(nounsEasy()).slice(0, 12), os = shuffle(OTHERS_EASY.concat(OTHERS.slice(0, 12)));
@@ -1253,9 +1253,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     {
       id: "grossklein", name: "Groß oder klein?", icon: "✏️", color: "#d6342f",
       task: (d) => d === "schwer" ? "Welche Wörter schreibt man groß?" : "Welches Wort ist richtig?",
-      intro: (d) => d === "leicht" ? "Nomen schreibe ich groß!" : d === "mittel" ? "Nomen schreibe ich groß. Alle anderen Wörter klein." : "Der ganze Satz ist klein geschrieben. Tippe alle Wörter an, die groß geschrieben werden.",
+      intro: (d) => d === "leicht" ? "Nomen schreibe ich groß!" : d === "mittel" ? "Nomen schreibe ich groß. Alle anderen Wörter klein." : "Der ganze Satz ist kleingeschrieben. Tippe alle Wörter an, die großgeschrieben werden.",
       ex: (d) => d === "schwer" ? "<b>D</b>er <b>H</b>ai frisst einen <b>F</b>isch." : "der <b>H</b>ai · er <b>l</b>acht",
-      say: (d) => d === "schwer" ? "Der ganze Satz ist klein geschrieben. Tippe alle Wörter an, die man groß schreibt. Denk an die Nomen und an den Satzanfang!" : "Nomen schreibe ich groß. Welches Wort passt in die Lücke?",
+      say: (d) => d === "schwer" ? "Der ganze Satz ist kleingeschrieben. Tippe alle Wörter an, die man großschreibt. Denk an die Nomen und an den Satzanfang!" : "Nomen schreibe ich groß. Welches Wort passt in die Lücke?",
       build(d) {
         if (d === "leicht") return shuffle(GAPS.filter(g => g[4])).slice(0, 10);
         if (d === "mittel") return shuffle(shuffle(GAPS.filter(g => g[4])).slice(0, 11).concat(shuffle(GAPS.filter(g => !g[4])).slice(0, 7)));
@@ -1358,7 +1358,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
           stage.appendChild(el("div", "qline", `${art} ${sg} → die ?`));
           choiceTask(stage, {
             opts: [{ label: "die " + pl, correct: true }, { label: "die " + f1 }, { label: "die " + f2 }].filter((o, i, a) => a.findIndex(z => z.label === o.label) === i),
-            wrongText: `Sag es laut: ein ${sg}, zwei …? Probier nochmal!`,
+            wrongText: `Sag es laut: ${art === "die" ? "eine" : "ein"} ${sg}, zwei …? Probier nochmal!`,
             okText: `${art} ${sg} → die ${pl}`, okSpeak: `${art} ${sg}, die ${pl}`
           });
           L.speakNow = () => speak(`${art} ${sg}. Wie heißt die Mehrzahl?`);
@@ -1383,7 +1383,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
           choiceTask(stage, {
             small: true,
             opts: [{ label: "die " + pl, correct: true }, { label: "die " + f1 }, { label: art === "die" ? "der " + pl : art + " " + pl, wrongText: "In der Mehrzahl ist der Begleiter immer „die“!" }, { label: lower, wrongText: "Achtung: Nomen schreibe ich immer groß – auch in der Mehrzahl!" }],
-            wrongText: `Sag es laut: ein ${sg}, zwei …?`,
+            wrongText: `Sag es laut: ${art === "die" ? "eine" : "ein"} ${sg}, zwei …?`,
             okText: `${art} ${sg} → die ${pl}`, okSpeak: `${art} ${sg}, die ${pl}`
           });
           L.speakNow = () => speak(`${art} ${sg}. Wie heißt die Mehrzahl?`);
@@ -1413,8 +1413,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
           const b = el("button", "basket", `<span class="bi">${g.icon}</span><span class="bn">${g.name}</span>`);
           b.addEventListener("click", () => {
             if (L.locked) return;
-            if (k === n.grp) { b.classList.add("flash"); award(b, 1); speak(n.art + " " + n.w); hint(praise() + ` ${n.art} ${n.w} gehört zu ${g.dat}.`, true); done(1100); }
-            else miss(b, `${n.art} ${n.w} gehört nicht zu ${g.dat}. Probier nochmal!`);
+            if (k === n.grp) { b.classList.add("flash"); award(b, 1); speak(n.art + " " + n.w); hint(praise() + ` ${cap(n.art)} ${n.w} gehört zu ${g.dat}.`, true); done(1100); }
+            else miss(b, `${cap(n.art)} ${n.w} gehört nicht zu ${g.dat}. Probier nochmal!`);
           });
           row.appendChild(b);
         });
@@ -1444,7 +1444,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
           const [right, wrong, why] = item;
           choiceTask(stage, {
             small: true,
-            opts: [{ label: right, correct: true }, { label: wrong, wrongText: why === "s" ? "Schau auf den Satzanfang! Das erste Wort schreibe ich groß." : "Schau genau: Ein Nomen ist klein geschrieben!" }],
+            opts: [{ label: right, correct: true }, { label: wrong, wrongText: why === "s" ? "Schau auf den Satzanfang! Das erste Wort schreibe ich groß." : "Schau genau: Ein Nomen ist kleingeschrieben!" }],
             okText: why === "s" ? "Satzanfang groß!" : "Nomen groß!", okSpeak: right
           });
           L.speakNow = () => speak("Welcher Satz ist richtig geschrieben?");
@@ -1473,9 +1473,9 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     {
       id: "detektiv", name: "Detektiv-Riff", icon: "🔍", color: "#7b4fc9",
       task: () => "Tippe alle Nomen an!",
-      intro: (d) => d === "schwer" ? "Lange Sätze, alles klein geschrieben – und ich verrate nicht, wie viele Nomen es sind!" : "Du bist Nomen-Detektiv! Finde alle Nomen im Satz.",
+      intro: (d) => d === "schwer" ? "Lange Sätze, alles kleingeschrieben – und ich verrate nicht, wie viele Nomen es sind!" : "Du bist Nomen-Detektiv! Finde alle Nomen im Satz.",
       ex: (d) => d === "schwer" ? "in den <b>ferien</b> fahren wir ans <b>meer</b>." : "Der <b>Hai</b> frisst einen <b>Fisch</b>.",
-      say: (d) => d === "schwer" ? "Lange Sätze, alles klein geschrieben. Ich verrate nicht, wie viele Nomen es sind. Tippe alle Nomen an und dann auf Fertig." : "Du bist Nomen-Detektiv! Tippe alle Nomen im Satz an. Dann tippe auf Fertig. Achtung: Das erste Wort im Satz ist auch groß!",
+      say: (d) => d === "schwer" ? "Lange Sätze, alles kleingeschrieben. Ich verrate nicht, wie viele Nomen es sind. Tippe alle Nomen an und dann auf Fertig." : "Du bist Nomen-Detektiv! Tippe alle Nomen im Satz an. Dann tippe auf Fertig. Achtung: Das erste Wort im Satz ist auch groß!",
       build(d) { return d === "leicht" ? shuffle(DETECT_EASY).slice(0, 8) : d === "mittel" ? shuffle(DETECT).slice(0, 9) : shuffle(DETECT_HARD).slice(0, 8); },
       render(item, stage, d) {
         const [sent, targets] = item;
@@ -1831,7 +1831,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   ];
   // Wörter mit Silben: [Silben, Emoji]
   const SILB2 = [[["Ma","ma"],"👩"],[["Pa","pa"],"👨"],[["O","ma"],"👵"],[["O","pa"],"👴"],[["So","fa"],"🛋️"],[["Na","se"],"👃"],[["Ho","se"],"👖"],
-    [["Ro","se"],"🌹"],[["La","ma"],"🦙"],[["Ha","se"],"🐰"],[["Ti","ger"],"🐯"],[["Ki","wi"],"🥝"],[["I","gel"],"🦔"],[["Ku","chen"],"🍰"],[["Pi","rat"],"🏴‍☠️"],[["Ka","mel"],"🐪"]];
+    [["Ro","se"],"🌹"],[["La","ma"],"🦙"],[["Ha","se"],"🐰"],[["Ti","ger"],"🐯"],[["Ki","wi"],"🥝"],[["I","gel"],"🦔"],[["Ku","chen"],"🍰"],[["Pi","rat"],"🏴‍☠️"],[["Ka","mel"],"🐫"]];
   const SILB3 = [[["Ba","na","ne"],"🍌"],[["To","ma","te"],"🍅"],[["Me","lo","ne"],"🍉"],[["Ra","ke","te"],"🚀"],[["Ro","bo","ter"],"🤖"],[["Pa","pa","gei"],"🦜"],
     [["Ka","rot","te"],"🥕"],[["Scho","ko","la","de"],"🍫"],[["Te","le","fon"],"☎️"],[["Kro","ko","dil"],"🐊"]];
   const SYL_EXTRA = ["mo", "li", "su", "ra", "pe", "lo", "nu", "ki"];
@@ -2049,12 +2049,12 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     ["Der ___ wohnt in einer Burg.", "Ritter", ["Riter", "Rieter"]], ["Wir rudern mit dem ___.", "Paddel", ["Padel", "Pahdel"]], ["Papa schneidet das Brot mit dem ___.", "Messer", ["Meser", "Mäser"]]];
   const RS_CK = [{ w: "Socke", art: "die", pic: "🧦", extra: ["k", "g"] }, { w: "Glocke", art: "die", pic: "🔔", extra: ["k", "g"] }, { w: "Schnecke", art: "die", pic: "🐌", extra: ["k", "g"] },
     { w: "Jacke", art: "die", pic: "🧥", extra: ["k", "g"] }, { w: "Brücke", art: "die", pic: "🌉", extra: ["k", "g"] }, { w: "Wecker", art: "der", pic: "⏰", extra: ["k", "a"] },
-    { w: "Rucksack", art: "der", pic: "🎒", extra: ["k", "g"] }, { w: "Zucker", art: "der", pic: "🍬", extra: ["k", "a"] }, { w: "Dackel", art: "der", pic: "🐕", extra: ["k", "g"] }];
-  const RS_CK_GAP = [["Socke", "So_e", "ck", ["k", "kk"], "🧦"], ["Glocke", "Glo_e", "ck", ["k", "kk"], "🔔"], ["Jacke", "Ja_e", "ck", ["k", "kk"], "🧥"], ["Zucker", "Zu_er", "ck", ["k", "kk"], "🍬"],
+    { w: "Rucksack", art: "der", pic: "🎒", extra: ["k", "g"] }, { w: "Mücke", art: "die", pic: "🦟", extra: ["k", "g"] }, { w: "Dackel", art: "der", pic: "🐕", extra: ["k", "g"] }];
+  const RS_CK_GAP = [["Socke", "So_e", "ck", ["k", "kk"], "🧦"], ["Glocke", "Glo_e", "ck", ["k", "kk"], "🔔"], ["Jacke", "Ja_e", "ck", ["k", "kk"], "🧥"], ["Stecker", "Ste_er", "ck", ["k", "kk"], "🔌"],
     ["Wecker", "We_er", "ck", ["k", "kk"], "⏰"], ["Schnecke", "Schne_e", "ck", ["k", "kk"], "🐌"], ["Gurke", "Gur_e", "k", ["ck", "g"], "🥒"], ["Wolke", "Wol_e", "k", ["ck", "g"], "☁️"],
     ["Anker", "An_er", "k", ["ck", "g"], "⚓"], ["Zirkus", "Zir_us", "k", ["ck", "g"], "🎪"], ["Onkel", "On_el", "k", ["ck", "g"], "👨"]];
   const RS_CK_X = [["Die ___ sticht mich in den Arm.", "Mücke", ["Müke", "Mükke"]], ["Im dunklen Schloss leuchtet eine ___.", "Fackel", ["Fakel", "Fakkel"]], ["Am Morgen backt der ___ frische Brötchen.", "Bäcker", ["Bäker", "Bäkker"]],
-    ["Ich stelle mich in die ___.", "Ecke", ["Eke", "Ekke"]], ["Im hohen Gras sitzt eine ___.", "Zecke", ["Zeke", "Zekke"]], ["Die ___ ist sauer.", "Gurke", ["Gurcke", "Gurkke"]],
+    ["Ich stelle mich in die ___.", "Ecke", ["Eke", "Ekke"]], ["Im hohen Gras sitzt eine ___.", "Zecke", ["Zeke", "Zekke"]], ["Die ___ ist lang und grün.", "Gurke", ["Gurcke", "Gurkke"]],
     ["Im ___ gibt es Clowns.", "Zirkus", ["Zircus", "Zirckus"]], ["Wir laden unser ___ ins Auto.", "Gepäck", ["Gepäk", "Gepäkk"]], ["Am Himmel zieht eine dunkle ___ vorbei.", "Wolke", ["Wolcke", "Wolkke"]]];
   const RS_TZ1 = [["Die Kaze schläft auf dem Sofa.", [1], ["Katze"]], ["Ich ziehe meine Müze an.", [3], ["Mütze"]], ["Der Spaz pickt die Krümel auf.", [1], ["Spatz"]],
     ["Nach dem Regen springe ich in die Pfüze.", [7], ["Pfütze"]], ["Am Abend sehe ich einen Bliz am Himmel.", [5], ["Blitz"]], ["Der Hund sizt vor der Tür.", [2], ["sitzt"]],
@@ -2079,8 +2079,8 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     ["Die Kinder ___ ein Lied.", "singen", ["siengen", "sihngen"]], ["Ich habe ___ Bücher.", "viele", ["vile", "vihle"]], ["Opa spielt ___.", "Klavier", ["Klavir", "Klawier"]], ["Der Hund ___ an der Leine.", "zieht", ["ziht", "zit"]]];
   const RS_VL = [["Hund", "Hun_", "d", ["t"], "🐕", "die Hunde"], ["Wald", "Wal_", "d", ["t"], "🌲", "die Wälder"], ["Hand", "Han_", "d", ["t"], "✋", "die Hände"], ["Kleid", "Klei_", "d", ["t"], "👗", "die Kleider"],
     ["Pferd", "Pfer_", "d", ["t"], "🐴", "die Pferde"], ["Bild", "Bil_", "d", ["t"], "🖼️", "die Bilder"], ["Mund", "Mun_", "d", ["t"], "👄", "die Münder"], ["Brot", "Bro_", "t", ["d"], "🍞", "die Brote"],
-    ["Zelt", "Zel_", "t", ["d"], "⛺", "die Zelte"], ["Berg", "Ber_", "g", ["k"], "⛰️", "die Berge"], ["Zug", "Zu_", "g", ["k"], "🚂", "die Züge"], ["Weg", "We_", "g", ["k"], "🛤️", "die Wege"],
-    ["Korb", "Kor_", "b", ["p"], "🧺", "die Körbe"], ["Kalb", "Kal_", "b", ["p"], "🐄", "die Kälber"], ["Bank", "Ban_", "k", ["g"], "🪑", "die Bänke"]];
+    ["Zelt", "Zel_", "t", ["d"], "⛺", "die Zelte"], ["Berg", "Ber_", "g", ["k"], "⛰️", "die Berge"], ["Zug", "Zu_", "g", ["k"], "🚂", "die Züge"], ["Burg", "Bur_", "g", ["k"], "🏰", "die Burgen"],
+    ["Korb", "Kor_", "b", ["p"], "🧺", "die Körbe"], ["Kalb", "Kal_", "b", ["p"], "🐄", "die Kälber"], ["Geschenk", "Geschen_", "k", ["g"], "🎁", "die Geschenke"]];
   const RS_VL_X = [["Der Ball ist ___.", "rund", ["runt"], "rund – runde"], ["Die Banane ist ___.", "gelb", ["gelp"], "gelb – gelbe"], ["Am Abend wird es ___.", "kalt", ["kald"], "kalt – kälter"],
     ["Der Löwe ist sehr ___.", "stark", ["starg"], "stark – stärker"], ["Mein Bruder ist acht Jahre ___.", "alt", ["ald"], "alt – älter"], ["Wir fliegen mit dem ___ in den Urlaub.", "Flugzeug", ["Flugzeuk"], "Flugzeug – die Flugzeuge"],
     ["Am ___ bauen wir eine Sandburg.", "Strand", ["Strant"], "Strand – die Strände"], ["Der Zauberer hat einen ___.", "Zauberstab", ["Zauberstap"], "Stab – die Stäbe"], ["Meine Schwester ist sehr ___.", "klug", ["kluk"], "klug – kluge"]];
@@ -2110,7 +2110,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const RS_ER = [["Leiter", "Leit_", "er", ["a", "r"], "🪜", null, "die"], ["Messer", "Mess_", "er", ["a", "r"], "🔪", null, "das"], ["Teller", "Tell_", "er", ["a", "r"], "🍽️", null, "der"],
     ["Fenster", "Fenst_", "er", ["a", "r"], "🪟", null, "das"], ["Butter", "Butt_", "er", ["a", "r"], "🧈", null, "die"], ["Feder", "Fed_", "er", ["a", "r"], "🪶", null, "die"],
     ["Hammer", "Hamm_", "er", ["a", "r"], "🔨", null, "der"], ["Tiger", "Tig_", "er", ["a", "r"], "🐯", null, "der"], ["Eimer", "Eim_", "er", ["a", "r"], "🪣", null, "der"],
-    ["Lehrer", "Lehr_", "er", ["a", "r"], "🧑‍🏫", null, "der"], ["Winter", "Wint_", "er", ["a", "r"], "❄️", null, "der"], ["Kinder", "Kind_", "er", ["a", "r"], "🧒", null, "die"]];
+    ["Lehrer", "Lehr_", "er", ["a", "r"], "🧑‍🏫", null, "der"], ["Winter", "Wint_", "er", ["a", "r"], "❄️", null, "der"], ["Kinder", "Kind_", "er", ["a", "r"], "👧👦", null, "die"]];
   const RS_ER_X = [["Meine ___ ist zehn Jahre alt.", "Schwester", ["Schwesta", "Schwestr"]], ["Mein ___ spielt Fußball.", "Bruder", ["Bruda", "Brudr"]], ["Heute ist schönes ___.", "Wetter", ["Wetta", "Weter"]],
     ["Der ___ zaubert einen Hasen aus dem Hut.", "Zauberer", ["Zaubera", "Zauberr"]], ["Im ___ gehen wir ins Freibad.", "Sommer", ["Somma", "Somer"]], ["Wir essen Brot mit ___.", "Butter", ["Butta", "Buter"]],
     ["Der ___ bringt uns die Post.", "Briefträger", ["Briefträga", "Brifträger"]], ["Papa arbeitet am ___.", "Computer", ["Computa", "Kompjuter"]]];
@@ -2122,7 +2122,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     ["Sei bitte leise", "!"], ["Unser Hund schläft gern in seinem Körbchen", "."], ["Warum ist der Himmel blau", "?"], ["Juhu, es schneit", "!"], ["Nach der Schule mache ich meine Hausaufgaben", "."], ["Hast du meinen Turnbeutel gesehen", "?"]];
   const RS_Z_X = [["Ich frage mich, ob es morgen regnet", ".", "Hier wird nicht gefragt, sondern erzählt, was jemand denkt. Also Punkt."], ["Weißt du, wo mein Hut ist", "?", "Weißt du …? ist eine Frage."],
     ["Ich weiß nicht, wie spät es ist", ".", "Das ist keine Frage, sondern eine Aussage."], ["Kannst du mir bitte helfen", "?", "Das ist eine Frage."], ["Oh nein, mein Eis ist runtergefallen", "!", "Hier ruft jemand erschrocken."],
-    ["Sei leise, das Baby schläft", "!", "Das ist eine Aufforderung."], ["Mama sagt, dass wir gleich essen", ".", "Hier wird erzählt, was jemand sagt."], ["Wer hat meinen Radiergummi genommen", "?", "Mit Wer fängt eine Frage an."]];
+    ["Sei leise, das Baby schläft", "!", "Das ist eine Aufforderung."], ["Mama sagt, dass wir gleich essen", ".", "Hier wird erzählt, was jemand sagt."], ["Wer hat meinen Radiergummi genommen", "?", "Mit „Wer“ fängt eine Frage an."]];
 
   function rsFixed(x) { return x[0].split(" ").map((w, i) => { const k = x[1].indexOf(i); return k < 0 ? w : x[2][k] + (/[.!?]$/.test(w) && !/[.!?,]$/.test(x[2][k]) ? w.slice(-1) : ""); }).join(" "); }
   // Beschriftung für die Übe-Muscheln: verbesserter Satz bzw. Satz mit Satzzeichen
@@ -2413,16 +2413,16 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function satzVariants(sent, nouns) {
     const w = sent.split(" "), out = [{ label: sent, correct: true }];
     const v1 = w.slice(); v1[0] = v1[0].charAt(0).toLowerCase() + v1[0].slice(1); out.push({ label: v1.join(" "), wrongText: "Schau auf den Satzanfang!" });
-    const ni = nouns.find(i => i > 0); if (ni != null) { const v2 = w.slice(); v2[ni] = v2[ni].charAt(0).toLowerCase() + v2[ni].slice(1); out.push({ label: v2.join(" "), wrongText: "Ein Nomen ist klein geschrieben!" }); }
+    const ni = nouns.find(i => i > 0); if (ni != null) { const v2 = w.slice(); v2[ni] = v2[ni].charAt(0).toLowerCase() + v2[ni].slice(1); out.push({ label: v2.join(" "), wrongText: "Ein Nomen ist kleingeschrieben!" }); }
     out.push({ label: sent.replace(/\.$/, ""), wrongText: "Am Ende fehlt etwas!" });
-    const vi = w.findIndex((x, i) => i > 0 && !nouns.includes(i) && /^[a-zäöü]/.test(x)); if (vi > 0) { const v4 = w.slice(); v4[vi] = v4[vi].charAt(0).toUpperCase() + v4[vi].slice(1); out.push({ label: v4.join(" "), wrongText: "Ein Wort ist groß geschrieben, das gar kein Nomen ist!" }); }
+    const vi = w.findIndex((x, i) => i > 0 && !nouns.includes(i) && /^[a-zäöü]/.test(x)); if (vi > 0) { const v4 = w.slice(); v4[vi] = v4[vi].charAt(0).toUpperCase() + v4[vi].slice(1); out.push({ label: v4.join(" "), wrongText: "Ein Wort ist großgeschrieben, das gar kein Nomen ist!" }); }
     return [out[0]].concat(shuffle(out.slice(1)).slice(0, 3));
   }
 
   const EXPERT = {
     nomen: {
       fischen: {
-        task: () => "Alles klein geschrieben! Fange nur die Nomen!",
+        task: () => "Alles kleingeschrieben! Fange nur die Nomen!",
         intro: () => XI + "Alle Wörter sind klein und ohne Begleiter. Auch Gefühle und Dinge, die man nicht anfassen kann, sind Nomen: die Angst, der Mut. Probier: Passt der, die oder das davor?",
         ex: () => "die <b>angst</b> ✓ · mutig ✗", say: () => "Experten-Aufgabe! Alle Wörter sind klein und ohne Begleiter. Auch Gefühle sind Nomen, zum Beispiel die Angst oder der Mut. Probier aus: Passt der, die oder das davor?",
         build() { const t = shuffle(NX_FISCH_T), f = shuffle(NX_FISCH_F), r = []; for (let i = 0; i < 6; i++) r.push(shuffle([t[i * 2], t[i * 2 + 1], [t[(i * 2 + 7) % 12][0], t[(i * 2 + 7) % 12][1]]].map(x => ({ w: x[0], show: x[1], noun: true })).concat([f[i * 2], f[i * 2 + 1], f[(i * 2 + 7) % 12]].map(x => ({ w: x, noun: false }))))); return r; },
@@ -2452,7 +2452,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         intro: () => XI + "Satzanfang, Nomen, Namen – und auch Gefühle wie Angst oder Freude schreibt man groß!",
         ex: () => "<b>T</b>im hat keine <b>A</b>ngst vor dem <b>G</b>ewitter.", say: () => "Experten-Aufgabe! Schreibe groß: den Satzanfang, die Nomen und die Namen. Auch Gefühle wie Angst oder Freude sind Nomen!",
         build() { return shuffle(NX_CAPS).slice(0, 7); },
-        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, okText: "Groß geschrieben wie ein Profi!", extraText: (w) => `„${w}“ schreibe ich klein.`, missText: (m) => m.includes(0) ? "Denk an den Satzanfang!" : "Es fehlt noch etwas. Denk auch an Namen und Gefühle!", sayExtra: "" }); }
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, okText: "Großgeschrieben wie ein Profi!", extraText: (w) => `„${w}“ schreibe ich klein.`, missText: (m) => m.includes(0) ? "Denk an den Satzanfang!" : "Es fehlt noch etwas. Denk auch an Namen und Gefühle!", sayExtra: "" }); }
       },
       artikel: {
         task: () => "der, die oder das?", intro: () => XI + "Lange Wörter aus drei Teilen! Das letzte Wort entscheidet über den Begleiter. Und: -lein heißt immer das.",
@@ -2496,7 +2496,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     // ----- Lernwörter -----
     lernwoerter: {
       salat: {
-        task: () => "Setze die Mehrzahl zusammen!", intro: () => XI + "Jetzt sind es viele! Setze die Mehrzahl des Lernworts zusammen. Achtung: falsche Buchstaben sind dabei.",
+        task: () => "Setze die Mehrzahl zusammen!", intro: () => XI + "Jetzt sind es viele! Setze die Mehrzahl des Lernworts zusammen. Achtung: Falsche Buchstaben sind dabei.",
         ex: () => "🚕 → 🚕🚕 die Taxis", say: () => "Experten-Aufgabe! Setze die Mehrzahl des Lernworts zusammen.",
         build() { return shuffle(LERN).slice(0, 8); },
         render(x, stage) { const pl = LERN_PL[x.w]; stage.appendChild(el("div", "pic", picHTML(x) + picHTML(x))); stage.appendChild(el("div", "counter", `${x.art} ${x.w} → die …`)); tileTask(stage, { w: pl, art: "die", extra: x.extra.concat(["n", "e"]).slice(0, 3) }, { extra: true, factor: 1, missText: "Wie heißt es, wenn es viele sind?" }); L.speakNow = () => speak(`${x.art} ${x.w}. Und wenn es viele sind?`); }
@@ -2859,7 +2859,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const n = aquaCount(), box = $("aqStat");
     const next = SHOP.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
     const canNew = SHOP.some(w => !owned(w) && S.coins >= w.p);
-    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} Arten · ${S.aqua.length} Sachen im Aquarium · 🏆 ${TREASURES.filter(owned).length}/${TREASURES.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
+    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} Arten · ${S.aqua.length} ${S.aqua.length === 1 ? "Sache" : "Sachen"} im Aquarium · 🏆 ${TREASURES.filter(owned).length}/${TREASURES.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
       (n === SHOP.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
        canNew ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
        `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
@@ -2965,7 +2965,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   function buy(w) {
     if (countOf(w) >= MAX_EACH) return;
-    if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} Münzen. Übe weiter, dann klappt es!`); return; }
+    if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} ${w.p - S.coins === 1 ? "Münze" : "Münzen"}. Übe weiter, dann klappt es!`); return; }
     if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
     asking = null;
     S.coins -= w.p;
@@ -3264,7 +3264,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const canBuy = SHOP.some(w => !owned(w) && S.coins >= w.p);
     const nodes = [
       { x: pos.bay[0], y: pos.bay[1], r: pos.r, icon: "🐠", draw: "reef", subGold: canBuy, grass: "#7fdbe8", label: "Nemos Riff", big: true,
-        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (S.aqua.length ? `🐠 ${S.aqua.length} Sachen im Aquarium` : "Sammle Münzen für dein Aquarium!"),
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (S.aqua.length ? `🐠 ${S.aqua.length} ${S.aqua.length === 1 ? "Sache" : "Sachen"} im Aquarium` : "Sammle Münzen für dein Aquarium!"),
         items: S.aqua.slice(-10).map(a => a.id), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
         tap: (i) => swimTo(i, renderAqua) },
       { x: pos.nomen[0], y: pos.nomen[1], r: pos.r, icon: "🐟", label: "Nomen-Inseln", big: true, sub: chapSub(nom),
@@ -3474,7 +3474,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       $("resTitle").textContent = "Schatz gefunden! 👑";
       $("resStars").innerHTML = "🎁✨";
       $("resPerfect").hidden = false; $("resPerfect").innerHTML = `Die Schatztruhe ist offen: +${chest} <span class="coin sm"></span>`;
-      $("resText").textContent = first ? `Du bist ein echter ${CH.name}-Schatzsucher!` : "Super! Du hast den Schatz noch einmal gefunden.";
+      $("resText").textContent = first ? `Du bist ein echter ${CH.id === "lesen" ? "Lese" : CH.name}-Schatzsucher!` : "Super! Du hast den Schatz noch einmal gefunden.";
     } else if (L.li === "expert") {
       const t = treasureOf(CH), before = S.expert[CH.id] || 0, passed = stars >= 2, firstWin = passed && before < 2;
       S.expert[CH.id] = Math.max(before, stars);
@@ -3560,7 +3560,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const RULES = {
     "nomen:fischen": { k: "merk", t: "Was ist ein Nomen?", s: "Nomen sind Namen für <b>Menschen, Tiere, Pflanzen und Dinge</b>. Vor ein Nomen passt <b>der</b>, <b>die</b> oder <b>das</b>.",
       ex: [["🧒", "das Kind"], ["🐶", "der Hund"], ["🌷", "die Blume"], ["⚽", "der Ball"]], v: "🔎 Probe: Passt der, die oder das davor? Dann ist es ein Nomen." },
-    "nomen:versteckt": { k: "merk", t: "Nomen erkennen – auch klein geschrieben", s: "Auch wenn alles klein geschrieben ist: Mach die <b>Begleiter-Probe</b>. Passt der, die oder das davor, ist es ein Nomen.",
+    "nomen:versteckt": { k: "merk", t: "Nomen erkennen – auch kleingeschrieben", s: "Auch wenn alles kleingeschrieben ist: Mach die <b>Begleiter-Probe</b>. Passt der, die oder das davor, ist es ein Nomen.",
       ex: [["🐱", "die *k*atze", "passt ✓"], ["🌳", "der *b*aum", "passt ✓"], ["✨", "das *s*chön", "passt nicht ✗"]] },
     "nomen:grossklein": { k: "merk", t: "Nomen schreibe ich groß", s: "Nomen schreibe ich mit einem <b>großen</b> Anfangsbuchstaben. Die meisten anderen Wörter schreibe ich <b>klein</b>.",
       ex: [["🐟", "der *F*isch", "groß"], ["🏠", "das *H*aus", "groß"], ["🏊", "*s*chwimmen", "klein"]] },
