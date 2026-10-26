@@ -500,7 +500,13 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .rtext { font-size: clamp(26px, 4.4vw, 36px); color: var(--ink); line-height: 1.6; text-align: left; max-width: 760px; }
 .sy { position: relative; display: inline-block; padding: 0 2px 12px; }
 .sy::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 0; height: 12px; border: 4px solid currentColor; border-top: none; border-radius: 0 0 60px 60px; opacity: .8; }
-.sy.a { color: #1d4ed8; } .sy.b { color: #c2410c; }
+.sy.a { color: #1d4ed8; } .sy.b { color: #d62828; }
+/* Silben-Lesehilfe */
+.s1 { color: #1d4ed8; } .s2 { color: #d62828; }
+.sylbtn { background: #fff; border-radius: 999px; padding: 8px 16px; font-size: 24px; font-weight: 800; box-shadow: 0 4px 0 var(--sand-edge), 0 6px 14px var(--shadow); flex: none; }
+.sylbtn.off { background: rgba(255,255,255,.55); }
+.sylbtn.off span { color: #7b8794; text-decoration: line-through; text-decoration-thickness: 3px; }
+.rq { background: var(--sand); color: var(--ink); border-radius: 20px; padding: 10px 22px; font-size: clamp(24px, 4vw, 32px); box-shadow: 0 5px 0 var(--sand-edge), 0 10px 20px var(--shadow); text-align: center; }
 .sy.plain::after { display: none; }
 .letters { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
 .letter { min-width: 110px; height: 110px; font-size: 56px; background: var(--sand); border-radius: 26px; box-shadow: 0 6px 0 var(--sand-edge), 0 10px 20px var(--shadow); padding: 0 14px; }
@@ -576,7 +582,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     <div class="head l">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 25.10. · Korrekturen</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 26.10. · Silbenhilfe</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -614,7 +620,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   <!-- PLAY -->
   <section class="screen" id="scrPlay" hidden>
     <div class="progress" id="progress"></div>
-    <div class="taskrow"><span class="badge" id="playBadge"></span><span class="task" id="taskText"></span><button class="iconbtn say" id="taskSay" aria-label="Vorlesen">🔊</button><button class="iconbtn say rulebtn" id="taskRule" aria-label="Merk-Karte zeigen">💡</button></div>
+    <div class="taskrow"><span class="badge" id="playBadge"></span><span class="task" id="taskText"></span><button class="iconbtn say" id="taskSay" aria-label="Vorlesen">🔊</button><button class="iconbtn say rulebtn" id="taskRule" aria-label="Merk-Karte zeigen">💡</button><button class="sylbtn read" id="sylBtn" aria-pressed="true" hidden><span class="s1">Sil</span><span class="s2">ben</span></button></div>
     <div class="stage" id="stage"></div>
     <div class="hint" id="hint" aria-live="polite"></div>
   </section>
@@ -1872,6 +1878,45 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       ["Ich habe Blätter, aber ich bin kein Baum. In mir stehen Geschichten.","📕",["🌳","🍃","📺"]]]
   };
 
+  /* ---------- Silben-Lesehilfe (Lese-Lagune): Wörter in Silben blau/rot färben ----------
+     Silben aus einem kleinen Wörterbuch (geprüft für alle Lesetexte), sonst nach einfachen Regeln. */
+  const SILBEN_WB = (() => { const m = {}; "a-ber al-le al-les au-to ba-de-ho-se ba-na-ne bau-en bauch-weh be-kommt bei-ne bei-ßen bel-len bel-lo bie-nen blät-ter com-pu-ter da-nach des-to di-cke do-se don-nert dra-chen drau-ßen drin-nen e-ckig ei-ne ei-nem ei-nen eis-bär el-la es-sen fal-le fal-len fe-dern fei-ert fens-ter feu-er-wehr fi-sche fie-ber fin-ger flie-gen flug-zeug flü-gel gar-ten ge-burts-tag ge-schen-ke ge-schich-ten ge-sicht grö-ßer gum-mi-stie-fel ha-be ha-se hand-schuh hand-tuch haus-schuh heu-te him-mel ho-se hun-ger i-gel ih-re ih-ren ja-cke jah-res-zeit je-de ka-rot-te ka-rot-ten-na-se kan-ne ke-gel kei-ne ker-zen kin-der klei-ne klet-tert kom-me ku-chen lan-ge lan-gen las-sen le-be le-na leuch-te li-sa lie-ber lö-we lö-wen ma-che ma-chen ma-ma ma-ri-en-kä-fer manch-mal men-schen mi-a mi-au mu-sik möh-ren müt-ze na-se ne-mo o-ben o-ma o-pa oh-ren pe-da-le re-gen-bo-gen reg-net ro-se rä-der rü-cken rüs-sel sau-er schlaf-an-zug schnee-flo-cke schnee-mann schwim-men sei-ne sei-nen sei-ten sin-gen sit-zen som-mer son-ne son-nen-blu-me son-nen-cre-me spie-len ste-he ste-hen stei-gen stü-cke tan-ne tas-ten tra-ge un-ter va-se vie-le vo-gel wan-ne was-ser weg-nimmst wel-che wel-ches wer-de wer-den wet-ter win-dig win-ter wo-hin woh-ne woh-nen zei-ge zei-ger zet-tel zäh-ne äp-fel".split(" ").forEach(h => { m[h.replace(/-/g, "")] = h.split("-").map(x => x.length); }); return m; })();
+  function silbenRegel(word) {
+    const w = word.toLowerCase(), V = "aeiouäöüy", VV = ["au", "äu", "eu", "ei", "ai", "ie", "aa", "ee", "oo"], CC = ["sch", "ch", "ck", "ph", "th", "qu"];
+    const u = []; let i = 0;
+    while (i < w.length) {
+      const c = w[i];
+      if (V.includes(c)) { const two = w.substr(i, 2); if (VV.includes(two)) { u.push({ v: 1, n: 2 }); i += 2; } else { u.push({ v: 1, n: 1 }); i++; } continue; }
+      const cc = CC.find(x => w.startsWith(x, i)); if (cc) { u.push({ v: 0, n: cc.length }); i += cc.length; continue; }
+      u.push({ v: 0, n: 1 }); i++;
+    }
+    const vi = []; u.forEach((x, k) => { if (x.v) vi.push(k); });
+    if (vi.length < 2) return [word];
+    const starts = []; let p = 0; u.forEach(x => { starts.push(p); p += x.n; });
+    const out = []; let last = 0;
+    for (let n = 0; n < vi.length - 1; n++) { const b = vi[n + 1], cut = b - vi[n] - 1 <= 0 ? b : b - 1; out.push(word.slice(last, starts[cut])); last = starts[cut]; }
+    out.push(word.slice(last));
+    return out.filter(Boolean);
+  }
+  function silben(word) {
+    const l = SILBEN_WB[word.toLowerCase()];
+    if (!l) return silbenRegel(word);
+    const out = []; let p = 0; l.forEach(n => { out.push(word.slice(p, p + n)); p += n; }); return out;
+  }
+  let silbenHilfe = true; // nur für diese Sitzung, wird nicht gespeichert
+  const escH = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function silbenHTML(text, syls) {
+    if (syls) return syls.map((sy, i) => `<span class="${i % 2 ? "s2" : "s1"}">${escH(sy)}</span>`).join("");
+    return String(text).split(/([A-Za-zÄÖÜäöüß]+)/).map((tok, i) => i % 2 ? silben(tok).map((sy, k) => `<span class="${k % 2 ? "s2" : "s1"}">${escH(sy)}</span>`).join("") : escH(tok)).join("");
+  }
+  // Lesetext mit umschaltbarer Silbenhilfe
+  function lh(text, syls) { return `<span class="lh" data-t="${escH(text)}"${syls ? ` data-s="${escH(syls.join("|"))}"` : ""}>${silbenHilfe ? silbenHTML(text, syls) : escH(text)}</span>`; }
+  function lhRefresh(root) {
+    (root || document).querySelectorAll(".lh").forEach(e => { const t = e.dataset.t, sy = e.dataset.s ? e.dataset.s.split("|") : null; e.innerHTML = silbenHilfe ? silbenHTML(t, sy) : escH(t); });
+  }
+  const isLese = () => CH && CH.id === "lesen";
+  function updSylBtn() { const b = $("sylBtn"); if (!b) return; b.hidden = !isLese() || !$("stage").querySelector(".lh"); b.classList.toggle("off", !silbenHilfe); b.setAttribute("aria-pressed", String(silbenHilfe)); b.setAttribute("aria-label", "Silben-Lesehilfe " + (silbenHilfe ? "an" : "aus")); }
+
   const sylHTML = (syls, arcs) => syls.map((sy, i) => `<span class="sy ${arcs ? (i % 2 ? "b" : "a") : "plain"}">${sy}</span>`).join("");
   // nach 2 Fehlversuchen liest Nemo vor
   function readHelp(text) { L.tries = (L.tries || 0) + 1; if (L.tries >= 2) { setTimeout(() => speak(text), 500); return " Nemo liest es dir vor. Hör gut zu!"; } return " Lies nochmal ganz langsam."; }
@@ -1970,13 +2015,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         L.tries = 0;
         if (d === "schwer") {
           const { g, t } = x, extra = g.length < 3 ? [shuffle(WB_EASY.filter(z => !g.some(q => q[1] === z[1])))[0][1]] : [];
-          stage.appendChild(el("div", "rcard read", `<div class="rword">${t[0]}</div>`));
+          stage.appendChild(el("div", "rcard read", `<div class="rword">${lh(t[0])}</div>`));
           picChoice(stage, g.map(q => q[1]).concat(extra), t[1], { factor: 3, okSpeak: t[0], wrongText: "Schau nochmal auf den ersten Buchstaben!" });
           L.speakNow = () => speak("Lies ganz genau! Welches Bild passt?");
           return;
         }
         const [syls, emo] = x, word = syls.join("");
-        stage.appendChild(el("div", "rcard read", `<div class="rword">${sylHTML(syls, d === "leicht")}</div>`));
+        stage.appendChild(el("div", "rcard read", `<div class="rword">${d === "leicht" ? sylHTML(syls, true) : lh(word, syls)}</div>`));
         const others = shuffle(WB_EASY.filter(z => z[1] !== emo)).slice(0, d === "leicht" ? 2 : 3).map(z => z[1]);
         picChoice(stage, [emo].concat(others), emo, { factor: d === "leicht" ? 1 : 2, okSpeak: word, wrongText: "Das passt nicht." });
         L.speakNow = () => speak("Lies das Wort. Welches Bild passt?");
@@ -1997,7 +2042,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         L.tries = 0;
         if (d === "leicht") {
           const [syls, emo, art] = x, word = syls.join(""), ein = art === "die" ? "eine" : "ein", sent = `Das ist ${ein} ${word}.`;
-          stage.appendChild(el("div", "rcard read", `<div class="rsent">${sent}</div>`));
+          stage.appendChild(el("div", "rcard read", `<div class="rsent">${lh(sent)}</div>`));
           const other = shuffle(WB_EASY.filter(z => z[1] !== emo))[0][1];
           picChoice(stage, [emo, other], emo, { okSpeak: sent, wrongText: "Das passt nicht." });
           L.speakNow = () => speak("Lies den Satz. Welches Bild passt?");
@@ -2006,15 +2051,15 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         if (d === "mittel") {
           const [sent, ok, emo] = x;
           stage.appendChild(el("div", "emoji-big", emo));
-          stage.appendChild(el("div", "rcard read", `<div class="rsent">${sent}</div>`));
+          stage.appendChild(el("div", "rcard read", `<div class="rsent">${lh(sent)}</div>`));
           choiceTask(stage, { opts: [{ label: "✅ stimmt", cls: "yes", correct: ok }, { label: "❌ stimmt nicht", cls: "no", correct: !ok }],
             wrongText: "Lies nochmal genau!", okText: ok ? "Ja, das stimmt!" : "Genau, das stimmt nicht!", okSpeak: sent, factor: 2 });
           L.speakNow = () => speak("Lies den Satz. Stimmt das?");
           return;
         }
         const [text, q, right, wrong] = x;
-        stage.appendChild(el("div", "rcard read", `<div class="rtext">${text}</div>`));
-        stage.appendChild(el("div", "counter read", "❓ " + q));
+        stage.appendChild(el("div", "rcard read", `<div class="rtext">${lh(text)}</div>`));
+        stage.appendChild(el("div", "rq read", "❓ " + lh(q)));
         picChoice(stage, [right].concat(wrong), right, { factor: 3, okSpeak: q, helpText: text + " " + q, wrongText: "Schau nochmal in den Text." });
         L.speakNow = () => speak("Lies den Text. Dann beantworte die Frage.");
       }
@@ -2029,7 +2074,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       render(x, stage, d) {
         L.tries = 0;
         const [text, right, wrong] = x;
-        stage.appendChild(el("div", "rcard read", `<div class="${d === "leicht" ? "rsent" : "rtext"}">${text}<br><b>Wer bin ich?</b></div>`));
+        stage.appendChild(el("div", "rcard read", `<div class="${d === "leicht" ? "rsent" : "rtext"}">${lh(text)}<br><b>${lh("Wer bin ich?")}</b></div>`));
         picChoice(stage, [right].concat(wrong), right, { factor: d === "leicht" ? 1 : d === "mittel" ? 2 : 3, helpText: text + " Wer bin ich?", wrongText: "Das passt nicht ganz." });
         L.speakNow = () => speak("Lies das Rätsel. Wer bin ich?");
       }
@@ -2582,19 +2627,19 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         task: () => "Lies das ganze Wort! Welches Bild passt?", intro: () => XI + "Lange Wörter aus zwei Teilen. Achtung: Die Bilder zeigen auch die einzelnen Teile. Lies das ganze Wort!",
         ex: () => "Schneemann → ⛄ (nicht ❄️, nicht 👨)", say: () => "Experten-Aufgabe! Lange Wörter aus zwei Teilen. Die Bilder zeigen auch die einzelnen Teile. Lies das ganze Wort!",
         build() { return shuffle(LX_WB).slice(0, 9); },
-        render(x, stage) { L.tries = 0; const [w, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rword">${w}</div>`)); picChoice(stage, [right].concat(wrong), right, { factor: 1, okSpeak: w, wrongText: "Das ist nur ein Teil des Wortes. Lies das ganze Wort!" }); L.speakNow = () => speak("Lies das ganze Wort. Welches Bild passt?"); }
+        render(x, stage) { L.tries = 0; const [w, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rword">${lh(w)}</div>`)); picChoice(stage, [right].concat(wrong), right, { factor: 1, okSpeak: w, wrongText: "Das ist nur ein Teil des Wortes. Lies das ganze Wort!" }); L.speakNow = () => speak("Lies das ganze Wort. Welches Bild passt?"); }
       },
       saetze: {
         task: () => "Lies den Text und denk mit!", intro: () => XI + "Die Antwort steht nicht direkt im Text. Du musst selbst nachdenken!",
         ex: () => "Paul zieht eine dicke Jacke an … → ❄️", say: () => "Experten-Aufgabe! Die Antwort steht nicht direkt im Text. Du musst selbst nachdenken.",
         build() { return shuffle(LX_TEXTE).slice(0, 6); },
-        render(x, stage) { L.tries = 0; const [text, q, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rtext">${text}</div>`)); stage.appendChild(el("div", "counter read", "❓ " + q)); picChoice(stage, [right].concat(wrong), right, { factor: 1, okSpeak: q, helpText: text + " " + q, wrongText: "Lies nochmal und denk nach: Was passt am besten?" }); L.speakNow = () => speak("Lies den Text und denk mit."); }
+        render(x, stage) { L.tries = 0; const [text, q, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rtext">${lh(text)}</div>`)); stage.appendChild(el("div", "rq read", "❓ " + lh(q))); picChoice(stage, [right].concat(wrong), right, { factor: 1, okSpeak: q, helpText: text + " " + q, wrongText: "Lies nochmal und denk nach: Was passt am besten?" }); L.speakNow = () => speak("Lies den Text und denk mit."); }
       },
       raetsel: {
         task: () => "Lies das Rätsel ganz genau. Wer bin ich?", intro: () => XI + "Knifflige Denk-Rätsel! Lies jeden Satz genau.",
         ex: () => "Ich habe ein Gesicht, aber keine Nase … → ⏰", say: () => "Experten-Aufgabe! Knifflige Denk-Rätsel. Lies jeden Satz genau.",
         build() { return shuffle(LX_RAETSEL).slice(0, 6); },
-        render(x, stage) { L.tries = 0; const [text, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rtext">${text}<br><b>Wer bin ich?</b></div>`)); picChoice(stage, [right].concat(wrong), right, { factor: 1, helpText: text + " Wer bin ich?", wrongText: "Lies jeden Satz nochmal genau." }); L.speakNow = () => speak("Lies das Rätsel. Wer bin ich?"); }
+        render(x, stage) { L.tries = 0; const [text, right, wrong] = x; stage.appendChild(el("div", "rcard read", `<div class="rtext">${lh(text)}<br><b>${lh("Wer bin ich?")}</b></div>`)); picChoice(stage, [right].concat(wrong), right, { factor: 1, helpText: text + " Wer bin ich?", wrongText: "Lies jeden Satz nochmal genau." }); L.speakNow = () => speak("Lies das Rätsel. Wer bin ich?"); }
       }
     }
   };
@@ -3455,7 +3500,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     renderProgress(); L.locked = false; L.speakNow = null; L.mAt = L.mistakes; L.missWords = []; L.noted = false;
     const stage = $("stage"); stage.innerHTML = ""; $("hint").innerHTML = "";
     L.lv.render(L.items[L.pos], stage, L.d);
-    updateRuleBtn();
+    updateRuleBtn(); updSylBtn();
   }
   function finishLevel() {
     if (L.practice) return finishPractice();
@@ -3609,11 +3654,11 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     "lesen:silbenschiff": { k: "tipp", t: "Lies in Silben", s: "Lies <b>Silbe für Silbe</b> und schwing mit der Hand einen Bogen. Dann setz die Silben zusammen.",
       ex: [["🍅", "To|ma|te"], ["🦒", "Gi|raf|fe"], ["🚲", "Fahr|rad"]] },
     "lesen:wortbild": { k: "tipp", t: "Ganz genau lesen", s: "Lies jedes Wort <b>bis zum Ende</b>. Manche Wörter sehen fast gleich aus!",
-      ex: [["👖", "*H*ose"], ["🌹", "*R*ose"], ["🥫", "*D*ose"]] },
+      ex: [["👖", "*H*ose"], ["🌹", "*R*ose"], ["🥫", "*D*ose"]], v: "🔵🔴 Tipp: Mit dem Knopf „Silben“ oben färbst du die Wörter in Silben – blau, rot, blau." },
     "lesen:saetze": { k: "tipp", t: "Sätze verstehen", s: "Lies den Satz bis zum Punkt. Mach dir ein <b>Bild im Kopf</b>: Wer macht was?",
-      ex: [["🐶", "Der Hund schläft.", "Wer? der Hund · Was? schläft"]], say: "Sätze verstehen. Lies den Satz bis zum Punkt. Mach dir ein Bild im Kopf: Wer macht was? Zum Beispiel: Der Hund schläft. Wer? Der Hund. Was macht er? Er schläft." },
+      ex: [["🐶", "Der Hund schläft.", "Wer? der Hund · Was? schläft"]], v: "🔵🔴 Tipp: Mit dem Knopf „Silben“ oben färbst du die Wörter in Silben – blau, rot, blau.", say: "Sätze verstehen. Lies den Satz bis zum Punkt. Mach dir ein Bild im Kopf: Wer macht was? Zum Beispiel: Der Hund schläft. Wer? Der Hund. Was macht er? Er schläft." },
     "lesen:raetsel": { k: "tipp", t: "Rätsel lösen", s: "Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei <b>nicht</b>: Es dreht alles um!",
-      ex: [["❓", "Ich bin gelb und krumm.", "die Banane 🍌"]], say: "Rätsel lösen. Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei nicht: Es dreht alles um! Zum Beispiel: Ich bin gelb und krumm. Das ist die Banane." },
+      ex: [["❓", "Ich bin gelb und krumm.", "die Banane 🍌"]], v: "🔵🔴 Tipp: Mit dem Knopf „Silben“ oben färbst du die Wörter in Silben – blau, rot, blau.", say: "Rätsel lösen. Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei nicht: Es dreht alles um! Zum Beispiel: Ich bin gelb und krumm. Das ist die Banane." },
 
     "rechtschreibung:doppel": { k: "merk", t: "Kurzer Laut – doppelter Mitlaut", s: "Sprich das Wort in Silben. Klingt der Laut vor der Lücke <b>kurz</b>? Dann schreibst du den Mitlaut danach <b>doppelt</b>.",
       ex: [["☀️", "So*n|n*e"], ["👩", "Mu*t|t*er"], ["☕", "Ta*s|s*e"]], v: "Langer Laut wie bei Ho-se? Dann nur ein Mitlaut." },
@@ -3862,6 +3907,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
   $("taskRule").addEventListener("click", () => openRule(CH, currentRuleLi(), false));
+  $("sylBtn").addEventListener("click", () => { silbenHilfe = !silbenHilfe; updSylBtn(); lhRefresh($("stage")); tone([silbenHilfe ? 660 : 440], 0.06); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("rulePop").hidden) { $("rulePop").hidden = true; try { speechSynthesis.cancel(); } catch (x) {} } });
   $("certBtn").addEventListener("click", showCert);
   $("resCert").addEventListener("click", showExpertCert);
