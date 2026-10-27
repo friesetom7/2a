@@ -639,6 +639,36 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .cmpcard .markslot { min-width: 1em; }
 .opt.numopt { font-size: clamp(36px, 7vw, 56px); min-width: 150px; font-variant-numeric: tabular-nums; }
 
+/* ---------- Pollys Werkstatt: Legebrett ---------- */
+.mat { display: flex; background: #fffaf0; border-radius: 22px; border: 3px solid var(--sand-edge); box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); overflow: hidden; max-width: 100%; }
+.mcolw { display: flex; flex-direction: column; min-width: 118px; }
+.mcolw.z { border-right: 3px dashed var(--sand-edge); min-width: 160px; }
+.mh { text-align: center; font-weight: 900; font-size: 18px; padding: 6px 10px; color: #fff; background: #2a7f8e; }
+.mcolw.e .mh { background: #3b9aa8; }
+.mp { flex: 1; display: flex; align-items: flex-end; justify-content: center; flex-wrap: wrap; gap: 6px; padding: 12px; min-height: 176px; }
+.mc { text-align: center; font-size: 36px; font-weight: 900; color: var(--ink); min-height: 46px; line-height: 46px; border-top: 2px solid var(--sand-edge); background: #fff; font-variant-numeric: tabular-nums; }
+.c-b { --f: #3a86ff; --st: #1d4ed8; --l: #a9c8ff; } .c-o { --f: #ff9f1c; --st: #a85b0f; --l: #ffd29a; } .c-g { --f: #52b788; --st: #2d6a4f; --l: #b7e4c7; }
+.mz { width: 24px; height: 170px; padding: 0; border-radius: 4px; border: 2px solid var(--st); background: repeating-linear-gradient(to bottom, var(--f) 0 15px, var(--l) 15px 17px); box-shadow: inset -4px 0 0 rgba(0,0,0,.12); position: relative; }
+.mstack { display: flex; flex-direction: column-reverse; }
+.me { width: 24px; height: 15px; margin-top: 2px; padding: 0; border-radius: 3px; border: 2px solid var(--st); background: var(--f); box-shadow: inset -4px 0 0 rgba(0,0,0,.12); position: relative; }
+.mz.gone, .me.gone { opacity: .35; }
+.mz.gone::after, .me.gone::after { content: ""; position: absolute; inset: -4px; background: linear-gradient(to top right, transparent 44%, #d62828 44% 56%, transparent 56%); }
+.mz.fresh, .me.fresh { animation: pop-in .35s cubic-bezier(.3,1.6,.5,1) both; }
+.mz.merge, .me.merge { animation: mergeOut .55s ease-in forwards; }
+@keyframes mergeOut { 40% { transform: scale(1.15); filter: brightness(1.3); } 100% { transform: scale(.2); opacity: 0; } }
+.mstep { font-size: clamp(20px, 3.2vw, 25px); font-weight: 900; color: #fff; text-shadow: 0 2px 0 var(--deep); text-align: center; max-width: 440px; line-height: 1.3; }
+.mstep b { color: #ffe066; }
+.mbtns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: min(440px, 100%); }
+.mbtns:empty { display: none; }
+.mbtn { background: var(--sand); font-size: 21px; font-weight: 900; padding: 12px 14px; border-radius: 18px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.mbtn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--sand-edge); }
+.mbtn.sm { font-size: 18px; padding: 9px 12px; background: #f1e3c6; }
+.mbtn.go { background: #7bd389; box-shadow: 0 5px 0 #3f9b52, 0 8px 14px var(--shadow); grid-column: 1 / -1; }
+.mbtn.ex { background: #ffe066; box-shadow: 0 5px 0 #e0b000, 0 8px 14px var(--shadow); grid-column: 1 / -1; font-size: 22px; }
+.ib { display: inline-block; border: 2px solid var(--st); background: var(--f); border-radius: 2px; }
+.ib.z { width: 9px; height: 28px; } .ib.e { width: 12px; height: 9px; }
+.mq .qmark { color: #b8860b; } .mq .qmark.ok { color: var(--good); }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -652,6 +682,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   .rc-ex { gap: 8px; } .rc-e { padding: 8px 8px 7px; flex-basis: 120px; } .rc-pic { font-size: 36px; } .rc-w { font-size: 22px; }
   .rule-card .big-btn { font-size: 21px; padding: 12px 20px; }
   .nk { height: 54px; font-size: 28px; }
+  .mz { width: 19px; } .me { width: 19px; } .mp { gap: 4px; padding: 10px 8px; } .mcolw.z { min-width: 120px; } .mcolw { min-width: 96px; }
   .eq { padding: 10px 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -706,7 +737,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Pollys Spielplatz</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Pollys Werkstatt</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -2739,29 +2770,31 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 
   /* ---------- Zehnerstangen und Einerwürfel ---------- */
   // parts: [{ z, e, c: "b" (blau) | "o" (orange), xz, xe }] – xz/xe = so viele werden weggenommen (durchgestrichen)
+  // Zehnerstangen und Einerwürfel als Bild. p = { z, e, c: "b" | "o" | "g", xz, xe, t10 } – t10: Einer in Zehnertürmen statt Fünfern
+  function dnSVG(p, k) {
+    const u = 11, bw = 13, gap = 5, per = p.t10 ? 10 : 5, cols = Math.ceil(p.e / per), sep = p.z && cols ? 8 : 0;
+    const W0 = Math.max(bw, p.z * (bw + gap) + cols * (bw + gap) + sep - gap), H0 = 10 * u;
+    const C = { o: ["#ff9f1c", "#a85b0f", "#ffd29a"], g: ["#52b788", "#2d6a4f", "#b7e4c7"], b: ["#3a86ff", "#1d4ed8", "#a9c8ff"] }[p.c] || ["#3a86ff", "#1d4ed8", "#a9c8ff"];
+    const [fl, st, lt] = C;
+    let s = `<svg viewBox="-4 -4 ${W0 + 8} ${H0 + 8}" class="dn" style="width:${Math.round((W0 + 8) * (k || 1.45))}px" aria-hidden="true">`;
+    for (let i = 0; i < p.z; i++) {
+      const x = i * (bw + gap), gone = i >= p.z - (p.xz || 0);
+      s += `<g${gone ? ' opacity=".38"' : ""}><rect x="${x}" y="0" width="${bw}" height="${H0}" rx="2.5" fill="${fl}" stroke="${st}" stroke-width="1.6"/>`;
+      for (let j = 1; j < 10; j++) s += `<line x1="${x + 1.5}" y1="${j * u}" x2="${x + bw - 1.5}" y2="${j * u}" stroke="${lt}" stroke-width="1.3"/>`;
+      s += "</g>";
+      if (gone) s += `<path d="M${x - 3} ${H0 * 0.18} L${x + bw + 3} ${H0 * 0.82}" stroke="#d62828" stroke-width="3.2" stroke-linecap="round"/>`;
+    }
+    const ex = p.z * (bw + gap) + sep;
+    for (let i = 0; i < p.e; i++) {
+      const c = Math.floor(i / per), r = i % per, x = ex + c * (bw + gap), y = H0 - (r + 1) * u, gone = i >= p.e - (p.xe || 0);
+      s += `<rect x="${x}" y="${y + 0.6}" width="${bw}" height="${u - 1.2}" rx="2" fill="${fl}" stroke="${st}" stroke-width="1.6"${gone ? ' opacity=".38"' : ""}/>`;
+      if (gone) s += `<path d="M${x - 2} ${y} L${x + bw + 2} ${y + u}" stroke="#d62828" stroke-width="2.8" stroke-linecap="round"/>`;
+    }
+    return s + "</svg>";
+  }
   function dienes(parts, ops) {
     const row = el("div", "dn-row");
-    parts.forEach((p, k) => {
-      if (k) row.appendChild(el("span", "dn-op", ops[k - 1]));
-      const u = 11, bw = 13, gap = 5, cols = Math.ceil(p.e / 5), sep = p.z && cols ? 8 : 0;
-      const W0 = Math.max(bw, p.z * (bw + gap) + cols * (bw + gap) + sep - gap), H0 = 10 * u;
-      const fill = p.c === "o" ? "#ff9f1c" : "#3a86ff", st = p.c === "o" ? "#a85b0f" : "#1d4ed8", lt = p.c === "o" ? "#ffd29a" : "#a9c8ff";
-      let s = `<svg viewBox="-4 -4 ${W0 + 8} ${H0 + 8}" class="dn" style="width:${Math.round((W0 + 8) * 1.45)}px" aria-hidden="true">`;
-      for (let i = 0; i < p.z; i++) {
-        const x = i * (bw + gap), gone = i >= p.z - (p.xz || 0);
-        s += `<g${gone ? ' opacity=".38"' : ""}><rect x="${x}" y="0" width="${bw}" height="${H0}" rx="2.5" fill="${fill}" stroke="${st}" stroke-width="1.6"/>`;
-        for (let j = 1; j < 10; j++) s += `<line x1="${x + 1.5}" y1="${j * u}" x2="${x + bw - 1.5}" y2="${j * u}" stroke="${lt}" stroke-width="1.3"/>`;
-        s += "</g>";
-        if (gone) s += `<path d="M${x - 3} ${H0 * 0.18} L${x + bw + 3} ${H0 * 0.82}" stroke="#d62828" stroke-width="3.2" stroke-linecap="round"/>`;
-      }
-      const ex = p.z * (bw + gap) + sep;
-      for (let i = 0; i < p.e; i++) {
-        const c = Math.floor(i / 5), r = i % 5, x = ex + c * (bw + gap), y = H0 - (r + 1) * u, gone = i >= p.e - (p.xe || 0);
-        s += `<rect x="${x}" y="${y + 0.6}" width="${bw}" height="${u - 1.2}" rx="2" fill="${fill}" stroke="${st}" stroke-width="1.6"${gone ? ' opacity=".38"' : ""}/>`;
-        if (gone) s += `<path d="M${x - 2} ${y} L${x + bw + 2} ${y + u}" stroke="#d62828" stroke-width="2.8" stroke-linecap="round"/>`;
-      }
-      row.appendChild(el("span", "dn-part", s + "</svg>"));
-    });
+    parts.forEach((p, k) => { if (k) row.appendChild(el("span", "dn-op", ops[k - 1])); row.appendChild(el("span", "dn-part", dnSVG(p))); });
     return row;
   }
   // Häuser für Zahlen-Nachbarn: cells = [{ node | html, lab, mid }]
@@ -3243,6 +3276,220 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       xintro: "Hier fehlt eine Zahl – mit Zehnerübergang. Rechne rückwärts!", xex: "38 + <b>25</b> = 63 · <b>72</b> − 48 = 24" })
   ];
 
+  /* ======================================================================
+     Pollys Werkstatt (Förderinsel): Zahlen mit Zehnerstangen und Einerwürfeln legen.
+     Das Legebrett ist eine Stellenwerttafel: links die Zehner, rechts die Einer.
+     10 Einerwürfel sind genau so hoch wie eine Zehnerstange – so sieht man, wie sich die Zahlen aufbauen.
+     ====================================================================== */
+  const mp = (c) => ({ c, gone: false, fresh: true });
+  const ibZ = (c) => `<span class="ib z c-${c}"></span>`, ibE = (c) => `<span class="ib e c-${c}"></span>`;
+  function matBoard(o) {
+    const M = { z: [], e: [], counts: !!o.counts, onTap: null, busy: false };
+    const box = el("div", "mat");
+    const col = (cls, h) => { const c = el("div", "mcolw " + cls, `<div class="mh">${h}</div><div class="mp"></div><div class="mc"></div>`); box.appendChild(c); return c; };
+    const cz = col("z", "Zehner"), ce = col("e", "Einer");
+    M.box = box;
+    M.live = (k) => M[k].filter(p => !p.gone);
+    M.val = () => M.live("z").length * 10 + M.live("e").length;
+    M.render = () => {
+      const pz = cz.querySelector(".mp"), pe = ce.querySelector(".mp"); pz.innerHTML = ""; pe.innerHTML = "";
+      const piece = (k, p, i) => {
+        const b = el("button", (k === "z" ? "mz" : "me") + " c-" + p.c + (p.gone ? " gone" : "") + (p.fresh ? " fresh" : "") + (p.merge ? " merge" : ""));
+        b.setAttribute("aria-label", (k === "z" ? "Zehnerstange" : "Einerwürfel") + (p.gone ? ", weggenommen" : ""));
+        b.addEventListener("click", () => { if (!L.locked && !M.busy && M.onTap) M.onTap(k, i); });
+        p.fresh = false; return b;
+      };
+      M.z.forEach((p, i) => pz.appendChild(piece("z", p, i)));
+      for (let s = 0; s * 10 < M.e.length; s++) { const st = el("div", "mstack"); M.e.slice(s * 10, s * 10 + 10).forEach((p, j) => st.appendChild(piece("e", p, s * 10 + j))); pe.appendChild(st); }
+      cz.querySelector(".mc").textContent = M.counts ? M.live("z").length : "";
+      ce.querySelector(".mc").textContent = M.counts ? M.live("e").length : "";
+    };
+    M.add = (k, c) => {
+      if (k === "z" && M.z.length >= 10) { hint("Mehr Zehnerstangen passen nicht aufs Brett."); return; }
+      if (k === "e" && M.e.length >= 30) { hint("Mehr Würfel passen nicht aufs Brett."); return; }
+      M[k].push(mp(c)); tone([k === "z" ? 440 : 660], 0.05); M.render();
+    };
+    M.drop = (k, c) => { for (let i = M[k].length - 1; i >= 0; i--) if (M[k][i].c === c && !M[k][i].gone) { M[k].splice(i, 1); tone([330], 0.05); M.render(); return true; } return false; };
+    // 10 Einer → 1 Zehner (mit kleiner Animation)
+    M.bundle = (then) => {
+      const idx = []; M.e.forEach((p, i) => { if (!p.gone && idx.length < 10) idx.push(i); });
+      if (idx.length < 10) return false;
+      M.busy = true; idx.forEach(i => { M.e[i].merge = true; }); M.render(); tone([520, 660, 880], 0.07);
+      setTimeout(() => { M.e = M.e.filter((_, i) => idx.indexOf(i) < 0); M.z.push(mp("g")); M.busy = false; M.render(); if (then) then(); }, 560);
+      return true;
+    };
+    // 1 Zehner → 10 Einer
+    M.unbundle = (then) => {
+      let i = -1; M.z.forEach((p, j) => { if (!p.gone) i = j; }); if (i < 0) return false;
+      const c = M.z[i].c === "g" ? "b" : M.z[i].c;
+      M.busy = true; M.z[i].merge = true; M.render(); tone([880, 660, 520], 0.07);
+      setTimeout(() => { M.z.splice(i, 1); for (let k = 0; k < 10; k++) M.e.push(mp(c)); M.busy = false; M.render(); if (then) then(); }, 560);
+      return true;
+    };
+    return M;
+  }
+  // Legebrett links, rechts Anleitung, Knöpfe und (am Schluss) Zahlentasten
+  function wkUI(stage, M, head) {
+    if (head) stage.appendChild(head);
+    const col = mathRow(stage, M.box), step = el("div", "mstep"), ctrl = el("div", "mbtns"), ans = el("div", "mcol");
+    col.appendChild(step); col.appendChild(ctrl); col.appendChild(ans);
+    M.render();
+    return {
+      say(t) { step.innerHTML = t; L.speakNow = () => speak(step.textContent); },
+      btns(list) {
+        ctrl.innerHTML = "";
+        list.forEach(([html, cls, fn]) => { const b = el("button", "mbtn " + (cls || ""), html); b.addEventListener("click", () => { if (L.locked || M.busy) return; fn(b); }); ctrl.appendChild(b); });
+      },
+      ask(a, o) { ctrl.innerHTML = ""; padTask(ans, Object.assign({ layout: eqLayout([{ t: o.line || [{ a }] }]) }, o)); }
+    };
+  }
+  const layNum = (M, n, c) => { const [z, e] = ZE(n); for (let i = 0; i < z; i++) M.z.push(mp(c || "b")); for (let i = 0; i < e; i++) M.e.push(mp(c || "b")); };
+
+  const WERKLEVELS = [
+    {
+      id: "bauen", name: "Zahlen bauen", icon: "🧱", color: "#3a86ff",
+      task: (d) => d === "schwer" ? "Baue die Zahl einmal anders!" : "Lege die Zahl mit Material!",
+      intro: (d) => d === "leicht" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Unten auf dem Brett siehst du, wie viele Zehner und Einer du gelegt hast."
+        : d === "mittel" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Jetzt zählst du selbst nach!"
+        : "Eine Zahl kann man auf verschiedene Arten legen. Nimm genau so viele Zehnerstangen, wie Polly sagt – den Rest legst du mit Einerwürfeln.",
+      ex: () => `${dnSVG({ z: 3, e: 4, c: "b", t10: true }, .9)}<br>34 = 3 Zehner und 4 Einer`,
+      say: (d) => d === "leicht" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Unten auf dem Brett siehst du, wie viele Zehner und Einer du gelegt hast."
+        : d === "mittel" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Jetzt zählst du selbst nach!"
+        : "Eine Zahl kann man auf verschiedene Arten legen. Nimm genau so viele Zehnerstangen, wie Polly sagt. Den Rest legst du mit Einerwürfeln.",
+      build(d) {
+        if (d === "schwer") return gen(6, () => { const n = rint(21, 89), z = Math.floor(n / 10), zz = z - rint(1, Math.min(2, z - 1)); return n - zz * 10 <= 29 ? { n, zz, lab: `${n} mit ${zz} Zehnern legen` } : null; });
+        return gen(6, () => { const n = d === "leicht" ? rint(11, 59) : rint(11, 99); return { n, lab: `${n} legen` }; });
+      },
+      render(x, stage, d) {
+        const n = x.n, [z, e] = ZE(n), M = matBoard({ counts: d === "leicht" });
+        const U = wkUI(stage, M, el("div", "card mq", d === "schwer" ? `Lege <b>${n}</b> mit genau <b>${x.zz}</b> Zehnerstangen.` : `Lege die Zahl <b>${n}</b>.`));
+        M.onTap = (k, i) => { M[k].splice(i, 1); tone([330], 0.05); M.render(); };
+        U.say(d === "schwer" ? `Nimm ${x.zz} Zehnerstangen. Den Rest legst du mit Einerwürfeln.` : "Lege Zehner und Einer. Tippst du auf ein Teil, kommt es wieder weg.");
+        let tries = 0;
+        U.btns([[ibZ("b") + " + Zehner", "", () => M.add("z", "b")], [ibE("b") + " + Einer", "", () => M.add("e", "b")], ["− Zehner", "sm", () => M.drop("z", "b")], ["− Einer", "sm", () => M.drop("e", "b")],
+          ["Fertig ✓", "go", (btn) => {
+            const v = M.val(), zc = M.z.length, ec = M.e.length;
+            if (d === "schwer" ? v === n && zc === x.zz : v === n && ec <= 9) {
+              M.counts = true; M.render(); award(btn, 1);
+              hint(praise() + ` ${n} = ${zc} Zehner und ${ec} Einer`, true); speak(`${n} sind ${zc} Zehner und ${ec} Einer.`); done(1800); return;
+            }
+            if (v === n) { hint(d === "schwer" ? `Das sind ${n} – aber nimm genau ${x.zz} Zehnerstangen und dafür mehr Einerwürfel.` : `Das sind ${n} – richtig! Aber 10 Einer sind so viel wie 1 Zehnerstange. Lege lieber ${z} Zehner und ${e} Einer.`); return; }
+            tries++;
+            miss(M.box, `Du hast ${zc} Zehner und ${ec} Einer gelegt. Das sind ${v}. ` + (d === "schwer"
+              ? (tries >= 2 ? `${x.zz} Zehner sind ${x.zz * 10}. Bis ${n} fehlen noch ${n - x.zz * 10} Einer.` : `Wie viele Einer brauchst du noch zu ${x.zz} Zehnern?`)
+              : (tries >= 2 ? `${n} sind ${z} Zehner und ${e} Einer.` : `Wie viele Zehner und Einer hat ${n}?`)));
+          }]]);
+      }
+    },
+    {
+      id: "tauschen", name: "Zehner tauschen", icon: "🔁", color: "#2a9d8f",
+      task: (d) => d === "schwer" ? "Brich einen Zehner auf!" : "Tausche 10 Einer gegen 1 Zehner!",
+      intro: (d) => d === "schwer" ? "Manchmal braucht man mehr Einer. Dann brichst du eine Zehnerstange auf: Aus 1 Zehner werden 10 Einer. Die Zahl bleibt gleich!"
+        : "Hier liegen mehr als 9 Einer. Immer 10 Einer tauschst du gegen 1 Zehnerstange. Dann kannst du die Zahl gut ablesen.",
+      ex: (d) => d === "schwer" ? `${dnSVG({ z: 3, e: 4, c: "b", t10: true }, .6)} = ${dnSVG({ z: 2, e: 14, c: "b", t10: true }, .6)}` : `${dnSVG({ z: 2, e: 13, c: "b", t10: true }, .6)} = ${dnSVG({ z: 3, e: 3, c: "b", t10: true }, .6)}`,
+      say: (d) => d === "schwer" ? "Manchmal braucht man mehr Einer. Dann brichst du eine Zehnerstange auf. Aus 1 Zehner werden 10 Einer. Die Zahl bleibt gleich!" : "Hier liegen mehr als 9 Einer. Immer 10 Einer tauschst du gegen eine Zehnerstange. Dann kannst du die Zahl gut ablesen.",
+      build(d) {
+        if (d === "schwer") return gen(6, () => { const n = rint(21, 89), [z, e] = ZE(n); return { n, lab: `${n} = ${z - 1} Zehner und ${e + 10} Einer` }; });
+        return gen(6, () => { const z = rint(1, d === "leicht" ? 6 : 5), e = d === "leicht" ? rint(11, 19) : rint(20, 29), n = 10 * z + e; return n <= 99 ? { z, e, n, lab: `${z} Zehner und ${e} Einer = ${n}` } : null; });
+      },
+      render(x, stage, d) {
+        if (d === "schwer") {
+          const n = x.n, [z, e] = ZE(n), M = matBoard({ counts: false }); layNum(M, n);
+          const U = wkUI(stage, M, el("div", "card mq", `Hier liegt die Zahl <b>${n}</b>.`));
+          let used = false;
+          const next = () => {
+            U.say("Wie viele Einerwürfel liegen jetzt da?");
+            U.ask(e + 10, { line: [{ a: e + 10 }, { t: "Einer", c: "tag" }], say: "Wie viele Einerwürfel liegen jetzt da?", why: (k, v) => numWhy(e + 10, v, `Ein voller Turm sind 10 Würfel, dazu kommen ${e}.`),
+              okText: `${n} = ${z - 1} Zehner und ${e + 10} Einer – immer noch ${n}!`, okSay: `${n} sind auch ${z - 1} Zehner und ${e + 10} Einer.`, onDone: () => { M.counts = true; M.render(); } });
+          };
+          const brk = () => { if (used) return; used = true; U.btns([]); M.unbundle(next); };
+          M.onTap = (k) => { if (k === "z") brk(); };
+          U.say("Brich eine Zehnerstange auf: Aus 1 Zehner werden 10 Einer.");
+          U.btns([["🔨 1 Zehner ➜ 10 Einer", "ex", brk]]);
+          return;
+        }
+        const M = matBoard({ counts: true });
+        for (let i = 0; i < x.z; i++) M.z.push(mp("b")); for (let i = 0; i < x.e; i++) M.e.push(mp("b"));
+        const U = wkUI(stage, M, el("div", "card mq", `<b>${x.z}</b> Zehner und <b>${x.e}</b> Einer – wie heißt die Zahl?`));
+        const check = () => {
+          if (M.live("e").length >= 10) {
+            U.say(M.z.length > x.z ? "Es sind immer noch 10 oder mehr Einer. Tausche nochmal!" : "Mehr als 9 Einer! Tausche 10 Einer gegen 1 Zehnerstange.");
+            U.btns([["🔄 10 Einer ➜ 1 Zehner", "ex", () => { U.btns([]); M.bundle(check); }]]); return;
+          }
+          U.say("Jetzt kannst du die Zahl ablesen. Wie heißt sie?");
+          U.ask(x.n, { say: "Wie heißt die Zahl?", why: (k, v) => numWhy(x.n, v, "Schau auf die Zahlen unter den Zehnern und den Einern."), okText: `${x.z} Zehner und ${x.e} Einer = ${x.n}`, okSay: `${x.n}.` });
+        };
+        check();
+      }
+    },
+    {
+      id: "pluslegen", name: "Plus legen", icon: "🟧", color: "#f77f00",
+      task: () => "Lege die Plusaufgabe!",
+      intro: (d) => "Die erste Zahl liegt schon da. Lege die zweite Zahl in Orange dazu. " + (d === "schwer" ? "Sind es 10 Einer oder mehr, tauschst du 10 Einer gegen einen Zehner. " : "") + "Dann liest du das Ergebnis ab.",
+      ex: () => `${dnSVG({ z: 3, e: 4, c: "b", t10: true }, .6)} + ${dnSVG({ z: 2, e: 5, c: "o", t10: true }, .6)}<br>34 + 25 = 59`,
+      say: (d) => "Die erste Zahl liegt schon da. Lege die zweite Zahl in Orange dazu. " + (d === "schwer" ? "Sind es 10 Einer oder mehr, tauschst du 10 Einer gegen einen Zehner. " : "") + "Dann liest du das Ergebnis ab.",
+      build(d) { return gen(6, (k) => { const x = d === "leicht" ? GEN.einer("+") : d === "mittel" ? GEN.zweistellig("+") : GEN[k % 2 ? "profi" : "uebergang"]("+"); if (!x || x.r > 99) return null; x.lab = eqStr(x); return x; }); },
+      render(x, stage, d) {
+        const { a, b, r } = x, [bz, be] = ZE(b), M = matBoard({ counts: true }); layNum(M, a, "b");
+        const head = el("div", "card mq", `${a} + ${b} = <span class="qmark">?</span>`);
+        const U = wkUI(stage, M, head);
+        let lay = true, tries = 0;
+        M.onTap = (k, i) => { if (lay && M[k][i].c === "o") { M[k].splice(i, 1); tone([330], 0.05); M.render(); } };
+        const fin = () => {
+          if (M.live("e").length >= 10) { U.say(`Jetzt sind es ${M.live("e").length} Einer – mehr als 9! Tausche 10 Einer gegen 1 Zehnerstange.`); U.btns([["🔄 10 Einer ➜ 1 Zehner", "ex", () => { U.btns([]); M.bundle(fin); }]]); return; }
+          U.btns([]); U.say(`Lies ab: Wie viel ist ${a} + ${b}?`);
+          U.ask(r, { say: `Wie viel ist ${a} plus ${b}?`, why: (k, v) => numWhy(r, v, "Zähle alle Zehnerstangen und alle Einerwürfel."), okText: `${a} + ${b} = ${r}`, okSay: `${a} plus ${b} gleich ${r}.`,
+            onDone: () => { const q = head.querySelector(".qmark"); q.textContent = r; q.classList.add("ok"); } });
+        };
+        U.say(`${a} liegt schon da. Lege <b>${b}</b> in Orange dazu.`);
+        U.btns([[ibZ("o") + " + Zehner", "", () => M.add("z", "o")], [ibE("o") + " + Einer", "", () => M.add("e", "o")], ["− Zehner", "sm", () => M.drop("z", "o")], ["− Einer", "sm", () => M.drop("e", "o")],
+          ["Fertig ✓", "go", () => {
+            const oz = M.z.filter(p => p.c === "o").length, oe = M.e.filter(p => p.c === "o").length;
+            if (oz === bz && oe === be) { lay = false; tone([660, 880], 0.08); fin(); return; }
+            if (oz * 10 + oe === b) { hint(`Das sind ${b} – richtig! Lege ${b} aber lieber als ${bz} Zehner und ${be} Einer.`); return; }
+            tries++;
+            miss(M.box, `Du hast ${oz} Zehner und ${oe} Einer dazugelegt. ` + (tries >= 2 ? `${b} sind ${bz} Zehner und ${be} Einer.` : `Wie viele Zehner und Einer hat ${b}?`));
+          }]]);
+      }
+    },
+    {
+      id: "minuslegen", name: "Minus legen", icon: "✋", color: "#e63946",
+      task: () => "Lege die Minusaufgabe!",
+      intro: (d) => "Die erste Zahl liegt schon da. Nimm so viele Teile weg, wie abgezogen werden. " + (d === "schwer" ? "Reichen die Einer nicht, brichst du eine Zehnerstange auf. " : "") + "Dann siehst du, was übrig bleibt.",
+      ex: () => `${dnSVG({ z: 5, e: 7, c: "b", xz: 2, xe: 3, t10: true }, .7)}<br>57 − 23 = 34`,
+      say: (d) => "Die erste Zahl liegt schon da. Nimm so viele Teile weg, wie abgezogen werden. " + (d === "schwer" ? "Reichen die Einer nicht, brichst du eine Zehnerstange auf. " : "") + "Dann siehst du, was übrig bleibt.",
+      build(d) { return gen(6, (k) => { const x = d === "leicht" ? GEN.einer("−") : d === "mittel" ? GEN.zweistellig("−") : GEN[k % 2 ? "profi" : "uebergang"]("−"); if (!x) return null; x.lab = eqStr(x); return x; }); },
+      render(x, stage, d) {
+        const { a, b, r } = x, [bz, be] = ZE(b), M = matBoard({ counts: true }); layNum(M, a, "b");
+        const head = el("div", "card mq", `${a} − ${b} = <span class="qmark">?</span>`);
+        const U = wkUI(stage, M, head), hist = [];
+        let taking = true, tries = 0;
+        const take = (k) => {
+          const arr = M[k];
+          for (let i = arr.length - 1; i >= 0; i--) if (!arr[i].gone) { arr[i].gone = true; hist.push(arr[i]); tone([300], 0.05); M.render(); return; }
+          hint(k === "e" ? "Es sind keine Einer mehr da." + (d === "schwer" && M.live("z").length ? " Brich eine Zehnerstange auf!" : "") : "Es sind keine Zehner mehr da.");
+        };
+        M.onTap = (k, i) => { if (!taking) return; const p = M[k][i]; p.gone = !p.gone; if (p.gone) hist.push(p); tone([p.gone ? 300 : 520], 0.05); M.render(); };
+        U.say(`Nimm <b>${b}</b> weg. Tippe auf „weg“ oder direkt auf die Teile.`);
+        const list = [["✋ Zehner weg", "", () => take("z")], ["✋ Einer weg", "", () => take("e")], ["↩︎ zurück", "sm", () => { const p = hist.pop(); if (p) { p.gone = false; tone([520], 0.05); M.render(); } }]];
+        if (d === "schwer") list.push(["🔨 1 Zehner ➜ 10 Einer", "ex", () => { if (!M.unbundle()) hint("Es liegt keine Zehnerstange mehr da."); }]);
+        list.push(["Fertig ✓", "go", () => {
+          const gone = M.z.filter(p => p.gone).length * 10 + M.e.filter(p => p.gone).length;
+          if (gone === b) {
+            taking = false; tone([660, 880], 0.08); U.btns([]); U.say("Wie viel bleibt übrig?");
+            U.ask(r, { say: `${a} minus ${b}. Wie viel bleibt übrig?`, why: (k, v) => numWhy(r, v, "Zähle nur die Teile, die noch da sind."), okText: `${a} − ${b} = ${r}`, okSay: `${a} minus ${b} gleich ${r}.`,
+              onDone: () => { const q = head.querySelector(".qmark"); q.textContent = r; q.classList.add("ok"); } });
+            return;
+          }
+          tries++;
+          const few = d === "schwer" && M.e.length < be;
+          miss(M.box, `Du hast ${gone} weggenommen. Nimm genau ${b} weg` + (tries >= 2 ? `: ${bz} Zehner und ${be} Einer.` : ".") + (few ? " Es liegen zu wenig Einer da – brich zuerst eine Zehnerstange auf!" : ""));
+        }]);
+        U.btns(list);
+      }
+    }
+  ];
+
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
@@ -3262,6 +3509,9 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       bonusPlan: [["hunderterfeld", "schwer", 2], ["zahlenstrahl", "schwer", 2], ["nachbarn", "schwer", 2], ["nachbarzehner", "schwer", 2], ["ordnen", "mittel", 2]] },
     { id: "rechnen", world: "polly", name: "Plus & Minus", title: "Plus-Minus-Inseln", sub: "Rechnen bis 100", icon: "🧮", ready: true, levels: RECHENLEVELS, award: "Rechen-Profi", hunter: "Rechen",
       bonusPlan: [["zehner", "schwer", 2], ["einer", "schwer", 2], ["zehnerdazu", "schwer", 2], ["uebergang", "schwer", 2], ["zweistellig", "schwer", 1], ["profi", "schwer", 1]] },
+    // Förderinsel: Zahlen und Aufgaben mit Material legen (ohne Experten-Insel)
+    { id: "werkstatt", world: "polly", name: "Werkstatt", title: "Pollys Werkstatt", sub: "Zahlen mit Material legen", icon: "🧰", ready: true, levels: WERKLEVELS, award: "Zahlen-Baumeister", hunter: "Werkstatt", noExpert: true,
+      bonusPlan: [["bauen", "mittel", 2], ["tauschen", "mittel", 2], ["pluslegen", "schwer", 2], ["minuslegen", "schwer", 2]] },
     { id: "einmaleins", world: "polly", name: "Einmaleins", sub: "Malnehmen", icon: "✖️", ready: false, levels: [] }
   ];
   let CH = CHAPTERS[0];
@@ -4316,10 +4566,10 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Polly fliegen?` : S.name ? `Hallo ${S.name}! Wohin soll Polly fliegen?` : "Wohin soll Polly fliegen?";
     updateFoot();
     show("scrHome");
-    const P = portrait(), zc = CHAPTERS.find(c => c.id === "zahlen"), rc = CHAPTERS.find(c => c.id === "rechnen");
+    const P = portrait(), zc = CHAPTERS.find(c => c.id === "zahlen"), rc = CHAPTERS.find(c => c.id === "rechnen"), wc = CHAPTERS.find(c => c.id === "werkstatt");
     // Hochformat: Pollys Dschungel unten, Inseln im Zickzack nach oben. Querformat: Dschungel links, Inseln im Zickzack nach rechts.
-    const pos = P ? { nest: [300, 1000], z: [150, 700], r: [450, 430], m: [170, 160], w: 600, h: 1170, r0: 90 }
-                  : { nest: [225, 370], z: [610, 470], r: [940, 250], m: [1180, 480], w: 1340, h: 640, r0: 96 };
+    const pos = P ? { nest: [300, 1010], z: [140, 700], r: [450, 430], m: [160, 160], wk: [470, 720], w: 600, h: 1180, r0: 90 }
+                  : { nest: [225, 370], z: [610, 470], r: [940, 250], m: [1180, 480], wk: [585, 150], w: 1340, h: 640, r0: 96 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtP = i; save(); swimTo(i, renderMap); };
     const J = invOf({ w: "polly" }), canBuy = SHOP_P.some(w => !owned(w) && S.coins >= w.p);
@@ -4333,10 +4583,12 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
         deco: [[-0.55, -0.26, "🌺", 0.34], [0.54, -0.3, "🌴", 0.48]], aria: "Plus-Minus-Inseln: Rechnen bis 100", tap: enter(rc) },
       { x: pos.m[0], y: pos.m[1], r: pos.r0 * 0.85, icon: "✖️", label: "Einmaleins", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
         deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Einmaleins-Inseln, kommen bald",
-        tap: (i) => { S.homeAtP = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "✖️", "Einmaleins-Inseln", "Malnehmen"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Polly hier landen!")); })); } }
+        tap: (i) => { S.homeAtP = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "✖️", "Einmaleins-Inseln", "Malnehmen"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Polly hier landen!")); })); } },
+      { x: pos.wk[0], y: pos.wk[1], r: pos.r0 * 0.88, icon: "🧰", grass: "#ffe0a3", label: "Pollys Werkstatt", big: true, sub: chapSub(wc),
+        deco: [[-0.56, -0.26, "🔨", 0.34], [0.55, -0.3, "🌴", 0.44]], aria: "Pollys Werkstatt: Zahlen mit Material legen", tap: enter(wc) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 2, dn(rc)], [2, 3, "faint"]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 66, wrapBig: P, clouds: 6 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 2, dn(rc)], [2, 3, "faint"], [0, 4, dn(wc)]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 66, wrapBig: P, clouds: 6 });
     setCoins(false);
   }
 
@@ -4358,7 +4610,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   function renderMap() {
     $("mapTitle").textContent = `${CH.icon} ${CH.title || CH.name + "-Inseln"}`;
     show("scrMap");
-    const P = portrait(), n = CH.levels.length, lay = snake(n + 3, P), k = P ? 1.15 : 1;
+    const P = portrait(), n = CH.levels.length, lay = snake(n + (CH.noExpert ? 2 : 3), P), k = P ? 1.15 : 1;
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
     const open = bonusOpen(CH), pc = perfectCount(CH);
     const pol = isPolly(), nodes = [{ ...lay.pts[0], r: 44 * k, icon: W.start, label: "Start", grass: pol ? "#c6eba6" : "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
@@ -4372,11 +4624,11 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       sub: open ? (S.bonus[CH.id] ? "Schatz gefunden!" : "Offen!") : `💎 ${pc}/${n}`, deco: [[0.55, -0.25, "🌴", 0.45]], aria: "Schatzinsel",
       tap: (i) => { swimTo(i, () => treasureSheet()); } });
     const xs = S.expert[CH.id] || 0;
-    nodes.push({ ...lay.pts[n + 2], r: 62 * k, icon: "⚓", grass: "#b8c0ff", label: "Experten-Insel", sub: xs ? `⭐ ${xs}/3${xs >= 2 ? " · 🏆" : ""}` : "Für Profis!", subGold: xs >= 2,
+    if (!CH.noExpert) nodes.push({ ...lay.pts[n + 2], r: 62 * k, icon: "⚓", grass: "#b8c0ff", label: "Experten-Insel", sub: xs ? `⭐ ${xs}/3${xs >= 2 ? " · 🏆" : ""}` : "Für Profis!", subGold: xs >= 2,
       badge: xs >= 2 ? "🏆" : "", deco: [[-0.56, -0.22, "🌴", 0.42]], aria: "Experten-Insel: die schwersten Aufgaben, Schatz statt Münzen", tap: (i) => swimTo(i, () => expertSheet()) });
     const edges = [];
     for (let k = 0; k < n + 1; k++) edges.push([k, k + 1, k < n ? (islandDone(CH, k) ? "done" : "") : (S.bonus[CH.id] ? "done" : "")]);
-    edges.push([n + 1, n + 2, xs >= 2 ? "done" : ""]);
+    if (!CH.noExpert) edges.push([n + 1, n + 2, xs >= 2 ? "done" : ""]);
     const at = Math.min((S.at && S.at[CH.id]) || 0, nodes.length - 1);
     drawSea($("chapMap"), { w: lay.w, h: lay.h, nodes, edges, at, label: `Inselkarte ${CH.name}`, seed: 9, nemo: P ? 58 : 52, fs: P ? 25 : 23, clouds: pol ? 4 : 0 });
     $("certBtn").hidden = !CH.levels.every((_, li) => islandDone(CH, li));
@@ -4489,6 +4741,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     if (ro && !ruleSeen[ruleKey(CH, ro.lv)]) openRule(CH, li, true);
   }
   function startLevel(li, d) {
+    if (li === "expert" && CH.noExpert) return renderMap();
     const lv = li === "bonus" ? BONUS : li === "expert" ? EXPERTISLE : view(levelOf(li), d);
     L = { li, d, lv, items: lv.build(d), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: li === "bonus" ? 3 : li === "expert" ? 0 : DIFFS[d].mult, wrong: [], pearls: [] };
     const badge = $("playBadge");
@@ -4615,7 +4868,11 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     "rechnen:zehnerdazu": "Ich rechne ganze Zehner plus und minus.",
     "rechnen:uebergang": "Ich rechne über den Zehner.",
     "rechnen:zweistellig": "Ich rechne mit zwei zweistelligen Zahlen.",
-    "rechnen:profi": "Ich rechne zweistellig auch über den Zehner."
+    "rechnen:profi": "Ich rechne zweistellig auch über den Zehner.",
+    "werkstatt:bauen": "Ich lege Zahlen mit Zehnern und Einern.",
+    "werkstatt:tauschen": "Ich tausche 10 Einer gegen einen Zehner und zurück.",
+    "werkstatt:pluslegen": "Ich lege Plusaufgaben mit Material.",
+    "werkstatt:minuslegen": "Ich lege Minusaufgaben mit Material."
   };
   /* ---------- Merk- und Tipp-Karten: eine kurze Regel (merk) bzw. Strategie (tipp) zu jeder Insel ----------
      Beispiele: [Bild, Wort, Zusatzzeile]. Im Wort: *…* = markierte Stelle, | = Silbengrenze (zeichnet Silbenbögen),
@@ -4733,7 +4990,19 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       say: "Erst die Zehner, dann die Einer. 34 plus 25: Zerlege 25 in 20 und 5. Erst 34 plus 20 gleich 54, dann 54 plus 5 gleich 59." },
     "rechnen:profi": { k: "merk", t: "Der Profi-Rechenweg", s: "Erst die <b>Zehner</b>. Dann rechnest du bis zum <b>vollen Zehner</b> und zum Schluss den <b>Rest</b>.",
       ex: [["1️⃣", "38 + *20* = 58", "Zehner"], ["2️⃣", "58 + *2* = 60", "bis zum Zehner"], ["3️⃣", "60 + *3* = 63", "Rest dazu"]], v: "🧩 25 = 20 + 2 + 3",
-      say: "Der Profi-Rechenweg. 38 plus 25. Erst die Zehner: 38 plus 20 gleich 58. Dann bis zum vollen Zehner: 58 plus 2 gleich 60. Zum Schluss der Rest: 60 plus 3 gleich 63." }
+      say: "Der Profi-Rechenweg. 38 plus 25. Erst die Zehner: 38 plus 20 gleich 58. Dann bis zum vollen Zehner: 58 plus 2 gleich 60. Zum Schluss der Rest: 60 plus 3 gleich 63." },
+    "werkstatt:bauen": { k: "merk", t: "Zehner und Einer", s: "Eine <b>Zehnerstange</b> ist genau so groß wie <b>10 Einerwürfel</b>. Die Zehner legst du links hin, die Einer rechts – genau wie die Ziffern in der Zahl.",
+      ex: [[dnSVG({ z: 3, e: 4, c: "b", t10: true }, .75), "34", "3 Zehner · 4 Einer"], [dnSVG({ z: 5, e: 2, c: "b", t10: true }, .75), "52", "5 Zehner · 2 Einer"], [dnSVG({ z: 1, e: 0, c: "b" }, .75) + " " + dnSVG({ z: 0, e: 10, c: "b", t10: true }, .75), "1 Zehner = 10 Einer"]],
+      say: "Zehner und Einer. Eine Zehnerstange ist genau so groß wie 10 Einerwürfel. Die Zehner legst du links hin, die Einer rechts, genau wie die Ziffern in der Zahl. 34 sind 3 Zehner und 4 Einer." },
+    "werkstatt:tauschen": { k: "merk", t: "10 Einer = 1 Zehner", s: "Liegen <b>10 Einer</b> da, tauschst du sie gegen <b>1 Zehnerstange</b>. Brauchst du mehr Einer, <b>brichst</b> du einen Zehner <b>auf</b>. Die Zahl bleibt immer gleich!",
+      ex: [[dnSVG({ z: 2, e: 13, c: "b", t10: true }, .7), "2 Zehner + 13 Einer"], [dnSVG({ z: 3, e: 3, c: "b", t10: true }, .7), "3 Zehner + 3 Einer", "beides ist 33"]], v: "🔄 10 Einer ➜ 1 Zehner · 🔨 1 Zehner ➜ 10 Einer",
+      say: "10 Einer sind 1 Zehner. Liegen 10 Einer da, tauschst du sie gegen eine Zehnerstange. Brauchst du mehr Einer, brichst du einen Zehner auf. Die Zahl bleibt immer gleich! 2 Zehner und 13 Einer sind 33, genau wie 3 Zehner und 3 Einer." },
+    "werkstatt:pluslegen": { k: "tipp", t: "Plus mit Material", s: "Die erste Zahl liegt da. Lege die zweite Zahl <b>dazu</b>. Sind es 10 Einer oder mehr, <b>tausche</b> 10 Einer gegen einen Zehner. Dann liest du ab.",
+      ex: [[dnSVG({ z: 3, e: 4, c: "b", t10: true }, .7), "34"], [dnSVG({ z: 2, e: 5, c: "o", t10: true }, .7), "+ 25", "dazulegen"], [dnSVG({ z: 5, e: 9, c: "b", t10: true }, .7), "= 59", "ablesen"]],
+      say: "Plus mit Material. Die erste Zahl liegt da. Lege die zweite Zahl dazu. Sind es 10 Einer oder mehr, tausche 10 Einer gegen einen Zehner. Dann liest du ab: 34 plus 25 gleich 59." },
+    "werkstatt:minuslegen": { k: "tipp", t: "Minus mit Material", s: "Die erste Zahl liegt da. Nimm so viele Teile <b>weg</b>, wie abgezogen werden. Reichen die Einer nicht, <b>brich einen Zehner auf</b>. Dann zählst du, was übrig bleibt.",
+      ex: [[dnSVG({ z: 5, e: 7, c: "b", xz: 2, xe: 3, t10: true }, .7), "57 − 23", "wegnehmen"], [dnSVG({ z: 3, e: 4, c: "b", t10: true }, .7), "= 34", "bleibt übrig"]],
+      say: "Minus mit Material. Die erste Zahl liegt da. Nimm so viele Teile weg, wie abgezogen werden. Reichen die Einer nicht, brich einen Zehner auf. Dann zählst du, was übrig bleibt: 57 minus 23 gleich 34." }
   };
   let ruleSeen = {};
   const ruleKey = (ch, lv) => ch.id + ":" + lv.id;
