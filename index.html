@@ -548,7 +548,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 body.polly .sky { display: block; }
 body.polly .rays, body.polly #bubbles { display: none; }
 body.polly { --deep: #0b4b5a; --sea: #138a9e; --shallow: #62d3e3; --shadow: rgba(5, 52, 62, 0.33);
-  background: #1592ad; background-image: linear-gradient(180deg, #a6ecf7 0%, #4fc9de 28%, #1fa2c0 64%, #12789a 100%); background-attachment: fixed; }
+  background: #1592ad; background-image: linear-gradient(180deg, #86dcec 0%, #47c2d8 28%, #1e9dbb 64%, #12789a 100%); background-attachment: fixed; }
 .sky .cl { position: absolute; left: 0; top: var(--y); width: var(--w); height: calc(var(--w) * .36); background: #fff; border-radius: 999px; opacity: .42; animation: cloud var(--d) linear infinite; animation-delay: var(--dl); }
 .sky .cl::before { content: ""; position: absolute; background: #fff; border-radius: 50%; width: 46%; height: 120%; left: 16%; bottom: 34%; }
 .sky .cl::after { content: ""; position: absolute; background: #fff; border-radius: 50%; width: 34%; height: 92%; right: 16%; bottom: 40%; }
@@ -709,6 +709,20 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .numpad.big { width: min(440px, 100%); gap: 10px; }
 .numpad.big .nk { height: 72px; font-size: 38px; border-radius: 18px; }
 
+/* ---------- Ruhe-Modus für Aufgaben: augenschonend, Fokus auf das Wesentliche ----------
+   60 % ruhiger Hintergrund · 30 % helle Arbeitsfläche · 10 % Gold nur für „hier bist du dran“.
+   Grün bedeutet nur „richtig“, Rot nur „falsch“ bzw. „weg“. Lern-Farbcodes (der/die/das, Silben, Zehner/Einer) bleiben. */
+body.calm .rays i, body.calm .sky .cl { animation-play-state: paused; }
+body.calm .rays { opacity: .45; transition: opacity .6s; }
+body.calm .bub, body.calm .sky .fe { display: none; }
+body.calm .sky .cl { opacity: .25; }
+#scrPlay .stage { background: rgba(255, 252, 240, .16); border-radius: 34px; padding: 18px 12px; box-shadow: inset 0 0 0 2px rgba(255,255,255,.2); }
+body.polly #scrPlay .stage { background: rgba(255, 252, 240, .22); }
+.taskrow .task { background: rgba(4, 30, 52, .32); border-radius: 999px; padding: 4px 18px; }
+body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
+.nk.ok, .mbtn.go, .mbtn.ex { background: var(--gold); color: var(--ink); box-shadow: 0 5px 0 var(--gold-edge), 0 8px 14px var(--shadow); }
+.nk.ok:active, .mbtn.go:active, .mbtn.ex:active { box-shadow: 0 2px 0 var(--gold-edge); }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -778,7 +792,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Werkstatt neu</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Ruhe-Modus</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1307,6 +1321,8 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   let current = "scrStart";
   function show(id) {
     current = id; closeSheet();
+    // Ruhe-Modus: In Aufgaben, Auswertung und Urkunde steht der Hintergrund still – der Blick bleibt bei der Aufgabe.
+    document.body.classList.toggle("calm", ["scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"].indexOf(id) >= 0);
     SCREENS.forEach(s => $(s).hidden = s !== id);
     const back = $("backBtn");
     back.hidden = (id === "scrStart" || id === "scrWorld");
