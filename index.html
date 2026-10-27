@@ -639,6 +639,12 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .cmpcard .markslot { min-width: 1em; }
 .opt.numopt { font-size: clamp(36px, 7vw, 56px); min-width: 150px; font-variant-numeric: tabular-nums; }
 
+/* Polly als Bild (roter Papagei) */
+.pi { display: inline-block; vertical-align: middle; line-height: 0; }
+.pi svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.nemo .pi, .world .wi .pi { filter: drop-shadow(0 8px 10px rgba(0,0,0,.2)); }
+.tank .nemo-fish .pi { vertical-align: top; }
+
 /* ---------- Pollys Werkstatt: Legebrett ---------- */
 .mat { display: flex; background: #fffaf0; border-radius: 22px; border: 3px solid var(--sand-edge); box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); overflow: hidden; max-width: 100%; }
 .mcolw { display: flex; flex-direction: column; min-width: 118px; }
@@ -705,7 +711,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 
   <!-- START -->
   <section class="screen start center" id="scrStart">
-    <div class="duo" aria-hidden="true"><span class="nemo">🦈</span><span class="nemo polly-m">🦜</span></div>
+    <div class="duo" aria-hidden="true"><span class="nemo">🦈</span><span class="nemo polly-m pollyfig">🦜</span></div>
     <div class="head xl">Nemos & Pollys<br>Spielplatz</div>
     <div class="card" id="nameCard">
       <label for="nameInput">Wie heißt du?</label>
@@ -727,7 +733,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     <div class="head l" id="worldHello">Wohin möchtest du?</div>
     <div class="worlds">
       <button class="world nemo-w" id="goNemo"><span class="wi" aria-hidden="true">🦈</span><span class="wn">Nemos Spielplatz</span><span class="ws">Deutsch: Nomen, Lernwörter,<br>Lesen und Rechtschreiben</span><span class="wt" id="wtNemo"></span></button>
-      <button class="world polly-w" id="goPolly"><span class="wi" aria-hidden="true">🦜</span><span class="wn">Pollys Spielplatz</span><span class="ws">Mathe: Zahlen bis 100,<br>Plus und Minus</span><span class="wt" id="wtPolly"></span></button>
+      <button class="world polly-w" id="goPolly"><span class="wi pollyfig" aria-hidden="true">🦜</span><span class="wn">Pollys Spielplatz</span><span class="ws">Mathe: Zahlen bis 100,<br>Plus und Minus</span><span class="wt" id="wtPolly"></span></button>
     </div>
     <div class="foot"><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
   </section>
@@ -737,7 +743,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Pollys Werkstatt</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Rote Polly</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1064,7 +1070,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     nemo: { id: "nemo", name: "Nemos Spielplatz", hero: "Nemo", emo: "🦈", goes: "schwimmt", go: "schwimmen", place: "Aquarium", inPlace: "in deinem Aquarium", forPlace: "für dein Aquarium",
       shopTitle: "🐠 Nemos Aquarium", chest: "Nemos Schatztruhe", start: "⚓", conf: ["🐟", "🐠", "⭐", "🫧", "🦈", "🐚", "✨"], buyConf: ["🫧", "✨", "⭐", "🐚"] },
     polly: { id: "polly", name: "Pollys Spielplatz", hero: "Polly", emo: "🦜", goes: "fliegt", go: "fliegen", place: "Dschungel", inPlace: "in deinem Dschungel", forPlace: "für deinen Dschungel",
-      shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", conf: ["🦜", "🪶", "⭐", "🍌", "🌺", "✨"], buyConf: ["🪶", "✨", "⭐", "🌺"] }
+      shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] }
   };
   let W = WORLDS.nemo;
   const isPolly = () => W.id === "polly";
@@ -1075,7 +1081,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       head: (n, pr) => pr ? `Noch ${n === 1 ? "eine Muschel" : n + " Muscheln"} zum Üben` : `${n === 1 ? "Eine Übe-Muschel" : n + " Übe-Muscheln"}: das übst du nochmal`, gems: "Deine neuen Perlen",
       btn: (n, pr) => pr ? "🐚 Nochmal üben" : `🐚 ${n === 1 ? "Muschel" : "Muscheln"} üben`,
       allTitle: "Alle Muscheln sind Perlen!", part: (p, n) => `${p} von ${n} Muscheln sind jetzt Perlen.`, retry: "Übe die Muscheln und versuch es nochmal!" },
-    polly: { art: "nuss", gem: "nussauf", icon: "🥜", round: "🥜 Nuss-Runde", conf: ["🥜", "✨", "🦜", "⭐"],
+    polly: { art: "nuss", gem: "nussauf", icon: "🥜", round: "🥜 Nuss-Runde", conf: ["🥜", "✨", "🪶", "⭐"],
       head: (n, pr) => pr ? `Noch ${n === 1 ? "eine Nuss" : n + " Nüsse"} zum Knacken` : `${n === 1 ? "Eine harte Nuss" : n + " harte Nüsse"}: die knackst du nochmal`, gems: "Geknackt!",
       btn: (n, pr) => pr ? "🥜 Nochmal knacken" : `🥜 ${n === 1 ? "Nuss" : "Nüsse"} knacken`,
       allTitle: "Alle Nüsse geknackt!", part: (p, n) => `${p} von ${n} Nüssen sind geknackt.`, retry: "Knack die harten Nüsse und versuch es nochmal!" }
@@ -1084,10 +1090,10 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   function setWorld(id) {
     W = WORLDS[id] || WORLDS.nemo;
     document.body.classList.toggle("polly", isPolly());
-    document.querySelectorAll(".mascot").forEach(m => { m.textContent = W.emo; m.classList.toggle("polly-m", isPolly()); });
+    document.querySelectorAll(".mascot").forEach(m => { m.innerHTML = isPolly() ? pollyHTML("1.05em") : W.emo; m.classList.toggle("polly-m", isPolly()); });
     $("homeTitle").textContent = W.name; $("aquaTitle").textContent = W.shopTitle;
     $("mapHint").textContent = `Tippe auf eine Insel – ${W.hero} ${W.goes} hin!`;
-    $("certFoot").textContent = `${W.emo} ${W.hero} und die Klasse 2a gratulieren!`;
+    $("certFoot").innerHTML = `${isPolly() ? pollyHTML("1.3em") : W.emo} ${W.hero} und die Klasse 2a gratulieren!`;
     $("resShellBtn").textContent = SH().btn(2, false);
   }
 
@@ -2745,7 +2751,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     }
     const pg = sv("g", { class: "zs-polly" }, svg);
     sv("path", { d: "M-10 -4 L10 -4 L0 10 Z", class: "zs-pin" }, pg);
-    const pe = sv("text", { x: 0, y: -36, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 54 }, pg); pe.textContent = "🦜";
+    sv("image", { href: artURI("polly"), x: -32, y: -72, width: 64, height: 64 }, pg);
     const setPolly = (v) => { if (v == null) { pg.style.opacity = 0; return; } pg.style.opacity = 1; pg.style.transform = `translate(${X(v)}px, ${y - 34}px)`; };
     pg.style.transform = `translate(${X(o.from) - 30}px, ${y - 90}px)`;
     setPolly(o.polly);
@@ -2989,7 +2995,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
         }
         const t = x.t, g = x.g;
         stage.appendChild(el("div", "card mq", `Der ${x.nach ? "Nachfolger" : "Vorgänger"} von Pollys Zahl ist <b>${g}</b>.`));
-        padTask(stage, { layout: (slot) => houses([{ html: x.nach ? "" : String(g), lab: "Vorgänger" }, { node: slot(t), lab: "🦜 Pollys Zahl", mid: true }, { html: x.nach ? String(g) : "", lab: "Nachfolger" }]),
+        padTask(stage, { layout: (slot) => houses([{ html: x.nach ? "" : String(g), lab: "Vorgänger" }, { node: slot(t), lab: pollyHTML("1.3em") + " Pollys Zahl", mid: true }, { html: x.nach ? String(g) : "", lab: "Nachfolger" }]),
           say: `Der ${x.nach ? "Nachfolger" : "Vorgänger"} von Pollys Zahl ist ${g}. Wie heißt Pollys Zahl?`,
           why: (k, v) => numWhy(t, v, x.nach ? `Pollys Zahl ist 1 weniger als ${g}.` : `Pollys Zahl ist 1 mehr als ${g}.`), okText: `Pollys Zahl ist ${t}.`, okSay: `Pollys Zahl ist ${t}.` });
       },
@@ -3058,7 +3064,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
           });
         },
         render(x, stage) {
-          stage.appendChild(el("div", "card mq", `🦜 ${x.q} <b>Wer bin ich?</b>`));
+          stage.appendChild(el("div", "card mq", `${pollyHTML("1.3em")} ${x.q} <b>Wer bin ich?</b>`));
           padTask(stage, { layout: eqLayout([{ t: [{ t: "Ich bin" , c: "tag" }, { a: x.a }] }]), say: x.q + " Wer bin ich?", why: (k, v) => numWhy(x.a, v, "Lies das Rätsel nochmal ganz genau."), okText: `Ich bin ${x.a}.`, factor: 2 });
         }
       }
@@ -3096,7 +3102,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
         if (d === "leicht") {
           const w = x.big ? Math.max(a, b) : Math.min(a, b);
           $("taskText").textContent = x.big ? "Welche Zahl ist größer?" : "Welche Zahl ist kleiner?";
-          stage.appendChild(el("div", "card mq", `🦜 Polly möchte die <b>${x.big ? "größere" : "kleinere"}</b> Zahl.`));
+          stage.appendChild(el("div", "card mq", `${pollyHTML("1.3em")} Polly möchte die <b>${x.big ? "größere" : "kleinere"}</b> Zahl.`));
           choiceTask(stage, { opts: [a, b].map(v => ({ label: String(v), correct: v === w, cls: "numopt", wrongText: `${v} ist ${x.big ? "kleiner" : "größer"}. ` + cmpWhy(a, b) })), okText: `${w} ist ${x.big ? "größer" : "kleiner"}.`, okSpeak: `${w} ist ${x.big ? "größer" : "kleiner"}.` });
           L.speakNow = () => speak(`Welche Zahl ist ${x.big ? "größer" : "kleiner"}? ${a} oder ${b}?`);
           return;
@@ -3926,6 +3932,8 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   const STROKE2 = (d, w, c) => `<path d="${d}" fill="none" stroke="#17324a" stroke-opacity=".72" stroke-width="${w + 3}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
   const ORCHID = (x, y, s, c) => `${[0, 72, 144, 216, 288].map(a => `<ellipse cx="${x + Math.cos((a - 90) * Math.PI / 180) * 6 * s}" cy="${y + Math.sin((a - 90) * Math.PI / 180) * 6 * s}" rx="${5.2 * s}" ry="${3.8 * s}" transform="rotate(${a - 90} ${x + Math.cos((a - 90) * Math.PI / 180) * 6 * s} ${y + Math.sin((a - 90) * Math.PI / 180) * 6 * s})" fill="${c}" ${OL}/>`).join("")}<circle cx="${x}" cy="${y}" r="${3 * s}" fill="#ffd60a" ${OL}/>`;
   const PART = {
+    // Polly: roter Papagei, schaut nach links (wie das Emoji, damit das Spiegeln auf der Karte passt)
+    polly: `<path d="M60 66 L76 97 L85 93 L67 63 Z" fill="#e63946" ${OL}/><path d="M64 68 L86 92 L91 86 L70 64 Z" fill="#3a86ff" ${OL}/><ellipse cx="53" cy="60" rx="21" ry="25" fill="#e63946" ${OL}/><ellipse cx="47" cy="66" rx="11" ry="15" fill="#f25c5c"/><path d="M57 42 Q81 48 77 84 Q62 79 55 60 Z" fill="#e63946" ${OL}/><path d="M60 54 Q74 58 75 72 Q66 70 61 62 Z" fill="#ffd60a"/><path d="M63 66 Q74 70 76 82 Q68 79 64 72 Z" fill="#3a86ff"/><path d="M42 14 Q45 2 55 5 Q49 8 50 14 Z" fill="#e63946" ${OL}/><path d="M48 15 Q55 6 62 11 Q55 12 53 17 Z" fill="#d62828" ${OL}/><circle cx="44" cy="31" r="18" fill="#e63946" ${OL}/><ellipse cx="37" cy="34" rx="10" ry="9" fill="#fff4ec"/><path d="M30 33 q4 1 7 0 M31 37 q4 1 6 0" stroke="#e8a0a0" stroke-width="1.2" fill="none"/><circle cx="38.5" cy="29" r="5.6" fill="#fff" ${OL}/><circle cx="37.2" cy="29.4" r="2.9" fill="#17324a"/><circle cx="36.3" cy="28.3" r="1.1" fill="#fff"/><path d="M29 30 Q15 29 14 45 Q20 39 28 41 Z" fill="#fff1d6" ${OL}/><path d="M28 41 Q21 42 23 47 Q28 47 31 43 Z" fill="#343a40" ${OL}/><circle cx="46" cy="40" r="3.2" fill="#ff8fa3" opacity=".7"/><path d="M47 84 l-3 7 M50 85 l0 7 M57 84 l0 7 M60 84 l3 7" stroke="#6c757d" stroke-width="3" stroke-linecap="round"/>`,
     wellensittich: `<path d="M32 58 L4 66 L8 73 L34 64 Z" fill="#2a9d8f" ${OL}/><path d="M46 50 Q42 22 58 12 Q62 32 58 50 Z" fill="#55a630" ${OL}/><ellipse cx="52" cy="58" rx="22" ry="12" fill="#8ac926" ${OL}/><path d="M36 62 Q52 72 68 62 Q60 68 48 68 Q40 67 36 62 Z" fill="#b5e48c"/><circle cx="73" cy="47" r="12" fill="#ffd60a" ${OL}/><path d="M64 40 q3 -3 6 0 M62 46 q3 -3 6 0" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="83" cy="44" rx="3" ry="2.2" fill="#4361ee"/><path d="M83 47 Q91 50 86 57 Q83 53 81 53 Z" fill="#f4a261" ${OL}/>${EYE(77, 44, 2.8)}<path d="M44 56 Q36 28 52 18 Q64 36 62 58 Z" fill="#6a994e" ${OL}/><path d="M46 46 q4 -3 8 0 M45 38 q4 -3 8 0 M48 30 q3 -2 6 0" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/>`,
     kolibri: `<ellipse cx="40" cy="30" rx="7" ry="23" transform="rotate(-38 40 30)" fill="#bde0fe" opacity=".9" ${OL}/><ellipse cx="52" cy="27" rx="6.5" ry="21" transform="rotate(-12 52 27)" fill="#a2d2ff" opacity=".9" ${OL}/><path d="M30 62 L8 74 L16 63 L6 55 L28 55 Z" fill="#1b998b" ${OL}/><ellipse cx="46" cy="57" rx="21" ry="11" transform="rotate(-18 46 57)" fill="#2ec4b6" ${OL}/><path d="M54 56 Q62 63 68 52 Q60 50 54 56 Z" fill="#e63946" ${OL}/><circle cx="65" cy="45" r="9" fill="#2ec4b6" ${OL}/><path d="M73 44 L97 38" stroke="#17324a" stroke-width="3" stroke-linecap="round"/>${EYE(67, 43, 2.6)}`,
     kakadu: `<path d="M36 72 L24 95 L36 93 L45 75 Z" fill="#e9ecef" ${OL}/><ellipse cx="48" cy="64" rx="20" ry="24" fill="#f1f3f5" ${OL}/><path d="M34 56 Q50 50 58 66 Q48 82 32 76 Z" fill="#dee2e6" ${OL}/><path d="M52 26 Q42 6 56 2 Q56 14 60 20 Q62 4 75 6 Q66 16 67 26 Z" fill="#ffd60a" ${OL}/><circle cx="60" cy="36" r="14" fill="#f8f9fa" ${OL}/><path d="M71 33 Q85 33 80 48 Q76 44 70 44 Z" fill="#495057" ${OL}/>${EYE(64, 34, 3)}<path d="M44 87 v8 M54 87 v8" stroke="#6c757d" stroke-width="3.5" stroke-linecap="round"/>`,
@@ -3965,6 +3973,8 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   };
   Object.assign(ART, PART);
   const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`;
+  // Polly (roter Papagei) als Bild im Text: pollyHTML("1em") – Größe relativ zur Schrift
+  const pollyHTML = (sz) => `<span class="pi" style="width:${sz};height:${sz}">${artSVG("polly")}</span>`;
   const artURI = (id) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`);
 
   /* ---------- Nemos Aquarium ---------- */
@@ -4090,7 +4100,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     const n = aquaCount(), box = $("aqStat"), list = shopW(), inv = invW(), tr = treasW();
     const next = list.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
     const canNew = list.some(w => !owned(w) && S.coins >= w.p);
-    box.innerHTML = `<div class="aq-row"><span>${isPolly() ? "🦜" : "🐠"} ${n} von ${list.length} Arten · ${inv.length} ${inv.length === 1 ? "Sache" : "Sachen"} im ${W.place} · 🏆 ${tr.filter(owned).length}/${tr.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / list.length * 100)}%"></i></span></div>` +
+    box.innerHTML = `<div class="aq-row"><span>${isPolly() ? pollyHTML("1.3em") : "🐠"} ${n} von ${list.length} Arten · ${inv.length} ${inv.length === 1 ? "Sache" : "Sachen"} im ${W.place} · 🏆 ${tr.filter(owned).length}/${tr.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / list.length * 100)}%"></i></span></div>` +
       (n === list.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
        canNew ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
        `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
@@ -4139,7 +4149,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       t.appendChild(it);
     });
     if (!editMode) {
-      const nm = el("div", "item swim", `<div class="flip rev"><div class="nemo-fish">${W.emo}</div></div>`);
+      const nm = el("div", "item swim", `<div class="flip rev"><div class="nemo-fish">${pol ? pollyHTML("84px") : W.emo}</div></div>`);
       nm.style.setProperty("--t", pol ? "13s" : "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = pol ? "22%" : "34%";
       nm.style.animationDelay = nm.firstChild.style.animationDelay = "-3s"; t.appendChild(nm);
     }
@@ -4277,8 +4287,8 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     const g = sv("g", { "aria-hidden": "true" }, svg), fly = isPolly(), hs = cfg.nemo || 62;
     sv("ellipse", { cx: 0, cy: hs * (fly ? 0.95 : 0.55), rx: hs * (fly ? 0.26 : 0.36), ry: hs * (fly ? 0.07 : 0.09), fill: fly ? "rgba(4,40,60,.2)" : "rgba(4,30,52,.25)" }, g);
     const inner = sv("g", { class: fly ? "fly-in" : "nemo-in" }, g);
-    const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": hs }, inner);
-    t.textContent = W.emo;
+    if (fly) sv("image", { href: artURI("polly"), x: -hs * 0.68, y: -hs * 0.78, width: hs * 1.36, height: hs * 1.36 }, inner);
+    else { const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": hs }, inner); t.textContent = W.emo; }
     MAP = { cfg, svg, edges, nemo: g, at: Math.min(cfg.at || 0, cfg.nodes.length - 1), busy: false, face: 1 };
     const p = restPos(MAP.at); placeNemo(p.x, p.y);
   }
@@ -4575,7 +4585,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     const J = invOf({ w: "polly" }), canBuy = SHOP_P.some(w => !owned(w) && S.coins >= w.p);
     const nodes = [
       { x: pos.nest[0], y: pos.nest[1], r: pos.r0, icon: "🌴", draw: "jungle", subGold: canBuy, grass: "#8fd694", label: "Pollys Dschungel", big: true,
-        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (J.length ? `🦜 ${J.length} ${J.length === 1 ? "Sache" : "Sachen"} im Dschungel` : "Sammle Münzen für deinen Dschungel!"),
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (J.length ? `🌴 ${J.length} ${J.length === 1 ? "Sache" : "Sachen"} im Dschungel` : "Sammle Münzen für deinen Dschungel!"),
         items: J.slice(-10).map(a => a.id), next: canBuy, aria: "Pollys Dschungel mit dem Laden", tap: (i) => { S.homeAtP = i; swimTo(i, renderAqua); } },
       { x: pos.z[0], y: pos.z[1], r: pos.r0, icon: "🔢", grass: "#a7e07f", label: "Zahlen bis 100", big: true, sub: chapSub(zc),
         deco: [[-0.52, -0.3, "🌴", 0.48], [0.56, -0.26, "🌺", 0.34]], aria: "Zahlen-Inseln: Zahlenraum bis 100", tap: enter(zc) },
@@ -4877,6 +4887,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   /* ---------- Merk- und Tipp-Karten: eine kurze Regel (merk) bzw. Strategie (tipp) zu jeder Insel ----------
      Beispiele: [Bild, Wort, Zusatzzeile]. Im Wort: *…* = markierte Stelle, | = Silbengrenze (zeichnet Silbenbögen),
      der/die/das werden in den Begleiter-Farben gezeigt. Gemerkt wird nur im Arbeitsspeicher (nichts gespeichert). */
+  const PI = pollyHTML("1em"), PIs = pollyHTML("1.3em");
   const RULES = {
     "nomen:fischen": { k: "merk", t: "Was ist ein Nomen?", s: "Nomen sind Namen für <b>Menschen, Tiere, Pflanzen und Dinge</b>. Vor ein Nomen passt <b>der</b>, <b>die</b> oder <b>das</b>.",
       ex: [["🧒", "das Kind"], ["🐶", "der Hund"], ["🌷", "die Blume"], ["⚽", "der Ball"]], v: "🔎 Probe: Passt der, die oder das davor? Dann ist es ein Nomen." },
@@ -4959,28 +4970,28 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       say: "Punkt, Fragezeichen, Ausrufezeichen. Am Satzende steht ein Satzzeichen: ein Punkt, wenn du etwas erzählst. Ich heiße Lena. Ein Fragezeichen, wenn du fragst. Wie heißt du? Ein Ausrufezeichen, wenn du rufst oder etwas befiehlst. Pass auf!" },
     // ---- Pollys Spielplatz ----
     "zahlen:hunderterfeld": { k: "merk", t: "Das Hunderterfeld", s: "Das Hunderterfeld hat <b>100 Punkte</b>. Jede volle Reihe ist ein <b>Zehner</b>. Die einzelnen Punkte sind die <b>Einer</b>.",
-      ex: [[miniField(34, 72), "34", "3 Zehner · 4 Einer"], [miniField(70, 72), "70", "7 Zehner · 0 Einer"], [miniField(100, 72), "100", "10 Zehner"]], v: "🦜 Erst die vollen Reihen zählen, dann die einzelnen Punkte!",
+      ex: [[miniField(34, 72), "34", "3 Zehner · 4 Einer"], [miniField(70, 72), "70", "7 Zehner · 0 Einer"], [miniField(100, 72), "100", "10 Zehner"]], v: PIs + " Erst die vollen Reihen zählen, dann die einzelnen Punkte!",
       say: "Das Hunderterfeld. Es hat 100 Punkte. Jede volle Reihe ist ein Zehner. Die einzelnen Punkte sind die Einer. Zum Beispiel 34: Das sind 3 Zehner und 4 Einer. 70 sind 7 Zehner. Erst die vollen Reihen zählen, dann die einzelnen Punkte!" },
     "zahlen:zahlenstrahl": { k: "merk", t: "Der Zahlenstrahl", s: "Auf dem Zahlenstrahl stehen die Zahlen <b>der Reihe nach</b>. Nach rechts werden sie <b>größer</b>. Die langen Striche sind die <b>Zehner</b>, die mittleren die <b>Fünfer</b>.",
-      ex: [[miniLine(30, 40, 35), "35", "Mitte zwischen 30 und 40"], [miniLine(40, 50, 47), "47", "von 40 aus 7 weiter"]], v: "🦜 Tipp: Zähle von der nächsten Zehnerzahl aus.",
+      ex: [[miniLine(30, 40, 35), "35", "Mitte zwischen 30 und 40"], [miniLine(40, 50, 47), "47", "von 40 aus 7 weiter"]], v: PIs + " Tipp: Zähle von der nächsten Zehnerzahl aus.",
       say: "Der Zahlenstrahl. Die Zahlen stehen der Reihe nach. Nach rechts werden sie größer. Die langen Striche sind die Zehner, die mittleren die Fünfer. Die 35 liegt genau in der Mitte zwischen 30 und 40. Die 47 findest du, wenn du von 40 aus 7 weiterzählst." },
     "zahlen:nachbarn": { k: "merk", t: "Vorgänger und Nachfolger", s: "Der <b>Vorgänger</b> ist die Zahl direkt <b>davor</b>: 1 weniger. Der <b>Nachfolger</b> ist die Zahl direkt <b>danach</b>: 1 mehr.",
-      ex: [["⬅️", "*33* 34", "Vorgänger"], ["➡️", "34 *35*", "Nachfolger"], ["🌉", "*39* 40 *41*", "über den Zehner"]], v: "🦜 Vorgänger: 1 weniger · Nachfolger: 1 mehr",
+      ex: [["⬅️", "*33* 34", "Vorgänger"], ["➡️", "34 *35*", "Nachfolger"], ["🌉", "*39* 40 *41*", "über den Zehner"]], v: PIs + " Vorgänger: 1 weniger · Nachfolger: 1 mehr",
       say: "Vorgänger und Nachfolger. Der Vorgänger ist die Zahl direkt davor, also 1 weniger. Der Nachfolger ist die Zahl direkt danach, also 1 mehr. Der Vorgänger von 34 ist 33, der Nachfolger ist 35. Und der Vorgänger von 40 ist 39." },
     "zahlen:nachbarzehner": { k: "merk", t: "Die Nachbarzehner", s: "Jede Zahl wohnt zwischen <b>zwei Zehnerzahlen</b>. Das sind ihre Nachbarzehner. Schau auf die Zehner: 34 hat 3 Zehner.",
-      ex: [["🏠", "*30* 34 *40*"], ["🏠", "*60* 67 *70*"], ["🏠", "*90* 98 *100*"]], v: "🦜 Welcher ist näher? Zähle die Schritte bis zu jedem Zehner!",
+      ex: [["🏠", "*30* 34 *40*"], ["🏠", "*60* 67 *70*"], ["🏠", "*90* 98 *100*"]], v: PIs + " Welcher ist näher? Zähle die Schritte bis zu jedem Zehner!",
       say: "Die Nachbarzehner. Jede Zahl wohnt zwischen zwei Zehnerzahlen. 34 wohnt zwischen 30 und 40. 67 wohnt zwischen 60 und 70. Welcher Zehner ist näher? Zähle die Schritte bis zu jedem Zehner!" },
     "zahlen:ordnen": { k: "merk", t: "Zahlen vergleichen", s: "Vergleiche zuerst die <b>Zehner</b>. Sind sie gleich, vergleiche die <b>Einer</b>. Pollys Schnabel ist immer zur <b>größeren</b> Zahl hin offen.",
-      ex: [["🦜", "34 *&lt;* 43", "3 Zehner &lt; 4 Zehner"], ["🦜", "68 *&gt;* 63", "gleiche Zehner: 8 &gt; 3"], ["⚖️", "50 *=* 50", "gleich groß"]],
+      ex: [[PI, "34 *&lt;* 43", "3 Zehner &lt; 4 Zehner"], [PI, "68 *&gt;* 63", "gleiche Zehner: 8 &gt; 3"], ["⚖️", "50 *=* 50", "gleich groß"]],
       say: "Zahlen vergleichen. Vergleiche zuerst die Zehner. Sind sie gleich, vergleiche die Einer. Pollys Schnabel ist immer zur größeren Zahl hin offen. 34 ist kleiner als 43. 68 ist größer als 63. 50 ist gleich 50." },
     "rechnen:zehner": { k: "tipp", t: "Die kleine Aufgabe hilft", s: "Rechne zuerst die <b>kleine Aufgabe</b> ohne die Nullen. Dann hängst du die <b>Null</b> wieder an: Aus 7 wird 70.",
-      ex: [["🐣", "3 + 4 = *7*", "kleine Aufgabe"], ["🦜", "30 + 40 = *70*", "große Aufgabe"], ["🦜", "80 − 50 = *30*", "8 − 5 = 3"]],
+      ex: [["🐣", "3 + 4 = *7*", "kleine Aufgabe"], [PI, "30 + 40 = *70*", "große Aufgabe"], [PI, "80 − 50 = *30*", "8 − 5 = 3"]],
       say: "Die kleine Aufgabe hilft. Rechne zuerst die kleine Aufgabe ohne die Nullen: 3 plus 4 gleich 7. Dann hängst du die Null wieder an: 30 plus 40 gleich 70. Oder: 8 minus 5 gleich 3, also 80 minus 50 gleich 30." },
     "rechnen:einer": { k: "tipp", t: "Nur die Einer rechnen", s: "Die <b>Zehner bleiben gleich</b>. Du rechnest nur mit den <b>Einern</b>.",
-      ex: [["🐣", "4 + 5 = *9*", "kleine Aufgabe"], ["🦜", "34 + 5 = 3*9*", "3 Zehner bleiben"], ["🦜", "47 − 3 = 4*4*", "4 Zehner bleiben"]],
+      ex: [["🐣", "4 + 5 = *9*", "kleine Aufgabe"], [PI, "34 + 5 = 3*9*", "3 Zehner bleiben"], [PI, "47 − 3 = 4*4*", "4 Zehner bleiben"]],
       say: "Nur die Einer rechnen. Die Zehner bleiben gleich. Du rechnest nur mit den Einern. 4 plus 5 gleich 9, also 34 plus 5 gleich 39. Und 47 minus 3 gleich 44." },
     "rechnen:zehnerdazu": { k: "tipp", t: "Nur die Zehner ändern sich", s: "Rechnest du <b>ganze Zehner</b> dazu oder weg, ändern sich nur die Zehner. Die <b>Einer bleiben gleich</b>.",
-      ex: [["🦘", "34 + 20 = *5*4", "3 + 2 = 5 Zehner"], ["🦘", "76 − 30 = *4*6", "7 − 3 = 4 Zehner"]], v: "🦜 Am Zahlenstrahl hüpfst du in großen Zehnersprüngen.",
+      ex: [["🦘", "34 + 20 = *5*4", "3 + 2 = 5 Zehner"], ["🦘", "76 − 30 = *4*6", "7 − 3 = 4 Zehner"]], v: PIs + " Am Zahlenstrahl hüpfst du in großen Zehnersprüngen.",
       say: "Nur die Zehner ändern sich. Rechnest du ganze Zehner dazu oder weg, ändern sich nur die Zehner. Die Einer bleiben gleich. 34 plus 20 gleich 54. 76 minus 30 gleich 46." },
     "rechnen:uebergang": { k: "merk", t: "Über den Zehner", s: "Rechne in <b>zwei Schritten</b>: erst bis zum <b>vollen Zehner</b>, dann den <b>Rest</b>.",
       ex: [["1️⃣", "38 + *2* = 40", "bis zum Zehner"], ["2️⃣", "40 + *3* = 43", "Rest dazu"], ["➖", "42 − *2* − *4* = 36", "minus genauso"]], v: "🧩 Zerlege: 5 = 2 + 3 · 6 = 2 + 4",
@@ -5216,6 +5227,8 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     $("certInfo").textContent = `${S.coins} Münzen · ${starTotal(CH)} von ${CH.levels.length * DK.length * 3} Sternen · ${d.toLocaleDateString("de-DE")}`;
     show("scrCert"); confetti(); sfxWin();
   }
+
+  document.querySelectorAll(".pollyfig").forEach(e => { e.innerHTML = pollyHTML("1.2em"); });
 
   /* ---------- Welt wählen: Nemo oder Polly ---------- */
   function renderWorlds() {
