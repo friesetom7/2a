@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nemos Spielplatz</title>
+<title>Nemos & Pollys Spielplatz</title>
 <style>
 /* Layout: one-screen ocean app. Top bar (back, coins), then one screen at a time:
    start → home (chapters) → chapter map (islands × difficulty) → intro → play → result. */
@@ -528,6 +528,115 @@ svg.sea .shopsign rect { fill: var(--gold); stroke: var(--gold-edge); stroke-wid
 svg.sea .shopsign text { font-family: var(--font); font-weight: 900; fill: var(--ink); }
 svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
+/* ---------- Pollys Spielplatz: Welt-Auswahl, Papageien-Look ---------- */
+.duo { display: flex; gap: 6px; align-items: center; justify-content: center; }
+.duo .nemo { font-size: 96px; }
+.polly-m { animation: flap 2.6s ease-in-out infinite !important; }
+@keyframes flap { 0%, 100% { transform: translateY(-10px) rotate(-6deg); } 50% { transform: translateY(10px) rotate(5deg); } }
+.worlds { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 22px; width: min(900px, 100%); }
+.world { border-radius: 34px; padding: 24px 18px 22px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.25); box-shadow: 0 8px 0 var(--edge), 0 16px 30px var(--shadow); border: 4px solid rgba(255,255,255,.55); }
+.world:active { transform: translateY(5px); box-shadow: 0 3px 0 var(--edge); }
+.world.nemo-w { background: linear-gradient(160deg, #5cc8ea, #1270a8 58%, #0b3a5c); --edge: #072a44; }
+.world.polly-w { background: linear-gradient(160deg, #c5f27a, #35b56b 52%, #0e7a55); --edge: #0a5a3e; }
+.world .wi { font-size: 96px; line-height: 1; filter: drop-shadow(0 8px 10px rgba(0,0,0,.25)); }
+.world.nemo-w .wi { animation: swim 3s ease-in-out infinite; }
+.world.polly-w .wi { animation: flap 2.6s ease-in-out infinite; }
+.world .wn { font-size: clamp(28px, 4.6vw, 36px); font-weight: 900; line-height: 1.1; }
+.world .ws { font-size: 20px; font-weight: 800; line-height: 1.3; }
+.world .wt { background: rgba(255,255,255,.24); border-radius: 999px; padding: 6px 16px; font-size: 19px; font-weight: 900; margin-top: 4px; }
+.sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; display: none; }
+body.polly .sky { display: block; }
+body.polly .rays, body.polly #bubbles { display: none; }
+body.polly { --deep: #0b4b5a; --sea: #138a9e; --shallow: #62d3e3; --shadow: rgba(5, 52, 62, 0.33);
+  background: #1592ad; background-image: linear-gradient(180deg, #a6ecf7 0%, #4fc9de 28%, #1fa2c0 64%, #12789a 100%); background-attachment: fixed; }
+.sky .cl { position: absolute; left: 0; top: var(--y); width: var(--w); height: calc(var(--w) * .36); background: #fff; border-radius: 999px; opacity: .42; animation: cloud var(--d) linear infinite; animation-delay: var(--dl); }
+.sky .cl::before { content: ""; position: absolute; background: #fff; border-radius: 50%; width: 46%; height: 120%; left: 16%; bottom: 34%; }
+.sky .cl::after { content: ""; position: absolute; background: #fff; border-radius: 50%; width: 34%; height: 92%; right: 16%; bottom: 40%; }
+@keyframes cloud { from { transform: translateX(-35vw); } to { transform: translateX(110vw); } }
+.sky .fe { position: absolute; top: -60px; left: var(--x); font-size: var(--s); opacity: .7; animation: feather var(--d) linear infinite; animation-delay: var(--dl); }
+@keyframes feather { 0% { transform: translate(0, 0) rotate(-25deg); } 25% { transform: translate(34px, 28vh) rotate(20deg); } 50% { transform: translate(-8px, 56vh) rotate(-18deg); } 75% { transform: translate(30px, 84vh) rotate(16deg); } 100% { transform: translate(0, 115vh) rotate(-12deg); } }
+body.polly .shell-btn { background: linear-gradient(180deg, #ffd29a, #f4a261); }
+body.polly .shell-chip.pearl { border-color: #f2d27a; background: #fffbea; }
+body.polly .selfcheck { background: #effbe8; border-color: #a8dc8f; }
+body.polly .selfcheck .tip { color: #2f7a34; }
+body.polly .aqua-card { background: linear-gradient(180deg, #b6ef8a, #3fae5c); }
+svg.sea .cloud { animation: cdrift 16s ease-in-out infinite alternate; pointer-events: none; }
+@keyframes cdrift { from { transform: translateX(-70px); } to { transform: translateX(70px); } }
+svg.sea .fly-in { animation: fbob2 1.6s ease-in-out infinite; }
+@keyframes fbob2 { 50% { transform: translateY(-13px) rotate(-4deg); } }
+body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, #c7ef9f 64%, #78c850 100%); border-color: #f1fbe8; outline-color: #8cc56f; box-shadow: 0 12px 30px var(--shadow), inset 0 0 40px rgba(40,90,20,.25); }
+.tank .sun { position: absolute; top: 5%; right: 6%; width: 86px; height: 86px; border-radius: 50%; background: radial-gradient(circle, #fffbe0 0 30%, #ffd75e 48%, rgba(255,215,94,0) 70%); animation: sunp 5s ease-in-out infinite; }
+@keyframes sunp { 50% { transform: scale(1.12); } }
+.tank .hills { position: absolute; left: -6%; right: -6%; bottom: 13%; height: 36%; opacity: .5; background: radial-gradient(55% 100% at 18% 100%, #3d8b2f 0 60%, transparent 61%), radial-gradient(48% 88% at 66% 100%, #2f7a34 0 60%, transparent 61%), radial-gradient(40% 74% at 98% 100%, #3d8b2f 0 60%, transparent 61%); }
+.tank .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 17%; background: radial-gradient(circle at 20% 40%, #ff70a6 0 4px, transparent 5px) 0 0/48px 26px, radial-gradient(circle at 70% 64%, #ffd60a 0 3.5px, transparent 4.5px) 0 0/38px 22px, linear-gradient(180deg, #7ccf5a, #4f9f36); border-top: 4px solid #a6e07f; }
+.tank .tleaf { position: absolute; top: -30px; font-size: 22px; animation: tleaf linear infinite; pointer-events: none; }
+@keyframes tleaf { 0% { transform: translate(0, 0) rotate(0); opacity: 0; } 12% { opacity: .9; } 100% { transform: translate(46px, 420px) rotate(260deg); opacity: 0; } }
+
+/* ---------- Mathe: Rechenkästchen, Zahlentasten, Hunderterfeld, Zahlenstrahl, Material ---------- */
+.mrow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 36px; width: 100%; }
+.mcol { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.eq { background: var(--sand); border-radius: 26px; padding: 14px 26px; box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); display: flex; flex-direction: column; gap: 10px; align-items: center; max-width: 100%; box-sizing: border-box; }
+.eqline { font-size: clamp(34px, 6vw, 52px); font-weight: 900; display: flex; align-items: center; justify-content: center; gap: .26em; flex-wrap: wrap; font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.15; }
+.eqline.small { font-size: clamp(22px, 3.8vw, 30px); color: var(--muted); }
+.eqline.step { font-size: clamp(28px, 4.8vw, 40px); }
+.eqline.eqhead { border-bottom: 3px dashed var(--sand-edge); padding-bottom: 8px; }
+.eqline .tag { font-size: clamp(15px, 2.4vw, 18px); font-weight: 900; color: var(--muted); background: #fff; border-radius: 999px; padding: 3px 10px; }
+.eqline .stepnum { color: #c2410c; }
+.eqline .qmark { color: #b8860b; min-width: 1.1em; text-align: center; }
+.eqline .qmark.ok { color: var(--good); }
+.slotn { display: inline-grid; place-items: center; min-width: 1.5em; height: 1.2em; padding: 0 .12em; border-radius: 14px; border: 4px dashed var(--sand-edge); background: #fff; color: var(--ink); box-sizing: border-box; font-variant-numeric: tabular-nums; }
+.slotn.act { border: 4px solid var(--gold); box-shadow: 0 0 0 5px rgba(255,215,94,.5); }
+.slotn.ok { border: 4px solid var(--good); background: #e3f6e8; color: #145c2c; box-shadow: none; }
+.refn { color: var(--muted); }
+.refn.got { color: var(--ink); }
+.numpad { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; width: min(430px, 100%); }
+.nk { height: 62px; border-radius: 16px; background: var(--sand); font-size: 32px; font-weight: 900; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); padding: 0; }
+.nk:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--sand-edge); }
+.nk.ok { background: #7bd389; box-shadow: 0 5px 0 #3f9b52, 0 8px 14px var(--shadow); color: #0b4a1f; }
+.nk.del { background: #f1e3c6; font-size: 26px; }
+.qline b, .goldnum { color: #b8860b; }
+.card.mq { padding: 12px 22px; font-size: clamp(24px, 4.2vw, 34px); font-weight: 900; text-align: center; max-width: 760px; box-sizing: border-box; line-height: 1.3; }
+.card.mq b { color: #c2410c; }
+.hfeld { width: clamp(240px, min(46vh, 40vw), 400px); height: auto; display: block; filter: drop-shadow(0 8px 14px var(--shadow)); }
+.hfeld .hf-bg { fill: #fffaf0; stroke: #e9cf98; stroke-width: 2.5; }
+.hfeld .hd { fill: #fff; stroke: #c9b48a; stroke-width: 1.4; transition: fill .12s; }
+.hfeld .hd.on { fill: #e63946; stroke: #a4161a; }
+.hfeld .hd.on2 { fill: #3a86ff; stroke: #1d4ed8; }
+.hfeld.tap { cursor: pointer; touch-action: manipulation; }
+.minif { display: inline-block; vertical-align: middle; }
+.zcard { background: var(--sand); border-radius: 26px; padding: 6px 12px 0; box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); width: min(960px, 100%); box-sizing: border-box; }
+.zstrahl { width: 100%; height: auto; display: block; overflow: visible; }
+.zstrahl .zs-line { stroke: var(--ink); stroke-width: 5; stroke-linecap: round; }
+.zstrahl .zs-arrow { fill: var(--ink); }
+.zstrahl .zs-tick { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.zstrahl .zs-tick.big { stroke-width: 5; }
+.zstrahl .zs-lab { font-family: var(--font); font-weight: 900; fill: var(--ink); }
+.zstrahl .zs-lab.q { fill: #c2410c; }
+.zstrahl .zs-pin { fill: #c2410c; }
+.zstrahl .zs-polly { transition: transform .55s cubic-bezier(.4, 1.5, .5, 1), opacity .25s; }
+.zstrahl .zs-hit { cursor: pointer; }
+.zstrahl .zs-star { font-size: 30px; }
+.dn-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; background: rgba(255,255,255,.88); border-radius: 22px; padding: 12px 16px; box-shadow: 0 6px 16px var(--shadow); }
+.dn { height: auto; display: block; max-width: 100%; }
+.dn-op { font-size: 40px; font-weight: 900; color: var(--ink); }
+.nbrs { display: flex; gap: clamp(8px, 2.6vw, 24px); justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+.nb { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.nbh { position: relative; min-width: clamp(96px, 17vw, 132px); height: clamp(80px, 13vw, 100px); margin-top: 44px; padding: 0 8px; box-sizing: border-box; background: var(--sand); border-radius: 0 0 18px 18px; display: grid; place-items: center; font-size: clamp(36px, 6.4vw, 52px); font-weight: 900; color: var(--ink); box-shadow: 0 6px 0 var(--sand-edge), 0 12px 22px var(--shadow); }
+.nbh::before { content: ""; position: absolute; left: -10px; right: -10px; bottom: calc(100% - 1px); height: 44px; background: #e76f51; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.nb.mid .nbh { background: #fff3c4; }
+.nb.mid .nbh::before { background: #2a9d8f; }
+.nbh .q { color: #c2410c; }
+.nbl { color: #fff; font-size: clamp(16px, 2.6vw, 19px); font-weight: 900; text-shadow: 0 2px 0 var(--deep); text-align: center; line-height: 1.2; }
+.numchip { min-width: 96px; }
+.numchip.used { visibility: hidden; }
+.sortslots { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.sortslot { min-width: 84px; height: 66px; border-bottom: 5px solid var(--gold); font-size: clamp(30px, 5vw, 42px); font-weight: 900; color: #fff; text-shadow: 0 3px 0 var(--deep); display: grid; place-items: center; }
+.sortslots .lt { color: #fff; font-size: 26px; font-weight: 900; opacity: .85; }
+.sorthint { color: #fff; font-size: 21px; font-weight: 900; text-shadow: 0 2px 0 var(--deep); }
+.cmpcard { display: flex; align-items: center; gap: 22px; font-size: clamp(44px, 8vw, 66px); font-weight: 900; padding: 14px 32px; }
+.cmpcard .markslot { min-width: 1em; }
+.opt.numopt { font-size: clamp(36px, 7vw, 56px); min-width: 150px; font-variant-numeric: tabular-nums; }
+
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .emoji-big { font-size: 80px; }
@@ -540,16 +649,19 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   .rc-t { font-size: 24px; } .rc-s { font-size: 17px; line-height: 1.4; }
   .rc-ex { gap: 8px; } .rc-e { padding: 8px 8px 7px; flex-basis: 120px; } .rc-pic { font-size: 36px; } .rc-w { font-size: 22px; }
   .rule-card .big-btn { font-size: 21px; padding: 12px 20px; }
+  .nk { height: 54px; font-size: 28px; }
+  .eq { padding: 10px 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
-  .bub { display: none; }
+  .bub, .sky .fe, .tank .tleaf { display: none; }
 }
 </style>
 </head>
 <body>
 <div class="rays" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div id="bubbles" aria-hidden="true"></div>
+<div class="sky" id="sky" aria-hidden="true"></div>
 
 <div class="app">
   <div class="bar">
@@ -560,34 +672,44 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   <!-- START -->
   <section class="screen start center" id="scrStart">
-    <div class="nemo" aria-hidden="true">🦈</div>
-    <div class="head xl">Nemos<br>Spielplatz</div>
+    <div class="duo" aria-hidden="true"><span class="nemo">🦈</span><span class="nemo polly-m">🦜</span></div>
+    <div class="head xl">Nemos & Pollys<br>Spielplatz</div>
     <div class="card" id="nameCard">
       <label for="nameInput">Wie heißt du?</label>
       <input id="nameInput" type="text" maxlength="16" autocomplete="off" autocapitalize="words" placeholder="Dein Vorname">
-      <button class="big-btn" id="startBtn">Los geht's! 🌊</button>
+      <button class="big-btn" id="startBtn">Los geht's! ✨</button>
     </div>
     <div class="card" id="schoolCard" hidden>
       <div class="scan"><span class="scan-ic" aria-hidden="true">📷</span><span>Scanne deine <b>Anmeldekarte</b> mit der Kamera.</span></div>
       <label for="codeInput">Oder tippe deinen Code ein:</label>
       <input id="codeInput" type="text" maxlength="14" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="ABCD-EFGH-JKMN">
-      <button class="big-btn" id="codeBtn">Anmelden 🌊</button>
+      <button class="big-btn" id="codeBtn">Anmelden ✨</button>
       <p class="login-msg" id="codeMsg" role="status" hidden></p>
       <button class="link-btn" id="guestBtn" hidden>Ohne Anmeldung spielen – dann wird nichts gespeichert</button>
     </div>
   </section>
 
+  <!-- WELT WÄHLEN -->
+  <section class="screen center" id="scrWorld" hidden>
+    <div class="head l" id="worldHello">Wohin möchtest du?</div>
+    <div class="worlds">
+      <button class="world nemo-w" id="goNemo"><span class="wi" aria-hidden="true">🦈</span><span class="wn">Nemos Spielplatz</span><span class="ws">Deutsch: Nomen, Lernwörter,<br>Lesen und Rechtschreiben</span><span class="wt" id="wtNemo"></span></button>
+      <button class="world polly-w" id="goPolly"><span class="wi" aria-hidden="true">🦜</span><span class="wn">Pollys Spielplatz</span><span class="ws">Mathe: Zahlen bis 100,<br>Plus und Minus</span><span class="wt" id="wtPolly"></span></button>
+    </div>
+    <div class="foot"><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
+  </section>
+
   <!-- HOME -->
   <section class="screen" id="scrHome" hidden>
-    <div class="head l">Nemos Spielplatz</div>
+    <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 26.10. · Silbenhilfe</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Pollys Spielplatz</span></div>
   </section>
 
   <!-- AQUARIUM -->
   <section class="screen" id="scrAqua" hidden>
-    <div class="head l">🐠 Nemos Aquarium</div>
+    <div class="head l" id="aquaTitle">🐠 Nemos Aquarium</div>
     <div class="aq-stat" id="aqStat"></div>
     <div class="tank" id="tank"></div>
     <div id="shop"></div>
@@ -596,7 +718,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   <!-- CHAPTER MAP -->
   <section class="screen" id="scrMap" hidden>
     <div class="head l" id="mapTitle"></div>
-    <div class="head s">Tippe auf eine Insel – Nemo schwimmt hin!</div>
+    <div class="head s" id="mapHint">Tippe auf eine Insel – Nemo schwimmt hin!</div>
     <div class="mapwrap" id="chapMap"></div>
     <div class="foot"><button class="big-btn" id="certBtn" hidden>🏆 Meine Urkunde</button></div>
   </section>
@@ -628,7 +750,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   <!-- RESULT -->
   <section class="screen center" id="scrCheck" hidden>
     <div class="card intro-card check-card">
-      <div class="nemo" aria-hidden="true">🦈</div>
+      <div class="nemo mascot" aria-hidden="true">🦈</div>
       <h2>Wie gut kannst du das?</h2>
       <div class="ichkann"><span id="chkText"></span><button class="iconbtn" id="chkSay" aria-label="Vorlesen">🔊</button></div>
       <div class="ampel" id="chkBtns"></div>
@@ -637,7 +759,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   <section class="screen center" id="scrResult" hidden>
     <div class="card intro-card">
-      <div class="nemo" aria-hidden="true">🦈</div>
+      <div class="nemo mascot" aria-hidden="true">🦈</div>
       <h2 id="resTitle"></h2>
       <div class="stars-big" id="resStars"></div>
       <div class="earned" id="resEarned"></div>
@@ -667,7 +789,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       <p id="certLead">ist jetzt ein echter</p>
       <h2 style="font-size:42px" id="certAward">Nomen-Profi!</h2>
       <p id="certInfo"></p>
-      <p style="font-size:20px">🦈 Nemo und die Klasse 2a gratulieren!</p>
+      <p style="font-size:20px" id="certFoot">🦈 Nemo und die Klasse 2a gratulieren!</p>
       <button class="big-btn" id="certBack">Zur Karte 🗺️</button>
     </div>
   </section>
@@ -904,9 +1026,41 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const lowerWord = (s) => s.toLowerCase();
   const starStr = (n) => "⭐".repeat(n) + '<span class="off">' + "⭐".repeat(3 - n) + "</span>";
 
+  /* ---------- zwei Welten: Nemos Spielplatz (Deutsch) und Pollys Spielplatz (Mathe) ---------- */
+  const WORLDS = {
+    nemo: { id: "nemo", name: "Nemos Spielplatz", hero: "Nemo", emo: "🦈", goes: "schwimmt", go: "schwimmen", place: "Aquarium", inPlace: "in deinem Aquarium", forPlace: "für dein Aquarium",
+      shopTitle: "🐠 Nemos Aquarium", chest: "Nemos Schatztruhe", start: "⚓", conf: ["🐟", "🐠", "⭐", "🫧", "🦈", "🐚", "✨"], buyConf: ["🫧", "✨", "⭐", "🐚"] },
+    polly: { id: "polly", name: "Pollys Spielplatz", hero: "Polly", emo: "🦜", goes: "fliegt", go: "fliegen", place: "Dschungel", inPlace: "in deinem Dschungel", forPlace: "für deinen Dschungel",
+      shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", conf: ["🦜", "🪶", "⭐", "🍌", "🌺", "✨"], buyConf: ["🪶", "✨", "⭐", "🌺"] }
+  };
+  let W = WORLDS.nemo;
+  const isPolly = () => W.id === "polly";
+  const worldOf = (ch) => ch.world || "nemo";
+  // Übe-Muscheln (Nemo) bzw. harte Nüsse (Polly): falsch gelöste Aufgaben kommen in eine Übe-Runde
+  const SHELL = {
+    nemo: { art: "muschel", gem: "perle", icon: "🐚", round: "🐚 Muschel-Runde", conf: ["⚪", "✨", "🐚", "⭐"],
+      head: (n, pr) => pr ? `Noch ${n === 1 ? "eine Muschel" : n + " Muscheln"} zum Üben` : `${n === 1 ? "Eine Übe-Muschel" : n + " Übe-Muscheln"}: das übst du nochmal`, gems: "Deine neuen Perlen",
+      btn: (n, pr) => pr ? "🐚 Nochmal üben" : `🐚 ${n === 1 ? "Muschel" : "Muscheln"} üben`,
+      allTitle: "Alle Muscheln sind Perlen!", part: (p, n) => `${p} von ${n} Muscheln sind jetzt Perlen.`, retry: "Übe die Muscheln und versuch es nochmal!" },
+    polly: { art: "nuss", gem: "nussauf", icon: "🥜", round: "🥜 Nuss-Runde", conf: ["🥜", "✨", "🦜", "⭐"],
+      head: (n, pr) => pr ? `Noch ${n === 1 ? "eine Nuss" : n + " Nüsse"} zum Knacken` : `${n === 1 ? "Eine harte Nuss" : n + " harte Nüsse"}: die knackst du nochmal`, gems: "Geknackt!",
+      btn: (n, pr) => pr ? "🥜 Nochmal knacken" : `🥜 ${n === 1 ? "Nuss" : "Nüsse"} knacken`,
+      allTitle: "Alle Nüsse geknackt!", part: (p, n) => `${p} von ${n} Nüssen sind geknackt.`, retry: "Knack die harten Nüsse und versuch es nochmal!" }
+  };
+  const SH = () => SHELL[W.id];
+  function setWorld(id) {
+    W = WORLDS[id] || WORLDS.nemo;
+    document.body.classList.toggle("polly", isPolly());
+    document.querySelectorAll(".mascot").forEach(m => { m.textContent = W.emo; m.classList.toggle("polly-m", isPolly()); });
+    $("homeTitle").textContent = W.name; $("aquaTitle").textContent = W.shopTitle;
+    $("mapHint").textContent = `Tippe auf eine Insel – ${W.hero} ${W.goes} hin!`;
+    $("certFoot").textContent = `${W.emo} ${W.hero} und die Klasse 2a gratulieren!`;
+    $("resShellBtn").textContent = SH().btn(2, false);
+  }
+
   /* ---------- state ---------- */
   const KEY = "nemo-spielplatz-v2";
-  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [] });
+  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [], jungle: [] });
   let S = fresh();
   // Datenschutz:
   //  - Ohne Schulserver (z. B. GitHub-Version) speichert das Spiel NICHTS: alles nur im Arbeitsspeicher, jedes Öffnen beginnt bei 0.
@@ -1006,7 +1160,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   try { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; } catch (e) {}
   // Text so vorbereiten, wie ein Mensch ihn vorlesen würde: keine Emojis/Zeichen, Satzende mit Punkt.
   function sayable(t) {
-    t = String(t == null ? "" : t).replace(/\s*[→➜]\s*/g, ", ")
+    t = String(t == null ? "" : t).replace(/\s\+\s/g, " plus ").replace(/\s−\s/g, " minus ").replace(/\s=\s/g, " gleich ").replace(/\s<\s/g, " ist kleiner als ").replace(/\s>\s/g, " ist größer als ").replace(/\s*[→➜]\s*/g, ", ")
       .replace(/[\uD83C-\uDBFF][\uDC00-\uDFFF]|[←-⇿⌀-⏿☀-➿⬀-⯿️‍]/g, " ")
       .replace(/\s[–—]\s/g, ", ").replace(/[·•]/g, ", ").replace(/_+/g, " … ")
       .replace(/\s+([,.!?])/g, "$1").replace(/,\s*,/g, ",").replace(/\s+/g, " ").trim();
@@ -1027,7 +1181,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       });
     } catch (e) {}
   }
-  const VSAMPLE = "Hallo! Ich bin Nemo. Schön, dass du da bist. Wollen wir zusammen üben?";
+  const vsample = () => `Hallo! Ich bin ${W.hero}. Schön, dass du da bist. Wollen wir zusammen üben?`;
   function openVoiceSheet() {
     pickVoice();
     openSheet(c => {
@@ -1038,7 +1192,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         const b = el("button", "vopt" + (v === voice ? " on" : ""), `<span class="vn">${v === voice ? "✅ " : ""}${vname(v)}</span><span class="vq q${vqual(v)}">${QLABEL[vqual(v)]}</span>`);
         b.addEventListener("click", () => {
           voice = v; try { localStorage.setItem(VKEY, v.voiceURI || v.name); } catch (e) {}
-          setVoiceBtn(); speak(VSAMPLE);
+          setVoiceBtn(); speak(vsample());
           list.querySelectorAll(".vopt").forEach(x => { x.classList.remove("on"); const n = x.querySelector(".vn"); n.textContent = n.textContent.replace(/^✅ /, ""); });
           b.classList.add("on"); b.querySelector(".vn").textContent = "✅ " + vname(v);
         });
@@ -1063,17 +1217,28 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     }
   })();
 
+  (function () {
+    const sky = $("sky");
+    [[30, 13, 90, -10], [62, 10, 110, -60], [84, 15, 130, -95]].forEach(([y, w, d, dl]) => {
+      const c = el("span", "cl"); c.style.setProperty("--y", y + "vh"); c.style.setProperty("--w", w + "vw"); c.style.setProperty("--d", d + "s"); c.style.setProperty("--dl", dl + "s"); sky.appendChild(c);
+    });
+    ["🪶", "🍃", "🪶", "🌺", "🍃", "🪶"].forEach((f, i) => {
+      const e = el("span", "fe", f); e.style.setProperty("--x", (6 + i * 16 + Math.random() * 6) + "vw"); e.style.setProperty("--s", (22 + Math.random() * 14) + "px");
+      e.style.setProperty("--d", (17 + Math.random() * 10) + "s"); e.style.setProperty("--dl", (-Math.random() * 26) + "s"); sky.appendChild(e);
+    });
+  })();
+
   /* ---------- screens + feedback ---------- */
-  const SCREENS = ["scrStart", "scrHome", "scrAqua", "scrMap", "scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"];
+  const SCREENS = ["scrStart", "scrWorld", "scrHome", "scrAqua", "scrMap", "scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"];
   let current = "scrStart";
   function show(id) {
     current = id; closeSheet();
     SCREENS.forEach(s => $(s).hidden = s !== id);
     const back = $("backBtn");
-    back.hidden = (id === "scrStart" || id === "scrHome");
-    const toHome = id === "scrMap" || id === "scrAqua";
-    back.textContent = toHome ? "🏠" : "🗺️";
-    back.setAttribute("aria-label", toHome ? "Zum Menü" : "Zur Karte");
+    back.hidden = (id === "scrStart" || id === "scrWorld");
+    const toHome = id === "scrMap" || id === "scrAqua", toWorld = id === "scrHome";
+    back.textContent = toWorld ? "🌍" : toHome ? "🏠" : "🗺️";
+    back.setAttribute("aria-label", toWorld ? "Welt wechseln: Nemo oder Polly" : toHome ? "Zum Menü" : "Zur Karte");
     try { speechSynthesis.cancel(); } catch (e) {}
     const rp = $("rulePop"); if (rp) rp.hidden = true;
     window.scrollTo(0, 0);
@@ -1095,7 +1260,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     try { const r = fromEl.getBoundingClientRect(), p = el("div", "popstar", "⭐"); p.style.left = (r.left + r.width / 2 - 16) + "px"; p.style.top = (r.top + r.height / 2 - 16) + "px"; document.body.appendChild(p); setTimeout(() => p.remove(), 800); } catch (e) {}
   }
   function confetti(items) {
-    const box = $("confetti"); items = items || ["🐟","🐠","⭐","🫧","🦈","🐚","✨"];
+    const box = $("confetti"); items = items || W.conf;
     for (let i = 0; i < 26; i++) {
       const s = el("span", null, items[i % items.length]);
       s.style.left = Math.random() * 100 + "vw"; s.style.animationDelay = Math.random() * 0.8 + "s"; s.style.fontSize = 28 + Math.random() * 26 + "px";
@@ -2398,6 +2563,684 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     }
   ];
 
+  /* ======================================================================
+     Pollys Spielplatz: Mathe im Zahlenraum bis 100
+     Zahlen-Inseln (Hunderterfeld, Zahlenstrahl, Nachbarn, Nachbarzehner, Ordnen)
+     und Plus-Minus-Inseln (Schritt für Schritt schwerer). Alle Aufgaben werden zufällig erzeugt.
+     ====================================================================== */
+  const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const MI = "−"; // echtes Minuszeichen
+  const opS = (op) => op === "+" ? "+" : MI;
+  const opW = (op) => op === "+" ? "plus" : "minus";
+  const ZE = (n) => [Math.floor(n / 10), n % 10];
+  // n verschiedene Aufgaben erzeugen (gleiche Beschriftung = gleiche Aufgabe)
+  function gen(n, make) {
+    const out = [], seen = {};
+    for (let g = 0; out.length < n && g < n * 120; g++) { const x = make(out.length); if (!x || seen[x.lab]) continue; seen[x.lab] = 1; out.push(x); }
+    return out;
+  }
+  // typische Fehler erkennen: Zahlendreher, Zehner verrutscht, knapp daneben
+  function numWhy(a, v, tip) {
+    const s = String(a), t = String(v), tp = tip ? " " + tip : "";
+    if (s.length === 2 && s[0] !== s[1] && t === s[1] + s[0]) return "Achtung, Zahlendreher! Erst kommen die Zehner, dann die Einer." + tp;
+    if (Math.abs(v - a) === 10) return "Fast! Schau nochmal genau auf die Zehner." + tp;
+    if (Math.abs(v - a) === 1) return "Ganz knapp daneben!" + tp;
+    return (tip || "Probier nochmal!");
+  }
+
+  /* ---------- Bausteine: Zahlentasten und Rechenkästchen ---------- */
+  function numPad(box, onKey) {
+    const pad = el("div", "numpad");
+    ["1", "2", "3", "4", "5", "del", "6", "7", "8", "9", "0", "ok"].forEach(k => {
+      const b = el("button", "nk" + (k === "ok" ? " ok" : k === "del" ? " del" : ""), k === "del" ? "⌫" : k === "ok" ? "✓" : k);
+      b.setAttribute("aria-label", k === "del" ? "Löschen" : k === "ok" ? "Fertig" : k);
+      b.addEventListener("click", () => onKey(k));
+      pad.appendChild(b);
+    });
+    box.appendChild(pad); L.padKey = onKey; return pad;
+  }
+  // Kästchen der Reihe nach füllen. layout(slot, ref) baut die Anzeige:
+  // slot(a) = Kästchen mit der Lösung a, ref(k) = zeigt das Ergebnis von Kästchen k, sobald es gelöst ist.
+  function padTask(box, o) {
+    const slots = [], refs = [];
+    const slot = (a) => { const s = el("span", "slotn"); slots.push({ el: s, a, v: "", tries: 0 }); return s; };
+    const ref = (k) => { const r = el("span", "refn", "…"); refs.push({ el: r, k }); return r; };
+    box.appendChild(o.layout(slot, ref));
+    let cur = 0;
+    const mark = () => slots.forEach((s, i) => s.el.classList.toggle("act", i === cur));
+    mark();
+    numPad(box, (k) => {
+      if (L.locked) return;
+      const s = slots[cur]; if (!s) return;
+      if (k === "del") s.v = s.v.slice(0, -1);
+      else if (k === "ok") {
+        if (s.v === "") { hint("Tippe zuerst eine Zahl ein."); return; }
+        const v = +s.v;
+        if (v === s.a) {
+          s.el.classList.remove("act"); s.el.classList.add("ok"); tone([660 + cur * 80], 0.07);
+          refs.forEach(r => { if (r.k === cur) { r.el.textContent = s.a; r.el.classList.add("got"); } });
+          cur++;
+          if (cur >= slots.length) {
+            if (o.onDone) o.onDone();
+            award(s.el, o.factor || 1);
+            hint(praise() + (o.okText ? " " + o.okText : ""), true);
+            if (o.okSay) speak(o.okSay);
+            done(1700);
+          } else mark();
+        } else {
+          s.tries++;
+          let why = o.why ? o.why(cur, v, s.tries) : numWhy(s.a, v);
+          if (s.tries >= 2) why += ` Die Lösung ist ${s.a}.`;
+          miss(s.el, why); s.v = ""; s.el.textContent = "";
+        }
+        return;
+      } else {
+        if (s.v.length >= 3) return;
+        s.v = (s.v === "0" ? "" : s.v) + k; tone([480 + (+k) * 20], 0.03);
+      }
+      s.el.textContent = s.v;
+    });
+    L.speakNow = () => speak(o.say);
+  }
+  // Rechenzeilen: Token = Zahl/Text · {a: Lösung} · {ref: k} · {t: "Text", c: "klasse"}
+  function eqLayout(lines, top) {
+    return (slot, ref) => {
+      const card = el("div", "eq");
+      if (top) card.appendChild(top);
+      lines.forEach(line => {
+        const row = el("div", "eqline" + (line.c ? " " + line.c : ""));
+        line.t.forEach(tok => {
+          if (tok && typeof tok === "object") {
+            if ("a" in tok) row.appendChild(slot(tok.a));
+            else if ("ref" in tok) row.appendChild(ref(tok.ref));
+            else { const sp = el("span", tok.c || null, ""); sp.textContent = tok.t; row.appendChild(sp); }
+          } else row.appendChild(el("span", null, String(tok)));
+        });
+        card.appendChild(row);
+      });
+      return card;
+    };
+  }
+  // Bild links, Rechnen rechts (im Hochformat untereinander)
+  function mathRow(stage, pic) {
+    const row = el("div", "mrow"), col = el("div", "mcol");
+    if (pic) row.appendChild(pic);
+    row.appendChild(col); stage.appendChild(row);
+    return col;
+  }
+
+  /* ---------- Hunderterfeld (10 × 10 Punkte, jede Reihe ein Zehner) ---------- */
+  function hField(o) {
+    const S0 = 20, G = 7, M = 8, W0 = M * 2 + S0 * 10 + G;
+    const svg = sv("svg", { viewBox: `0 0 ${W0} ${W0}`, class: "hfeld" + (o.tap ? " tap" : ""), role: "img", "aria-label": "Hunderterfeld" });
+    sv("rect", { x: 1.5, y: 1.5, width: W0 - 3, height: W0 - 3, rx: 14, class: "hf-bg" }, svg);
+    const dots = [];
+    for (let i = 0; i < 100; i++) {
+      const r = Math.floor(i / 10), c = i % 10;
+      dots.push(sv("circle", { cx: M + c * S0 + (c >= 5 ? G : 0) + S0 / 2, cy: M + r * S0 + (r >= 5 ? G : 0) + S0 / 2, r: 7.4, class: "hd" }, svg));
+    }
+    const paint = (n, m) => dots.forEach((d, i) => d.setAttribute("class", "hd" + (i < n ? " on" : i < n + (m || 0) ? " on2" : "")));
+    paint(o.n || 0, o.m || 0);
+    if (o.tap) svg.addEventListener("click", (e) => {
+      const b = svg.getBoundingClientRect(), x = (e.clientX - b.left) / b.width * W0, y = (e.clientY - b.top) / b.height * W0;
+      const cell = (v) => { v -= M; if (v > 5 * S0) v -= G; return Math.max(0, Math.min(9, Math.floor(v / S0))); };
+      o.tap(cell(y) * 10 + cell(x), paint);
+    });
+    return { svg, paint };
+  }
+  // kleines Hunderterfeld als Bild (Merk-Karte, Start-Bildschirm)
+  function miniField(n, size) {
+    const S0 = 10, G = 4, M = 4, W0 = M * 2 + S0 * 10 + G;
+    let s = `<svg viewBox="0 0 ${W0} ${W0}" class="minif" style="width:${size || 74}px;height:${size || 74}px" aria-hidden="true"><rect x=".5" y=".5" width="${W0 - 1}" height="${W0 - 1}" rx="6" fill="#fffaf0" stroke="#e9cf98"/>`;
+    for (let i = 0; i < 100; i++) { const r = Math.floor(i / 10), c = i % 10; s += `<circle cx="${M + c * S0 + (c >= 5 ? G : 0) + 5}" cy="${M + r * S0 + (r >= 5 ? G : 0) + 5}" r="3.7" fill="${i < n ? "#e63946" : "#fff"}" stroke="${i < n ? "#a4161a" : "#c9b48a"}" stroke-width=".8"/>`; }
+    return s + "</svg>";
+  }
+
+  /* ---------- Zahlenstrahl mit Polly ---------- */
+  function numLine(o) {
+    const P = portrait(), W0 = P ? 700 : 1000, x0 = 46, x1 = W0 - 64, y = 112, H = 192;
+    const X = (v) => x0 + (v - o.from) / (o.to - o.from) * (x1 - x0);
+    const svg = sv("svg", { viewBox: `0 0 ${W0} ${H}`, class: "zstrahl", role: "img", "aria-label": "Zahlenstrahl" });
+    sv("line", { x1: x0 - 28, y1: y, x2: x1 + 34, y2: y, class: "zs-line" }, svg);
+    sv("path", { d: `M${x1 + 50} ${y} l-22 -12 v24 Z`, class: "zs-arrow" }, svg);
+    const fs = P ? 38 : 36;
+    for (let v = o.from; v <= o.to; v += o.step) {
+      const big = v % 10 === 0, mid = v % 5 === 0, h = big ? 25 : mid ? 18 : 11;
+      sv("line", { x1: X(v), y1: y - h, x2: X(v), y2: y + h, class: "zs-tick" + (big ? " big" : "") }, svg);
+      const lab = o.label ? o.label(v) : null;
+      if (lab != null) { const t = sv("text", { x: X(v), y: y + 66, "text-anchor": "middle", class: "zs-lab" + (lab === "?" ? " q" : ""), "font-size": fs }, svg); t.textContent = lab; }
+    }
+    const pg = sv("g", { class: "zs-polly" }, svg);
+    sv("path", { d: "M-10 -4 L10 -4 L0 10 Z", class: "zs-pin" }, pg);
+    const pe = sv("text", { x: 0, y: -36, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 54 }, pg); pe.textContent = "🦜";
+    const setPolly = (v) => { if (v == null) { pg.style.opacity = 0; return; } pg.style.opacity = 1; pg.style.transform = `translate(${X(v)}px, ${y - 34}px)`; };
+    pg.style.transform = `translate(${X(o.from) - 30}px, ${y - 90}px)`;
+    setPolly(o.polly);
+    if (o.tap) {
+      const hit = sv("rect", { x: 0, y: 0, width: W0, height: H, fill: "transparent", class: "zs-hit" }, svg);
+      hit.addEventListener("click", (e) => {
+        if (L.locked) return;
+        const b = svg.getBoundingClientRect(), x = (e.clientX - b.left) / b.width * W0, sn = o.snap || 1;
+        let v = o.from + (x - x0) / (x1 - x0) * (o.to - o.from);
+        v = Math.max(o.from, Math.min(o.to, Math.round(v / sn) * sn));
+        o.tap(v, setPolly);
+      });
+    }
+    const card = el("div", "zcard"); card.appendChild(svg);
+    return { card, svg, setPolly, X, y };
+  }
+  function miniLine(from, to, mark) {
+    let s = `<svg viewBox="0 0 220 64" style="width:200px;height:58px" aria-hidden="true"><line x1="8" y1="26" x2="208" y2="26" stroke="#17324a" stroke-width="3" stroke-linecap="round"/>`;
+    for (let v = from; v <= to; v++) { const x = 14 + (v - from) / (to - from) * 188, big = v % 10 === 0, mid = v % 5 === 0; s += `<line x1="${x}" y1="${26 - (big ? 11 : mid ? 8 : 5)}" x2="${x}" y2="${26 + (big ? 11 : mid ? 8 : 5)}" stroke="${v === mark ? "#c2410c" : "#17324a"}" stroke-width="${v === mark ? 4 : 2}"/>`; if (big || v === mark) s += `<text x="${x}" y="58" text-anchor="middle" font-size="17" font-weight="900" fill="${v === mark ? "#c2410c" : "#17324a"}" font-family="inherit">${v}</text>`; }
+    return s + "</svg>";
+  }
+
+  /* ---------- Zehnerstangen und Einerwürfel ---------- */
+  // parts: [{ z, e, c: "b" (blau) | "o" (orange), xz, xe }] – xz/xe = so viele werden weggenommen (durchgestrichen)
+  function dienes(parts, ops) {
+    const row = el("div", "dn-row");
+    parts.forEach((p, k) => {
+      if (k) row.appendChild(el("span", "dn-op", ops[k - 1]));
+      const u = 11, bw = 13, gap = 5, cols = Math.ceil(p.e / 5), sep = p.z && cols ? 8 : 0;
+      const W0 = Math.max(bw, p.z * (bw + gap) + cols * (bw + gap) + sep - gap), H0 = 10 * u;
+      const fill = p.c === "o" ? "#ff9f1c" : "#3a86ff", st = p.c === "o" ? "#a85b0f" : "#1d4ed8", lt = p.c === "o" ? "#ffd29a" : "#a9c8ff";
+      let s = `<svg viewBox="-4 -4 ${W0 + 8} ${H0 + 8}" class="dn" style="width:${Math.round((W0 + 8) * 1.45)}px" aria-hidden="true">`;
+      for (let i = 0; i < p.z; i++) {
+        const x = i * (bw + gap), gone = i >= p.z - (p.xz || 0);
+        s += `<g${gone ? ' opacity=".38"' : ""}><rect x="${x}" y="0" width="${bw}" height="${H0}" rx="2.5" fill="${fill}" stroke="${st}" stroke-width="1.6"/>`;
+        for (let j = 1; j < 10; j++) s += `<line x1="${x + 1.5}" y1="${j * u}" x2="${x + bw - 1.5}" y2="${j * u}" stroke="${lt}" stroke-width="1.3"/>`;
+        s += "</g>";
+        if (gone) s += `<path d="M${x - 3} ${H0 * 0.18} L${x + bw + 3} ${H0 * 0.82}" stroke="#d62828" stroke-width="3.2" stroke-linecap="round"/>`;
+      }
+      const ex = p.z * (bw + gap) + sep;
+      for (let i = 0; i < p.e; i++) {
+        const c = Math.floor(i / 5), r = i % 5, x = ex + c * (bw + gap), y = H0 - (r + 1) * u, gone = i >= p.e - (p.xe || 0);
+        s += `<rect x="${x}" y="${y + 0.6}" width="${bw}" height="${u - 1.2}" rx="2" fill="${fill}" stroke="${st}" stroke-width="1.6"${gone ? ' opacity=".38"' : ""}/>`;
+        if (gone) s += `<path d="M${x - 2} ${y} L${x + bw + 2} ${y + u}" stroke="#d62828" stroke-width="2.8" stroke-linecap="round"/>`;
+      }
+      row.appendChild(el("span", "dn-part", s + "</svg>"));
+    });
+    return row;
+  }
+  // Häuser für Zahlen-Nachbarn: cells = [{ node | html, lab, mid }]
+  function houses(cells) {
+    const row = el("div", "nbrs");
+    cells.forEach(c => {
+      const h = el("div", "nb" + (c.mid ? " mid" : "")), box = el("div", "nbh");
+      if (c.node) box.appendChild(c.node); else box.innerHTML = c.html == null ? "" : c.html;
+      h.appendChild(box); h.appendChild(el("div", "nbl", c.lab)); row.appendChild(h);
+    });
+    return row;
+  }
+  // Zahlen der Reihe nach antippen (ordnen)
+  function sortTask(stage, nums, o) {
+    const order = nums.slice().sort((a, b) => o.desc ? b - a : a - b);
+    stage.appendChild(el("div", "sorthint", o.desc ? "größte ➜ kleinste" : "kleinste ➜ größte"));
+    const slotsRow = el("div", "sortslots"), slotEls = order.map((_, i) => { if (i) slotsRow.appendChild(el("span", "lt", o.desc ? "&gt;" : "&lt;")); const s = el("div", "sortslot", "&nbsp;"); slotsRow.appendChild(s); return s; });
+    stage.appendChild(slotsRow);
+    const chips = el("div", "chips"); let k = 0;
+    shuffle(nums).forEach(v => {
+      const c = el("button", "chip numchip", String(v));
+      c.addEventListener("click", () => {
+        if (L.locked || c.classList.contains("used")) return;
+        if (v === order[k]) {
+          c.classList.add("used"); slotEls[k].textContent = v; k++; tone([520 + k * 70], 0.06);
+          if (k === order.length) { award(slotsRow, o.factor || 1); hint(praise() + " " + order.join(o.desc ? " &gt; " : " &lt; "), true); speak(order.join(", ")); done(1700); }
+        } else {
+          const want = order[k], [vz] = ZE(v), [wz] = ZE(want);
+          miss(c, (o.desc ? `Es gibt noch eine größere Zahl als ${v}.` : `Es gibt noch eine kleinere Zahl als ${v}.`) + (vz === wz ? " Die Zehner sind gleich – schau auf die Einer!" : " Vergleiche zuerst die Zehner."));
+        }
+      });
+      chips.appendChild(c);
+    });
+    stage.appendChild(chips);
+    L.speakNow = () => speak((o.desc ? "Ordne die Zahlen von groß nach klein: " : "Ordne die Zahlen von klein nach groß: ") + nums.join(", "));
+  }
+  const cmpWhy = (a, b) => { const [az] = ZE(a), [bz] = ZE(b); return az !== bz ? `Vergleiche zuerst die Zehner: ${a} hat ${az}, ${b} hat ${bz} Zehner.` : `Die Zehner sind gleich. Schau auf die Einer!`; };
+
+  /* ======================= Insel-Kapitel: Zahlen bis 100 ======================= */
+  const ZAHLLEVELS = [
+    {
+      id: "hunderterfeld", name: "Hunderterfeld", icon: "💯", color: "#e63946",
+      task: (d) => d === "leicht" ? "Wie viele Punkte sind rot?" : d === "mittel" ? "Färbe die Zahl im Hunderterfeld!" : "Wie viele Punkte fehlen bis 100?",
+      intro: (d) => d === "leicht" ? "Im Hunderterfeld ist jede volle Reihe ein Zehner. Zähle erst die vollen Reihen, dann die einzelnen Punkte."
+        : d === "mittel" ? "Tippe auf einen Punkt – dann färbt Polly alle Punkte bis dorthin rot. Eine volle Reihe ist ein Zehner."
+        : "Wie viele Punkte sind noch weiß? Zähle erst die leeren Reihen, dann die einzelnen weißen Punkte.",
+      ex: () => `${miniField(34, 96)}<br>34 = 3 Zehner und 4 Einer`,
+      say: (d) => d === "leicht" ? "Im Hunderterfeld ist jede volle Reihe ein Zehner. Zähle erst die vollen Reihen, dann die einzelnen Punkte."
+        : d === "mittel" ? "Tippe auf einen Punkt. Dann färbt Polly alle Punkte bis dorthin rot. Eine volle Reihe ist ein Zehner."
+        : "Wie viele Punkte sind noch weiß? Zähle erst die leeren Reihen, dann die einzelnen weißen Punkte.",
+      build(d) {
+        if (d === "mittel") return gen(6, () => { const n = rint(12, 96); return n % 10 ? { n, lab: `${n} Punkte färben` } : null; });
+        return gen(8, () => { const n = rint(11, 98); return d === "leicht" ? { n, lab: `${n} Punkte` } : { n, lab: `${n} + ${100 - n} = 100` }; });
+      },
+      render(x, stage, d) {
+        const n = x.n, [z, e] = ZE(n);
+        if (d === "leicht") {
+          stage.appendChild(hField({ n }).svg);
+          const cand = [];
+          if (z && e && z !== e) cand.push(e * 10 + z);
+          shuffle([n + 10, n - 10, n + 1, n - 1]).forEach(v => { if (v >= 1 && v <= 100 && cand.indexOf(v) < 0) cand.push(v); });
+          const tip = "Zähle erst die vollen Reihen – jede ist ein Zehner. Dann die einzelnen Punkte.";
+          choiceTask(stage, { opts: [{ label: String(n), correct: true, cls: "numopt" }].concat(cand.slice(0, 2).map(v => ({ label: String(v), cls: "numopt", wrongText: numWhy(n, v, tip) }))),
+            okText: `${n} = ${z} Zehner und ${e} Einer`, okSpeak: `${n}. ${z} Zehner und ${e} Einer.` });
+          L.speakNow = () => speak("Wie viele Punkte sind rot? " + tip);
+          return;
+        }
+        if (d === "mittel") {
+          stage.appendChild(el("div", "card mq", `Färbe <b>${n}</b> Punkte rot.`));
+          let f = 0, tries = 0;
+          const hf = hField({ n: 0, tap: (i, paint) => { if (L.locked) return; f = (f === i + 1) ? i : i + 1; paint(f); tone([380 + (f % 10) * 34], 0.03); } });
+          stage.appendChild(hf.svg);
+          const ok = el("button", "big-btn", "Fertig ✓");
+          ok.addEventListener("click", () => {
+            if (L.locked) return;
+            if (f === n) { award(ok, 1); hint(praise() + ` ${n} = ${z} Zehner und ${e} Einer`, true); speak(`${n}. ${z} Zehner und ${e} Einer.`); done(1600); return; }
+            tries++;
+            const [fz, fe] = ZE(f);
+            miss(hf.svg, !f ? "Tippe auf einen Punkt im Feld!" : `Du hast ${f} Punkte gefärbt: ${fz} Zehner und ${fe} Einer. ` + (tries >= 2 ? `${n} sind ${z} volle Reihen und ${e} Punkte.` : `Wie viele Zehner und Einer hat ${n}?`));
+          });
+          stage.appendChild(ok);
+          L.speakNow = () => speak(`Färbe ${n} Punkte rot.`);
+          return;
+        }
+        const col = mathRow(stage, hField({ n }).svg);
+        padTask(col, { layout: eqLayout([{ t: [{ t: "🔴" }, n, "+", { t: "⚪" }, { a: 100 - n }, "=", 100] }]), say: `${n} Punkte sind rot. Wie viele fehlen bis 100?`,
+          why: (k, v) => numWhy(100 - n, v, "Zähle die weißen Punkte: erst die leeren Reihen, dann die einzelnen."), okText: `${n} + ${100 - n} = 100`, okSay: `${n} plus ${100 - n} gleich 100.` });
+      },
+      expert: {
+        task: () => "Wie heißt die Zahl?", intro: () => XI + "Hier sind mehr als 10 Einer! Immer 10 Einer sind 1 Zehner. Bündle sie und finde die Zahl.",
+        ex: () => "4 Zehner und 13 Einer = 53", say: () => "Experten-Aufgabe! Hier sind mehr als 10 Einer. Immer 10 Einer sind ein Zehner. Bündle sie und finde die Zahl.",
+        build() { return gen(8, () => { const z = rint(1, 7), e = rint(11, 19), n = z * 10 + e; return n <= 99 ? { z, e, n, lab: `${z} Zehner und ${e} Einer = ${n}` } : null; }); },
+        render(x, stage) {
+          const col = mathRow(stage, dienes([{ z: x.z, e: x.e, c: "b" }], []));
+          padTask(col, { layout: eqLayout([{ t: [x.z, { t: "Zehner", c: "tag" }, "+", x.e, { t: "Einer", c: "tag" }] }, { t: ["=", { a: x.n }] }]), say: `${x.z} Zehner und ${x.e} Einer. Wie heißt die Zahl?`,
+            why: (k, v) => numWhy(x.n, v, `${x.e} Einer sind 1 Zehner und ${x.e - 10} Einer.`), okText: `${x.z} Zehner und ${x.e} Einer = ${x.n}`, factor: 2 });
+        }
+      }
+    },
+    {
+      id: "zahlenstrahl", name: "Zahlenstrahl", icon: "📏", color: "#3a86ff",
+      task: (d) => d === "schwer" ? "Setze Polly auf die Zahl!" : "Wo sitzt Polly?",
+      intro: (d) => d === "leicht" ? "Polly sitzt auf dem Zahlenstrahl. Die langen Striche sind die Zehner, die mittleren die Fünfer. Welche Zahl ist es?"
+        : d === "mittel" ? "Jetzt ist jeder kleine Strich eine Zahl. Zähle von der Zehnerzahl aus weiter."
+        : "Polly möchte auf einer Zahl landen. Tippe auf den richtigen Strich – Polly fliegt hin!",
+      ex: () => miniLine(30, 40, 35),
+      say: (d) => d === "leicht" ? "Polly sitzt auf dem Zahlenstrahl. Die langen Striche sind die Zehner, die mittleren die Fünfer." : d === "mittel" ? "Jetzt ist jeder kleine Strich eine Zahl. Zähle von der Zehnerzahl aus weiter." : "Tippe auf den richtigen Strich. Polly fliegt hin!",
+      build(d) {
+        if (d === "leicht") return gen(8, (k) => { const v = k % 2 ? 10 * rint(1, 9) : 10 * rint(0, 9) + 5; return { v, lab: `Zahlenstrahl: ${v}` }; });
+        return gen(8, () => { const s = 10 * rint(0, 8), v = s + rint(1, 19); return v % 10 && v < 100 ? { s, v, lab: `Zahlenstrahl: ${v}` } : null; });
+      },
+      render(x, stage, d) {
+        const v = x.v;
+        if (d === "leicht") {
+          const nl = numLine({ from: 0, to: 100, step: 5, label: (t) => t % 10 ? null : (t === v ? "?" : t), polly: v });
+          stage.appendChild(nl.card);
+          const cand = shuffle([v + 10, v - 10, v % 10 ? v + 5 : v + 5, v - 5]).filter((t, i, a) => t >= 0 && t <= 100 && t !== v && a.indexOf(t) === i);
+          const tip = v % 10 ? "Polly sitzt genau in der Mitte zwischen zwei Zehnern." : "Schau auf die Zehnerzahlen daneben.";
+          choiceTask(stage, { opts: [{ label: String(v), correct: true, cls: "numopt" }].concat(cand.slice(0, 2).map(t => ({ label: String(t), cls: "numopt", wrongText: tip }))), okText: `Polly sitzt auf der ${v}.`, okSpeak: `${v}.` });
+          L.speakNow = () => speak("Wo sitzt Polly?");
+          return;
+        }
+        const s = x.s;
+        if (d === "mittel") {
+          const nl = numLine({ from: s, to: s + 20, step: 1, label: (t) => t % 10 ? null : t, polly: v });
+          stage.appendChild(nl.card);
+          const mir = 2 * s + 20 - v;
+          const cand = [v + (Math.random() < .5 ? 1 : -1), mir, v + 10, v - 10, v + 2].filter((t, i, a) => t > s && t < s + 20 && t % 10 && t !== v && a.indexOf(t) === i);
+          const base = v < s + 10 ? s : s + 10;
+          choiceTask(stage, { opts: [{ label: String(v), correct: true, cls: "numopt" }].concat(cand.slice(0, 2).map(t => ({ label: String(t), cls: "numopt", wrongText: `Zähle die kleinen Striche ab ${base}: ${base + 1}, ${base + 2}, …` }))), okText: `Polly sitzt auf der ${v}.`, okSpeak: `${v}.` });
+          L.speakNow = () => speak("Wo sitzt Polly? Jeder kleine Strich ist eine Zahl.");
+          return;
+        }
+        stage.appendChild(el("div", "card mq", `Setze Polly auf die <b>${v}</b>!`));
+        const nl = numLine({ from: s, to: s + 20, step: 1, label: (t) => t % 10 ? null : t, polly: null, tap: (t, setP) => {
+          setP(t);
+          if (t === v) { L.locked = true; award(nl.card, 1); hint(praise() + ` Polly sitzt auf der ${v}.`, true); speak(`${v}.`); done(1500); }
+          else miss(nl.card, `Das ist die ${t}. Die ${v} liegt weiter ${v > t ? "rechts" : "links"}.`);
+        } });
+        stage.appendChild(nl.card);
+        L.speakNow = () => speak(`Setze Polly auf die ${v}.`);
+      },
+      expert: {
+        task: () => "Schätze: Wo liegt die Zahl?", intro: () => XI + "Am Zahlenstrahl stehen nur 0, 50 und 100. Schätze, wo die Zahl liegt, und tippe hin. Ganz knapp daneben zählt auch!",
+        ex: () => "0 · · · · 50 · · · · 100", say: () => "Experten-Aufgabe! Am Zahlenstrahl stehen nur 0, 50 und 100. Schätze, wo die Zahl liegt.",
+        build() { return gen(8, () => { const v = rint(8, 94); return v % 10 ? { v, lab: `Schätzen: ${v}` } : null; }); },
+        render(x, stage) {
+          const v = x.v;
+          stage.appendChild(el("div", "card mq", `Wo liegt ungefähr die <b>${v}</b>?`));
+          const nl = numLine({ from: 0, to: 100, step: 10, label: (t) => t % 50 ? null : t, polly: null, tap: (t, setP) => {
+            setP(t);
+            if (Math.abs(t - v) <= 3) {
+              L.locked = true; const st = sv("text", { x: nl.X(v), y: nl.y + 46, "text-anchor": "middle", class: "zs-star" }, nl.svg); st.textContent = "⭐";
+              award(nl.card, 1); hint(praise() + (t === v ? " Genau getroffen!" : ` Gut geschätzt! Der Stern zeigt die ${v}.`), true); done(1700);
+            } else miss(nl.card, `Hier liegt ungefähr die ${t}. Die ${v} liegt weiter ${v > t ? "rechts" : "links"}.` + (Math.abs(t - v) > 15 ? " Tipp: Die 50 liegt genau in der Mitte." : ""));
+          } });
+          stage.appendChild(nl.card);
+          L.speakNow = () => speak(`Wo liegt ungefähr die ${v}?`);
+        }
+      }
+    },
+    {
+      id: "nachbarn", name: "Zahlen-Nachbarn", icon: "🏘️", color: "#2a9d8f",
+      task: (d) => d === "leicht" ? "Wer wohnt nebenan?" : d === "mittel" ? "Finde Vorgänger und Nachfolger!" : "Welche Zahl hat sich Polly gedacht?",
+      intro: (d) => d === "schwer" ? "Polly verrät dir einen Nachbarn ihrer Zahl. Welche Zahl hat sich Polly gedacht?"
+        : "Der Vorgänger wohnt direkt davor: 1 weniger. Der Nachfolger wohnt direkt danach: 1 mehr." + (d === "mittel" ? " Achtung: Manchmal geht es über den Zehner!" : ""),
+      ex: () => "33 ⬅️ <b>34</b> ➡️ 35",
+      say: (d) => d === "schwer" ? "Polly verrät dir einen Nachbarn ihrer Zahl. Welche Zahl hat sich Polly gedacht?" : "Der Vorgänger wohnt direkt davor. Er ist 1 weniger. Der Nachfolger wohnt direkt danach. Er ist 1 mehr.",
+      build(d) {
+        if (d === "leicht") return gen(8, () => { const nach = Math.random() < 0.5, n = rint(2, 98); if (nach ? n % 10 === 9 : n % 10 === 0) return null; return { n, nach, lab: `${nach ? "Nachfolger" : "Vorgänger"} von ${n}: ${nach ? n + 1 : n - 1}` }; });
+        if (d === "mittel") return gen(8, (k) => { const n = k % 2 ? 10 * rint(1, 9) + (Math.random() < .5 ? 9 : 0) : rint(2, 98); return n >= 2 && n <= 99 ? { n, lab: `${n - 1} · ${n} · ${n + 1}` } : null; });
+        return gen(8, (k) => { const nach = Math.random() < 0.5, t = k % 2 ? 10 * rint(1, 9) + (nach ? 9 : 0) : rint(2, 99), g = nach ? t + 1 : t - 1; return g >= 1 && g <= 100 && t <= 99 ? { t, nach, g, lab: `${nach ? "Nachfolger" : "Vorgänger"} ist ${g}: Pollys Zahl ist ${t}` } : null; });
+      },
+      render(x, stage, d) {
+        if (d === "leicht") {
+          const n = x.n, a = x.nach ? n + 1 : n - 1, ask = x.nach ? "Nachfolger" : "Vorgänger";
+          stage.appendChild(el("div", "card mq", `Wie heißt der <b>${ask}</b> von ${n}?`));
+          stage.appendChild(houses([{ html: x.nach ? "" : '<span class="q">?</span>', lab: "Vorgänger<br>(1 weniger)" }, { html: String(n), lab: "Zahl", mid: true }, { html: x.nach ? '<span class="q">?</span>' : "", lab: "Nachfolger<br>(1 mehr)" }]));
+          const other = x.nach ? n - 1 : n + 1, cand = [other, x.nach ? n + 10 : n - 10, x.nach ? n + 2 : n - 2].filter(v => v >= 0 && v <= 100);
+          choiceTask(stage, { opts: [{ label: String(a), correct: true, cls: "numopt" }].concat(cand.slice(0, 2).map(v => ({ label: String(v), cls: "numopt", wrongText: v === other ? `${v} ist der ${x.nach ? "Vorgänger" : "Nachfolger"}. Gesucht ist der ${ask}: 1 ${x.nach ? "mehr" : "weniger"}.` : `Der ${ask} ist nur 1 ${x.nach ? "mehr" : "weniger"}.` }))),
+            okText: `${n - 1} · ${n} · ${n + 1}`, okSpeak: `Der ${ask} von ${n} ist ${a}.` });
+          L.speakNow = () => speak(`Wie heißt der ${ask} von ${n}?`);
+          return;
+        }
+        if (d === "mittel") {
+          const n = x.n;
+          padTask(stage, { layout: (slot) => houses([{ node: slot(n - 1), lab: "Vorgänger<br>(1 weniger)" }, { html: String(n), lab: "Zahl", mid: true }, { node: slot(n + 1), lab: "Nachfolger<br>(1 mehr)" }]),
+            say: `Wie heißen Vorgänger und Nachfolger von ${n}?`,
+            why: (k, v) => numWhy(k ? n + 1 : n - 1, v, (k ? "Der Nachfolger ist 1 mehr." : "Der Vorgänger ist 1 weniger.") + ((k ? n % 10 === 9 : n % 10 === 0) ? " Hier geht es über den Zehner!" : "")),
+            okText: `${n - 1} · ${n} · ${n + 1}`, okSay: `${n - 1}, ${n}, ${n + 1}.` });
+          return;
+        }
+        const t = x.t, g = x.g;
+        stage.appendChild(el("div", "card mq", `Der ${x.nach ? "Nachfolger" : "Vorgänger"} von Pollys Zahl ist <b>${g}</b>.`));
+        padTask(stage, { layout: (slot) => houses([{ html: x.nach ? "" : String(g), lab: "Vorgänger" }, { node: slot(t), lab: "🦜 Pollys Zahl", mid: true }, { html: x.nach ? String(g) : "", lab: "Nachfolger" }]),
+          say: `Der ${x.nach ? "Nachfolger" : "Vorgänger"} von Pollys Zahl ist ${g}. Wie heißt Pollys Zahl?`,
+          why: (k, v) => numWhy(t, v, x.nach ? `Pollys Zahl ist 1 weniger als ${g}.` : `Pollys Zahl ist 1 mehr als ${g}.`), okText: `Pollys Zahl ist ${t}.`, okSay: `Pollys Zahl ist ${t}.` });
+      },
+      expert: {
+        task: () => "Wie geht die Zahlenfolge weiter?", intro: () => XI + "Schau genau: Wie verändern sich die Zahlen von einer zur nächsten? Manchmal in Einer-, Zweier-, Fünfer- oder Zehnerschritten – und manchmal rückwärts!",
+        ex: () => "35 · 40 · 45 · <b>50</b> · <b>55</b>", say: () => "Experten-Aufgabe! Wie verändern sich die Zahlen? Finde die fehlenden Zahlen.",
+        build() {
+          return gen(8, () => {
+            const st = shuffle([1, -1, 2, -2, 5, -5, 10, -10])[0], len = 5;
+            let a0 = Math.abs(st) >= 5 ? Math.abs(st) * rint(0, Math.floor(100 / Math.abs(st))) : rint(0, 100);
+            const seq = Array.from({ length: len }, (_, i) => a0 + i * st);
+            if (seq.some(v => v < 0 || v > 100)) return null;
+            const holes = shuffle([2, 3, 4]).slice(0, 2).sort((p, q) => p - q);
+            return { seq, st, holes, lab: seq.join(", ") };
+          });
+        },
+        render(x, stage) {
+          const toks = []; x.seq.forEach((v, i) => { if (i) toks.push({ t: "·", c: "tag" }); toks.push(x.holes.indexOf(i) >= 0 ? { a: v } : v); });
+          padTask(stage, { layout: eqLayout([{ t: toks, c: "step" }]), say: "Wie geht die Zahlenfolge weiter? " + x.seq.map((v, i) => x.holes.indexOf(i) >= 0 ? "wie viel" : v).join(", "),
+            why: (k, v, tr) => numWhy(x.seq[x.holes[k]], v, tr >= 2 ? `Die Zahlen werden immer um ${Math.abs(x.st)} ${x.st > 0 ? "größer" : "kleiner"}.` : "Wie verändern sich die Zahlen?"), okText: x.seq.join(", "), factor: 2 });
+        }
+      }
+    },
+    {
+      id: "nachbarzehner", name: "Nachbarzehner", icon: "🔟", color: "#f77f00",
+      task: (d) => d === "schwer" ? "Welcher Nachbarzehner ist näher?" : "Finde die Nachbarzehner!",
+      intro: (d) => d === "schwer" ? "Jede Zahl hat zwei Nachbarzehner. Welcher liegt näher? Zähle die Schritte bis zu jedem Zehner."
+        : "Jede Zahl wohnt zwischen zwei Zehnerzahlen. Schau auf die Zehner: 34 hat 3 Zehner. Also wohnt 34 zwischen 30 und 40.",
+      ex: () => "<b>30</b> · 34 · <b>40</b>",
+      say: (d) => d === "schwer" ? "Jede Zahl hat zwei Nachbarzehner. Welcher liegt näher?" : "Jede Zahl wohnt zwischen zwei Zehnerzahlen. 34 hat 3 Zehner. Also wohnt 34 zwischen 30 und 40.",
+      build(d) { return gen(8, () => { const n = rint(11, 99); if (n % 10 === 0 || (d === "schwer" && n % 10 === 5)) return null; const z = 10 * Math.floor(n / 10); return { n, z, lab: `${z} · ${n} · ${z + 10}` }; }); },
+      render(x, stage, d) {
+        const n = x.n, z = x.z;
+        if (d === "leicht") {
+          stage.appendChild(houses([{ html: '<span class="q">?</span>', lab: "Zehner davor" }, { html: String(n), lab: "Zahl", mid: true }, { html: '<span class="q">?</span>', lab: "Zehner danach" }]));
+          const cand = [[n - 1, n + 1], [z + 10, z + 20], [z - 10, z]].filter(p => p[0] >= 0 && p[1] <= 100);
+          const shown = [cand[0]].concat(shuffle(cand.slice(1)).slice(0, 1));
+          choiceTask(stage, { small: true, opts: [{ label: `${z} und ${z + 10}`, correct: true }].concat(shown.map(p => ({ label: `${p[0]} und ${p[1]}`, wrongText: p[0] === n - 1 ? "Das sind Vorgänger und Nachfolger. Gesucht sind Zehnerzahlen wie 30 oder 40!" : `Schau auf die Zehner: ${n} hat ${z / 10} Zehner.` }))),
+            okText: `${z} · ${n} · ${z + 10}`, okSpeak: `${n} wohnt zwischen ${z} und ${z + 10}.` });
+          L.speakNow = () => speak(`Zwischen welchen Zehnerzahlen wohnt ${n}?`);
+          return;
+        }
+        if (d === "mittel") {
+          padTask(stage, { layout: (slot) => houses([{ node: slot(z), lab: "Zehner davor" }, { html: String(n), lab: "Zahl", mid: true }, { node: slot(z + 10), lab: "Zehner danach" }]),
+            say: `Zwischen welchen Zehnerzahlen wohnt ${n}?`, why: (k, v) => numWhy(k ? z + 10 : z, v, `${n} hat ${z / 10} Zehner.` + (v % 10 ? " Nachbarzehner sind Zehnerzahlen: 10, 20, 30 …" : "")),
+            okText: `${z} · ${n} · ${z + 10}`, okSay: `${n} wohnt zwischen ${z} und ${z + 10}.` });
+          return;
+        }
+        const near = n % 10 < 5 ? z : z + 10, far = near === z ? z + 10 : z;
+        stage.appendChild(el("div", "card mq", `Welcher Zehner ist näher an <b>${n}</b>?`));
+        choiceTask(stage, { opts: [z, z + 10].map(v => ({ label: String(v), correct: v === near, cls: "numopt", wrongText: `Zähle die Schritte: Von ${n} bis ${far} sind es ${Math.abs(far - n)}. Und bis zum anderen Zehner?` })),
+          okText: `Von ${n} bis ${near} sind es nur ${Math.abs(near - n)} Schritte.`, okSpeak: `${near} ist näher.` });
+        L.speakNow = () => speak(`Welcher Zehner ist näher an ${n}? ${z} oder ${z + 10}?`);
+      },
+      expert: {
+        task: () => "Rätselzahl: Wer bin ich?", intro: () => XI + "Polly hat Zahlen-Rätsel für dich. Lies genau und finde die Zahl!",
+        ex: () => "Meine Nachbarzehner sind 30 und 40. Ich habe 6 Einer. → 36", say: () => "Experten-Aufgabe! Polly hat Zahlen-Rätsel für dich. Lies genau und finde die Zahl.",
+        build() {
+          return gen(8, (k) => {
+            const n = rint(11, 98), z = 10 * Math.floor(n / 10), e = n % 10; if (!e) return null;
+            const ty = k % 3;
+            if (ty === 0) return { a: n, q: `Meine Nachbarzehner sind ${z} und ${z + 10}. Ich habe ${e} Einer.`, lab: `Rätsel: ${n}` };
+            if (ty === 1) return { a: n, q: `Mein kleinerer Nachbarzehner ist ${z}. Ich habe ${e} Einer.`, lab: `Rätsel: ${n}` };
+            const big = Math.random() < .5;
+            return { a: big ? z + 10 : z, q: `Ich bin der ${big ? "größere" : "kleinere"} Nachbarzehner von ${n}.`, lab: `Rätsel: ${big ? "größerer" : "kleinerer"} Nachbarzehner von ${n}` };
+          });
+        },
+        render(x, stage) {
+          stage.appendChild(el("div", "card mq", `🦜 ${x.q} <b>Wer bin ich?</b>`));
+          padTask(stage, { layout: eqLayout([{ t: [{ t: "Ich bin" , c: "tag" }, { a: x.a }] }]), say: x.q + " Wer bin ich?", why: (k, v) => numWhy(x.a, v, "Lies das Rätsel nochmal ganz genau."), okText: `Ich bin ${x.a}.`, factor: 2 });
+        }
+      }
+    },
+    {
+      id: "ordnen", name: "Zahlen-Leiter", icon: "🪜", color: "#9b5de5",
+      task: (d) => d === "leicht" ? "Welche Zahl ist größer?" : d === "mittel" ? "Kleiner, größer oder gleich?" : "Ordne die Zahlen von klein nach groß!",
+      intro: (d) => d === "schwer" ? "Tippe die Zahlen der Reihe nach an: zuerst die kleinste, zum Schluss die größte."
+        : "Vergleiche zuerst die Zehner. Sind die Zehner gleich, vergleiche die Einer." + (d === "mittel" ? " Pollys Schnabel ist immer zur größeren Zahl hin offen: 34 < 43." : ""),
+      ex: (d) => d === "mittel" ? "34 <b>&lt;</b> 43 · 68 <b>&gt;</b> 63" : d === "schwer" ? "29 &lt; 35 &lt; 53 &lt; 56" : "<b>74</b> oder 47?",
+      say: (d) => d === "schwer" ? "Tippe die Zahlen der Reihe nach an. Zuerst die kleinste, zum Schluss die größte." : "Vergleiche zuerst die Zehner. Sind die Zehner gleich, vergleiche die Einer." + (d === "mittel" ? " Pollys Schnabel ist immer zur größeren Zahl hin offen." : ""),
+      build(d) {
+        if (d === "schwer") return gen(6, () => {
+          const lo = rint(10, 62), nums = []; let g = 0;
+          while (nums.length < 5 && g++ < 60) { const v = rint(lo, lo + 36); if (v <= 100 && nums.indexOf(v) < 0) nums.push(v); }
+          if (nums.length < 5) return null;
+          const tens = nums.map(v => Math.floor(v / 10)); if (!tens.some((t, i) => tens.indexOf(t) !== i)) return null;
+          return { nums, lab: nums.slice().sort((a, b) => a - b).join(" < ") };
+        });
+        return gen(8, (k) => {
+          const ty = d === "mittel" && k === 7 ? 4 : k % 4; let a, b;
+          if (ty === 0) { const z = rint(1, 9), e = rint(1, 9); if (z === e) return null; a = 10 * z + e; b = 10 * e + z; }
+          else if (ty === 1) { const z = rint(1, 9), e1 = rint(0, 9), e2 = rint(0, 9); if (e1 === e2) return null; a = 10 * z + e1; b = 10 * z + e2; }
+          else if (ty === 2) { const m = 10 * rint(2, 9); a = m - rint(1, 3); b = m + rint(0, 3); }
+          else if (ty === 3) { a = rint(10, 99); b = rint(10, 99); if (Math.abs(a - b) < 15) return null; }
+          else { a = b = rint(10, 99); }
+          if (Math.random() < .5) [a, b] = [b, a];
+          const big = Math.random() < .5;
+          return { a, b, big, lab: d === "mittel" ? `${a} ${a < b ? "<" : a > b ? ">" : "="} ${b}` : `${a} oder ${b}: ${big ? "größer" : "kleiner"} ist ${big ? Math.max(a, b) : Math.min(a, b)}` };
+        });
+      },
+      render(x, stage, d) {
+        if (d === "schwer") { sortTask(stage, x.nums, {}); return; }
+        const a = x.a, b = x.b;
+        if (d === "leicht") {
+          const w = x.big ? Math.max(a, b) : Math.min(a, b);
+          $("taskText").textContent = x.big ? "Welche Zahl ist größer?" : "Welche Zahl ist kleiner?";
+          stage.appendChild(el("div", "card mq", `🦜 Polly möchte die <b>${x.big ? "größere" : "kleinere"}</b> Zahl.`));
+          choiceTask(stage, { opts: [a, b].map(v => ({ label: String(v), correct: v === w, cls: "numopt", wrongText: `${v} ist ${x.big ? "kleiner" : "größer"}. ` + cmpWhy(a, b) })), okText: `${w} ist ${x.big ? "größer" : "kleiner"}.`, okSpeak: `${w} ist ${x.big ? "größer" : "kleiner"}.` });
+          L.speakNow = () => speak(`Welche Zahl ist ${x.big ? "größer" : "kleiner"}? ${a} oder ${b}?`);
+          return;
+        }
+        const right = a < b ? "<" : a > b ? ">" : "=", names = { "<": "ist kleiner als", ">": "ist größer als", "=": "ist gleich" };
+        stage.appendChild(el("div", "card cmpcard", `<span>${a}</span><span class="markslot" id="markSlot">&nbsp;</span><span>${b}</span>`));
+        const row = el("div", "opts");
+        ["<", "=", ">"].forEach(m => {
+          const btn = el("button", "opt markbtn", `<span class="mk">${m === "<" ? "&lt;" : m === ">" ? "&gt;" : "="}</span><small>${m === "<" ? "kleiner als" : m === ">" ? "größer als" : "gleich"}</small>`);
+          btn.addEventListener("click", () => {
+            if (L.locked) return;
+            if (m === right) { btn.classList.add("right"); $("markSlot").textContent = m; award(btn, 1); speak(`${a} ${names[m]} ${b}.`); hint(praise() + ` ${a} ${m === "<" ? "&lt;" : m === ">" ? "&gt;" : "="} ${b}`, true); done(1500); }
+            else miss(btn, (a === b ? "Schau genau: Beide Zahlen sind gleich!" : cmpWhy(a, b)) + " Der Schnabel ist offen zur größeren Zahl.");
+          });
+          row.appendChild(btn);
+        });
+        stage.appendChild(row);
+        L.speakNow = () => speak(`${a} und ${b}. Kleiner, größer oder gleich?`);
+      },
+      expert: {
+        task: () => "Ordne und vergleiche!", intro: () => XI + "Jetzt von groß nach klein – und manchmal fehlt eine Zahl in der Mitte!",
+        ex: () => "98 &gt; 89 &gt; 81 &gt; 18 · 46 &lt; <b>47</b> &lt; 48", say: () => "Experten-Aufgabe! Ordne die Zahlen von groß nach klein. Oder finde die Zahl, die in die Mitte passt.",
+        build() {
+          return gen(8, (k) => {
+            if (k % 2) { const lo = rint(10, 97); return { lo, lab: `${lo} < ${lo + 1} < ${lo + 2}` }; }
+            const z = rint(1, 9), e = rint(1, 9); if (z === e) return null;
+            const nums = [10 * z + e, 10 * e + z]; let g = 0;
+            while (nums.length < 5 && g++ < 60) { const v = rint(Math.max(10, Math.min(nums[0], nums[1]) - 12), Math.min(100, Math.max(nums[0], nums[1]) + 12)); if (nums.indexOf(v) < 0) nums.push(v); }
+            return nums.length === 5 ? { nums, lab: nums.slice().sort((a, b) => b - a).join(" > ") } : null;
+          });
+        },
+        render(x, stage) {
+          if (x.nums) { $("taskText").textContent = "Ordne von groß nach klein!"; sortTask(stage, x.nums, { desc: true, factor: 2 }); return; }
+          const lo = x.lo, a = lo + 1;
+          $("taskText").textContent = "Welche Zahl passt in die Mitte?";
+          stage.appendChild(el("div", "card cmpcard", `<span>${lo}</span><span>&lt;</span><span class="markslot" id="markSlot">&nbsp;</span><span>&lt;</span><span>${lo + 2}</span>`));
+          const cand = [lo, lo + 2, a + 10, a - 10].filter(v => v >= 0 && v <= 100);
+          choiceTask(stage, { opts: [{ label: String(a), correct: true, cls: "numopt" }].concat(shuffle(cand).slice(0, 2).map(v => ({ label: String(v), cls: "numopt", wrongText: `Die Zahl muss größer als ${lo} und kleiner als ${lo + 2} sein.` }))),
+            onRight: () => { $("markSlot").textContent = a; }, okText: `${lo} &lt; ${a} &lt; ${lo + 2}`, okSpeak: `${lo}, ${a}, ${lo + 2}.` });
+          L.speakNow = () => speak(`Welche Zahl ist größer als ${lo} und kleiner als ${lo + 2}?`);
+        }
+      }
+    }
+  ];
+
+  /* ======================= Insel-Kapitel: Plus und Minus bis 100 ======================= */
+  // Aufgabe: { a, op, b, r } – r = Ergebnis. Die Inseln werden Schritt für Schritt schwerer.
+  const mk = (a, op, b) => ({ a, op, b, r: op === "+" ? a + b : a - b });
+  const eqStr = (x) => `${x.a} ${opS(x.op)} ${x.b} = ${x.r}`;
+  const GEN = {
+    zehner(op) { if (op === "+") { const a = 10 * rint(1, 8); return mk(a, "+", 10 * rint(1, (100 - a) / 10)); } const a = 10 * rint(2, 10); return mk(a, "−", 10 * rint(1, a / 10 - 1)); },
+    einer(op) { if (op === "+") { const a = rint(11, 98), e = a % 10; return e > 8 ? null : mk(a, "+", rint(1, 9 - e)); } const a = rint(12, 99), e = a % 10; return e < 1 ? null : mk(a, "−", rint(1, e)); },
+    zehnerdazu(op) { if (op === "+") { const a = rint(11, 79); return a % 10 ? mk(a, "+", 10 * rint(1, Math.floor((99 - a) / 10))) : null; } const a = rint(21, 99); return a % 10 ? mk(a, "−", 10 * rint(1, Math.floor(a / 10) - 1)) : null; },
+    uebergang(op) { if (op === "+") { const a = rint(12, 98), e = a % 10; if (e < 2) return null; const x = mk(a, "+", rint(11 - e, 9)); return x.r <= 100 ? x : null; } const a = rint(21, 98), e = a % 10; return e < 1 || e > 8 ? null : mk(a, "−", rint(e + 1, 9)); },
+    zweistellig(op) { if (op === "+") { const z1 = rint(1, 7), e1 = rint(0, 8), z2 = rint(1, 8 - z1); return mk(10 * z1 + e1, "+", 10 * z2 + rint(1, 9 - e1)); } const z1 = rint(3, 9), e1 = rint(1, 9); return mk(10 * z1 + e1, "−", 10 * rint(1, z1 - 1) + rint(1, e1)); },
+    profi(op) { if (op === "+") { const z1 = rint(1, 7), e1 = rint(2, 9), x = mk(10 * z1 + e1, "+", 10 * rint(1, 8 - z1) + rint(11 - e1, 9)); return x.r <= 100 ? x : null; } const z1 = rint(3, 9), e1 = rint(1, 8); return mk(10 * z1 + e1, "−", 10 * rint(1, z1 - 2) + rint(e1 + 1, 9)); }
+  };
+  // Rechenweg in Schritten: [[Startzahl, Schritt], …]
+  function stepsOf(id, x) {
+    const { a, op, b } = x, f = (p, q) => op === "+" ? p + q : p - q;
+    if (id === "uebergang") { const t = op === "+" ? 10 - a % 10 : a % 10; return [[a, t], [f(a, t), b - t]]; }
+    if (id === "zweistellig") { const z = b - b % 10; return [[a, z], [f(a, z), b % 10]]; }
+    if (id === "profi") { const z = b - b % 10, m = f(a, z), t = op === "+" ? 10 - m % 10 : m % 10; return [[a, z], [m, t], [f(m, t), b % 10 - t]]; }
+    return null;
+  }
+  const stepTxt = (x, st) => st.map(s => `${s[0]} ${opS(x.op)} ${s[1]} = ${x.op === "+" ? s[0] + s[1] : s[0] - s[1]}`).join(", dann ");
+  // Erklärung bei einem Fehler (erst ein Tipp, beim zweiten Mal der ganze Rechenweg)
+  function rechenTip(id, x, tries) {
+    const { a, op, b, r } = x, o = opS(op), full = tries >= 2;
+    if (x.form === "pa") return op === "+" ? `Rechne rückwärts: ${r} ${MI} ${a}.` : `Rechne: ${a} ${MI} ${r}.`;
+    if (x.form === "pb") return op === "+" ? `Rechne rückwärts: ${r} ${MI} ${b}.` : `Rechne rückwärts: ${r} + ${b}.`;
+    if (x.terms) return "Rechne Schritt für Schritt von links nach rechts.";
+    if (id === "zehner") return `Rechne die kleine Aufgabe: ${a / 10} ${o} ${b / 10}${full ? " = " + r / 10 : ""}. Dann hängst du die Null wieder an.`;
+    if (id === "einer") return `Die Zehner bleiben gleich. Rechne nur die Einer: ${a % 10} ${o} ${b}${full ? " = " + r % 10 : ""}.`;
+    if (id === "zehnerdazu") return `Die Einer bleiben gleich. Rechne nur die Zehner: ${Math.floor(a / 10)} ${o} ${b / 10}${full ? " = " + Math.floor(r / 10) : ""}.`;
+    const st = stepsOf(id, x);
+    return full ? `Rechne in Schritten: ${stepTxt(x, st)}.` : `Rechne in Schritten: erst ${st[0][0]} ${o} ${st[0][1]}, dann weiter.`;
+  }
+  function rechne(stage, x, help, id) {
+    const { a, op, b, r } = x, o = opS(op), sayQ = x.form === "pa" ? `${a} ${opW(op)} wie viel gleich ${r}?` : x.form === "pb" ? `Wie viel ${opW(op)} ${b} gleich ${r}?` : `${a} ${opW(op)} ${b}`;
+    let pic = null;
+    if (help.indexOf("dienes") >= 0) {
+      const [za, ea] = ZE(a);
+      if (op === "+") pic = dienes([{ z: za, e: ea, c: "b" }, { z: Math.floor(b / 10), e: b % 10, c: "o" }], ["+"]);
+      else pic = dienes([{ z: za, e: ea, c: "b", xz: Math.floor(b / 10), xe: b % 10 }], []);
+    }
+    const col = mathRow(stage, pic);
+    if (help.indexOf("steps") >= 0) {
+      const st = stepsOf(id, x), lines = [{ t: [a, o, b, "=", { t: "?", c: "qmark" }], c: "eqhead" }];
+      st.forEach((s, k) => lines.push({ t: [{ t: (k + 1) + ".", c: "tag" }, k ? { ref: k - 1 } : s[0], o, { t: String(s[1]), c: "stepnum" }, "=", { a: op === "+" ? s[0] + s[1] : s[0] - s[1] }], c: "step" }));
+      padTask(col, { layout: eqLayout(lines), say: `${sayQ}. Rechne in Schritten.`,
+        why: (k, v) => { const s = st[k], res = op === "+" ? s[0] + s[1] : s[0] - s[1]; return numWhy(res, v, `Rechne genau: ${s[0]} ${o} ${s[1]}.` + (res % 10 === 0 && s[1] % 10 ? " So kommst du genau zum Zehner." : "")); },
+        onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = r; q.classList.add("ok"); } }, okText: eqStr(x), okSay: `${a} ${opW(op)} ${b} gleich ${r}.` });
+      return;
+    }
+    let small = null;
+    if (help.indexOf("small") >= 0) {
+      const ka = id === "zehner" ? a / 10 : a % 10, kb = id === "zehner" ? b / 10 : b, kr = op === "+" ? ka + kb : ka - kb;
+      small = { t: [{ t: "🐣 kleine Aufgabe", c: "tag" }, ka, o, kb, "=", kr], c: "small" };
+    }
+    const line = x.terms ? x.terms.reduce((acc, t, i) => i ? acc.concat([opS(x.ops[i - 1]), t]) : [t], []).concat(["=", { a: r }])
+      : x.form === "pa" ? [a, o, { a: b }, "=", r] : x.form === "pb" ? [{ a: a }, o, b, "=", r] : [a, o, b, "=", { a: r }];
+    const ans = x.form === "pa" ? b : x.form === "pb" ? a : r;
+    padTask(col, { layout: eqLayout(small ? [small, { t: line }] : [{ t: line }]), say: x.terms ? x.terms.reduce((s, t, i) => i ? `${s} ${opW(x.ops[i - 1])} ${t}` : String(t), "") : sayQ,
+      why: (k, v, tr) => numWhy(ans, v, rechenTip(id, x, tr)), okText: x.terms ? `= ${r}` : eqStr(x), okSay: x.terms ? `Ergebnis: ${r}.` : `${a} ${opW(op)} ${b} gleich ${r}.`, factor: x.factor || 1 });
+  }
+  // Experten-Aufgaben: Platzhalter (eine Zahl fehlt) und Ketten
+  function placeholders(id, n) {
+    return gen(n, (k) => { const x = GEN[id](k % 2 ? "−" : "+"); if (!x) return null; x.form = k % 4 < 2 ? "pa" : "pb"; x.factor = 2; x.lab = eqStr(x); return x; });
+  }
+  function rechenLevel(c) {
+    return {
+      id: c.id, name: c.name, icon: c.icon, color: c.color,
+      task: (d) => d === "schwer" ? (c.place ? "Rechne! Manchmal fehlt eine Zahl." : "Rechne plus und minus!") : d === "mittel" ? "Rechne minus!" : "Rechne plus!",
+      intro: (d) => c.intro[d], ex: (d) => c.ex(d), say: (d) => c.intro[d],
+      build(d) {
+        const steps = c.help[d].indexOf("steps") >= 0;
+        return gen(steps ? 6 : 8, (k) => {
+          const op = d === "leicht" ? "+" : d === "mittel" ? "−" : (k % 2 ? "−" : "+"), x = GEN[c.id](op); if (!x) return null;
+          x.form = d === "schwer" && c.place && k % 3 === 2 ? (k % 2 ? "pb" : "pa") : "res";
+          x.lab = eqStr(x); return x;
+        });
+      },
+      render(x, stage, d) { rechne(stage, x, c.help[d] || [], c.id); },
+      expert: {
+        task: () => "Experten-Rechnen!", intro: () => XI + c.xintro, ex: () => c.xex, say: () => "Experten-Aufgabe! " + c.xintro,
+        build() { return c.xbuild ? c.xbuild() : placeholders(c.id, 8); },
+        render(x, stage) { rechne(stage, x, [], c.id); }
+      }
+    };
+  }
+  const RECHENLEVELS = [
+    rechenLevel({ id: "zehner", name: "Zehner-Flug", icon: "🔟", color: "#3a86ff", place: true,
+      help: { leicht: ["dienes", "small"], mittel: ["small"], schwer: [] },
+      intro: { leicht: "Polly fliegt in Zehnersprüngen! Rechne erst die kleine Aufgabe ohne Null. Dann hängst du die Null wieder an: 3 + 4 = 7, also 30 + 40 = 70.",
+        mittel: "Jetzt minus! Auch hier hilft die kleine Aufgabe: 7 − 3 = 4, also 70 − 30 = 40.", schwer: "Plus und minus gemischt. Manchmal fehlt eine Zahl – dann rechne rückwärts!" },
+      ex: (d) => d === "mittel" ? "7 − 3 = 4 → <b>70 − 30 = 40</b>" : "3 + 4 = 7 → <b>30 + 40 = 70</b>",
+      xintro: "Ergänze bis 100 und rechne Ketten mit drei Zehnerzahlen!", xex: "60 + <b>40</b> = 100 · 20 + 30 + 40 = <b>90</b>",
+      xbuild() {
+        return gen(8, (k) => {
+          if (k % 2) { const a = 10 * rint(1, 9), x = mk(a, "+", 100 - a); x.form = "pa"; x.factor = 2; x.lab = eqStr(x); return x; }
+          const ops = [Math.random() < .5 ? "+" : "−", Math.random() < .5 ? "+" : "−"], t = [10 * rint(1, 9), 10 * rint(1, 5), 10 * rint(1, 5)];
+          let v = t[0]; for (let i = 0; i < 2; i++) { v = ops[i] === "+" ? v + t[i + 1] : v - t[i + 1]; if (v < 0 || v > 100) return null; }
+          if (v < 10) return null;
+          return { terms: t, ops, a: t[0], op: ops[0], b: t[1], r: v, factor: 2, lab: `${t[0]} ${opS(ops[0])} ${t[1]} ${opS(ops[1])} ${t[2]} = ${v}` };
+        });
+      } }),
+    rechenLevel({ id: "einer", name: "Einer-Bucht", icon: "🐣", color: "#2a9d8f", place: true,
+      help: { leicht: ["dienes", "small"], mittel: ["small"], schwer: [] },
+      intro: { leicht: "Die Zehner bleiben gleich – du rechnest nur mit den Einern: 4 + 5 = 9, also 34 + 5 = 39.",
+        mittel: "Jetzt minus! Die Zehner bleiben gleich, nur die Einer ändern sich: 7 − 3 = 4, also 47 − 3 = 44.", schwer: "Plus und minus gemischt. Manchmal fehlt eine Zahl – dann rechne rückwärts!" },
+      ex: (d) => d === "mittel" ? "47 − 3 = <b>44</b>" : "34 + 5 = <b>39</b>",
+      xintro: "Hier fehlt immer eine Zahl. Rechne rückwärts!", xex: "34 + <b>5</b> = 39 · <b>56</b> − 4 = 52" }),
+    rechenLevel({ id: "zehnerdazu", name: "Zehner-Sprung", icon: "🦘", color: "#f77f00", place: true,
+      help: { leicht: ["dienes"], mittel: ["dienes"], schwer: [] },
+      intro: { leicht: "Jetzt kommen ganze Zehner dazu. Nur die Zehner ändern sich – die Einer bleiben gleich: 34 + 20 = 54.",
+        mittel: "Jetzt nimmst du Zehner weg. Die Einer bleiben gleich: 76 − 30 = 46.", schwer: "Plus und minus gemischt. Manchmal fehlt eine Zahl – dann rechne rückwärts!" },
+      ex: (d) => d === "mittel" ? "7<b>6</b> − 30 = 4<b>6</b>" : "3<b>4</b> + 20 = 5<b>4</b>",
+      xintro: "Hier fehlt immer eine Zahl. Wie viele Zehner sind es?", xex: "34 + <b>40</b> = 74 · <b>85</b> − 30 = 55" }),
+    rechenLevel({ id: "uebergang", name: "Zehner-Brücke", icon: "🌉", color: "#e63946",
+      help: { leicht: ["steps"], mittel: ["steps"], schwer: [] },
+      intro: { leicht: "Jetzt geht es über den Zehner! Rechne in zwei Schritten: erst bis zum vollen Zehner, dann den Rest. 38 + 5: erst 38 + 2 = 40, dann 40 + 3 = 43.",
+        mittel: "Minus über den Zehner: erst zurück bis zum vollen Zehner, dann den Rest. 42 − 6: erst 42 − 2 = 40, dann 40 − 4 = 36.", schwer: "Plus und minus über den Zehner – jetzt ohne Hilfe. Denk an die zwei Schritte!" },
+      ex: (d) => d === "mittel" ? "42 − 2 = 40 · 40 − 4 = <b>36</b>" : "38 + 2 = 40 · 40 + 3 = <b>43</b>",
+      xintro: "Hier fehlt eine Zahl – und es geht über den Zehner!", xex: "38 + <b>7</b> = 45 · 52 − <b>6</b> = 46" }),
+    rechenLevel({ id: "zweistellig", name: "Zehner-Einer-Weg", icon: "🧩", color: "#9b5de5",
+      help: { leicht: ["steps"], mittel: ["steps"], schwer: [] },
+      intro: { leicht: "Jetzt rechnest du mit zwei zweistelligen Zahlen. Erst die Zehner dazu, dann die Einer: 34 + 25: erst 34 + 20 = 54, dann 54 + 5 = 59.",
+        mittel: "Minus mit zwei zweistelligen Zahlen: erst die Zehner weg, dann die Einer. 78 − 43: erst 78 − 40 = 38, dann 38 − 3 = 35.", schwer: "Jetzt ohne Hilfe: erst die Zehner, dann die Einer!" },
+      ex: (d) => d === "mittel" ? "78 − 40 = 38 · 38 − 3 = <b>35</b>" : "34 + 20 = 54 · 54 + 5 = <b>59</b>",
+      xintro: "Hier fehlt eine Zahl. Rechne rückwärts!", xex: "34 + <b>25</b> = 59 · <b>78</b> − 43 = 35" }),
+    rechenLevel({ id: "profi", name: "Profi-Gipfel", icon: "🏔️", color: "#1b2a4a",
+      help: { leicht: ["steps"], mittel: ["steps"], schwer: [] },
+      intro: { leicht: "Die Profi-Aufgaben! Erst die Zehner, dann über den Zehner, dann der Rest. 38 + 25: 38 + 20 = 58, 58 + 2 = 60, 60 + 3 = 63.",
+        mittel: "Profi-Minus: erst die Zehner weg, dann zurück bis zum Zehner, dann der Rest. 72 − 48: 72 − 40 = 32, 32 − 2 = 30, 30 − 6 = 24.", schwer: "Die schwersten Aufgaben – ohne Hilfe. Du schaffst das!" },
+      ex: (d) => d === "mittel" ? "72 − 40 = 32 · 32 − 2 = 30 · 30 − 6 = <b>24</b>" : "38 + 20 = 58 · 58 + 2 = 60 · 60 + 3 = <b>63</b>",
+      xintro: "Hier fehlt eine Zahl – mit Zehnerübergang. Rechne rückwärts!", xex: "38 + <b>25</b> = 63 · <b>72</b> − 48 = 24" })
+  ];
+
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
@@ -2411,7 +3254,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       bonusPlan: [["anlaut", "schwer", 2], ["silbenschiff", "schwer", 2], ["wortbild", "schwer", 2], ["saetze", "mittel", 2], ["raetsel", "mittel", 2]] },
     { id: "rechtschreibung", name: "Rechtschreib", title: "Rechtschreib-Inseln", sub: "Richtig schreiben", icon: "✍️", ready: true, levels: RSLEVELS, award: "Rechtschreib-Profi",
       bonusPlan: [["doppel", "schwer", 1], ["ck", "schwer", 1], ["tz", "mittel", 1], ["ie", "schwer", 1], ["verlaengern", "schwer", 1], ["ableiten", "schwer", 1],
-                  ["spst", "schwer", 1], ["vogel", "mittel", 1], ["er", "schwer", 1], ["zeichen", "schwer", 1]] }
+                  ["spst", "schwer", 1], ["vogel", "mittel", 1], ["er", "schwer", 1], ["zeichen", "schwer", 1]] },
+    // ---- Pollys Spielplatz (Mathe) ----
+    { id: "zahlen", world: "polly", name: "Zahlen", title: "Zahlen-Inseln", sub: "Zahlenraum bis 100", icon: "🔢", ready: true, levels: ZAHLLEVELS, award: "Zahlen-Profi", hunter: "Zahlen",
+      bonusPlan: [["hunderterfeld", "schwer", 2], ["zahlenstrahl", "schwer", 2], ["nachbarn", "schwer", 2], ["nachbarzehner", "schwer", 2], ["ordnen", "mittel", 2]] },
+    { id: "rechnen", world: "polly", name: "Plus & Minus", title: "Plus-Minus-Inseln", sub: "Rechnen bis 100", icon: "🧮", ready: true, levels: RECHENLEVELS, award: "Rechen-Profi", hunter: "Rechen",
+      bonusPlan: [["zehner", "schwer", 2], ["einer", "schwer", 2], ["zehnerdazu", "schwer", 2], ["uebergang", "schwer", 2], ["zweistellig", "schwer", 1], ["profi", "schwer", 1]] },
+    { id: "einmaleins", world: "polly", name: "Einmaleins", sub: "Malnehmen", icon: "✖️", ready: false, levels: [] }
   ];
   let CH = CHAPTERS[0];
 
@@ -2716,6 +3565,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     Object.keys(S.perfect).forEach(k => { const m = k.match(/^nomen:(\d)$/); if (m) { S.perfect[`nomen:${old[+m[1]]}`] = true; delete S.perfect[k]; changed = true; } });
     if (S.total == null) { S.total = S.coins; changed = true; }
     if (!Array.isArray(S.aqua)) { S.aqua = []; changed = true; }
+    if (!Array.isArray(S.jungle)) { S.jungle = []; changed = true; }
     if (changed) save();
   })();
   const islandDone = (ch, li) => DK.some(d => S.stars[skey(ch, li, d)] > 0);
@@ -2733,7 +3583,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   const hexRgb = (h) => { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
   const mixHex = (h, t, k) => "#" + hexRgb(h).map((v, i) => Math.round(v + (t[i] - v) * k).toString(16).padStart(2, "0")).join("");
   const FLAT = { "#17324a": 1, "#fff": 1, "#ffffff": 1 };
-  const TREASURE_IDS = { kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1 };
+  const TREASURE_IDS = { kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1, regenbogentukan: 1, recheneule: 1 };
   let art3d = 0;
   function shade3d(markup, glossy) {
     const uid = "s" + (++art3d), cols = {}; let defs = "", n = 0;
@@ -2819,6 +3669,49 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     schiffswrack: `<g transform="rotate(-10 50 60)"><path d="M50 56 L50 16" stroke="#5b3a1a" stroke-width="5" stroke-linecap="round"/><path d="M50 20 L74 28 L66 32 L72 36 L50 42 Z" fill="#e9e1d1" ${OL}/><path d="M8 56 L92 56 L82 82 L20 82 Z" fill="#8a5a2b" ${OL}/><path d="M8 56 L92 56" stroke="#5b3a1a" stroke-width="4"/>${[28, 46, 64].map(x => `<circle cx="${x}" cy="67" r="5.5" fill="#264653" ${OL}/>`).join("")}<path d="M74 60 L70 70 L76 74 L72 82" fill="none" stroke="#17324a" stroke-width="2.5"/></g><path d="M22 94 Q16 78 24 66 Q30 56 24 46" fill="none" stroke="#52b788" stroke-width="7" stroke-linecap="round"/>`,
     goldnemo: `<path d="M84 10 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 Z M14 14 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z" fill="#fff3b0"/><rect x="26" y="80" width="48" height="14" rx="3" fill="#8a5a2b" ${OL}/><rect x="36" y="66" width="28" height="14" fill="#ffd166" ${OL}/><path d="M48 34 L56 14 L64 35 Z" fill="#ffd60a" ${OL}/><path d="M12 50 Q28 30 60 32 Q82 34 94 46 Q82 56 60 58 Q36 62 22 56 L8 66 L10 52 Z" fill="#ffd60a" ${OL}/><path d="M70 50 L74 54 L78 50 L82 54" fill="none" stroke="#17324a" stroke-width="2.5" stroke-linejoin="round"/>${SHINE(44, 40, 12, 4)}${EYE(78, 42, 4)}`
   };
+  /* ---------- Pollys Dschungel: eigene Zeichnungen im gleichen Stil (Tiere schauen nach rechts) ---------- */
+  const LEAF = (x, y, a, len, c) => `<path d="M0 0 Q${len * .5} ${-len * .3} ${len} ${len * .1} Q${len * .5} ${len * .06} 0 0 Z" transform="translate(${x} ${y}) rotate(${a})" fill="${c}" ${OL}/>`;
+  const STROKE2 = (d, w, c) => `<path d="${d}" fill="none" stroke="#17324a" stroke-opacity=".72" stroke-width="${w + 3}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const ORCHID = (x, y, s, c) => `${[0, 72, 144, 216, 288].map(a => `<ellipse cx="${x + Math.cos((a - 90) * Math.PI / 180) * 6 * s}" cy="${y + Math.sin((a - 90) * Math.PI / 180) * 6 * s}" rx="${5.2 * s}" ry="${3.8 * s}" transform="rotate(${a - 90} ${x + Math.cos((a - 90) * Math.PI / 180) * 6 * s} ${y + Math.sin((a - 90) * Math.PI / 180) * 6 * s})" fill="${c}" ${OL}/>`).join("")}<circle cx="${x}" cy="${y}" r="${3 * s}" fill="#ffd60a" ${OL}/>`;
+  const PART = {
+    wellensittich: `<path d="M32 58 L4 66 L8 73 L34 64 Z" fill="#2a9d8f" ${OL}/><path d="M46 50 Q42 22 58 12 Q62 32 58 50 Z" fill="#55a630" ${OL}/><ellipse cx="52" cy="58" rx="22" ry="12" fill="#8ac926" ${OL}/><path d="M36 62 Q52 72 68 62 Q60 68 48 68 Q40 67 36 62 Z" fill="#b5e48c"/><circle cx="73" cy="47" r="12" fill="#ffd60a" ${OL}/><path d="M64 40 q3 -3 6 0 M62 46 q3 -3 6 0" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="83" cy="44" rx="3" ry="2.2" fill="#4361ee"/><path d="M83 47 Q91 50 86 57 Q83 53 81 53 Z" fill="#f4a261" ${OL}/>${EYE(77, 44, 2.8)}<path d="M44 56 Q36 28 52 18 Q64 36 62 58 Z" fill="#6a994e" ${OL}/><path d="M46 46 q4 -3 8 0 M45 38 q4 -3 8 0 M48 30 q3 -2 6 0" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/>`,
+    kolibri: `<ellipse cx="40" cy="30" rx="7" ry="23" transform="rotate(-38 40 30)" fill="#bde0fe" opacity=".9" ${OL}/><ellipse cx="52" cy="27" rx="6.5" ry="21" transform="rotate(-12 52 27)" fill="#a2d2ff" opacity=".9" ${OL}/><path d="M30 62 L8 74 L16 63 L6 55 L28 55 Z" fill="#1b998b" ${OL}/><ellipse cx="46" cy="57" rx="21" ry="11" transform="rotate(-18 46 57)" fill="#2ec4b6" ${OL}/><path d="M54 56 Q62 63 68 52 Q60 50 54 56 Z" fill="#e63946" ${OL}/><circle cx="65" cy="45" r="9" fill="#2ec4b6" ${OL}/><path d="M73 44 L97 38" stroke="#17324a" stroke-width="3" stroke-linecap="round"/>${EYE(67, 43, 2.6)}`,
+    kakadu: `<path d="M36 72 L24 95 L36 93 L45 75 Z" fill="#e9ecef" ${OL}/><ellipse cx="48" cy="64" rx="20" ry="24" fill="#f1f3f5" ${OL}/><path d="M34 56 Q50 50 58 66 Q48 82 32 76 Z" fill="#dee2e6" ${OL}/><path d="M52 26 Q42 6 56 2 Q56 14 60 20 Q62 4 75 6 Q66 16 67 26 Z" fill="#ffd60a" ${OL}/><circle cx="60" cy="36" r="14" fill="#f8f9fa" ${OL}/><path d="M71 33 Q85 33 80 48 Q76 44 70 44 Z" fill="#495057" ${OL}/>${EYE(64, 34, 3)}<path d="M44 87 v8 M54 87 v8" stroke="#6c757d" stroke-width="3.5" stroke-linecap="round"/>`,
+    tukan: `<path d="M34 74 L28 97 L40 95 L42 76 Z" fill="#212529" ${OL}/><ellipse cx="40" cy="60" rx="17" ry="24" fill="#2b2d42" ${OL}/><path d="M48 40 Q60 48 54 64 Q46 60 44 46 Z" fill="#ffd60a" ${OL}/><path d="M33 80 Q40 86 47 80 Z" fill="#e63946"/><circle cx="48" cy="33" r="13" fill="#2b2d42" ${OL}/><path d="M57 27 Q86 17 96 35 Q86 45 58 41 Z" fill="#ff9f1c" ${OL}/><path d="M60 29 Q84 21 94 33 Q80 31 60 33 Z" fill="#ffd166"/><path d="M90 31 Q96 35 92 39 Q88 37 88 33 Z" fill="#e63946"/><path d="M58 35 Q78 35 94 37" fill="none" stroke="#17324a" stroke-width="1.6" opacity=".6"/><circle cx="51" cy="30" r="5.5" fill="#4cc9f0" ${OL}/>${EYE(51, 30, 2.6)}<path d="M36 84 v9 M44 84 v9" stroke="#4361ee" stroke-width="3.5" stroke-linecap="round"/>`,
+    ara: `<path d="M30 60 L2 82 L7 88 L33 66 Z" fill="#e63946" ${OL}/><path d="M30 62 L9 93 L15 95 L35 66 Z" fill="#3a86ff" ${OL}/><path d="M46 52 Q32 20 48 8 Q62 30 60 52 Z" fill="#3a86ff" ${OL}/><ellipse cx="53" cy="58" rx="22" ry="13" fill="#e63946" ${OL}/><circle cx="77" cy="46" r="12" fill="#e63946" ${OL}/><ellipse cx="81" cy="47" rx="6" ry="5.5" fill="#f8f9fa"/><path d="M85 39 Q97 41 93 56 Q89 52 85 52 Z" fill="#f1e3c6" ${OL}/><path d="M85 52 Q91 56 87 58 Q84 56 83 54 Z" fill="#343a40"/>${EYE(79, 44, 2.6)}<path d="M46 58 Q36 28 54 14 Q66 34 62 58 Z" fill="#e63946" ${OL}/><path d="M47.5 50 Q42 32 52.5 22 Q59 34 59 50 Z" fill="#ffd60a"/><path d="M48.5 40 Q47 30 52.5 23.5 Q56 32 56 40 Z" fill="#3a86ff"/>`,
+    blauara: `<path d="M30 60 L2 84 L8 89 L34 66 Z" fill="#1982c4" ${OL}/><path d="M46 52 Q32 20 48 8 Q62 30 60 52 Z" fill="#1565c0" ${OL}/><ellipse cx="53" cy="58" rx="22" ry="13" fill="#1982c4" ${OL}/><path d="M38 63 Q54 75 73 58 Q71 68 57 71 Q45 72 38 63 Z" fill="#ffca3a" ${OL}/><circle cx="77" cy="46" r="12" fill="#1982c4" ${OL}/><path d="M70 37 Q78 31 85 38 Q78 38 72 41 Z" fill="#8ac926"/><ellipse cx="81" cy="48" rx="6" ry="5.5" fill="#f8f9fa"/><path d="M77 47 q3 1 6 0 M78 50 q3 1 5 0" stroke="#17324a" stroke-width="1" fill="none" opacity=".6"/><path d="M85 39 Q97 41 93 56 Q89 52 85 52 Z" fill="#343a40" ${OL}/>${EYE(79, 44, 2.6)}<path d="M46 58 Q36 28 54 14 Q66 34 62 58 Z" fill="#1982c4" ${OL}/><path d="M49 48 Q45 34 53 24" fill="none" stroke="#0d5c91" stroke-width="2" stroke-linecap="round"/>`,
+    flamingo: `<path d="M50 66 L50 97 M50 80 L60 74 L53 69" fill="none" stroke="#e5737f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 55 L12 50 L14 60 Z" fill="#ff6f91" ${OL}/><ellipse cx="44" cy="57" rx="22" ry="13" fill="#ff8fab" ${OL}/><path d="M30 53 Q46 45 58 55 Q46 67 28 61 Z" fill="#ff6f91" ${OL}/>${STROKE2("M58 52 Q72 42 64 28 Q58 17 68 11", 6, "#ff8fab")}<circle cx="70" cy="12" r="6.5" fill="#ff8fab" ${OL}/><path d="M75 9 Q87 11 85 21 Q81 16 75 16 Z" fill="#f8f9fa" ${OL}/><path d="M83 15 Q87 19 85 22 Q82 19 81 17 Z" fill="#212529"/>${EYE(70, 11, 2.2)}`,
+    eule: `<path d="M30 38 L27 18 L42 31 Z M70 38 L73 18 L58 31 Z" fill="#8a4a24" ${OL}/><ellipse cx="50" cy="60" rx="26" ry="30" fill="#a0522d" ${OL}/><ellipse cx="50" cy="69" rx="16" ry="19" fill="#e9c46a" ${OL}/><path d="M43 62 q3 3 6 0 M51 62 q3 3 6 0 M43 70 q3 3 6 0 M51 70 q3 3 6 0 M47 78 q3 3 6 0" stroke="#a0522d" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M24 56 Q17 72 30 85 Q30 66 33 56 Z M76 56 Q83 72 70 85 Q70 66 67 56 Z" fill="#8a4a24" ${OL}/><circle cx="40" cy="43" r="11" fill="#f4e1c1" ${OL}/><circle cx="60" cy="43" r="11" fill="#f4e1c1" ${OL}/><circle cx="40" cy="43" r="6.5" fill="#ffd60a" ${OL}/><circle cx="60" cy="43" r="6.5" fill="#ffd60a" ${OL}/><circle cx="41" cy="43" r="3.2" fill="#17324a"/><circle cx="61" cy="43" r="3.2" fill="#17324a"/><circle cx="42.3" cy="41.6" r="1.1" fill="#fff"/><circle cx="62.3" cy="41.6" r="1.1" fill="#fff"/><path d="M46 51 L54 51 L50 59 Z" fill="#f4a261" ${OL}/><path d="M41 89 l-3 6 M42 89 l0 7 M43 89 l3 6 M57 89 l-3 6 M58 89 l0 7 M59 89 l3 6" stroke="#f4a261" stroke-width="2.6" stroke-linecap="round"/>`,
+    pfau: `${[-170, -150, -130, -110, -90, -70, -50, -30, -10].map(a => { const c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180), x = 44 + c * 38, y = 74 + s * 58; return `<path d="M44 74 L${x.toFixed(1)} ${y.toFixed(1)}" stroke="#2a9d8f" stroke-width="2.4"/><ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7.5" ry="9" transform="rotate(${a + 90} ${x.toFixed(1)} ${y.toFixed(1)})" fill="#2ec4b6" ${OL}/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.4" fill="#ffd60a"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.4" fill="#1d4ed8"/>`; }).join("")}<path d="M36 92 Q28 74 42 64 Q56 58 60 70 Q62 86 52 93 Z" fill="#1d4ed8" ${OL}/>${STROKE2("M55 66 Q60 50 64 41", 6, "#1d4ed8")}<circle cx="66" cy="38" r="7" fill="#1d4ed8" ${OL}/><path d="M64 31 L61 23 M67 30 L67 21 M70 31 L73 23" stroke="#1d4ed8" stroke-width="1.6"/><circle cx="61" cy="22" r="2" fill="#2ec4b6"/><circle cx="67" cy="20" r="2" fill="#2ec4b6"/><circle cx="73" cy="22" r="2" fill="#2ec4b6"/><path d="M72 36 L81 38 L72 41 Z" fill="#adb5bd" ${OL}/>${EYE(68, 37, 2)}<path d="M44 92 v6 M52 92 v6" stroke="#adb5bd" stroke-width="3" stroke-linecap="round"/>`,
+    frosch: `<path d="M6 87 Q40 61 94 80 Q60 99 6 87 Z" fill="#52b788" ${OL}/><path d="M12 86 Q50 77 90 80" fill="none" stroke="#2d6a4f" stroke-width="2"/><path d="M30 74 Q14 66 22 57 Q34 55 41 66 Z" fill="#38b000" ${OL}/><ellipse cx="50" cy="63" rx="22" ry="14" fill="#70e000" ${OL}/><path d="M34 67 Q50 75 66 67" fill="none" stroke="#4361ee" stroke-width="3" stroke-linecap="round"/><path d="M60 69 L68 80 L75 80" fill="none" stroke="#38b000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="77" cy="80" r="3.2" fill="#ff9f1c"/><circle cx="19" cy="58" r="3.2" fill="#ff9f1c"/><ellipse cx="66" cy="53" rx="14" ry="11" fill="#70e000" ${OL}/><circle cx="62" cy="43" r="7" fill="#e63946" ${OL}/><circle cx="74" cy="45" r="6" fill="#e63946" ${OL}/><ellipse cx="62.6" cy="43" rx="1.6" ry="4" fill="#17324a"/><ellipse cx="74.6" cy="45" rx="1.4" ry="3.4" fill="#17324a"/><path d="M67 57 q6 3 11 -1" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/>`,
+    schmetterling: `<path d="M50 47 Q30 8 9 21 Q3 45 46 53 Z" fill="#3a86ff" ${OL}/><path d="M50 47 Q70 8 91 21 Q97 45 54 53 Z" fill="#3a86ff" ${OL}/><path d="M47 47 Q32 20 15 26 Q14 41 44 49 Z" fill="#4cc9f0"/><path d="M53 47 Q68 20 85 26 Q86 41 56 49 Z" fill="#4cc9f0"/><path d="M48 53 Q20 58 24 81 Q41 85 50 59 Z" fill="#1d4ed8" ${OL}/><path d="M52 53 Q80 58 76 81 Q59 85 50 59 Z" fill="#1d4ed8" ${OL}/><circle cx="13" cy="24" r="2" fill="#fff"/><circle cx="87" cy="24" r="2" fill="#fff"/><circle cx="27" cy="78" r="1.8" fill="#fff"/><circle cx="73" cy="78" r="1.8" fill="#fff"/><ellipse cx="50" cy="55" rx="3.5" ry="16" fill="#3d2b1f" ${OL}/><circle cx="50" cy="38" r="4" fill="#3d2b1f" ${OL}/><path d="M49 35 Q44 25 40 23 M51 35 Q56 25 60 23" stroke="#3d2b1f" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    affe: `${STROKE2("M60 0 Q56 12 60 24", 4, "#6a994e")}<path d="M58 11 q-7 -2 -9 3 q5 3 9 -3 Z" fill="#8ac926" ${OL}/>${STROKE2("M36 68 Q14 74 17 57 Q21 47 30 53", 4.5, "#9c6644")}${STROKE2("M55 48 Q53 35 58 25", 6, "#9c6644")}<circle cx="59" cy="24" r="4.2" fill="#e6b88a" ${OL}/><ellipse cx="46" cy="65" rx="14" ry="17" fill="#9c6644" ${OL}/><ellipse cx="47" cy="68" rx="8" ry="11" fill="#e6b88a"/>${STROKE2("M38 79 Q34 89 40 93", 6, "#9c6644")}${STROKE2("M54 79 Q58 89 52 93", 6, "#9c6644")}<circle cx="31" cy="41" r="5" fill="#e6b88a" ${OL}/><circle cx="57" cy="41" r="5" fill="#e6b88a" ${OL}/><circle cx="44" cy="40" r="13" fill="#9c6644" ${OL}/><path d="M36 43 Q36 35 44 36 Q52 35 52 43 Q52 51 44 52 Q36 51 36 43 Z" fill="#e6b88a" ${OL}/><circle cx="40.5" cy="41" r="2" fill="#17324a"/><circle cx="47.5" cy="41" r="2" fill="#17324a"/><path d="M41 47 q3 2.5 6 0" stroke="#17324a" stroke-width="1.5" fill="none" stroke-linecap="round"/>`,
+    faultier: `${STROKE2("M4 18 Q50 9 96 20", 6, "#7f5539")}<path d="M80 17 q8 -11 15 -4 q-6 8 -15 4 Z" fill="#52b788" ${OL}/><path d="M12 16 q-6 -10 -11 -3 q5 7 11 3 Z" fill="#40916c" ${OL}/>${STROKE2("M37 52 Q30 33 34 17", 7, "#a68a64")}${STROKE2("M63 52 Q70 33 66 17", 7, "#a68a64")}<path d="M31 15 l-2 5 M35 14 l0 6 M65 14 l0 6 M69 15 l2 5" stroke="#3d2b1f" stroke-width="2" stroke-linecap="round"/>${STROKE2("M39 80 Q36 90 40 95", 7, "#a68a64")}${STROKE2("M61 80 Q64 90 60 95", 7, "#a68a64")}<ellipse cx="50" cy="63" rx="20" ry="22" fill="#a68a64" ${OL}/><circle cx="50" cy="66" r="13" fill="#d4b483" ${OL}/><ellipse cx="44" cy="65" rx="5" ry="3.5" transform="rotate(-20 44 65)" fill="#6f4e37"/><ellipse cx="56" cy="65" rx="5" ry="3.5" transform="rotate(20 56 65)" fill="#6f4e37"/><circle cx="44.5" cy="65" r="1.7" fill="#17324a"/><circle cx="55.5" cy="65" r="1.7" fill="#17324a"/><ellipse cx="50" cy="70" rx="3" ry="2" fill="#3d2b1f"/><path d="M46 74 q4 3 8 0" stroke="#3d2b1f" stroke-width="1.5" fill="none" stroke-linecap="round"/>`,
+    chamaeleon: `${STROKE2("M4 80 Q50 73 96 81", 6, "#7f5539")}${STROKE2("M25 66 Q8 66 10 54 Q12 44 22 46 Q30 50 24 56 Q20 58 18 54", 6, "#38b000")}<path d="M22 66 Q30 44 56 44 Q72 46 79 58 Q71 71 50 72 Q30 74 22 66 Z" fill="#38b000" ${OL}/><path d="M32 50 Q44 45 58 46" stroke="#ffd60a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="38" cy="60" r="2.4" fill="#ffd60a"/><circle cx="50" cy="62" r="2.4" fill="#ffd60a"/><circle cx="62" cy="60" r="2.4" fill="#ffd60a"/><path d="M42 70 L38 79 M58 70 L62 79" stroke="#38b000" stroke-width="5" stroke-linecap="round"/><path d="M70 46 Q87 44 93 56 Q87 66 74 64 Z" fill="#38b000" ${OL}/><path d="M70 46 Q74 35 85 44 Z" fill="#70e000" ${OL}/><circle cx="81" cy="53" r="6" fill="#70e000" ${OL}/><circle cx="82" cy="53" r="2.4" fill="#17324a"/><path d="M86 62 q5 1 7 -2" stroke="#17324a" stroke-width="1.4" fill="none" stroke-linecap="round"/>`,
+    farn: `${[[14, 34, "#2d6a4f"], [28, 14, "#40916c"], [50, 6, "#52b788"], [72, 14, "#40916c"], [86, 34, "#2d6a4f"], [36, 40, "#74c69d"], [64, 40, "#74c69d"]].map(([tx, ty, c]) => { const mx = (50 + tx) / 2, my = (96 + ty) / 2, dx = tx - 50, dy = ty - 96, l = Math.hypot(dx, dy), nx = -dy / l * 9, ny = dx / l * 9; return `<path d="M50 96 Q${(mx + nx).toFixed(1)} ${(my + ny).toFixed(1)} ${tx} ${ty} Q${(mx - nx).toFixed(1)} ${(my - ny).toFixed(1)} 50 96 Z" fill="${c}" ${OL}/><path d="M50 96 Q${mx} ${my} ${tx} ${ty}" fill="none" stroke="#1b4332" stroke-width="1.4"/>${[.3, .5, .7].map(t => { const px = 50 + dx * t, py = 96 + dy * t; return `<path d="M${(px - nx * .7).toFixed(1)} ${(py - ny * .7).toFixed(1)} L${(px + nx * .7).toFixed(1)} ${(py + ny * .7).toFixed(1)}" stroke="#1b4332" stroke-width="1" opacity=".55"/>`; }).join("")}`; }).join("")}`,
+    hibiskus: `<path d="M50 97 L50 62" stroke="#2d6a4f" stroke-width="4" stroke-linecap="round"/><path d="M50 72 Q20 76 12 93 Q34 95 50 78 Z" fill="#52b788" ${OL}/><path d="M50 72 Q80 76 88 93 Q66 95 50 78 Z" fill="#40916c" ${OL}/>${[0, 72, 144, 216, 288].map(a => { const r = (a - 90) * Math.PI / 180, x = 50 + Math.cos(r) * 15, y = 42 + Math.sin(r) * 15; return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="15" ry="12" transform="rotate(${a} ${x.toFixed(1)} ${y.toFixed(1)})" fill="#e63946" ${OL}/>`; }).join("")}<circle cx="50" cy="42" r="7" fill="#9d0208" ${OL}/><path d="M50 42 Q60 30 66 22" stroke="#ffd60a" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="66" cy="22" r="3.2" fill="#ffd60a" ${OL}/>`,
+    bambus: `${[[30, "#7cb518", 10], [50, "#5c940d", 3], [70, "#7cb518", 16]].map(([x, c, top]) => `<rect x="${x - 5}" y="${top}" width="10" height="${96 - top}" rx="4" fill="${c}" ${OL}/>${[1, 2, 3, 4].map(k => `<path d="M${x - 5} ${(top + k * (96 - top) / 5).toFixed(1)} h10" stroke="#3f6212" stroke-width="2.2"/>`).join("")}`).join("")}${LEAF(35, 30, -30, 22, "#8ac926")}${LEAF(55, 22, -20, 24, "#70e000")}${LEAF(45, 50, 200, 20, "#8ac926")}${LEAF(75, 40, -40, 20, "#70e000")}${LEAF(65, 64, 190, 18, "#8ac926")}`,
+    orchidee: `<path d="M50 74 Q46 42 62 18" stroke="#52b788" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M50 75 Q25 71 20 60 Q38 57 50 72 Z" fill="#2d6a4f" ${OL}/><path d="M50 75 Q75 71 80 60 Q62 57 50 72 Z" fill="#40916c" ${OL}/>${ORCHID(62, 19, 1.15, "#ff70a6")}${ORCHID(52, 35, 1.05, "#c77dff")}${ORCHID(47, 51, .95, "#ff70a6")}<path d="M34 77 L66 77 L62 96 L38 96 Z" fill="#e76f51" ${OL}/><rect x="31" y="73" width="38" height="7" rx="3" fill="#f4a261" ${OL}/>`,
+    bananen: `<path d="M46 97 L48 50 L54 50 L57 97 Z" fill="#a3b18a" ${OL}/>${LEAF(51, 50, 205, 46, "#52b788")}${LEAF(51, 50, -25, 46, "#40916c")}${LEAF(51, 52, -100, 44, "#74c69d")}${LEAF(51, 52, 245, 40, "#2d6a4f")}<path d="M58 50 L60 76" stroke="#6b4f2a" stroke-width="2.4"/>${[[58, 54, 8], [60, 58, 26], [57, 63, 4], [60, 67, 22], [57, 72, 0]].map(([x, y, a]) => `<path d="M0 0 Q22 2 24 20 Q17 10 0 7 Z" transform="translate(${x} ${y}) rotate(${a})" fill="#ffd60a" ${OL}/>`).join("")}<path d="M53 75 q5 6 10 0 Z" fill="#9d0208" ${OL}/>`,
+    palme: `<path d="M44 97 Q40 62 52 32 L59 34 Q49 62 54 97 Z" fill="#b08968" ${OL}/>${[44, 54, 64, 74, 84].map(y => `<path d="M${42 + (97 - y) * .09} ${y} q5 3 10 0" stroke="#7f5539" stroke-width="1.5" fill="none"/>`).join("")}${LEAF(56, 32, 200, 40, "#2d6a4f")}${LEAF(56, 32, -20, 40, "#2d6a4f")}${LEAF(56, 30, 235, 38, "#52b788")}${LEAF(56, 30, -55, 38, "#52b788")}${LEAF(56, 30, -95, 30, "#40916c")}<circle cx="53" cy="36" r="4.5" fill="#7f5539" ${OL}/><circle cx="60" cy="37" r="4.5" fill="#7f5539" ${OL}/><circle cx="56" cy="41" r="4.5" fill="#7f5539" ${OL}/>`,
+    nest: `<ellipse cx="38" cy="58" rx="9" ry="12" fill="#a2d2ff" ${OL}/><ellipse cx="62" cy="58" rx="9" ry="12" fill="#a2d2ff" ${OL}/><ellipse cx="50" cy="54" rx="9" ry="12" fill="#bde0fe" ${OL}/><circle cx="35" cy="54" r="1.4" fill="#4361ee" opacity=".55"/><circle cx="52" cy="50" r="1.4" fill="#4361ee" opacity=".55"/><circle cx="64" cy="53" r="1.4" fill="#4361ee" opacity=".55"/><circle cx="47" cy="58" r="1.2" fill="#4361ee" opacity=".55"/><path d="M13 61 Q15 87 50 89 Q85 87 87 61 Q70 71 50 71 Q30 71 13 61 Z" fill="#b08968" ${OL}/><path d="M18 67 Q40 77 64 71 M22 75 Q46 83 80 71 M30 83 Q52 87 74 79" stroke="#7f5539" stroke-width="2" fill="none"/><path d="M12 59 l-7 -4 M88 61 l7 -3 M20 81 l-6 4 M80 82 l6 3" stroke="#7f5539" stroke-width="2.6" stroke-linecap="round"/>`,
+    vogelhaus: `<rect x="46" y="62" width="8" height="35" fill="#7f5539" ${OL}/><rect x="26" y="32" width="48" height="34" rx="3" fill="#f4a261" ${OL}/><path d="M30 44 h40 M30 54 h40" stroke="#d98e4f" stroke-width="1.6"/><path d="M17 36 L50 9 L83 36 Z" fill="#e63946" ${OL}/><circle cx="50" cy="45" r="8" fill="#3d2b1f" ${OL}/><path d="M43 58 h14" stroke="#7f5539" stroke-width="3.2" stroke-linecap="round"/>${ORCHID(28, 92, .7, "#ffd60a")}${ORCHID(72, 92, .7, "#ff70a6")}`,
+    schaukel: `<path d="M50 4 L24 65 M50 4 L76 65" stroke="#b08968" stroke-width="2.6" fill="none"/><circle cx="50" cy="5" r="3.5" fill="#adb5bd" ${OL}/>${[[39, 30, "#e63946"], [61, 30, "#ffd60a"], [32, 47, "#3a86ff"], [68, 47, "#e63946"]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="4" fill="${c}" ${OL}/>`).join("")}<rect x="18" y="63" width="64" height="7" rx="3.5" fill="#d4a373" ${OL}/><path d="M46 71 Q46 77 50 77 Q54 77 54 71 Z" fill="#ffd60a" ${OL}/><path d="M50 77 L50 82" stroke="#17324a" stroke-width="1.6"/><circle cx="50" cy="83" r="2" fill="#c9971f"/>`,
+    haengematte: `<rect x="7" y="28" width="8" height="69" rx="2" fill="#7f5539" ${OL}/><rect x="85" y="28" width="8" height="69" rx="2" fill="#7f5539" ${OL}/><path d="M14 36 L25 51 M86 36 L75 51" stroke="#b08968" stroke-width="2.2"/><path d="M22 49 Q50 86 78 49 Q50 68 22 49 Z" fill="#ff70a6" ${OL}/><path d="M28 56 Q50 79 72 56" stroke="#ffd60a" stroke-width="3" fill="none"/><path d="M34 62 Q50 78 66 62" stroke="#4cc9f0" stroke-width="2.6" fill="none"/>${LEAF(11, 30, 210, 16, "#52b788")}${LEAF(89, 30, -30, 16, "#40916c")}<path d="M2 97 q6 -8 10 0 q4 -8 8 0 M80 97 q6 -8 10 0 q4 -8 8 0" stroke="#52b788" stroke-width="2.4" fill="none"/>`,
+    wasserfall: `<path d="M5 97 L10 40 Q16 17 34 13 L66 13 Q86 17 90 40 L95 97 Z" fill="#8d99ae" ${OL}/><path d="M10 40 Q16 17 34 13 L66 13 Q86 17 90 40 Q70 30 50 32 Q30 30 10 40 Z" fill="#52b788" ${OL}/><path d="M38 24 L62 24 L67 84 L33 84 Z" fill="#4cc9f0" ${OL}/><path d="M44 28 L42 80 M52 28 L52 82 M59 28 L61 80" stroke="#fff" stroke-width="2.2" opacity=".75" stroke-linecap="round"/><ellipse cx="50" cy="87" rx="36" ry="9" fill="#48cae4" ${OL}/>${[[30, 84], [40, 82], [58, 82], [70, 84], [50, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.4" fill="#fff" opacity=".9"/>`).join("")}${LEAF(12, 70, 200, 18, "#40916c")}${LEAF(88, 66, -20, 18, "#52b788")}${ORCHID(18, 52, .7, "#ff70a6")}`,
+    baumhaus: `<circle cx="28" cy="34" r="22" fill="#40916c" ${OL}/><circle cx="72" cy="34" r="22" fill="#40916c" ${OL}/><circle cx="50" cy="20" r="22" fill="#52b788" ${OL}/><path d="M42 97 Q44 72 44 52 L57 52 Q57 72 59 97 Z" fill="#8d5a3b" ${OL}/><rect x="16" y="52" width="68" height="6" rx="2" fill="#7f5539" ${OL}/><rect x="26" y="31" width="48" height="23" rx="2" fill="#f2cc8f" ${OL}/><path d="M26 39 h48 M26 47 h48" stroke="#d4a373" stroke-width="1.4"/><path d="M19 33 L50 11 L81 33 Z" fill="#e63946" ${OL}/><rect x="33" y="36" width="10" height="9" rx="1.5" fill="#90e0ef" ${OL}/><rect x="55" y="37" width="11" height="17" rx="2" fill="#8a5a2b" ${OL}/><path d="M31 58 L29 97 M39 58 L37 97 M30 66 h8 M30 74 h8 M29 82 h8 M29 90 h8" stroke="#a0522d" stroke-width="2.6" stroke-linecap="round"/><path d="M50 11 L50 2 L60 5 L50 8" fill="#ffd60a" stroke="#17324a" stroke-width="1.4"/>`,
+    obstkorb: `<path d="M20 52 Q28 28 50 30 Q38 37 31 54 Z" fill="#ffd60a" ${OL}/><path d="M26 54 Q36 34 56 36 Q44 41 37 55 Z" fill="#ffe066" ${OL}/><ellipse cx="68" cy="40" rx="11" ry="15" fill="#f4a261" ${OL}/><path d="M60 32 L76 48 M58 42 L72 54 M64 28 L78 40 M76 32 L60 48 M78 42 L64 54" stroke="#c76d00" stroke-width="1.3" opacity=".6"/><path d="M68 26 L61 9 L67 18 L69 5 L71 18 L77 9 Z" fill="#52b788" ${OL}/><ellipse cx="44" cy="53" rx="11" ry="9" fill="#ff9f1c" ${OL}/>${[[56, 50], [62, 52], [59, 56], [65, 57], [53, 55]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4" fill="#9d4edd" ${OL}/>`).join("")}<path d="M12 56 L88 56 L80 93 L20 93 Z" fill="#d4a373" ${OL}/><path d="M16 66 h68 M18 76 h64 M19 86 h62 M30 56 L32 93 M50 56 L50 93 M70 56 L68 93" stroke="#a0703f" stroke-width="1.6"/><rect x="9" y="51" width="82" height="9" rx="4.5" fill="#b08968" ${OL}/>`,
+    goldfeder: `<path d="M80 7 Q97 31 70 63 Q52 85 25 95 L29 88 Q33 70 40 56 Q52 22 80 7 Z" fill="#ffd60a" ${OL}/><path d="M80 9 Q60 40 27 93" stroke="#c9971f" stroke-width="2.6" fill="none" stroke-linecap="round"/>${[[.2, 1], [.35, 1], [.5, 1], [.65, 1], [.3, -1], [.45, -1], [.6, -1]].map(([t, s]) => { const x = 80 - 53 * t, y = 9 + 84 * t; return `<path d="M${x.toFixed(1)} ${y.toFixed(1)} l${s > 0 ? 10 : -9} ${s > 0 ? -3 : 4}" stroke="#e0a400" stroke-width="1.6" stroke-linecap="round"/>`; }).join("")}${SPARK(86, 72, 7)}${SPARK(20, 30, 5)}`,
+    kristallei: `<ellipse cx="50" cy="91" rx="26" ry="6" fill="#ffd60a" ${OL}/><path d="M50 7 Q78 11 82 55 Q82 89 50 91 Q18 89 18 55 Q22 11 50 7 Z" fill="#c77dff" ${OL}/><path d="M50 7 L37 38 L50 54 L63 38 Z" fill="#e0aaff"/><path d="M19 52 L37 38 L50 54 L35 74 Z" fill="#9d4edd"/><path d="M81 52 L63 38 L50 54 L65 74 Z" fill="#b5179e" opacity=".7"/><path d="M35 74 L50 54 L65 74 L50 90 Z" fill="#7b2cbf"/><path d="M50 7 L37 38 L19 52 M50 7 L63 38 L81 52 M35 74 L50 90 L65 74" stroke="#fff" stroke-width="1.2" fill="none" opacity=".6"/>${SHINE(40, 30, 6, 10)}${SPARK(78, 18, 7)}${SPARK(24, 82, 5)}`,
+    goldpolly: `<rect x="24" y="82" width="52" height="14" rx="3" fill="#8a5a2b" ${OL}/><rect x="32" y="71" width="36" height="13" rx="2" fill="#ffc300" ${OL}/><path d="M40 70 L30 92 L40 90 L46 72 Z" fill="#e0a400" ${OL}/><ellipse cx="50" cy="52" rx="16" ry="21" fill="#ffd60a" ${OL}/><path d="M38 46 Q50 40 58 52 Q50 68 37 62 Z" fill="#ffc300" ${OL}/><circle cx="58" cy="28" r="12" fill="#ffd60a" ${OL}/><path d="M57 16 Q60 6 68 8 Q62 12 63 18 Z" fill="#ffc300" ${OL}/><path d="M68 24 Q80 25 76 38 Q72 34 67 34 Z" fill="#e0a400" ${OL}/>${EYE(61, 26, 2.6)}<path d="M44 72 v-2 M54 72 v-2" stroke="#c9971f" stroke-width="3"/>${SPARK(82, 52, 7)}${SPARK(20, 26, 6)}${SPARK(80, 12, 4)}`,
+    // ---- Experten-Schätze (nur auf den Experten-Inseln) ----
+    regenbogentukan: `<circle cx="50" cy="50" r="46" fill="#ffd6a5" opacity=".35"/><path d="M34 74 L28 97 L40 95 L42 76 Z" fill="#212529" ${OL}/><ellipse cx="40" cy="60" rx="17" ry="24" fill="#2b2d42" ${OL}/><path d="M48 40 Q60 48 54 64 Q46 60 44 46 Z" fill="#ffffff" ${OL}/><circle cx="48" cy="33" r="13" fill="#2b2d42" ${OL}/><defs><clipPath id="rtclip"><path d="M57 27 Q86 17 96 35 Q86 45 58 41 Z"/></clipPath></defs><g clip-path="url(#rtclip)">${["#e63946", "#ff9f1c", "#ffd60a", "#52b788", "#3a86ff", "#9d4edd"].map((c, i) => `<rect x="${57 + i * 7}" y="10" width="7.2" height="40" fill="${c}"/>`).join("")}</g><path d="M57 27 Q86 17 96 35 Q86 45 58 41 Z" fill="none" ${OL}/><circle cx="51" cy="30" r="5.5" fill="#4cc9f0" ${OL}/>${EYE(51, 30, 2.6)}<path d="M36 84 v9 M44 84 v9" stroke="#4361ee" stroke-width="3.5" stroke-linecap="round"/>${SPARK(20, 22, 7)}${SPARK(84, 70, 6)}`,
+    recheneule: `<circle cx="50" cy="50" r="46" fill="#fff3b0" opacity=".45"/><path d="M30 34 L27 14 L42 27 Z M70 34 L73 14 L58 27 Z" fill="#e0a400" ${OL}/><ellipse cx="50" cy="56" rx="26" ry="29" fill="#ffc300" ${OL}/><ellipse cx="50" cy="65" rx="16" ry="18" fill="#ffe066" ${OL}/><circle cx="40" cy="39" r="11" fill="#fff3c4" ${OL}/><circle cx="60" cy="39" r="11" fill="#fff3c4" ${OL}/><circle cx="41" cy="39" r="3.4" fill="#17324a"/><circle cx="61" cy="39" r="3.4" fill="#17324a"/><circle cx="40" cy="39" r="10" fill="none" stroke="#17324a" stroke-width="2.4"/><circle cx="60" cy="39" r="10" fill="none" stroke="#17324a" stroke-width="2.4"/><path d="M50 38 h0" stroke="#17324a" stroke-width="2.4"/><path d="M47 47 L53 47 L50 54 Z" fill="#f4a261" ${OL}/><rect x="30" y="66" width="40" height="24" rx="3" fill="#2d6a4f" ${OL}/><text x="50" y="84" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Arial, sans-serif">1+1</text>${SPARK(84, 20, 7)}${SPARK(16, 66, 6)}`,
+    // ---- harte Nüsse (falsch gelöste Aufgaben) und geknackte Nüsse ----
+    nuss: `<path d="M50 15 Q78 19 80 53 Q80 85 50 89 Q20 85 20 53 Q22 19 50 15 Z" fill="#b5651d" ${OL}/><path d="M23 35 Q50 3 77 35 Q65 27 50 29 Q35 27 23 35 Z" fill="#7f4f24" ${OL}/><path d="M36 41 Q33 61 40 81 M50 33 L50 85 M64 41 Q67 61 60 81" stroke="#8a4a14" stroke-width="2" fill="none" opacity=".6"/>${SHINE(39, 46, 6, 9)}`,
+    nussauf: `<path d="M50 15 Q78 19 80 53 Q80 85 50 89 Q20 85 20 53 Q22 19 50 15 Z" fill="#ffd60a" ${OL}/><path d="M23 35 Q50 3 77 35 Q65 27 50 29 Q35 27 23 35 Z" fill="#f4a261" ${OL}/><path d="M30 44 L41 53 L35 61 L47 68 L43 78" stroke="#9a6a00" stroke-width="2.6" fill="none" stroke-linejoin="round" stroke-linecap="round"/>${SHINE(60, 46, 6, 9)}${SPARK(80, 22, 8)}${SPARK(18, 72, 5)}`
+  };
+  Object.assign(ART, PART);
   const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`;
   const artURI = (id) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`);
 
@@ -2884,32 +3777,73 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     { id: "thron", n: "Muschel-Thron", p: 420, k: "deco", c: "schatz", z: 116 }
   ];
   SHOP.sort((a, b) => a.p - b.p);
+  // Pollys Dschungel: k wie im Aquarium (swim = fliegt hin und her, float = schwebt/hängt, deco = steht unten)
+  const SHOP_P = [
+    { id: "farn", n: "Farn", p: 5, k: "deco", c: "deko", z: 96 },
+    { id: "hibiskus", n: "Hibiskus", p: 6, k: "deco", c: "deko", z: 72 },
+    { id: "wellensittich", n: "Wellensittich", p: 10, k: "swim", c: "voegel", z: 74 },
+    { id: "nest", n: "Nest mit Eiern", p: 12, k: "deco", c: "deko", z: 66 },
+    { id: "schmetterling", n: "Blauer Falter", p: 12, k: "float", c: "tiere", z: 60 },
+    { id: "frosch", n: "Baumfrosch", p: 15, k: "deco", c: "tiere", z: 66 },
+    { id: "bambus", n: "Bambus", p: 16, k: "deco", c: "deko", z: 124 },
+    { id: "kolibri", n: "Kolibri", p: 18, k: "float", c: "voegel", z: 62 },
+    { id: "orchidee", n: "Orchidee", p: 20, k: "deco", c: "deko", z: 84 },
+    { id: "schaukel", n: "Vogelschaukel", p: 22, k: "float", c: "deko", z: 88 },
+    { id: "obstkorb", n: "Obstkorb", p: 25, k: "deco", c: "schatz", z: 76 },
+    { id: "kakadu", n: "Kakadu", p: 28, k: "deco", c: "voegel", z: 86 },
+    { id: "vogelhaus", n: "Vogelhaus", p: 30, k: "deco", c: "deko", z: 104 },
+    { id: "bananen", n: "Bananenstaude", p: 34, k: "deco", c: "deko", z: 128 },
+    { id: "tukan", n: "Tukan", p: 38, k: "deco", c: "voegel", z: 90 },
+    { id: "eule", n: "Eule", p: 42, k: "deco", c: "voegel", z: 82 },
+    { id: "ara", n: "Roter Ara", p: 50, k: "swim", c: "voegel", z: 108 },
+    { id: "chamaeleon", n: "Chamäleon", p: 55, k: "deco", c: "tiere", z: 86 },
+    { id: "affe", n: "Äffchen", p: 65, k: "float", c: "tiere", z: 100 },
+    { id: "palme", n: "Palme", p: 70, k: "deco", c: "deko", z: 146 },
+    { id: "flamingo", n: "Flamingo", p: 80, k: "deco", c: "voegel", z: 114 },
+    { id: "haengematte", n: "Hängematte", p: 90, k: "deco", c: "deko", z: 120 },
+    { id: "blauara", n: "Blau-gelber Ara", p: 110, k: "swim", c: "voegel", z: 108 },
+    { id: "faultier", n: "Faultier", p: 130, k: "float", c: "tiere", z: 104 },
+    { id: "goldfeder", n: "Goldene Feder", p: 150, k: "deco", c: "schatz", z: 80 },
+    { id: "pfau", n: "Pfau", p: 180, k: "deco", c: "voegel", z: 128 },
+    { id: "wasserfall", n: "Wasserfall", p: 220, k: "deco", c: "deko", z: 156 },
+    { id: "kristallei", n: "Kristall-Ei", p: 260, k: "deco", c: "schatz", z: 82 },
+    { id: "baumhaus", n: "Baumhaus", p: 320, k: "deco", c: "deko", z: 164 },
+    { id: "goldpolly", n: "Goldene Polly", p: 400, k: "deco", c: "schatz", z: 114 }
+  ].map(w => Object.assign(w, { w: "polly" }));
   // Experten-Schätze: gibt es nur auf der Experten-Insel des Kapitels (nicht im Laden zu kaufen)
   const TREASURES = [
     { id: "kristallstern", n: "Kristall-Seestern", art: "der", pr: "Er", ch: "nomen", k: "deco", z: 76 },
     { id: "zauberpferdchen", n: "Zauber-Seepferdchen", art: "das", pr: "Es", ch: "lernwoerter", k: "float", z: 88 },
     { id: "goldleuchtturm", n: "Goldener Leuchtturm", art: "der", pr: "Er", ch: "leuchtturm", k: "deco", z: 116 },
     { id: "leseschildkroete", n: "Bücher-Schildkröte", art: "die", pr: "Sie", ch: "lesen", k: "swim", z: 98 },
-    { id: "schreibkrake", n: "Schreib-Tintenfisch", art: "der", pr: "Er", ch: "rechtschreibung", k: "float", z: 92 }
+    { id: "schreibkrake", n: "Schreib-Tintenfisch", art: "der", pr: "Er", ch: "rechtschreibung", k: "float", z: 92 },
+    { id: "regenbogentukan", n: "Regenbogen-Tukan", art: "der", pr: "Er", ch: "zahlen", k: "deco", z: 108, w: "polly" },
+    { id: "recheneule", n: "Goldene Rechen-Eule", art: "die", pr: "Sie", ch: "rechnen", k: "deco", z: 96, w: "polly" }
   ];
   const treasureOf = (ch) => TREASURES.find(t => t.ch === ch.id);
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
+  const SHOP_CATS_P = [["voegel", "🦜 Vögel"], ["tiere", "🐸 Dschungel-Tiere"], ["deko", "🌺 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
+  // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle). Die Münzen gelten in beiden Welten.
+  const shopW = () => isPolly() ? SHOP_P : SHOP;
+  const treasW = () => TREASURES.filter(t => (t.w || "nemo") === W.id);
+  const invOf = (w) => { if (w.w === "polly") { if (!Array.isArray(S.jungle)) S.jungle = []; return S.jungle; } return S.aqua; };
+  const invW = () => invOf({ w: W.id });
   const MAX_EACH = 5;
-  const countOf = (w) => (S.aqua || []).filter(a => a.id === w.id).length;
+  const countOf = (w) => (invOf(w) || []).filter(a => a.id === w.id).length;
   const owned = (w) => countOf(w) > 0;
-  const aquaCount = () => SHOP.filter(owned).length;
-  const shopItem = (id) => SHOP.find(w => w.id === id) || TREASURES.find(w => w.id === id);
+  const aquaCount = () => shopW().filter(owned).length;
+  const shopItem = (id) => SHOP.find(w => w.id === id) || SHOP_P.find(w => w.id === id) || TREASURES.find(w => w.id === id);
   let newbie = null, editMode = false;
   function renderStat() {
-    const n = aquaCount(), box = $("aqStat");
-    const next = SHOP.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
-    const canNew = SHOP.some(w => !owned(w) && S.coins >= w.p);
-    box.innerHTML = `<div class="aq-row"><span>🐠 ${n} von ${SHOP.length} Arten · ${S.aqua.length} ${S.aqua.length === 1 ? "Sache" : "Sachen"} im Aquarium · 🏆 ${TREASURES.filter(owned).length}/${TREASURES.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / SHOP.length * 100)}%"></i></span></div>` +
-      (n === SHOP.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
+    const n = aquaCount(), box = $("aqStat"), list = shopW(), inv = invW(), tr = treasW();
+    const next = list.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
+    const canNew = list.some(w => !owned(w) && S.coins >= w.p);
+    box.innerHTML = `<div class="aq-row"><span>${isPolly() ? "🦜" : "🐠"} ${n} von ${list.length} Arten · ${inv.length} ${inv.length === 1 ? "Sache" : "Sachen"} im ${W.place} · 🏆 ${tr.filter(owned).length}/${tr.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / list.length * 100)}%"></i></span></div>` +
+      (n === list.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
        canNew ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
        `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
     const tools = el("div", "aq-tools");
-    if (S.aqua.length) {
+    if (inv.length) {
       const eb = el("button", "big-btn" + (editMode ? "" : " ghost"), editMode ? "✅ Fertig" : "✋ Einrichten");
       eb.addEventListener("click", () => { editMode = !editMode; renderStat(); renderTank(); if (editMode) speak("Zieh deine Sachen mit dem Finger an ihren Platz."); });
       tools.appendChild(eb);
@@ -2924,12 +3858,16 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     return { uid, id: w.id, x: Math.round(10 + Math.random() * 80), y, t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) };
   }
   function renderTank() {
-    const t = $("tank");
+    const t = $("tank"), pol = isPolly(), inv = invW();
     t.classList.toggle("edit", editMode);
-    t.innerHTML = `<div class="rays"></div><div class="item bgplant" style="left:2%">${artSVG("seegras")}</div><div class="item bgplant" style="right:3%">${artSVG("seegras")}</div><div class="gravel"></div>`;
-    for (let i = 0; i < 6; i++) { const b = el("span", "tb"); b.style.left = (8 + i * 16) + "%"; b.style.animationDuration = (4 + (i % 3)) + "s"; b.style.animationDelay = (-i * 1.3) + "s"; t.appendChild(b); }
+    t.innerHTML = pol ? `<div class="sun"></div><div class="hills"></div><div class="item bgplant" style="left:1%">${artSVG("palme")}</div><div class="item bgplant" style="right:2%">${artSVG("bananen")}</div><div class="ground"></div>`
+      : `<div class="rays"></div><div class="item bgplant" style="left:2%">${artSVG("seegras")}</div><div class="item bgplant" style="right:3%">${artSVG("seegras")}</div><div class="gravel"></div>`;
+    for (let i = 0; i < (pol ? 4 : 6); i++) {
+      if (pol) { const b = el("span", "tleaf", i % 2 ? "🍃" : "🪶"); b.style.left = (10 + i * 22) + "%"; b.style.animationDuration = (7 + i * 1.6) + "s"; b.style.animationDelay = (-i * 2.3) + "s"; t.appendChild(b); continue; }
+      const b = el("span", "tb"); b.style.left = (8 + i * 16) + "%"; b.style.animationDuration = (4 + (i % 3)) + "s"; b.style.animationDelay = (-i * 1.3) + "s"; t.appendChild(b);
+    }
     const order = { deco: 0, float: 1, swim: 2 };
-    const list = S.aqua.slice().sort((a, b) => (order[shopItem(a.id).k] - order[shopItem(b.id).k]) || (shopItem(b.id).z - shopItem(a.id).z));
+    const list = inv.filter(a => shopItem(a.id)).sort((a, b) => (order[shopItem(a.id).k] - order[shopItem(b.id).k]) || (shopItem(b.id).z - shopItem(a.id).z));
     list.forEach(a => {
       const w = shopItem(a.id); if (!w) return;
       const isNew = newbie === a.uid;
@@ -2949,11 +3887,11 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       t.appendChild(it);
     });
     if (!editMode) {
-      const nm = el("div", "item swim", '<div class="flip rev"><div class="nemo-fish">🦈</div></div>');
-      nm.style.setProperty("--t", "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = "34%";
+      const nm = el("div", "item swim", `<div class="flip rev"><div class="nemo-fish">${W.emo}</div></div>`);
+      nm.style.setProperty("--t", pol ? "13s" : "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = pol ? "22%" : "34%";
       nm.style.animationDelay = nm.firstChild.style.animationDelay = "-3s"; t.appendChild(nm);
     }
-    if (!S.aqua.length) t.appendChild(el("div", "empty", "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
+    if (!inv.length) t.appendChild(el("div", "empty", pol ? "Polly wartet auf Freunde. Kauf im Laden Vögel, Tiere und schöne Sachen! 🛒" : "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
   }
   // Einrichten: Sachen mit dem Finger verschieben
   function makeDraggable(it, a, w) {
@@ -2980,17 +3918,17 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function renderShop() {
     const box = $("shop"); box.innerHTML = "";
     box.appendChild(el("div", "shop-title", "🛒 Laden – tippe zweimal zum Kaufen"));
-    SHOP_CATS.forEach(([cat, title]) => {
+    (isPolly() ? SHOP_CATS_P : SHOP_CATS).forEach(([cat, title]) => {
       box.appendChild(el("div", "head s", title));
       const grid = el("div", "shop");
-      SHOP.filter(w => w.c === cat).forEach(w => {
+      shopW().filter(w => w.c === cat).forEach(w => {
         const cnt = countOf(w), full = cnt >= MAX_EACH, can = !full && S.coins >= w.p, ask = asking === w.id;
         const b = el("button", "ware" + (full ? " owned" : can ? " can" : " poor") + (ask ? " ask" : ""));
         b.innerHTML = (cnt ? `<span class="wcount">${cnt}×</span>` : "") + `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span>` +
           (full ? `<span class="wp">✓ ${MAX_EACH}× – voll</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` :
            can ? `<span class="wp">${cnt ? "Noch einen" : "Kaufen"} · ${w.p} <span class="coin sm"></span></span>` : `<span class="wp">🔒 noch ${w.p - S.coins} <span class="coin sm"></span></span>`);
         b.disabled = full;
-        b.setAttribute("aria-label", `${w.n} für ${w.p} Münzen` + (cnt ? `, schon ${cnt} im Aquarium` : ""));
+        b.setAttribute("aria-label", `${w.n} für ${w.p} Münzen` + (cnt ? `, schon ${cnt} im ${W.place}` : ""));
         b.addEventListener("click", () => buy(w));
         grid.appendChild(b);
       });
@@ -2998,7 +3936,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     });
     box.appendChild(el("div", "head s", "🏆 Experten-Schätze – nur auf den Experten-Inseln"));
     const tg = el("div", "shop");
-    TREASURES.forEach(w => {
+    treasW().forEach(w => {
       const ch = CHAPTERS.find(c => c.id === w.ch), where = ch ? (ch.title || ch.name + "-Inseln") : "", got = owned(w);
       const b = el("button", "ware treasure " + (got ? "won" : "locked"));
       b.innerHTML = `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span><span class="wp">${got ? "✓ gewonnen" : "🔒 " + where}</span>`;
@@ -3015,17 +3953,17 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     asking = null;
     S.coins -= w.p;
     const inst = newInstance(w), uid = inst.uid;
-    S.aqua.push(inst);
-    save(); setCoins(true); sfxWin(); confetti(["🫧", "✨", "⭐", "🐚"]);
+    invOf(w).push(inst);
+    save(); setCoins(true); sfxWin(); confetti(W.buyConf);
     newbie = uid;
     renderStat(); renderTank(); renderShop();
     const c = $("buyCard");
-    c.innerHTML = `<div class="bnew">🎉 Neu in deinem Aquarium!</div><div class="bart">${artSVG(w.id)}</div><div class="bname">${w.n}</div>`;
+    c.innerHTML = `<div class="bnew">🎉 Neu ${W.inPlace}!</div><div class="bart">${artSVG(w.id)}</div><div class="bname">${w.n}</div>`;
     const ok = el("button", "big-btn", "Anschauen 👀");
     ok.addEventListener("click", () => { $("buyPop").hidden = true; $("tank").scrollIntoView({ behavior: "smooth", block: "center" }); setTimeout(() => { newbie = null; renderTank(); }, 5000); });
     c.appendChild(ok);
     $("buyPop").hidden = false;
-    speak(`Juhu! ${w.n} ist jetzt in deinem Aquarium.`);
+    speak(`Juhu! ${w.n} ist jetzt ${W.inPlace}.`);
   }
   function renderAqua() { asking = null; newbie = null; editMode = false; renderStat(); renderTank(); renderShop(); setCoins(false); show("scrAqua"); }
 
@@ -3070,13 +4008,25 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       sp.style.animationDelay = (-rnd() * 2.8).toFixed(2) + "s";
     }
     const edges = cfg.edges.map(([a, b, cls], i) => ({ a, b, el: sv("path", { d: curve(cfg.nodes[a], cfg.nodes[b], i), class: "route " + (cls || "") }, svg) }));
+    // Pollys Welt: Wolken ziehen zwischen den Inseln über das Meer (mit Schatten auf dem Wasser)
+    if (cfg.clouds) {
+      const cg = sv("g", { "aria-hidden": "true" }, svg);
+      for (let i = 0, made = 0; i < 60 && made < cfg.clouds; i++) {
+        const cx = 70 + rnd() * (cfg.w - 140), cy = 50 + rnd() * (cfg.h - 100), s = 0.55 + rnd() * 0.45;
+        if (!free(cx, cy, 1.85)) continue; made++;
+        const c = sv("g", { class: "cloud" }, cg); c.style.animationDuration = (12 + rnd() * 10).toFixed(1) + "s"; c.style.animationDelay = (-rnd() * 12).toFixed(1) + "s";
+        const inner = sv("g", { transform: `translate(${cx.toFixed(0)} ${cy.toFixed(0)}) scale(${s.toFixed(2)})` }, c);
+        sv("ellipse", { cx: 30, cy: 62, rx: 66, ry: 15, fill: "rgba(6,60,80,.13)" }, inner);
+        [[-38, 6, 24], [-12, -10, 32], [22, -4, 28], [46, 8, 20], [4, 12, 30]].forEach(([x, y, rr]) => sv("circle", { cx: x, cy: y, r: rr, fill: "#ffffff", opacity: 0.94 }, inner));
+      }
+    }
     cfg.under = sv("g", { "aria-hidden": "true" }, svg); // Ebene unter den Inseln (hinterer Leuchtturm-Strahl)
     cfg.nodes.forEach((n, i) => drawNode(svg, n, i, cfg));
-    const g = sv("g", { "aria-hidden": "true" }, svg);
-    sv("ellipse", { cx: 0, cy: (cfg.nemo || 62) * 0.55, rx: (cfg.nemo || 62) * 0.36, ry: (cfg.nemo || 62) * 0.09, fill: "rgba(4,30,52,.25)" }, g);
-    const inner = sv("g", { class: "nemo-in" }, g);
-    const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": cfg.nemo || 62 }, inner);
-    t.textContent = "🦈";
+    const g = sv("g", { "aria-hidden": "true" }, svg), fly = isPolly(), hs = cfg.nemo || 62;
+    sv("ellipse", { cx: 0, cy: hs * (fly ? 0.95 : 0.55), rx: hs * (fly ? 0.26 : 0.36), ry: hs * (fly ? 0.07 : 0.09), fill: fly ? "rgba(4,40,60,.2)" : "rgba(4,30,52,.25)" }, g);
+    const inner = sv("g", { class: fly ? "fly-in" : "nemo-in" }, g);
+    const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": hs }, inner);
+    t.textContent = W.emo;
     MAP = { cfg, svg, edges, nemo: g, at: Math.min(cfg.at || 0, cfg.nodes.length - 1), busy: false, face: 1 };
     const p = restPos(MAP.at); placeNemo(p.x, p.y);
   }
@@ -3102,7 +4052,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     sv("path", { d: gp, fill: n.grass || "#86cf7d", stroke: "rgba(20,80,40,.22)", "stroke-width": 3 }, g);
     sv("path", { d: gp, fill: U("shade") }, g);
     sv("path", { d: gp, fill: U("shine") }, g);
-    if (n.draw !== "reef" && !n.fog) for (let k = 0; k < 4; k++) {
+    if (n.draw !== "reef" && n.draw !== "jungle" && !n.fog) for (let k = 0; k < 4; k++) {
       const a = (k / 4 + rnd() * 0.15) * Math.PI * 2, tx = Math.cos(a) * r * 0.55, ty = -r * 0.1 + Math.sin(a) * r * 0.33, q = r / 90;
       sv("path", { d: `M${tx - 5 * q} ${ty}L${tx - 2 * q} ${ty - 9 * q}M${tx} ${ty}L${tx + q} ${ty - 12 * q}M${tx + 5 * q} ${ty}L${tx + 4 * q} ${ty - 8 * q}`, stroke: "rgba(20,95,45,.5)", "stroke-width": 2.4 * q, "stroke-linecap": "round", fill: "none" }, g);
     }
@@ -3112,6 +4062,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     });
     if (n.draw === "lighthouse") drawLighthouse(g, r, P, cfg.under, n);
     else if (n.draw === "reef") drawReef(g, r, n, P);
+    else if (n.draw === "jungle") drawJungle(g, r, n, P);
     else {
       sv("ellipse", { cx: 0, cy: r * 0.2, rx: r * 0.34, ry: r * 0.08, fill: "rgba(10,60,30,.2)" }, g);
       const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g); ic.textContent = n.icon;
@@ -3163,6 +4114,29 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     });
     const sp = sv("text", { x: w * 0.62, y: y - 4, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.3, class: "twinkle" }, g); sp.textContent = "✨";
     // gekaufte Sachen schwimmen rund ums Riff
+    (n.items || []).slice(0, 10).forEach((id, k, arr) => {
+      const a = (-200 + (220 / Math.max(1, arr.length - 1)) * k) * Math.PI / 180, sz = r * 0.42;
+      const im = sv("image", { href: artURI(id), x: Math.cos(a) * r * 1.5 - sz / 2, y: Math.sin(a) * r * 1.12 - r * 0.1 - sz / 2, width: sz, height: sz, class: "reef-item" }, g);
+      im.style.animationDelay = (-k * 0.4) + "s";
+    });
+  }
+  // Pollys Dschungel auf der Startkarte: großer Baum mit Baumhaus; gekaufte Sachen fliegen drumherum
+  function drawJungle(g, r, n, P) {
+    const s = r / 80, G = sv("g", { transform: `translate(0 ${-r * 0.14}) scale(${s})` }, g), U = (id) => `url(#${P}-${id})`;
+    sv("ellipse", { cx: 4, cy: 44, rx: 50, ry: 10, fill: "rgba(10,60,30,.25)" }, G);
+    sv("path", { d: "M-12 44 C-8 20 -10 0 -7 -24 L7 -24 C10 0 8 20 13 44 Z", fill: U("trunk"), stroke: "#4f2c12", "stroke-width": 2, "stroke-linejoin": "round" }, G);
+    sv("path", { d: "M-11 42 Q-20 46 -27 44 M12 42 Q20 46 28 43", stroke: "#4f2c12", "stroke-width": 4, "stroke-linecap": "round", fill: "none" }, G);
+    [[-34, -40, 26, "#2e8b3a"], [34, -42, 26, "#2e8b3a"], [0, -64, 32, "#3fa34d"], [-20, -56, 24, "#4cb85a"], [22, -58, 24, "#4cb85a"]].forEach(([cx, cy, rr, c]) => sv("circle", { cx, cy, r: rr, fill: c, stroke: "#1f5e28", "stroke-width": 2 }, G));
+    sv("circle", { cx: -10, cy: -74, r: 12, fill: "rgba(255,255,255,.2)" }, G);
+    sv("rect", { x: -28, y: -36, width: 56, height: 6, rx: 2, fill: "#8a5a2b", stroke: "#5a3518", "stroke-width": 1.5 }, G);
+    sv("rect", { x: -19, y: -58, width: 38, height: 23, rx: 3, fill: "#f2cc8f", stroke: "#8a5a2b", "stroke-width": 2 }, G);
+    sv("path", { d: "M-25 -56 L0 -77 L25 -56 Z", fill: "#e63946", stroke: "#8e1616", "stroke-width": 2, "stroke-linejoin": "round" }, G);
+    sv("circle", { cx: -7, cy: -47, r: 5, fill: "#3d2b1f" }, G);
+    sv("rect", { x: 4, y: -52, width: 9, height: 8, rx: 1.5, fill: "#90e0ef", stroke: "#8a5a2b", "stroke-width": 1.5 }, G);
+    sv("path", { d: "M-24 -30 L-26 40 M-16 -30 L-18 40 M-25 -18 h8 M-25 -6 h8 M-26 6 h8 M-26 18 h8 M-26 30 h8", stroke: "#a0522d", "stroke-width": 2.6, "stroke-linecap": "round", fill: "none" }, G);
+    sv("path", { d: "M30 -32 Q37 -8 30 12", stroke: "#2d6a4f", "stroke-width": 3, fill: "none", "stroke-linecap": "round" }, G);
+    [[33, -14, "#ff70a6"], [31, 6, "#ffd60a"], [-38, 36, "#e63946"], [40, 37, "#ff70a6"], [22, 41, "#ffd60a"]].forEach(([cx, cy, c]) => { sv("circle", { cx, cy, r: 5.5, fill: c, stroke: "rgba(23,50,74,.5)", "stroke-width": 1.2 }, G); sv("circle", { cx, cy, r: 2, fill: "#fff3b0" }, G); });
+    const sp = sv("text", { x: r * 0.66, y: -r * 1.02, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.3, class: "twinkle" }, g); sp.textContent = "✨";
     (n.items || []).slice(0, 10).forEach((id, k, arr) => {
       const a = (-200 + (220 / Math.max(1, arr.length - 1)) * k) * Math.PI / 180, sz = r * 0.42;
       const im = sv("image", { href: artURI(id), x: Math.cos(a) * r * 1.5 - sz / 2, y: Math.sin(a) * r * 1.12 - r * 0.1 - sz / 2, width: sz, height: sz, class: "reef-item" }, g);
@@ -3295,6 +4269,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- Hauptmenü: der Ozean ---------- */
   function renderHome() {
+    if (isPolly()) return renderHomePolly();
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Nemo schwimmen?` : S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
     updateFoot();
@@ -3333,6 +4308,36 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   }
   const islandsDoneCount = (ch) => ch.levels.filter((_, li) => islandDone(ch, li)).length;
 
+  /* ---------- Hauptmenü in Pollys Welt: die Papageien-Inseln ---------- */
+  function renderHomePolly() {
+    const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
+    $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Polly fliegen?` : S.name ? `Hallo ${S.name}! Wohin soll Polly fliegen?` : "Wohin soll Polly fliegen?";
+    updateFoot();
+    show("scrHome");
+    const P = portrait(), zc = CHAPTERS.find(c => c.id === "zahlen"), rc = CHAPTERS.find(c => c.id === "rechnen");
+    // Hochformat: Pollys Dschungel unten, Inseln im Zickzack nach oben. Querformat: Dschungel links, Inseln im Zickzack nach rechts.
+    const pos = P ? { nest: [300, 1000], z: [150, 700], r: [450, 430], m: [170, 160], w: 600, h: 1170, r0: 90 }
+                  : { nest: [225, 370], z: [610, 470], r: [940, 250], m: [1180, 480], w: 1340, h: 640, r0: 96 };
+    const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
+    const enter = (ch) => (i) => { CH = ch; S.homeAtP = i; save(); swimTo(i, renderMap); };
+    const J = invOf({ w: "polly" }), canBuy = SHOP_P.some(w => !owned(w) && S.coins >= w.p);
+    const nodes = [
+      { x: pos.nest[0], y: pos.nest[1], r: pos.r0, icon: "🌴", draw: "jungle", subGold: canBuy, grass: "#8fd694", label: "Pollys Dschungel", big: true,
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (J.length ? `🦜 ${J.length} ${J.length === 1 ? "Sache" : "Sachen"} im Dschungel` : "Sammle Münzen für deinen Dschungel!"),
+        items: J.slice(-10).map(a => a.id), next: canBuy, aria: "Pollys Dschungel mit dem Laden", tap: (i) => { S.homeAtP = i; swimTo(i, renderAqua); } },
+      { x: pos.z[0], y: pos.z[1], r: pos.r0, icon: "🔢", grass: "#a7e07f", label: "Zahlen bis 100", big: true, sub: chapSub(zc),
+        deco: [[-0.52, -0.3, "🌴", 0.48], [0.56, -0.26, "🌺", 0.34]], aria: "Zahlen-Inseln: Zahlenraum bis 100", tap: enter(zc) },
+      { x: pos.r[0], y: pos.r[1], r: pos.r0, icon: "🧮", grass: "#ffd6a5", label: "Plus & Minus", big: true, sub: chapSub(rc),
+        deco: [[-0.55, -0.26, "🌺", 0.34], [0.54, -0.3, "🌴", 0.48]], aria: "Plus-Minus-Inseln: Rechnen bis 100", tap: enter(rc) },
+      { x: pos.m[0], y: pos.m[1], r: pos.r0 * 0.85, icon: "✖️", label: "Einmaleins", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
+        deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Einmaleins-Inseln, kommen bald",
+        tap: (i) => { S.homeAtP = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "✖️", "Einmaleins-Inseln", "Malnehmen"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Polly hier landen!")); })); } }
+    ];
+    const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 2, dn(rc)], [2, 3, "faint"]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 66, wrapBig: P, clouds: 6 });
+    setCoins(false);
+  }
+
   /* ---------- Kapitelkarte: Inselroute ---------- */
   function snake(N, P) {
     // Querformat mit vielen Inseln: zwei lange Reihen auf einer breiteren Karte. Hochformat: drei Spalten, bei vielen Reihen höher.
@@ -3354,11 +4359,11 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const P = portrait(), n = CH.levels.length, lay = snake(n + 3, P), k = P ? 1.15 : 1;
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
     const open = bonusOpen(CH), pc = perfectCount(CH);
-    const nodes = [{ ...lay.pts[0], r: 44 * k, icon: "⚓", label: "Start", grass: "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
+    const pol = isPolly(), nodes = [{ ...lay.pts[0], r: 44 * k, icon: W.start, label: "Start", grass: pol ? "#c6eba6" : "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
     CH.levels.forEach((lv, li) => {
       const st = DK.reduce((a, d) => a + (S.stars[skey(CH, li, d)] || 0), 0);
       nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/${DK.length * 3}` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
-        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: [[0.56, -0.2, "🌴", 0.42]],
+        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: pol ? [[0.56, -0.2, "🌴", 0.42], [-0.6, -0.22, "🌺", 0.28]] : [[0.56, -0.2, "🌴", 0.42]], grass: pol ? "#7fd36b" : undefined,
         tap: (i) => { S.at = S.at || {}; S.at[CH.id] = i; save(); swimTo(i, () => islandSheet(li)); } });
     });
     nodes.push({ ...lay.pts[n + 1], r: 64 * k, icon: S.bonus[CH.id] ? "👑" : "🎁", grass: "#e9c46a", label: "Schatzinsel", fog: !open, fogIcon: "🔒",
@@ -3371,7 +4376,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     for (let k = 0; k < n + 1; k++) edges.push([k, k + 1, k < n ? (islandDone(CH, k) ? "done" : "") : (S.bonus[CH.id] ? "done" : "")]);
     edges.push([n + 1, n + 2, xs >= 2 ? "done" : ""]);
     const at = Math.min((S.at && S.at[CH.id]) || 0, nodes.length - 1);
-    drawSea($("chapMap"), { w: lay.w, h: lay.h, nodes, edges, at, label: `Inselkarte ${CH.name}`, seed: 9, nemo: P ? 58 : 52, fs: P ? 25 : 23 });
+    drawSea($("chapMap"), { w: lay.w, h: lay.h, nodes, edges, at, label: `Inselkarte ${CH.name}`, seed: 9, nemo: P ? 58 : 52, fs: P ? 25 : 23, clouds: pol ? 4 : 0 });
     $("certBtn").hidden = !CH.levels.every((_, li) => islandDone(CH, li));
     setCoins(false);
   }
@@ -3394,7 +4399,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function treasureSheet() {
     const open = bonusOpen(CH), pc = perfectCount(CH), n = CH.levels.length;
     openSheet(c => {
-      sheetTop(c, open ? "🎁" : "🔒", "Schatzinsel", "Nemos Schatztruhe");
+      sheetTop(c, open ? "🎁" : "🔒", "Schatzinsel", W.chest);
       if (open) {
         c.appendChild(el("p", "note", S.bonus[CH.id] ? "👑 Du hast den Schatz schon gefunden. Willst du nochmal?" : "Die Schatztruhe ist offen! Gemischte Profi-Aufgaben · 3 Münzen pro Aufgabe + Schatz."));
         const b = el("button", "big-btn", "Zur Schatzsuche 🗺️"); b.addEventListener("click", () => openIntro("bonus", "schwer")); c.appendChild(b);
@@ -3407,7 +4412,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     const t = treasureOf(CH), xs = S.expert[CH.id] || 0;
     openSheet(c => {
       sheetTop(c, "⚓", "Experten-Insel", CH.title || CH.name + "-Inseln");
-      if (t) c.appendChild(el("div", "x-treasure", `<span class="xt-art">${artSVG(t.id)}</span><span><b>${xs >= 2 ? "Gewonnen" : "Zu gewinnen"}: ${t.n}</b><br>${xs >= 2 ? `${t.pr} ist schon in deinem Aquarium.` : "Nur hier – nicht im Laden!"}</span>`));
+      if (t) c.appendChild(el("div", "x-treasure", `<span class="xt-art">${artSVG(t.id)}</span><span><b>${xs >= 2 ? "Gewonnen" : "Zu gewinnen"}: ${t.n}</b><br>${xs >= 2 ? `${t.pr} ist schon ${W.inPlace}.` : "Nur hier – nicht im Laden!"}</span>`));
       c.appendChild(el("p", "note", "Die schwersten Aufgaben von allen Inseln. Keine Münzen – dafür ab 2 Sternen ein Schatz und eine goldene Urkunde."));
       const b = el("button", "big-btn", xs ? "Nochmal versuchen ⚓" : "Los geht's ⚓"); b.addEventListener("click", () => openIntro("expert", "experte")); c.appendChild(b);
       if (xs >= 2) { const u = el("button", "big-btn ghost", "🏅 Experten-Urkunde"); u.addEventListener("click", showExpertCert); c.appendChild(u); }
@@ -3425,7 +4430,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- bonus level ---------- */
   const BONUS = {
-    name: "Nemos Schatztruhe", icon: "🎁", color: "#e0a400",
+    get name() { return W.chest; }, icon: "🎁", color: "#e0a400",
     task: () => "",
     intro: () => "Gemischte Aufgaben von allen Inseln. Schaffst du alle, öffnet sich die Schatztruhe!",
     ex: () => CH.levels.slice(0, 5).map(l => l.icon).join(" ") + " → 🎁",
@@ -3445,7 +4450,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 
   /* ---------- Experten-Insel: je Kapitel, immer offen, keine Münzen ---------- */
   const EXPERT_TASKS = 12;
-  const expertText = () => { const t = treasureOf(CH); return `Die schwersten Aufgaben von allen ${CH.title || CH.name + "-Inseln"}. Hier gibt es keine Münzen. Dafür wartet ${t ? t.art + " " + t.n : "ein besonderer Schatz"} für dein Aquarium und eine goldene Urkunde. Du brauchst mindestens 2 Sterne.`; };
+  const expertText = () => { const t = treasureOf(CH); return `Die schwersten Aufgaben von allen ${CH.title || CH.name + "-Inseln"}. Hier gibt es keine Münzen. Dafür wartet ${t ? t.art + " " + t.n : "ein besonderer Schatz"} ${W.forPlace} und eine goldene Urkunde. Du brauchst mindestens 2 Sterne.`; };
   const EXPERTISLE = {
     name: "Experten-Insel", icon: "⚓", color: "#1b2a4a",
     task: () => "",
@@ -3497,7 +4502,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     L.items.forEach((_, k) => p.appendChild(el("i", k < L.pos ? "on" : null)));
   }
   function renderItem() {
-    renderProgress(); L.locked = false; L.speakNow = null; L.mAt = L.mistakes; L.missWords = []; L.noted = false;
+    renderProgress(); L.locked = false; L.speakNow = null; L.padKey = null; L.mAt = L.mistakes; L.missWords = []; L.noted = false;
     const stage = $("stage"); stage.innerHTML = ""; $("hint").innerHTML = "";
     L.lv.render(L.items[L.pos], stage, L.d);
     updateRuleBtn(); updSylBtn();
@@ -3519,16 +4524,16 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       $("resTitle").textContent = "Schatz gefunden! 👑";
       $("resStars").innerHTML = "🎁✨";
       $("resPerfect").hidden = false; $("resPerfect").innerHTML = `Die Schatztruhe ist offen: +${chest} <span class="coin sm"></span>`;
-      $("resText").textContent = first ? `Du bist ein echter ${CH.id === "lesen" ? "Lese" : CH.name}-Schatzsucher!` : "Super! Du hast den Schatz noch einmal gefunden.";
+      $("resText").textContent = first ? `Du bist ein echter ${CH.hunter || (CH.id === "lesen" ? "Lese" : CH.name)}-Schatzsucher!` : "Super! Du hast den Schatz noch einmal gefunden.";
     } else if (L.li === "expert") {
       const t = treasureOf(CH), before = S.expert[CH.id] || 0, passed = stars >= 2, firstWin = passed && before < 2;
       S.expert[CH.id] = Math.max(before, stars);
-      if (firstWin && t && !owned(t)) S.aqua.push(newInstance(t));
+      if (firstWin && t && !owned(t)) invOf(t).push(newInstance(t));
       save();
       $("resTitle").textContent = passed ? (stars === 3 ? "Echte Expertenleistung!" : "Experten-Insel geschafft!") : "Fast geschafft!";
       $("resStars").innerHTML = starStr(stars);
-      if (passed && t) { $("resBonus").hidden = false; $("resBonus").innerHTML = `<span class="rb-art">${artSVG(t.id)}</span> ` + (firstWin ? `Neuer Schatz: ${t.n}! ${t.pr} ist jetzt in deinem Aquarium.` : `Dein Experten-Schatz: ${t.n}`); }
-      $("resText").textContent = passed ? "" : "Für den Experten-Schatz brauchst du mindestens 2 Sterne. Übe die Muscheln und versuch es nochmal!";
+      if (passed && t) { $("resBonus").hidden = false; $("resBonus").innerHTML = `<span class="rb-art">${artSVG(t.id)}</span> ` + (firstWin ? `Neuer Schatz: ${t.n}! ${t.pr} ist jetzt ${W.inPlace}.` : `Dein Experten-Schatz: ${t.n}`); }
+      $("resText").textContent = passed ? "" : "Für den Experten-Schatz brauchst du mindestens 2 Sterne. " + SH().retry;
       $("resCert").hidden = !passed;
     } else {
       const k = skey(CH, L.li, L.d);
@@ -3540,7 +4545,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
         S.perfect[pkey(CH, L.li)] = true;
       }
       save(); setCoins(true);
-      if (!wasOpen && bonusOpen(CH)) { $("resBonus").hidden = false; $("resBonus").textContent = "🎁 Die Bonusaufgabe „Nemos Schatztruhe“ ist freigeschaltet!"; }
+      if (!wasOpen && bonusOpen(CH)) { $("resBonus").hidden = false; $("resBonus").textContent = `🎁 Die Bonusaufgabe „${W.chest}“ ist freigeschaltet!`; }
       $("resTitle").textContent = stars === 3 ? "Fantastisch!" : stars === 2 ? "Super gemacht!" : "Geschafft!";
       $("resStars").innerHTML = starStr(stars);
       $("resText").textContent = perfect ? "" : (stars < 3 ? "Spiel nochmal und hol dir 3 Sterne!" : "Schaffst du es auch ohne Fehler? Dann gibt es einen 💎.");
@@ -3597,7 +4602,18 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     "rechtschreibung:spst": "Ich schreibe Sp und St, obwohl ich schp und scht höre.",
     "rechtschreibung:vogel": "Ich kenne die Wörter mit V wie Vogel.",
     "rechtschreibung:er": "Ich schreibe er am Wortende, obwohl ich a höre.",
-    "rechtschreibung:zeichen": "Ich setze den richtigen Punkt, das Fragezeichen oder das Ausrufezeichen."
+    "rechtschreibung:zeichen": "Ich setze den richtigen Punkt, das Fragezeichen oder das Ausrufezeichen.",
+    "zahlen:hunderterfeld": "Ich kann Zahlen im Hunderterfeld zeigen und ablesen.",
+    "zahlen:zahlenstrahl": "Ich finde Zahlen am Zahlenstrahl.",
+    "zahlen:nachbarn": "Ich finde Vorgänger und Nachfolger.",
+    "zahlen:nachbarzehner": "Ich finde die Nachbarzehner einer Zahl.",
+    "zahlen:ordnen": "Ich vergleiche und ordne Zahlen bis 100.",
+    "rechnen:zehner": "Ich rechne plus und minus mit Zehnerzahlen.",
+    "rechnen:einer": "Ich rechne Einer plus und minus.",
+    "rechnen:zehnerdazu": "Ich rechne ganze Zehner plus und minus.",
+    "rechnen:uebergang": "Ich rechne über den Zehner.",
+    "rechnen:zweistellig": "Ich rechne mit zwei zweistelligen Zahlen.",
+    "rechnen:profi": "Ich rechne zweistellig auch über den Zehner."
   };
   /* ---------- Merk- und Tipp-Karten: eine kurze Regel (merk) bzw. Strategie (tipp) zu jeder Insel ----------
      Beispiele: [Bild, Wort, Zusatzzeile]. Im Wort: *…* = markierte Stelle, | = Silbengrenze (zeichnet Silbenbögen),
@@ -3681,7 +4697,41 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       ex: [["🪜", "Lei|t*er*"], ["🔪", "Mes|s*er*"], ["🐯", "Ti|g*er*"]] },
     "rechtschreibung:zeichen": { k: "merk", t: "Punkt, Fragezeichen, Ausrufezeichen", s: "Am Satzende steht ein Satzzeichen: ein <b>Punkt</b>, wenn du etwas erzählst, ein <b>Fragezeichen</b>, wenn du fragst, ein <b>Ausrufezeichen</b>, wenn du rufst oder etwas befiehlst.",
       ex: [["🗣️", "Ich heiße Lena*.*", "erzählen"], ["❓", "Wie heißt du*?*", "fragen"], ["📣", "Pass auf*!*", "rufen"]],
-      say: "Punkt, Fragezeichen, Ausrufezeichen. Am Satzende steht ein Satzzeichen: ein Punkt, wenn du etwas erzählst. Ich heiße Lena. Ein Fragezeichen, wenn du fragst. Wie heißt du? Ein Ausrufezeichen, wenn du rufst oder etwas befiehlst. Pass auf!" }
+      say: "Punkt, Fragezeichen, Ausrufezeichen. Am Satzende steht ein Satzzeichen: ein Punkt, wenn du etwas erzählst. Ich heiße Lena. Ein Fragezeichen, wenn du fragst. Wie heißt du? Ein Ausrufezeichen, wenn du rufst oder etwas befiehlst. Pass auf!" },
+    // ---- Pollys Spielplatz ----
+    "zahlen:hunderterfeld": { k: "merk", t: "Das Hunderterfeld", s: "Das Hunderterfeld hat <b>100 Punkte</b>. Jede volle Reihe ist ein <b>Zehner</b>. Die einzelnen Punkte sind die <b>Einer</b>.",
+      ex: [[miniField(34, 72), "34", "3 Zehner · 4 Einer"], [miniField(70, 72), "70", "7 Zehner · 0 Einer"], [miniField(100, 72), "100", "10 Zehner"]], v: "🦜 Erst die vollen Reihen zählen, dann die einzelnen Punkte!",
+      say: "Das Hunderterfeld. Es hat 100 Punkte. Jede volle Reihe ist ein Zehner. Die einzelnen Punkte sind die Einer. Zum Beispiel 34: Das sind 3 Zehner und 4 Einer. 70 sind 7 Zehner. Erst die vollen Reihen zählen, dann die einzelnen Punkte!" },
+    "zahlen:zahlenstrahl": { k: "merk", t: "Der Zahlenstrahl", s: "Auf dem Zahlenstrahl stehen die Zahlen <b>der Reihe nach</b>. Nach rechts werden sie <b>größer</b>. Die langen Striche sind die <b>Zehner</b>, die mittleren die <b>Fünfer</b>.",
+      ex: [[miniLine(30, 40, 35), "35", "Mitte zwischen 30 und 40"], [miniLine(40, 50, 47), "47", "von 40 aus 7 weiter"]], v: "🦜 Tipp: Zähle von der nächsten Zehnerzahl aus.",
+      say: "Der Zahlenstrahl. Die Zahlen stehen der Reihe nach. Nach rechts werden sie größer. Die langen Striche sind die Zehner, die mittleren die Fünfer. Die 35 liegt genau in der Mitte zwischen 30 und 40. Die 47 findest du, wenn du von 40 aus 7 weiterzählst." },
+    "zahlen:nachbarn": { k: "merk", t: "Vorgänger und Nachfolger", s: "Der <b>Vorgänger</b> ist die Zahl direkt <b>davor</b>: 1 weniger. Der <b>Nachfolger</b> ist die Zahl direkt <b>danach</b>: 1 mehr.",
+      ex: [["⬅️", "*33* 34", "Vorgänger"], ["➡️", "34 *35*", "Nachfolger"], ["🌉", "*39* 40 *41*", "über den Zehner"]], v: "🦜 Vorgänger: 1 weniger · Nachfolger: 1 mehr",
+      say: "Vorgänger und Nachfolger. Der Vorgänger ist die Zahl direkt davor, also 1 weniger. Der Nachfolger ist die Zahl direkt danach, also 1 mehr. Der Vorgänger von 34 ist 33, der Nachfolger ist 35. Und der Vorgänger von 40 ist 39." },
+    "zahlen:nachbarzehner": { k: "merk", t: "Die Nachbarzehner", s: "Jede Zahl wohnt zwischen <b>zwei Zehnerzahlen</b>. Das sind ihre Nachbarzehner. Schau auf die Zehner: 34 hat 3 Zehner.",
+      ex: [["🏠", "*30* 34 *40*"], ["🏠", "*60* 67 *70*"], ["🏠", "*90* 98 *100*"]], v: "🦜 Welcher ist näher? Zähle die Schritte bis zu jedem Zehner!",
+      say: "Die Nachbarzehner. Jede Zahl wohnt zwischen zwei Zehnerzahlen. 34 wohnt zwischen 30 und 40. 67 wohnt zwischen 60 und 70. Welcher Zehner ist näher? Zähle die Schritte bis zu jedem Zehner!" },
+    "zahlen:ordnen": { k: "merk", t: "Zahlen vergleichen", s: "Vergleiche zuerst die <b>Zehner</b>. Sind sie gleich, vergleiche die <b>Einer</b>. Pollys Schnabel ist immer zur <b>größeren</b> Zahl hin offen.",
+      ex: [["🦜", "34 *&lt;* 43", "3 Zehner &lt; 4 Zehner"], ["🦜", "68 *&gt;* 63", "gleiche Zehner: 8 &gt; 3"], ["⚖️", "50 *=* 50", "gleich groß"]],
+      say: "Zahlen vergleichen. Vergleiche zuerst die Zehner. Sind sie gleich, vergleiche die Einer. Pollys Schnabel ist immer zur größeren Zahl hin offen. 34 ist kleiner als 43. 68 ist größer als 63. 50 ist gleich 50." },
+    "rechnen:zehner": { k: "tipp", t: "Die kleine Aufgabe hilft", s: "Rechne zuerst die <b>kleine Aufgabe</b> ohne die Nullen. Dann hängst du die <b>Null</b> wieder an: Aus 7 wird 70.",
+      ex: [["🐣", "3 + 4 = *7*", "kleine Aufgabe"], ["🦜", "30 + 40 = *70*", "große Aufgabe"], ["🦜", "80 − 50 = *30*", "8 − 5 = 3"]],
+      say: "Die kleine Aufgabe hilft. Rechne zuerst die kleine Aufgabe ohne die Nullen: 3 plus 4 gleich 7. Dann hängst du die Null wieder an: 30 plus 40 gleich 70. Oder: 8 minus 5 gleich 3, also 80 minus 50 gleich 30." },
+    "rechnen:einer": { k: "tipp", t: "Nur die Einer rechnen", s: "Die <b>Zehner bleiben gleich</b>. Du rechnest nur mit den <b>Einern</b>.",
+      ex: [["🐣", "4 + 5 = *9*", "kleine Aufgabe"], ["🦜", "34 + 5 = 3*9*", "3 Zehner bleiben"], ["🦜", "47 − 3 = 4*4*", "4 Zehner bleiben"]],
+      say: "Nur die Einer rechnen. Die Zehner bleiben gleich. Du rechnest nur mit den Einern. 4 plus 5 gleich 9, also 34 plus 5 gleich 39. Und 47 minus 3 gleich 44." },
+    "rechnen:zehnerdazu": { k: "tipp", t: "Nur die Zehner ändern sich", s: "Rechnest du <b>ganze Zehner</b> dazu oder weg, ändern sich nur die Zehner. Die <b>Einer bleiben gleich</b>.",
+      ex: [["🦘", "34 + 20 = *5*4", "3 + 2 = 5 Zehner"], ["🦘", "76 − 30 = *4*6", "7 − 3 = 4 Zehner"]], v: "🦜 Am Zahlenstrahl hüpfst du in großen Zehnersprüngen.",
+      say: "Nur die Zehner ändern sich. Rechnest du ganze Zehner dazu oder weg, ändern sich nur die Zehner. Die Einer bleiben gleich. 34 plus 20 gleich 54. 76 minus 30 gleich 46." },
+    "rechnen:uebergang": { k: "merk", t: "Über den Zehner", s: "Rechne in <b>zwei Schritten</b>: erst bis zum <b>vollen Zehner</b>, dann den <b>Rest</b>.",
+      ex: [["1️⃣", "38 + *2* = 40", "bis zum Zehner"], ["2️⃣", "40 + *3* = 43", "Rest dazu"], ["➖", "42 − *2* − *4* = 36", "minus genauso"]], v: "🧩 Zerlege: 5 = 2 + 3 · 6 = 2 + 4",
+      say: "Über den Zehner. Rechne in zwei Schritten: erst bis zum vollen Zehner, dann den Rest. 38 plus 5: erst 38 plus 2 gleich 40, dann 40 plus 3 gleich 43. Bei minus genauso: 42 minus 6: erst 42 minus 2 gleich 40, dann 40 minus 4 gleich 36." },
+    "rechnen:zweistellig": { k: "merk", t: "Erst die Zehner, dann die Einer", s: "Zerlege die zweite Zahl in <b>Zehner</b> und <b>Einer</b>. Rechne erst die Zehner, dann die Einer.",
+      ex: [["1️⃣", "34 + *20* = 54", "erst Zehner"], ["2️⃣", "54 + *5* = 59", "dann Einer"]], v: "🧩 25 = 20 + 5",
+      say: "Erst die Zehner, dann die Einer. 34 plus 25: Zerlege 25 in 20 und 5. Erst 34 plus 20 gleich 54, dann 54 plus 5 gleich 59." },
+    "rechnen:profi": { k: "merk", t: "Der Profi-Rechenweg", s: "Erst die <b>Zehner</b>. Dann rechnest du bis zum <b>vollen Zehner</b> und zum Schluss den <b>Rest</b>.",
+      ex: [["1️⃣", "38 + *20* = 58", "Zehner"], ["2️⃣", "58 + *2* = 60", "bis zum Zehner"], ["3️⃣", "60 + *3* = 63", "Rest dazu"]], v: "🧩 25 = 20 + 2 + 3",
+      say: "Der Profi-Rechenweg. 38 plus 25. Erst die Zehner: 38 plus 20 gleich 58. Dann bis zum vollen Zehner: 58 plus 2 gleich 60. Zum Schluss der Rest: 60 plus 3 gleich 63." }
   };
   let ruleSeen = {};
   const ruleKey = (ch, lv) => ch.id + ":" + lv.id;
@@ -3779,6 +4829,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     else text = stars === 3 ? "Du dachtest, du musst noch üben, aber es hat super geklappt!" + fact : "Gut eingeschätzt!" + fact + " Üben lohnt sich. Fang mit den Muscheln an.";
     if (scored && stars < 3 && self !== 1) text = text.replace(" Die übst du jetzt als Muscheln.", " Spiel die Insel ruhig nochmal.").replace(" Übe die Muscheln, dann wird es leichter.", " Spiel die Insel ruhig nochmal.");
     if (scored) text = text.replace(" Fang mit den Muscheln an.", " Spiel die Insel ruhig nochmal.");
+    if (isPolly()) text = text.replace(" Die übst du jetzt als Muscheln.", " Die knackst du jetzt als harte Nüsse.").replace("Übe die Muscheln", "Knack die harten Nüsse").replace("Fang mit den Muscheln an.", "Fang mit den harten Nüssen an.");
     const k = DK.indexOf(d), next = DK[k + 1];
     const tip = stars === 3 ? (next ? `Tipp: Probier als Nächstes die Stufe ${DIFFS[next].label}.` : "Tipp: Wag dich auf die Experten-Insel!") : "";
     return { text, tip };
@@ -3837,7 +4888,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     L.wrong.push({ it, label: lab });
   }
   function shellChip(e, pearl) {
-    const c = el("span", "shell-chip" + (pearl ? " pearl" : ""), `<span class="si">${artSVG(pearl ? "perle" : "muschel")}</span>`);
+    const c = el("span", "shell-chip" + (pearl ? " pearl" : ""), `<span class="si">${artSVG(pearl ? SH().gem : SH().art)}</span>`);
     const l = el("span", "sl", ""); l.textContent = e.label; c.appendChild(l); c.title = e.label; return c;
   }
   function showShells(rest, pearls, practiced) {
@@ -3845,16 +4896,16 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     pearls.forEach(e => list.appendChild(shellChip(e, true)));
     rest.forEach(e => list.appendChild(shellChip(e, false)));
     box.hidden = !(rest.length || pearls.length);
-    $("resShellHead").textContent = rest.length ? (practiced ? `Noch ${rest.length === 1 ? "eine Muschel" : rest.length + " Muscheln"} zum Üben` : `${rest.length === 1 ? "Eine Übe-Muschel" : rest.length + " Übe-Muscheln"}: das übst du nochmal`) : "Deine neuen Perlen";
+    $("resShellHead").textContent = rest.length ? SH().head(rest.length, practiced) : SH().gems;
     const btn = $("resShellBtn");
     btn.hidden = !rest.length;
-    btn.textContent = practiced ? "🐚 Nochmal üben" : `🐚 ${rest.length === 1 ? "Muschel" : "Muscheln"} üben`;
+    btn.textContent = SH().btn(rest.length, practiced);
     btn.onclick = () => startPractice(rest);
   }
   function startPractice(entries) {
     const prev = L, mixed = shuffle(entries.slice()), list = mixed.slice(0, 6);
     L = { li: prev.li, d: prev.d, lv: prev.lv, items: list.map(e => e.it), entries: list, later: mixed.slice(6), pos: 0, mistakes: 0, earned: 0, locked: false, speakNow: null, mult: prev.li === "expert" ? 0 : 1, practice: true, wrong: [], pearls: [] };
-    const badge = $("playBadge"); badge.className = "badge practice"; badge.textContent = "🐚 Muschel-Runde";
+    const badge = $("playBadge"); badge.className = "badge practice"; badge.textContent = SH().round;
     if (L.li !== "bonus" && L.li !== "expert") $("taskText").textContent = L.lv.task(L.d);
     show("scrPlay");
     renderItem();
@@ -3863,13 +4914,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     renderProgress(); $("resCert").hidden = true;
     const n = L.items.length, p = L.pearls.length, rest = L.wrong.concat(L.later || []), li = L.li, d = L.d;
     $("resPerfect").hidden = true; $("resBonus").hidden = true; $("resSelf").hidden = true;
-    $("resTitle").textContent = p === n ? "Alle Muscheln sind Perlen!" : p ? "Super geübt!" : "Bleib dran!";
+    $("resTitle").textContent = p === n ? SH().allTitle : p ? "Super geübt!" : "Bleib dran!";
     $("resStars").innerHTML = "";
-    $("resText").textContent = p === n ? "Toll, du hast alle kniffligen Aufgaben geschafft." : `${p} von ${n} Muscheln sind jetzt Perlen.`;
+    $("resText").textContent = p === n ? "Toll, du hast alle kniffligen Aufgaben geschafft." : SH().part(p, n);
     $("resEarned").innerHTML = L.earned ? `+${L.earned} <span class="coin"></span>` : "";
     showShells(rest, L.pearls, true);
     $("resAgain").hidden = false; $("resAgain").textContent = "🔁 Insel nochmal"; $("resAgain").onclick = () => startLevel(li, d);
-    show("scrResult"); sfxWin(); if (p === n) confetti(["⚪", "✨", "🐚", "⭐"]);
+    show("scrResult"); sfxWin(); if (p === n) confetti(SH().conf);
     speak($("resTitle").textContent + " " + $("resText").textContent);
     flushSave();
   }
@@ -3895,14 +4946,37 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
     show("scrCert"); confetti(); sfxWin();
   }
 
+  /* ---------- Welt wählen: Nemo oder Polly ---------- */
+  function renderWorlds() {
+    const t = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null, who = S.name || (t ? t[1] : "");
+    $("worldHello").textContent = who ? `Hallo ${who}! Wohin möchtest du?` : "Wohin möchtest du?";
+    const st = (wid) => CHAPTERS.filter(c => worldOf(c) === wid && c.levels.length).reduce((a, c) => a + starTotal(c), 0), sn = st("nemo"), sp = st("polly");
+    $("wtNemo").textContent = sn ? `⭐ ${sn} ${sn === 1 ? "Stern" : "Sterne"}` : "🌊 Ab ins Meer!";
+    $("wtPolly").textContent = sp ? `⭐ ${sp} ${sp === 1 ? "Stern" : "Sterne"}` : "✨ Neu!";
+    updateFoot(); $("resetBtn2").textContent = $("resetBtn").textContent; $("whoTag2").hidden = $("whoTag").hidden; $("whoTag2").textContent = $("whoTag").textContent;
+    setCoins(false); show("scrWorld");
+    speak((who ? `Hallo ${who}! ` : "") + "Wohin möchtest du? Zu Nemo ins Meer, da übst du Deutsch. Oder zu Polly auf die Papageien-Inseln, da übst du Mathe.");
+  }
+  function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); renderHome(); }
+
   /* ---------- wiring ---------- */
   $("startBtn").addEventListener("click", () => {
     const n = $("nameInput").value.trim();
     S.name = n ? cap(n) : ""; save(); resetAmpel();
-    tone([440], 0.01); renderHome();
+    tone([440], 0.01); renderWorlds();
   });
   $("nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("startBtn").click(); });
-  $("backBtn").addEventListener("click", () => { if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap(); });
+  $("backBtn").addEventListener("click", () => { if (current === "scrHome") renderWorlds(); else if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap(); });
+  $("goNemo").addEventListener("click", () => enterWorld("nemo"));
+  $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
+  $("goPolly").addEventListener("click", () => enterWorld("polly"));
+  // Zahlentasten auch mit der Tastatur (Smartboard, PC)
+  document.addEventListener("keydown", (e) => {
+    if (current !== "scrPlay" || !L || !L.padKey || !$("rulePop").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (/^[0-9]$/.test(e.key)) { e.preventDefault(); L.padKey(e.key); }
+    else if (e.key === "Backspace") { e.preventDefault(); L.padKey("del"); }
+    else if (e.key === "Enter") { e.preventDefault(); L.padKey("ok"); }
+  });
   $("wallet").addEventListener("click", () => { if (current === "scrHome" || current === "scrMap") renderAqua(); });
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
@@ -3919,7 +4993,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   lastP = portrait();
   $("cNo").addEventListener("click", () => { $("confirm").hidden = true; });
   $("cYes").addEventListener("click", () => {
-    S = fresh(); save(); resetAmpel();
+    S = fresh(); save(); resetAmpel(); setWorld("nemo");
     $("confirm").hidden = true; $("nameInput").value = ""; setCoins(false); show("scrStart");
   });
 
@@ -3934,14 +5008,14 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
   function normalizeState() {
     ["stars", "perfect", "bonus", "expert"].forEach(k => { if (!S[k] || typeof S[k] !== "object" || Array.isArray(S[k])) S[k] = {}; });
     if (!Array.isArray(S.aqua)) S.aqua = [];
+    if (!Array.isArray(S.jungle)) S.jungle = [];
     S.coins = +S.coins || 0; S.total = S.total == null ? S.coins : +S.total || 0; S.name = "";
   }
   function startAccount(j) {
     ACC = { token: j.token || (ACC && ACC.token), kind: j.kind };
     try { sessionStorage.setItem(TKEY, ACC.token); } catch (e) {}
     S = Object.assign(fresh(), j.stand || {}); normalizeState(); resetAmpel();
-    saveOk = true; codeMsg(""); bumpIdle(); setCoins(false); renderHome();
-    const t = TIERE[ACC.kind.tier]; speak(`Hallo ${t ? t[1] : ""}! Schön, dass du da bist.`);
+    saveOk = true; codeMsg(""); bumpIdle(); setCoins(false); renderWorlds();
   }
   function schoolLogin(code) {
     const c = String(code || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -3958,7 +5032,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       api("kind_speichern", { token: tok, stand: st }, true).catch(() => {}).then(() => api("kind_abmelden", { token: tok }, true)).catch(() => {});
     }
     ACC = null; clearTimeout(idleT); resetAmpel(); try { sessionStorage.removeItem(TKEY); } catch (e) {}
-    S = fresh(); setCoins(false); $("codeInput").value = ""; $("whoTag").hidden = true; $("saveState").hidden = true;
+    S = fresh(); setCoins(false); setWorld("nemo"); $("codeInput").value = ""; $("whoTag").hidden = true; $("saveState").hidden = true;
     show("scrStart"); codeMsg(msg || "", true);
   }
   let idleT = null;
@@ -3971,7 +5045,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
       const raw = $("codeInput").value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
       $("codeInput").value = raw.replace(/(.{4})(?=.)/g, "$1-");
     });
-    $("guestBtn").addEventListener("click", () => { ACC = { gast: true }; S = fresh(); resetAmpel(); codeMsg(""); bumpIdle(); setCoins(false); renderHome(); });
+    $("guestBtn").addEventListener("click", () => { ACC = { gast: true }; S = fresh(); resetAmpel(); codeMsg(""); bumpIdle(); setCoins(false); renderWorlds(); });
     document.addEventListener("pointerdown", bumpIdle, true);
     document.addEventListener("keydown", bumpIdle, true);
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden" && ACC && ACC.token) flushSave(true); });
