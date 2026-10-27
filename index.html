@@ -674,6 +674,40 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .ib { display: inline-block; border: 2px solid var(--st); background: var(--f); border-radius: 2px; }
 .ib.z { width: 9px; height: 28px; } .ib.e { width: 12px; height: 9px; }
 .mq .qmark { color: #b8860b; } .mq .qmark.ok { color: var(--good); }
+.mrow.wk > .mcol { min-width: min(400px, 100%); }
+.mbtns > .kiste, .mbtns > .mbtn.go:only-child { grid-column: 1 / -1; }
+.kiste { background: #fffaf0; border: 3px dashed var(--sand-edge); border-radius: 22px; padding: 10px 14px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 6px 16px var(--shadow); }
+.kiste.orange { border-color: #ffb45c; background: #fff6ea; }
+.kiste.red { border-color: #f4a3a8; background: #fff3f3; }
+.kh { font-size: clamp(18px, 2.8vw, 21px); font-weight: 900; color: var(--ink); text-align: center; }
+.kh b { color: #c2410c; font-size: 1.2em; }
+.krow { display: flex; align-items: flex-end; justify-content: center; gap: 8px; flex-wrap: wrap; min-height: 60px; }
+.kitem { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; background: #fff; border-radius: 18px; padding: 10px 18px 8px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); min-width: 96px; min-height: 216px; }
+.kitem:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--sand-edge); }
+.kitem .me { transform: scale(1.7); margin: 10px 0 12px; }
+.kitem .kl { font-size: 19px; font-weight: 900; color: var(--ink); }
+.kiste .mz.used, .kiste .me.used { visibility: hidden; }
+.mz.ghost, .me.ghost { background: transparent; border: 2px dashed #d28a8f; box-shadow: none; }
+.mz.filled, .me.filled { opacity: .9; }
+.kall { font-size: 16px !important; padding: 6px 14px !important; }
+.mz.flying, .me.flying { box-shadow: 0 8px 16px rgba(0,0,0,.25); }
+.card.mq.ana { display: flex; flex-direction: column; gap: 6px; align-items: stretch; padding: 10px 22px; }
+.anrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.anrow .tag { font-size: 16px; font-weight: 900; color: var(--muted); background: #fff; border-radius: 999px; padding: 4px 12px; display: inline-flex; align-items: center; gap: 4px; }
+.anrow.bigrow { border-top: 2px dashed var(--sand-edge); padding-top: 6px; }
+.anscard { background: var(--sand); border-radius: 26px; padding: 14px 24px 18px; box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.ansq { font-size: clamp(24px, 3.8vw, 32px); font-weight: 900; color: var(--ink); }
+.zebox { display: flex; border-radius: 20px; overflow: hidden; border: 3px solid var(--sand-edge); background: #fff; box-shadow: 0 4px 0 var(--sand-edge); }
+.zecell { display: flex; flex-direction: column; align-items: stretch; min-width: 108px; padding: 0; background: #fff; border-radius: 0; }
+.zecell + .zecell { border-left: 3px dashed var(--sand-edge); }
+.zecell .zl { font-size: 17px; font-weight: 900; color: #fff; background: #2a7f8e; padding: 5px 10px; }
+.zecell.e .zl, .zecell.one .zl { background: #3b9aa8; }
+.zecell.one { min-width: 170px; }
+.zecell .zd { display: block; font-size: 66px; font-weight: 900; line-height: 92px; min-height: 92px; color: var(--ink); text-align: center; font-variant-numeric: tabular-nums; transition: background .15s; }
+.zecell.act .zd { background: #fff7d1; box-shadow: inset 0 0 0 5px var(--gold); }
+.zecell.ok .zd { background: #e3f6e8; color: #145c2c; }
+.numpad.big { width: min(440px, 100%); gap: 10px; }
+.numpad.big .nk { height: 72px; font-size: 38px; border-radius: 18px; }
 
 @media (max-width: 620px) {
   .baskets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -688,6 +722,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
   .rc-ex { gap: 8px; } .rc-e { padding: 8px 8px 7px; flex-basis: 120px; } .rc-pic { font-size: 36px; } .rc-w { font-size: 22px; }
   .rule-card .big-btn { font-size: 21px; padding: 12px 20px; }
   .nk { height: 54px; font-size: 28px; }
+  .numpad.big .nk { height: 62px; font-size: 32px; } .zecell .zd { font-size: 56px; line-height: 78px; min-height: 78px; }
   .mz { width: 19px; } .me { width: 19px; } .mp { gap: 4px; padding: 10px 8px; } .mcolw.z { min-width: 120px; } .mcolw { min-width: 96px; }
   .eq { padding: 10px 14px; }
 }
@@ -743,7 +778,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Rote Polly</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Werkstatt neu</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -3286,9 +3321,21 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
      Pollys Werkstatt (Förderinsel): Zahlen mit Zehnerstangen und Einerwürfeln legen.
      Das Legebrett ist eine Stellenwerttafel: links die Zehner, rechts die Einer.
      10 Einerwürfel sind genau so hoch wie eine Zehnerstange – so sieht man, wie sich die Zahlen aufbauen.
+     Die Kinder tippen auf Teile in der Materialkiste; die Teile fliegen aufs Brett.
      ====================================================================== */
-  const mp = (c) => ({ c, gone: false, fresh: true });
-  const ibZ = (c) => `<span class="ib z c-${c}"></span>`, ibE = (c) => `<span class="ib e c-${c}"></span>`;
+  const mp = (c, gone) => ({ c, gone: !!gone, fresh: true });
+  // Ein Teil fliegt sichtbar von a nach b (nur Optik)
+  function flyTo(fromEl, toEl) {
+    try {
+      if (!fromEl || !toEl) return;
+      const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect();
+      const c = fromEl.cloneNode(true); c.classList.remove("fresh", "used", "ghost"); c.classList.add("flying");
+      Object.assign(c.style, { position: "fixed", left: a.left + "px", top: a.top + "px", width: a.width + "px", height: a.height + "px", margin: "0", zIndex: 30, transformOrigin: "0 0", transition: "transform .4s cubic-bezier(.3,.8,.4,1)", pointerEvents: "none", visibility: "visible" });
+      document.body.appendChild(c); toEl.style.visibility = "hidden";
+      requestAnimationFrame(() => requestAnimationFrame(() => { c.style.transform = `translate(${b.left - a.left}px, ${b.top - a.top}px) scale(${b.width / a.width}, ${b.height / a.height})`; }));
+      setTimeout(() => { c.remove(); toEl.style.visibility = ""; }, 430);
+    } catch (e) {}
+  }
   function matBoard(o) {
     const M = { z: [], e: [], counts: !!o.counts, onTap: null, busy: false };
     const box = el("div", "mat");
@@ -3310,12 +3357,27 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       cz.querySelector(".mc").textContent = M.counts ? M.live("z").length : "";
       ce.querySelector(".mc").textContent = M.counts ? M.live("e").length : "";
     };
-    M.add = (k, c) => {
-      if (k === "z" && M.z.length >= 10) { hint("Mehr Zehnerstangen passen nicht aufs Brett."); return; }
-      if (k === "e" && M.e.length >= 30) { hint("Mehr Würfel passen nicht aufs Brett."); return; }
-      M[k].push(mp(c)); tone([k === "z" ? 440 : 660], 0.05); M.render();
+    M.elOf = (k, i) => (k === "z" ? cz.querySelectorAll(".mz") : ce.querySelectorAll(".me"))[i];
+    M.lastEl = (k) => { const l = k === "z" ? cz.querySelectorAll(".mz") : ce.querySelectorAll(".me"); return l[l.length - 1]; };
+    // ein Teil aufs Brett (aus der Kiste geflogen, wenn fromEl angegeben)
+    M.put = (k, c, fromEl) => {
+      if (k === "z" && M.z.length >= 10) { hint("Mehr Zehnerstangen passen nicht aufs Brett."); return false; }
+      if (k === "e" && M.e.length >= 30) { hint("Mehr Würfel passen nicht aufs Brett."); return false; }
+      const p = mp(c); p.fresh = !fromEl; M[k].push(p); M.render(); tone([k === "z" ? 440 : 660], 0.05);
+      if (fromEl) flyTo(fromEl, M.lastEl(k));
+      return true;
     };
-    M.drop = (k, c) => { for (let i = M[k].length - 1; i >= 0; i--) if (M[k][i].c === c && !M[k][i].gone) { M[k].splice(i, 1); tone([330], 0.05); M.render(); return true; } return false; };
+    // Analogie 3 + 4 → 30 + 40: aus jedem Einerwürfel wird eine Zehnerstange
+    M.toTens = (then) => {
+      M.busy = true; M.e.forEach(p => { p.merge = true; }); M.render(); tone([520, 660, 880], 0.07);
+      setTimeout(() => { M.z = M.z.concat(M.e.map(p => mp(p.c, p.gone))); M.e = []; M.busy = false; M.render(); if (then) then(); }, 560);
+    };
+    // Analogie 3 + 4 → 53 + 4: Zehnerstangen kommen nacheinander dazu
+    M.addTens = (n, c, then) => {
+      M.busy = true; let k = 0;
+      const step = () => { if (k >= n) { M.busy = false; if (then) then(); return; } M.z.push(mp(c)); k++; M.render(); tone([420 + k * 40], 0.05); setTimeout(step, 260); };
+      step();
+    };
     // 10 Einer → 1 Zehner (mit kleiner Animation)
     M.bundle = (then) => {
       const idx = []; M.e.forEach((p, i) => { if (!p.gone && idx.length < 10) idx.push(i); });
@@ -3324,9 +3386,9 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       setTimeout(() => { M.e = M.e.filter((_, i) => idx.indexOf(i) < 0); M.z.push(mp("g")); M.busy = false; M.render(); if (then) then(); }, 560);
       return true;
     };
-    // 1 Zehner → 10 Einer
-    M.unbundle = (then) => {
-      let i = -1; M.z.forEach((p, j) => { if (!p.gone) i = j; }); if (i < 0) return false;
+    // 1 Zehner → 10 Einer (Stange i oder die letzte)
+    M.unbundle = (then, at) => {
+      let i = at != null ? at : -1; if (at == null) M.z.forEach((p, j) => { if (!p.gone) i = j; }); if (i < 0 || M.z[i].gone) return false;
       const c = M.z[i].c === "g" ? "b" : M.z[i].c;
       M.busy = true; M.z[i].merge = true; M.render(); tone([880, 660, 520], 0.07);
       setTimeout(() => { M.z.splice(i, 1); for (let k = 0; k < 10; k++) M.e.push(mp(c)); M.busy = false; M.render(); if (then) then(); }, 560);
@@ -3334,32 +3396,168 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
     };
     return M;
   }
-  // Legebrett links, rechts Anleitung, Knöpfe und (am Schluss) Zahlentasten
+  // Großes Eingabefeld: Kästchen für Zehner und Einer (wie auf dem Legebrett) und große Zahlentasten.
+  // o.ze === false: ein einzelnes großes Kästchen. o.cont: nach der richtigen Antwort weiter (noch kein Abschluss der Aufgabe).
+  function bigAnswer(box, a, o) {
+    const ze = o.ze !== false, card = el("div", "anscard"), row = el("div", "zebox"), cells = [];
+    card.appendChild(el("div", "ansq", o.label || "Die Zahl heißt:"));
+    const mk = (cls, lab) => { const c = el("button", "zecell " + cls, `${lab ? `<span class="zl">${lab}</span>` : ""}<span class="zd"></span>`); row.appendChild(c); cells.push(c); return c; };
+    if (ze) { mk("z", "Zehner"); mk("e", "Einer"); } else mk("one", o.unit || "");
+    card.appendChild(row); box.appendChild(card);
+    let v = ["", ""], cur = 0, tries = 0, solved = false;
+    const show = () => cells.forEach((c, i) => { c.querySelector(".zd").textContent = v[i]; c.classList.toggle("act", !solved && !L.locked && (!ze || i === cur)); });
+    cells.forEach((c, i) => c.addEventListener("click", () => { if (L.locked || solved || !ze) return; cur = i; show(); }));
+    show();
+    const key = (k) => {
+      if (L.locked || solved) return;
+      if (k === "del") { if (ze) { if (v[cur] === "" && cur > 0) cur--; v[cur] = ""; } else v[0] = v[0].slice(0, -1); show(); return; }
+      if (k === "ok") {
+        if (ze && v[0] !== "" && v[1] === "") { hint("Tippe auch die Einer ein."); cur = 1; show(); return; }
+        if (v[0] === "" && v[1] === "") { hint("Tippe zuerst eine Zahl ein."); return; }
+        const val = ze ? +(v[0] || 0) * 10 + +(v[1] || 0) : +v[0];
+        if (val === a) {
+          solved = true; cells.forEach(c => { c.classList.remove("act"); c.classList.add("ok"); });
+          if (o.onDone) o.onDone();
+          if (o.cont) { tone([660, 880], 0.08); hint(praise() + (o.okText ? " " + o.okText : ""), true); if (o.okSay) speak(o.okSay); o.cont(); return; }
+          award(card, o.factor || 1); hint(praise() + (o.okText ? " " + o.okText : ""), true); if (o.okSay) speak(o.okSay); done(1700); return;
+        }
+        tries++;
+        let why = o.why ? o.why(0, val, tries) : numWhy(a, val); if (tries >= 2) why += ` Die Lösung ist ${a}.`;
+        miss(card, why); v = ["", ""]; cur = 0; show(); return;
+      }
+      tone([480 + (+k) * 20], 0.03);
+      if (ze) { v[cur] = k; if (cur === 0) cur = 1; } else { if (v[0].length >= 3) return; v[0] = (v[0] === "0" ? "" : v[0]) + k; }
+      show();
+    };
+    numPad(box, key).classList.add("big");
+    L.speakNow = () => speak(o.say);
+  }
+  const wkBtn = (html, cls, fn, M) => { const b = el("button", "mbtn " + (cls || ""), html); b.addEventListener("click", () => { if (L.locked || (M && M.busy)) return; fn(b); }); return b; };
+  // im Hochformat: neue Kiste bzw. Eingabefeld ins Bild holen
+  const seen = (node) => setTimeout(() => { try { const r = node.getBoundingClientRect(); if (r.bottom > window.innerHeight || r.top < 0) node.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "nearest" }); } catch (e) {} }, 80);
+  // Legebrett links; rechts Anleitung, Kiste/Knöpfe und am Schluss das große Eingabefeld
   function wkUI(stage, M, head) {
     if (head) stage.appendChild(head);
     const col = mathRow(stage, M.box), step = el("div", "mstep"), ctrl = el("div", "mbtns"), ans = el("div", "mcol");
+    col.parentNode.classList.add("wk");
     col.appendChild(step); col.appendChild(ctrl); col.appendChild(ans);
     M.render();
     return {
       say(t) { step.innerHTML = t; L.speakNow = () => speak(step.textContent); },
-      btns(list) {
-        ctrl.innerHTML = "";
-        list.forEach(([html, cls, fn]) => { const b = el("button", "mbtn " + (cls || ""), html); b.addEventListener("click", () => { if (L.locked || M.busy) return; fn(b); }); ctrl.appendChild(b); });
-      },
-      ask(a, o) { ctrl.innerHTML = ""; padTask(ans, Object.assign({ layout: eqLayout([{ t: o.line || [{ a }] }]) }, o)); }
+      btns(list) { ctrl.innerHTML = ""; list.forEach(([html, cls, fn]) => ctrl.appendChild(wkBtn(html, cls, fn, M))); },
+      place(...nodes) { ctrl.innerHTML = ""; ans.innerHTML = ""; nodes.forEach(n => ctrl.appendChild(n)); if (nodes.length) seen(ctrl); },
+      ask(a, o) { ctrl.innerHTML = ""; ans.innerHTML = ""; bigAnswer(ans, a, o); seen(ans); }
     };
   }
   const layNum = (M, n, c) => { const [z, e] = ZE(n); for (let i = 0; i < z; i++) M.z.push(mp(c || "b")); for (let i = 0; i < e; i++) M.e.push(mp(c || "b")); };
+  // Materialkiste ohne Ende (Zahlen bauen): Zehnerstange oder Einerwürfel antippen → fliegt aufs Brett
+  function supplyBox(M, c) {
+    const k = el("div", "kiste");
+    k.appendChild(el("div", "kh", "🧰 Materialkiste – tippe an!"));
+    const row = el("div", "krow");
+    [["z", "Zehner"], ["e", "Einer"]].forEach(([kind, lab]) => {
+      const b = el("button", "kitem " + kind, `<span class="${kind === "z" ? "mz" : "me"} c-${c}"></span><span class="kl">${lab}</span>`);
+      b.setAttribute("aria-label", (kind === "z" ? "Zehnerstange" : "Einerwürfel") + " aufs Brett legen");
+      b.addEventListener("click", () => { if (L.locked || M.busy) return; M.put(kind, c, b.firstElementChild); });
+      row.appendChild(b);
+    });
+    k.appendChild(row); return k;
+  }
+  // Kiste mit der zweiten Zahl (Plus): jedes Teil antippen → fliegt aufs Brett; ist die Kiste leer, geht es weiter
+  function addBox(M, b, onEmpty) {
+    const k = el("div", "kiste orange"), [bz, be] = ZE(b), row = el("div", "krow");
+    k.appendChild(el("div", "kh", `Dazu kommen <b>${b}</b>. Tippe auf die Teile!`));
+    let left = bz + be;
+    const take = (kind, n) => {
+      if (L.locked || M.busy || n.classList.contains("used")) return;
+      n.classList.add("used"); M.put(kind, "o", n); left--;
+      if (!left) setTimeout(onEmpty, 480);
+    };
+    for (let i = 0; i < bz; i++) { const n = el("button", "mz c-o"); n.setAttribute("aria-label", "Zehnerstange dazulegen"); n.addEventListener("click", () => take("z", n)); row.appendChild(n); }
+    if (be) { const st = el("div", "mstack"); for (let i = 0; i < be; i++) { const n = el("button", "me c-o"); n.setAttribute("aria-label", "Einerwürfel dazulegen"); n.addEventListener("click", () => take("e", n)); st.appendChild(n); } row.appendChild(st); }
+    k.appendChild(row);
+    const all = wkBtn("alle aufs Brett ➜", "sm kall", () => { [...row.querySelectorAll("button:not(.used)")].forEach((n, i) => setTimeout(() => n.click(), i * 140)); }, M);
+    k.appendChild(all);
+    return k;
+  }
+  // Weg-Kiste (Minus): gestrichelte Plätze zeigen, was weg soll. Teile auf dem Brett antippen → sie fliegen in die Kiste.
+  // Sind keine Einer mehr da, wird eine angetippte Zehnerstange in 10 Einer aufgebrochen (o.canBreak).
+  function takeBox(M, b, o) {
+    const k = el("div", "kiste red"), [bz, be] = ZE(b), row = el("div", "krow"), gz = [], ge = [];
+    k.appendChild(el("div", "kh", `Weg kommen <b>${b}</b>. Tippe die Teile auf dem Brett an!`));
+    for (let i = 0; i < bz; i++) { const g = el("span", "mz ghost"); row.appendChild(g); gz.push(g); }
+    if (be) { const st = el("div", "mstack"); for (let i = 0; i < be; i++) { const g = el("span", "me ghost"); st.appendChild(g); ge.push(g); } row.appendChild(st); }
+    k.appendChild(row);
+    let fz = 0, fe = 0;
+    const fillGhost = (g, from) => { flyTo(from, g); g.classList.remove("ghost"); g.classList.add("c-b", "filled"); };
+    M.onTap = (kind, i) => {
+      const p = M[kind][i]; if (!p || p.gone) return;
+      if (kind === "z") {
+        if (fz < bz) { fillGhost(gz[fz], M.elOf("z", i)); fz++; p.gone = true; tone([300], 0.05); M.render(); }
+        else if (fe < be && o.canBreak && M.live("e").length < be - fe) { hint("Die Zehnerstange wird aufgebrochen: Jetzt sind es 10 Einerwürfel!", true); M.unbundle(null, i); return; }
+        else { hint(fe < be ? "Die Zehner sind fertig. Nimm jetzt Einerwürfel weg." : "Es ist schon alles weg."); return; }
+      } else {
+        if (fe < be) { fillGhost(ge[fe], M.elOf("e", i)); fe++; p.gone = true; tone([300], 0.05); M.render(); }
+        else { hint(fz < bz ? "Die Einer sind fertig. Nimm jetzt Zehnerstangen weg." : "Es ist schon alles weg."); return; }
+      }
+      if (fz === bz && fe === be) { M.onTap = null; setTimeout(o.onFull, 480); }
+      else if (fe < be && fz === bz && !M.live("e").length) hint(o.canBreak ? "Es sind keine Einerwürfel mehr da. Tippe auf eine Zehnerstange – sie wird in 10 Einer aufgebrochen!" : "Es sind keine Einerwürfel mehr da.");
+    };
+    return k;
+  }
+  // Kopf mit kleiner und großer Aufgabe (Analogie)
+  function anaHead(small, big) {
+    const h = el("div", "card mq ana");
+    h.innerHTML = `<div class="anrow"><span class="tag">🐣 kleine Aufgabe</span><span>${small} = <span class="qmark q1">?</span></span></div><div class="anrow bigrow" hidden><span class="tag">${pollyHTML("1.2em")} große Aufgabe</span><span>${big} = <span class="qmark q2">?</span></span></div>`;
+    return h;
+  }
+  const setQ = (head, sel, v) => { const q = head.querySelector(sel); if (q) { q.textContent = v; q.classList.add("ok"); } };
+  // Analogie-Aufgaben: { op, an: "e" (3 + 4 → 53 + 4) | "z" (3 + 4 → 30 + 40), a1, b1, r1, z, A, B, R }
+  function anaItem(op, an) {
+    if (op === "+") {
+      if (an === "z") { const a1 = rint(1, 8), b1 = rint(1, 9 - a1); return { op, an, a1, b1, r1: a1 + b1, A: 10 * a1, B: 10 * b1, R: 10 * (a1 + b1) }; }
+      const a1 = rint(1, 8), b1 = rint(1, 9 - a1), z = rint(1, 8); return { op, an, a1, b1, r1: a1 + b1, z, A: 10 * z + a1, B: b1, R: 10 * z + a1 + b1 };
+    }
+    if (an === "z") { const a1 = rint(2, 9), b1 = rint(1, a1 - 1); return { op, an, a1, b1, r1: a1 - b1, A: 10 * a1, B: 10 * b1, R: 10 * (a1 - b1) }; }
+    const a1 = rint(2, 9), b1 = rint(1, a1 - 1), z = rint(1, 8); return { op, an, a1, b1, r1: a1 - b1, z, A: 10 * z + a1, B: b1, R: 10 * z + a1 - b1 };
+  }
+  function anaBuild(op) {
+    return gen(6, (k) => { const x = anaItem(op, k % 2 ? "z" : "e"), o = opS(op); x.lab = `${x.a1} ${o} ${x.b1} = ${x.r1} → ${x.A} ${o} ${x.B} = ${x.R}`; return x; });
+  }
+  function anaRender(x, stage) {
+    const o = opS(x.op), plus = x.op === "+", M = matBoard({ counts: true });
+    for (let i = 0; i < x.a1; i++) M.e.push(mp("b"));
+    const head = anaHead(`${x.a1} ${o} ${x.b1}`, `${x.A} ${o} ${x.B}`), U = wkUI(stage, M, head);
+    const big = () => {
+      U.say(x.an === "z" ? "Jetzt die große Aufgabe: Aus jedem Würfel wird eine Zehnerstange!" : `Jetzt die große Aufgabe: Polly legt ${x.z} ${x.z === 1 ? "Zehnerstange" : "Zehnerstangen"} dazu!`);
+      head.querySelector(".bigrow").hidden = false; U.place();
+      const ask2 = () => {
+        U.say(`Die Einer ${x.an === "z" ? "sind jetzt Zehner" : "sind gleich geblieben"}. Wie viel ist ${x.A} ${o} ${x.B}?`);
+        U.ask(x.R, { label: `${x.A} ${o} ${x.B} =`, say: `Wie viel ist ${x.A} ${opW(x.op)} ${x.B}?`,
+          why: (k, v) => numWhy(x.R, v, x.an === "z" ? `Die kleine Aufgabe hilft: ${x.a1} ${o} ${x.b1} = ${x.r1}. Also sind es ${x.r1} Zehner.` : `Die kleine Aufgabe hilft: ${x.a1} ${o} ${x.b1} = ${x.r1}. Die ${x.z} Zehner bleiben.`),
+          okText: `${x.a1} ${o} ${x.b1} = ${x.r1}, also ${x.A} ${o} ${x.B} = ${x.R}`, okSay: `${x.a1} ${opW(x.op)} ${x.b1} gleich ${x.r1}. Also ${x.A} ${opW(x.op)} ${x.B} gleich ${x.R}.`, onDone: () => setQ(head, ".q2", x.R) });
+      };
+      if (x.an === "z") M.toTens(ask2); else M.addTens(x.z, "b", ask2);
+    };
+    const ask1 = () => {
+      U.say(`Wie viel ist ${x.a1} ${o} ${x.b1}?`);
+      U.ask(x.r1, { ze: false, label: `${x.a1} ${o} ${x.b1} =`, say: `Wie viel ist ${x.a1} ${opW(x.op)} ${x.b1}?`, why: (k, v) => numWhy(x.r1, v, plus ? "Zähle alle Würfel." : "Zähle nur die Würfel, die noch da sind."),
+        okText: `${x.a1} ${o} ${x.b1} = ${x.r1}`, onDone: () => setQ(head, ".q1", x.r1),
+        cont: () => { U.say("Super! Und jetzt die große Aufgabe."); U.place(wkBtn(`Zur großen Aufgabe ➜`, "go", big, M)); } });
+    };
+    if (plus) { U.say(`Lege ${x.b1} dazu: Tippe auf die orangen Würfel!`); U.place(addBox(M, x.b1, ask1)); }
+    else { U.say(`Nimm ${x.b1} weg: Tippe die Würfel auf dem Brett an!`); U.place(takeBox(M, x.b1, { onFull: ask1 })); }
+  }
 
   const WERKLEVELS = [
     {
       id: "bauen", name: "Zahlen bauen", icon: "🧱", color: "#3a86ff",
       task: (d) => d === "schwer" ? "Baue die Zahl einmal anders!" : "Lege die Zahl mit Material!",
-      intro: (d) => d === "leicht" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Unten auf dem Brett siehst du, wie viele Zehner und Einer du gelegt hast."
+      intro: (d) => d === "leicht" ? "Tippe in der Materialkiste auf eine Zehnerstange oder einen Einerwürfel – das Teil fliegt aufs Brett. Unten auf dem Brett siehst du, wie viele Zehner und Einer du gelegt hast."
         : d === "mittel" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Jetzt zählst du selbst nach!"
         : "Eine Zahl kann man auf verschiedene Arten legen. Nimm genau so viele Zehnerstangen, wie Polly sagt – den Rest legst du mit Einerwürfeln.",
       ex: () => `${dnSVG({ z: 3, e: 4, c: "b", t10: true }, .9)}<br>34 = 3 Zehner und 4 Einer`,
-      say: (d) => d === "leicht" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Unten auf dem Brett siehst du, wie viele Zehner und Einer du gelegt hast."
+      say: (d) => d === "leicht" ? "Tippe in der Materialkiste auf eine Zehnerstange oder einen Einerwürfel. Das Teil fliegt aufs Brett. Unten auf dem Brett siehst du, wie viele Zehner und Einer du gelegt hast."
         : d === "mittel" ? "Lege die Zahl mit Zehnerstangen und Einerwürfeln. Jetzt zählst du selbst nach!"
         : "Eine Zahl kann man auf verschiedene Arten legen. Nimm genau so viele Zehnerstangen, wie Polly sagt. Den Rest legst du mit Einerwürfeln.",
       build(d) {
@@ -3370,21 +3568,20 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
         const n = x.n, [z, e] = ZE(n), M = matBoard({ counts: d === "leicht" });
         const U = wkUI(stage, M, el("div", "card mq", d === "schwer" ? `Lege <b>${n}</b> mit genau <b>${x.zz}</b> Zehnerstangen.` : `Lege die Zahl <b>${n}</b>.`));
         M.onTap = (k, i) => { M[k].splice(i, 1); tone([330], 0.05); M.render(); };
-        U.say(d === "schwer" ? `Nimm ${x.zz} Zehnerstangen. Den Rest legst du mit Einerwürfeln.` : "Lege Zehner und Einer. Tippst du auf ein Teil, kommt es wieder weg.");
+        U.say(d === "schwer" ? `Nimm ${x.zz} Zehnerstangen. Den Rest legst du mit Einerwürfeln.` : "Tippe in der Kiste auf ein Teil. Zu viel? Tippe das Teil auf dem Brett an.");
         let tries = 0;
-        U.btns([[ibZ("b") + " + Zehner", "", () => M.add("z", "b")], [ibE("b") + " + Einer", "", () => M.add("e", "b")], ["− Zehner", "sm", () => M.drop("z", "b")], ["− Einer", "sm", () => M.drop("e", "b")],
-          ["Fertig ✓", "go", (btn) => {
-            const v = M.val(), zc = M.z.length, ec = M.e.length;
-            if (d === "schwer" ? v === n && zc === x.zz : v === n && ec <= 9) {
-              M.counts = true; M.render(); award(btn, 1);
-              hint(praise() + ` ${n} = ${zc} Zehner und ${ec} Einer`, true); speak(`${n} sind ${zc} Zehner und ${ec} Einer.`); done(1800); return;
-            }
-            if (v === n) { hint(d === "schwer" ? `Das sind ${n} – aber nimm genau ${x.zz} Zehnerstangen und dafür mehr Einerwürfel.` : `Das sind ${n} – richtig! Aber 10 Einer sind so viel wie 1 Zehnerstange. Lege lieber ${z} Zehner und ${e} Einer.`); return; }
-            tries++;
-            miss(M.box, `Du hast ${zc} Zehner und ${ec} Einer gelegt. Das sind ${v}. ` + (d === "schwer"
-              ? (tries >= 2 ? `${x.zz} Zehner sind ${x.zz * 10}. Bis ${n} fehlen noch ${n - x.zz * 10} Einer.` : `Wie viele Einer brauchst du noch zu ${x.zz} Zehnern?`)
-              : (tries >= 2 ? `${n} sind ${z} Zehner und ${e} Einer.` : `Wie viele Zehner und Einer hat ${n}?`)));
-          }]]);
+        U.place(supplyBox(M, "b"), wkBtn("Fertig ✓", "go", (btn) => {
+          const v = M.val(), zc = M.z.length, ec = M.e.length;
+          if (d === "schwer" ? v === n && zc === x.zz : v === n && ec <= 9) {
+            M.counts = true; M.render(); award(btn, 1);
+            hint(praise() + ` ${n} = ${zc} Zehner und ${ec} Einer`, true); speak(`${n} sind ${zc} Zehner und ${ec} Einer.`); done(1800); return;
+          }
+          if (v === n) { hint(d === "schwer" ? `Das sind ${n} – aber nimm genau ${x.zz} Zehnerstangen und dafür mehr Einerwürfel.` : `Das sind ${n} – richtig! Aber 10 Einer sind so viel wie 1 Zehnerstange. Lege lieber ${z} Zehner und ${e} Einer.`); return; }
+          tries++;
+          miss(M.box, `Du hast ${zc} Zehner und ${ec} Einer gelegt. Das sind ${v}. ` + (d === "schwer"
+            ? (tries >= 2 ? `${x.zz} Zehner sind ${x.zz * 10}. Bis ${n} fehlen noch ${n - x.zz * 10} Einer.` : `Wie viele Einer brauchst du noch zu ${x.zz} Zehnern?`)
+            : (tries >= 2 ? `${n} sind ${z} Zehner und ${e} Einer.` : `Wie viele Zehner und Einer hat ${n}?`)));
+        }, M));
       }
     },
     {
@@ -3405,7 +3602,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
           let used = false;
           const next = () => {
             U.say("Wie viele Einerwürfel liegen jetzt da?");
-            U.ask(e + 10, { line: [{ a: e + 10 }, { t: "Einer", c: "tag" }], say: "Wie viele Einerwürfel liegen jetzt da?", why: (k, v) => numWhy(e + 10, v, `Ein voller Turm sind 10 Würfel, dazu kommen ${e}.`),
+            U.ask(e + 10, { ze: false, unit: "Einer", label: "So viele Einerwürfel:", say: "Wie viele Einerwürfel liegen jetzt da?", why: (k, v) => numWhy(e + 10, v, `Ein voller Turm sind 10 Würfel, dazu kommen ${e}.`),
               okText: `${n} = ${z - 1} Zehner und ${e + 10} Einer – immer noch ${n}!`, okSay: `${n} sind auch ${z - 1} Zehner und ${e + 10} Einer.`, onDone: () => { M.counts = true; M.render(); } });
           };
           const brk = () => { if (used) return; used = true; U.btns([]); M.unbundle(next); };
@@ -3423,75 +3620,58 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
             U.btns([["🔄 10 Einer ➜ 1 Zehner", "ex", () => { U.btns([]); M.bundle(check); }]]); return;
           }
           U.say("Jetzt kannst du die Zahl ablesen. Wie heißt sie?");
-          U.ask(x.n, { say: "Wie heißt die Zahl?", why: (k, v) => numWhy(x.n, v, "Schau auf die Zahlen unter den Zehnern und den Einern."), okText: `${x.z} Zehner und ${x.e} Einer = ${x.n}`, okSay: `${x.n}.` });
+          U.ask(x.n, { label: "Die Zahl heißt:", say: "Wie heißt die Zahl?", why: (k, v) => numWhy(x.n, v, "Schau auf die Zahlen unter den Zehnern und den Einern."), okText: `${x.z} Zehner und ${x.e} Einer = ${x.n}`, okSay: `${x.n}.` });
         };
         check();
       }
     },
     {
       id: "pluslegen", name: "Plus legen", icon: "🟧", color: "#f77f00",
-      task: () => "Lege die Plusaufgabe!",
-      intro: (d) => "Die erste Zahl liegt schon da. Lege die zweite Zahl in Orange dazu. " + (d === "schwer" ? "Sind es 10 Einer oder mehr, tauschst du 10 Einer gegen einen Zehner. " : "") + "Dann liest du das Ergebnis ab.",
-      ex: () => `${dnSVG({ z: 3, e: 4, c: "b", t10: true }, .6)} + ${dnSVG({ z: 2, e: 5, c: "o", t10: true }, .6)}<br>34 + 25 = 59`,
-      say: (d) => "Die erste Zahl liegt schon da. Lege die zweite Zahl in Orange dazu. " + (d === "schwer" ? "Sind es 10 Einer oder mehr, tauschst du 10 Einer gegen einen Zehner. " : "") + "Dann liest du das Ergebnis ab.",
-      build(d) { return gen(6, (k) => { const x = d === "leicht" ? GEN.einer("+") : d === "mittel" ? GEN.zweistellig("+") : GEN[k % 2 ? "profi" : "uebergang"]("+"); if (!x || x.r > 99) return null; x.lab = eqStr(x); return x; }); },
+      task: (d) => d === "leicht" ? "Erst die kleine, dann die große Aufgabe!" : "Lege die Plusaufgabe!",
+      intro: (d) => d === "leicht" ? "Zuerst legst und rechnest du eine kleine Aufgabe mit Würfeln. Dann wird daraus die große Aufgabe – und du siehst: Die kleine Aufgabe hilft! 3 + 4 = 7, also 53 + 4 = 57 und 30 + 40 = 70."
+        : "Die erste Zahl liegt schon da. Tippe auf die orangen Teile in der Kiste – sie fliegen aufs Brett. " + (d === "schwer" ? "Sind es 10 Einer oder mehr, tauschst du 10 Einer gegen eine Zehnerstange. " : "") + "Dann liest du das Ergebnis ab.",
+      ex: (d) => d === "leicht" ? "🐣 3 + 4 = 7<br>53 + 4 = <b>57</b> · 30 + 40 = <b>70</b>" : `${dnSVG({ z: 3, e: 4, c: "b", t10: true }, .6)} + ${dnSVG({ z: 2, e: 5, c: "o", t10: true }, .6)}<br>34 + 25 = 59`,
+      say: (d) => d === "leicht" ? "Zuerst legst und rechnest du eine kleine Aufgabe mit Würfeln. Dann wird daraus die große Aufgabe. Und du siehst: Die kleine Aufgabe hilft! 3 plus 4 gleich 7, also 53 plus 4 gleich 57 und 30 plus 40 gleich 70."
+        : "Die erste Zahl liegt schon da. Tippe auf die orangen Teile in der Kiste. Sie fliegen aufs Brett. " + (d === "schwer" ? "Sind es 10 Einer oder mehr, tauschst du 10 Einer gegen eine Zehnerstange. " : "") + "Dann liest du das Ergebnis ab.",
+      build(d) {
+        if (d === "leicht") return anaBuild("+");
+        return gen(6, (k) => { const x = d === "mittel" ? GEN[k % 2 ? "zweistellig" : "zehnerdazu"]("+") : GEN[k % 2 ? "profi" : "uebergang"]("+"); if (!x || x.r > 99) return null; x.lab = eqStr(x); return x; });
+      },
       render(x, stage, d) {
-        const { a, b, r } = x, [bz, be] = ZE(b), M = matBoard({ counts: true }); layNum(M, a, "b");
-        const head = el("div", "card mq", `${a} + ${b} = <span class="qmark">?</span>`);
-        const U = wkUI(stage, M, head);
-        let lay = true, tries = 0;
-        M.onTap = (k, i) => { if (lay && M[k][i].c === "o") { M[k].splice(i, 1); tone([330], 0.05); M.render(); } };
+        if (d === "leicht") return anaRender(x, stage);
+        const { a, b, r } = x, M = matBoard({ counts: true }); layNum(M, a, "b");
+        const head = el("div", "card mq", `${a} + ${b} = <span class="qmark">?</span>`), U = wkUI(stage, M, head);
         const fin = () => {
           if (M.live("e").length >= 10) { U.say(`Jetzt sind es ${M.live("e").length} Einer – mehr als 9! Tausche 10 Einer gegen 1 Zehnerstange.`); U.btns([["🔄 10 Einer ➜ 1 Zehner", "ex", () => { U.btns([]); M.bundle(fin); }]]); return; }
-          U.btns([]); U.say(`Lies ab: Wie viel ist ${a} + ${b}?`);
-          U.ask(r, { say: `Wie viel ist ${a} plus ${b}?`, why: (k, v) => numWhy(r, v, "Zähle alle Zehnerstangen und alle Einerwürfel."), okText: `${a} + ${b} = ${r}`, okSay: `${a} plus ${b} gleich ${r}.`,
-            onDone: () => { const q = head.querySelector(".qmark"); q.textContent = r; q.classList.add("ok"); } });
+          U.say(`Lies ab: Wie viel ist ${a} + ${b}?`);
+          U.ask(r, { label: `${a} + ${b} =`, say: `Wie viel ist ${a} plus ${b}?`, why: (k, v) => numWhy(r, v, "Zähle alle Zehnerstangen und alle Einerwürfel."), okText: `${a} + ${b} = ${r}`, okSay: `${a} plus ${b} gleich ${r}.`, onDone: () => setQ(head, ".qmark", r) });
         };
-        U.say(`${a} liegt schon da. Lege <b>${b}</b> in Orange dazu.`);
-        U.btns([[ibZ("o") + " + Zehner", "", () => M.add("z", "o")], [ibE("o") + " + Einer", "", () => M.add("e", "o")], ["− Zehner", "sm", () => M.drop("z", "o")], ["− Einer", "sm", () => M.drop("e", "o")],
-          ["Fertig ✓", "go", () => {
-            const oz = M.z.filter(p => p.c === "o").length, oe = M.e.filter(p => p.c === "o").length;
-            if (oz === bz && oe === be) { lay = false; tone([660, 880], 0.08); fin(); return; }
-            if (oz * 10 + oe === b) { hint(`Das sind ${b} – richtig! Lege ${b} aber lieber als ${bz} Zehner und ${be} Einer.`); return; }
-            tries++;
-            miss(M.box, `Du hast ${oz} Zehner und ${oe} Einer dazugelegt. ` + (tries >= 2 ? `${b} sind ${bz} Zehner und ${be} Einer.` : `Wie viele Zehner und Einer hat ${b}?`));
-          }]]);
+        U.say(`${a} liegt schon da. Tippe auf die orangen Teile – sie fliegen aufs Brett!`);
+        U.place(addBox(M, b, fin));
       }
     },
     {
       id: "minuslegen", name: "Minus legen", icon: "✋", color: "#e63946",
-      task: () => "Lege die Minusaufgabe!",
-      intro: (d) => "Die erste Zahl liegt schon da. Nimm so viele Teile weg, wie abgezogen werden. " + (d === "schwer" ? "Reichen die Einer nicht, brichst du eine Zehnerstange auf. " : "") + "Dann siehst du, was übrig bleibt.",
-      ex: () => `${dnSVG({ z: 5, e: 7, c: "b", xz: 2, xe: 3, t10: true }, .7)}<br>57 − 23 = 34`,
-      say: (d) => "Die erste Zahl liegt schon da. Nimm so viele Teile weg, wie abgezogen werden. " + (d === "schwer" ? "Reichen die Einer nicht, brichst du eine Zehnerstange auf. " : "") + "Dann siehst du, was übrig bleibt.",
-      build(d) { return gen(6, (k) => { const x = d === "leicht" ? GEN.einer("−") : d === "mittel" ? GEN.zweistellig("−") : GEN[k % 2 ? "profi" : "uebergang"]("−"); if (!x) return null; x.lab = eqStr(x); return x; }); },
+      task: (d) => d === "leicht" ? "Erst die kleine, dann die große Aufgabe!" : "Lege die Minusaufgabe!",
+      intro: (d) => d === "leicht" ? "Zuerst nimmst du bei einer kleinen Aufgabe Würfel weg. Dann wird daraus die große Aufgabe – und du siehst: Die kleine Aufgabe hilft! 7 − 3 = 4, also 47 − 3 = 44 und 70 − 30 = 40."
+        : "Die erste Zahl liegt schon da. In der Kiste siehst du, was weg soll. Tippe die Teile auf dem Brett an – sie fliegen in die Kiste. " + (d === "schwer" ? "Reichen die Einer nicht, tippst du auf eine Zehnerstange: Sie wird in 10 Einer aufgebrochen. " : "") + "Dann siehst du, was übrig bleibt.",
+      ex: (d) => d === "leicht" ? "🐣 7 − 3 = 4<br>47 − 3 = <b>44</b> · 70 − 30 = <b>40</b>" : `${dnSVG({ z: 5, e: 7, c: "b", xz: 2, xe: 3, t10: true }, .7)}<br>57 − 23 = 34`,
+      say: (d) => d === "leicht" ? "Zuerst nimmst du bei einer kleinen Aufgabe Würfel weg. Dann wird daraus die große Aufgabe. Und du siehst: Die kleine Aufgabe hilft! 7 minus 3 gleich 4, also 47 minus 3 gleich 44 und 70 minus 30 gleich 40."
+        : "Die erste Zahl liegt schon da. In der Kiste siehst du, was weg soll. Tippe die Teile auf dem Brett an. Sie fliegen in die Kiste. " + (d === "schwer" ? "Reichen die Einer nicht, tippst du auf eine Zehnerstange. Sie wird in 10 Einer aufgebrochen. " : "") + "Dann siehst du, was übrig bleibt.",
+      build(d) {
+        if (d === "leicht") return anaBuild("−");
+        return gen(6, (k) => { const x = d === "mittel" ? GEN[k % 2 ? "zweistellig" : "zehnerdazu"]("−") : GEN[k % 2 ? "profi" : "uebergang"]("−"); if (!x) return null; x.lab = eqStr(x); return x; });
+      },
       render(x, stage, d) {
-        const { a, b, r } = x, [bz, be] = ZE(b), M = matBoard({ counts: true }); layNum(M, a, "b");
-        const head = el("div", "card mq", `${a} − ${b} = <span class="qmark">?</span>`);
-        const U = wkUI(stage, M, head), hist = [];
-        let taking = true, tries = 0;
-        const take = (k) => {
-          const arr = M[k];
-          for (let i = arr.length - 1; i >= 0; i--) if (!arr[i].gone) { arr[i].gone = true; hist.push(arr[i]); tone([300], 0.05); M.render(); return; }
-          hint(k === "e" ? "Es sind keine Einer mehr da." + (d === "schwer" && M.live("z").length ? " Brich eine Zehnerstange auf!" : "") : "Es sind keine Zehner mehr da.");
+        if (d === "leicht") return anaRender(x, stage);
+        const { a, b, r } = x, M = matBoard({ counts: true }); layNum(M, a, "b");
+        const head = el("div", "card mq", `${a} − ${b} = <span class="qmark">?</span>`), U = wkUI(stage, M, head);
+        const ask = () => {
+          U.say("Wie viel bleibt übrig?");
+          U.ask(r, { label: `${a} − ${b} =`, say: `${a} minus ${b}. Wie viel bleibt übrig?`, why: (k, v) => numWhy(r, v, "Zähle nur die Teile, die noch auf dem Brett liegen."), okText: `${a} − ${b} = ${r}`, okSay: `${a} minus ${b} gleich ${r}.`, onDone: () => setQ(head, ".qmark", r) });
         };
-        M.onTap = (k, i) => { if (!taking) return; const p = M[k][i]; p.gone = !p.gone; if (p.gone) hist.push(p); tone([p.gone ? 300 : 520], 0.05); M.render(); };
-        U.say(`Nimm <b>${b}</b> weg. Tippe auf „weg“ oder direkt auf die Teile.`);
-        const list = [["✋ Zehner weg", "", () => take("z")], ["✋ Einer weg", "", () => take("e")], ["↩︎ zurück", "sm", () => { const p = hist.pop(); if (p) { p.gone = false; tone([520], 0.05); M.render(); } }]];
-        if (d === "schwer") list.push(["🔨 1 Zehner ➜ 10 Einer", "ex", () => { if (!M.unbundle()) hint("Es liegt keine Zehnerstange mehr da."); }]);
-        list.push(["Fertig ✓", "go", () => {
-          const gone = M.z.filter(p => p.gone).length * 10 + M.e.filter(p => p.gone).length;
-          if (gone === b) {
-            taking = false; tone([660, 880], 0.08); U.btns([]); U.say("Wie viel bleibt übrig?");
-            U.ask(r, { say: `${a} minus ${b}. Wie viel bleibt übrig?`, why: (k, v) => numWhy(r, v, "Zähle nur die Teile, die noch da sind."), okText: `${a} − ${b} = ${r}`, okSay: `${a} minus ${b} gleich ${r}.`,
-              onDone: () => { const q = head.querySelector(".qmark"); q.textContent = r; q.classList.add("ok"); } });
-            return;
-          }
-          tries++;
-          const few = d === "schwer" && M.e.length < be;
-          miss(M.box, `Du hast ${gone} weggenommen. Nimm genau ${b} weg` + (tries >= 2 ? `: ${bz} Zehner und ${be} Einer.` : ".") + (few ? " Es liegen zu wenig Einer da – brich zuerst eine Zehnerstange auf!" : ""));
-        }]);
-        U.btns(list);
+        U.say(`Nimm <b>${b}</b> weg: Tippe die Teile auf dem Brett an!` + (d === "schwer" ? " Fehlen Einer, tippe auf eine Zehnerstange." : ""));
+        U.place(takeBox(M, b, { onFull: ask, canBreak: d === "schwer" }));
       }
     }
   ];
@@ -5010,9 +5190,11 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
       say: "10 Einer sind 1 Zehner. Liegen 10 Einer da, tauschst du sie gegen eine Zehnerstange. Brauchst du mehr Einer, brichst du einen Zehner auf. Die Zahl bleibt immer gleich! 2 Zehner und 13 Einer sind 33, genau wie 3 Zehner und 3 Einer." },
     "werkstatt:pluslegen": { k: "tipp", t: "Plus mit Material", s: "Die erste Zahl liegt da. Lege die zweite Zahl <b>dazu</b>. Sind es 10 Einer oder mehr, <b>tausche</b> 10 Einer gegen einen Zehner. Dann liest du ab.",
       ex: [[dnSVG({ z: 3, e: 4, c: "b", t10: true }, .7), "34"], [dnSVG({ z: 2, e: 5, c: "o", t10: true }, .7), "+ 25", "dazulegen"], [dnSVG({ z: 5, e: 9, c: "b", t10: true }, .7), "= 59", "ablesen"]],
+      v: "🐣 Die kleine Aufgabe hilft: 3 + 4 = 7 ➜ 53 + 4 = 57 · 30 + 40 = 70",
       say: "Plus mit Material. Die erste Zahl liegt da. Lege die zweite Zahl dazu. Sind es 10 Einer oder mehr, tausche 10 Einer gegen einen Zehner. Dann liest du ab: 34 plus 25 gleich 59." },
     "werkstatt:minuslegen": { k: "tipp", t: "Minus mit Material", s: "Die erste Zahl liegt da. Nimm so viele Teile <b>weg</b>, wie abgezogen werden. Reichen die Einer nicht, <b>brich einen Zehner auf</b>. Dann zählst du, was übrig bleibt.",
       ex: [[dnSVG({ z: 5, e: 7, c: "b", xz: 2, xe: 3, t10: true }, .7), "57 − 23", "wegnehmen"], [dnSVG({ z: 3, e: 4, c: "b", t10: true }, .7), "= 34", "bleibt übrig"]],
+      v: "🐣 Die kleine Aufgabe hilft: 7 − 3 = 4 ➜ 47 − 3 = 44 · 70 − 30 = 40",
       say: "Minus mit Material. Die erste Zahl liegt da. Nimm so viele Teile weg, wie abgezogen werden. Reichen die Einer nicht, brich einen Zehner auf. Dann zählst du, was übrig bleibt: 57 minus 23 gleich 34." }
   };
   let ruleSeen = {};
