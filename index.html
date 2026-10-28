@@ -382,6 +382,12 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .aqua-card { background: linear-gradient(180deg, #8fdcf2, #39a9d6); color: var(--white); text-shadow: 0 2px 0 var(--deep); }
 .aqua-card .sb { color: #eaf8ff; }
 .ver { color: rgba(255,255,255,.6); font-size: 14px; align-self: center; }
+.frei-note { margin: 4px 0 0; font-size: 19px; font-weight: 800; color: var(--ink); background: #fff4c7; border-radius: 16px; padding: 8px 14px; text-align: center; line-height: 1.3; }
+.frei-card { text-align: center; max-width: 520px; }
+.frei-ic { font-size: 64px; line-height: 1.1; }
+.frei-msg { font-size: 28px; font-weight: 900; margin: 6px 0 4px; color: var(--ink); }
+.frei-sub { font-size: 20px; font-weight: 700; margin: 0; color: var(--ink); opacity: .8; }
+.frei-tag { background: rgba(4, 30, 52, .45); color: var(--white); border-radius: 999px; padding: 6px 14px; font-size: 16px; font-weight: 800; align-self: center; }
 .voice { background: transparent; color: rgba(255,255,255,0.85); font-size: 16px; padding: 8px; text-decoration: underline; }
 
 /* ocean map */
@@ -766,6 +772,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       <label for="nameInput">Wie heißt du?</label>
       <input id="nameInput" type="text" maxlength="16" autocomplete="off" autocapitalize="words" placeholder="Dein Vorname">
       <button class="big-btn" id="startBtn">Los geht's! ✨</button>
+      <p class="frei-note" id="freiNote" hidden></p>
+    </div>
+    <div class="card frei-card" id="freiCard" hidden>
+      <div class="frei-ic" id="freiIc" aria-hidden="true">⏰</div>
+      <p class="frei-msg" id="freiMsg"></p>
+      <p class="frei-sub">Frag deine Lehrerin oder deinen Lehrer.</p>
     </div>
     <div class="card" id="schoolCard" hidden>
       <div class="scan"><span class="scan-ic" aria-hidden="true">📷</span><span>Scanne deine <b>Anmeldekarte</b> mit der Kamera.</span></div>
@@ -792,7 +804,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="ver">Version 27.10. · Ruhe-Modus</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 28.10. · Freigabe-Codes</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1157,6 +1169,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   try { localStorage.removeItem(KEY); localStorage.removeItem("finn-nomen-v1"); } catch (e) {}
   try { sessionStorage.removeItem(KEY); } catch (e) {}
   const SCHOOL = (function () { const m = document.querySelector('meta[name="nemo-schule"]'); return m ? m.getAttribute("content") : ""; })();
+  let FREI = null; // Freigabe-Link der freien Version (siehe unten: "Freigabe-Link")
   const TKEY = "nemo-anmeldung";
   const TIERE = [["🐬", "Delfin"], ["🐢", "Schildkröte"], ["🐙", "Krake"], ["🦀", "Krabbe"], ["🐳", "Wal"], ["🐠", "Fisch"], ["🦭", "Robbe"], ["🐧", "Pinguin"], ["🦦", "Otter"], ["🐡", "Kugelfisch"],
     ["🦑", "Tintenfisch"], ["🦞", "Hummer"], ["🦐", "Garnele"], ["🐸", "Frosch"], ["🦆", "Ente"], ["🦢", "Schwan"], ["🦜", "Papagei"], ["🦋", "Schmetterling"], ["🐞", "Marienkäfer"], ["🐝", "Biene"],
@@ -1325,7 +1338,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     document.body.classList.toggle("calm", ["scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"].indexOf(id) >= 0);
     SCREENS.forEach(s => $(s).hidden = s !== id);
     const back = $("backBtn");
-    back.hidden = (id === "scrStart" || id === "scrWorld");
+    back.hidden = (id === "scrStart" || id === "scrWorld" || (id === "scrHome" && !!FREI));
     const toHome = id === "scrMap" || id === "scrAqua", toWorld = id === "scrHome";
     back.textContent = toWorld ? "🌍" : toHome ? "🏠" : "🗺️";
     back.setAttribute("aria-label", toWorld ? "Welt wechseln: Nemo oder Polly" : toHome ? "Zum Menü" : "Zur Karte");
@@ -4730,7 +4743,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     if (isPolly()) return renderHomePolly();
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Nemo schwimmen?` : S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
-    updateFoot();
+    updateFoot(); freiHello();
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
     const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen"), rs = CHAPTERS.find(c => c.id === "rechtschreibung");
@@ -4744,23 +4757,24 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       { x: pos.bay[0], y: pos.bay[1], r: pos.r, icon: "🐠", draw: "reef", subGold: canBuy, grass: "#7fdbe8", label: "Nemos Riff", big: true,
         sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (S.aqua.length ? `🐠 ${S.aqua.length} ${S.aqua.length === 1 ? "Sache" : "Sachen"} im Aquarium` : "Sammle Münzen für dein Aquarium!"),
         items: S.aqua.slice(-10).map(a => a.id), canBuy, next: canBuy, aria: "Nemos Riff mit dem Aquarium",
-        tap: (i) => swimTo(i, renderAqua) },
+        aqua: true, tap: (i) => swimTo(i, renderAqua) },
       { x: pos.nomen[0], y: pos.nomen[1], r: pos.r, icon: "🐟", label: "Nomen-Inseln", big: true, sub: chapSub(nom),
-        deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen", tap: enter(nom) },
+        deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen", ch: nom, tap: enter(nom) },
       { x: pos.adj[0], y: pos.adj[1], r: pos.r * 0.85, icon: "🎨", label: "Adjektiv-Inseln", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
         deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Kapitel Adjektive, kommt bald",
         tap: (i) => { S.homeAt = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🎨", "Adjektiv-Inseln", "Wiewörter"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Nemo hier landen!")); })); } },
       { x: pos.lern[0], y: pos.lern[1], r: pos.r, icon: "📝", grass: "#b5e48c", label: "Lernwörter-Inseln", big: true, sub: chapSub(lern),
-        deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Lernwörter", tap: enter(lern) },
-      { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", tap: enter(lt) },
+        deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Lernwörter", ch: lern, tap: enter(lern) },
+      { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", ch: lt, tap: enter(lt) },
       { x: pos.fog[0], y: pos.fog[1], r: pos.r * 0.85, icon: "📖", grass: "#9ad1d4", label: "Lese-Lagune", big: true, sub: chapSub(lese),
-        deco: [[-0.55, -0.25, "🐚", 0.4], [0.55, -0.25, "🌴", 0.44]], aria: "Lese-Lagune: Lesen üben", tap: enter(lese) },
+        deco: [[-0.55, -0.25, "🐚", 0.4], [0.55, -0.25, "🌴", 0.44]], aria: "Lese-Lagune: Lesen üben", ch: lese, tap: enter(lese) },
       { x: pos.rs[0], y: pos.rs[1], r: pos.r * 0.9, icon: "✍️", grass: "#ffd6a5", label: "Rechtschreib-Inseln", big: true, sub: chapSub(rs),
-        deco: [[-0.52, -0.3, "✏️", 0.42], [0.54, -0.28, "🌴", 0.44]], aria: "Rechtschreib-Inseln: richtig schreiben", tap: enter(rs) }
+        deco: [[-0.52, -0.3, "✏️", 0.42], [0.54, -0.28, "🌴", 0.44]], aria: "Rechtschreib-Inseln: richtig schreiben", ch: rs, tap: enter(rs) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     const edges = P ? [[0, 3, dn(lern)], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, "faint"]]
                     : [[0, 3, dn(lern)], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, "faint"]];
+    if (FREI) freiLock(nodes);
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
   }
@@ -4770,7 +4784,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function renderHomePolly() {
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Polly fliegen?` : S.name ? `Hallo ${S.name}! Wohin soll Polly fliegen?` : "Wohin soll Polly fliegen?";
-    updateFoot();
+    updateFoot(); freiHello();
     show("scrHome");
     const P = portrait(), zc = CHAPTERS.find(c => c.id === "zahlen"), rc = CHAPTERS.find(c => c.id === "rechnen"), wc = CHAPTERS.find(c => c.id === "werkstatt");
     // Hochformat: Pollys Dschungel unten, Inseln im Zickzack nach oben. Querformat: Dschungel links, Inseln im Zickzack nach rechts.
@@ -4782,18 +4796,19 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const nodes = [
       { x: pos.nest[0], y: pos.nest[1], r: pos.r0, icon: "🌴", draw: "jungle", subGold: canBuy, grass: "#8fd694", label: "Pollys Dschungel", big: true,
         sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (J.length ? `🌴 ${J.length} ${J.length === 1 ? "Sache" : "Sachen"} im Dschungel` : "Sammle Münzen für deinen Dschungel!"),
-        items: J.slice(-10).map(a => a.id), next: canBuy, aria: "Pollys Dschungel mit dem Laden", tap: (i) => { S.homeAtP = i; swimTo(i, renderAqua); } },
+        items: J.slice(-10).map(a => a.id), next: canBuy, aria: "Pollys Dschungel mit dem Laden", aqua: true, tap: (i) => { S.homeAtP = i; swimTo(i, renderAqua); } },
       { x: pos.z[0], y: pos.z[1], r: pos.r0, icon: "🔢", grass: "#a7e07f", label: "Zahlen bis 100", big: true, sub: chapSub(zc),
-        deco: [[-0.52, -0.3, "🌴", 0.48], [0.56, -0.26, "🌺", 0.34]], aria: "Zahlen-Inseln: Zahlenraum bis 100", tap: enter(zc) },
+        deco: [[-0.52, -0.3, "🌴", 0.48], [0.56, -0.26, "🌺", 0.34]], aria: "Zahlen-Inseln: Zahlenraum bis 100", ch: zc, tap: enter(zc) },
       { x: pos.r[0], y: pos.r[1], r: pos.r0, icon: "🧮", grass: "#ffd6a5", label: "Plus & Minus", big: true, sub: chapSub(rc),
-        deco: [[-0.55, -0.26, "🌺", 0.34], [0.54, -0.3, "🌴", 0.48]], aria: "Plus-Minus-Inseln: Rechnen bis 100", tap: enter(rc) },
+        deco: [[-0.55, -0.26, "🌺", 0.34], [0.54, -0.3, "🌴", 0.48]], aria: "Plus-Minus-Inseln: Rechnen bis 100", ch: rc, tap: enter(rc) },
       { x: pos.m[0], y: pos.m[1], r: pos.r0 * 0.85, icon: "✖️", label: "Einmaleins", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
         deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Einmaleins-Inseln, kommen bald",
         tap: (i) => { S.homeAtP = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "✖️", "Einmaleins-Inseln", "Malnehmen"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Polly hier landen!")); })); } },
       { x: pos.wk[0], y: pos.wk[1], r: pos.r0 * 0.88, icon: "🧰", grass: "#ffe0a3", label: "Pollys Werkstatt", big: true, sub: chapSub(wc),
-        deco: [[-0.56, -0.26, "🔨", 0.34], [0.55, -0.3, "🌴", 0.44]], aria: "Pollys Werkstatt: Zahlen mit Material legen", tap: enter(wc) }
+        deco: [[-0.56, -0.26, "🔨", 0.34], [0.55, -0.3, "🌴", 0.44]], aria: "Pollys Werkstatt: Zahlen mit Material legen", ch: wc, tap: enter(wc) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
+    if (FREI) freiLock(nodes);
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 2, dn(rc)], [2, 3, "faint"], [0, 4, dn(wc)]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 66, wrapBig: P, clouds: 6 });
     setCoins(false);
   }
@@ -5441,14 +5456,74 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   }
   function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); renderHome(); }
 
+  /* ---------- Freigabe-Link (nur freie Version) ----------
+     Ein Link wie …/2a/#f=… schaltet nur bestimmte Kapitel (und auf Wunsch das Aquarium) frei und gilt bis zu einem Zeitpunkt.
+     Inhalt (base64url): "1|kapitel,kapitel|aq oder -|Ablauf als ISO-Zeit|Prüfsumme". Es wird nichts gespeichert.
+     Die Prüfsumme verhindert nur Tippfehler und einfaches Herumändern – der normale Link öffnet weiterhin alles. */
+  function fsig(s) { let h = 0x811c9dc5; s = "nemo-freigabe|" + s; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); }
+  const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], lernwoerter: ["Lernwörter-Inseln", "den Lernwörter-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
+    lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
+    rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"] };
+  function freiParse() {
+    if (SCHOOL) return null;
+    const m = location.hash.match(/(?:^#|&)f=([A-Za-z0-9_-]+)/); if (!m) return null;
+    try {
+      const p = atob(m[1].replace(/-/g, "+").replace(/_/g, "/")).split("|");
+      if (p.length !== 5 || p[0] !== "1" || fsig(p.slice(0, 4).join("|")) !== p[4]) return { bad: true };
+      const until = Date.parse(p[3]), chs = p[1].split(",").filter(id => CHAPTERS.some(c => c.id === id && c.levels.length));
+      if (!until || !chs.length) return { bad: true };
+      return { chs, aq: p[2] === "aq", until, world: worldOf(CHAPTERS.find(c => c.id === chs[0])) };
+    } catch (e) { return { bad: true }; }
+  }
+  const freiList = (k) => { const a = FREI.chs.map(id => (FREI_NAME[id] || [id, id])[k]); return a.length > 1 ? a.slice(0, -1).join(", ") + " und " + a[a.length - 1] : a[0]; };
+  function freiUntil() {
+    const d = new Date(FREI.until), T = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+    return `${T[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}., ${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")} Uhr`;
+  }
+  const freiOver = () => FREI && (FREI.bad || Date.now() >= FREI.until);
+  function freiStop() {
+    // ungültig oder abgelaufen: nur noch die Meldung zeigen
+    S = fresh(); resetAmpel(); setWorld("nemo"); setCoins(false);
+    $("nameCard").hidden = true; $("freiCard").hidden = false;
+    $("freiIc").textContent = FREI.bad ? "🤔" : "⏰";
+    $("freiMsg").textContent = FREI.bad ? "Dieser Code passt nicht." : "Dieser Code gilt nicht mehr.";
+    show("scrStart");
+  }
+  function freiHello() {
+    const t = $("freiTag"); t.hidden = !FREI; if (!FREI) return;
+    t.textContent = `🔑 Heute: ${freiList(0)}${FREI.aq ? " + " + (FREI.world === "polly" ? "Dschungel" : "Aquarium") : ""} · bis ${freiUntil()}`;
+    $("homeHello").textContent = (S.name ? `Hallo ${S.name}! ` : "") + `Heute übst du auf ${freiList(1)}.`;
+  }
+  function freiLock(nodes) {
+    nodes.forEach(n => {
+      if (n.fog) return; // „Bald geht's los“ bleibt, wie es ist
+      if (n.aqua ? FREI.aq : (!n.ch || FREI.chs.indexOf(n.ch.id) >= 0)) return;
+      const lab = n.label;
+      Object.assign(n, { fog: true, fogIcon: "🔒", sub: "Heute geschlossen", subGold: false, next: false, canBuy: false, items: [], aria: lab + ": heute geschlossen",
+        tap: (i) => { if (isPolly()) S.homeAtP = i; else S.homeAt = i; swimTo(i, () => openSheet(c => {
+          sheetTop(c, "🔒", lab, "Heute geschlossen");
+          c.appendChild(el("p", "note", `Heute übst du nur auf ${freiList(1)}. ${isPolly() ? pollyHTML("1.1em") : "🐟"}`));
+        })); } });
+    });
+  }
+  FREI = freiParse();
+  if (FREI && !FREI.bad) {
+    $("freiNote").hidden = false;
+    $("freiNote").textContent = `🔑 Heute: ${freiList(0)}${FREI.aq ? " + " + (FREI.world === "polly" ? "Dschungel" : "Aquarium") : ""} · gilt bis ${freiUntil()}`;
+    setInterval(() => { if (freiOver() && $("freiCard").hidden) freiStop(); }, 30000);
+  }
+  window.addEventListener("hashchange", () => { if (!SCHOOL && (FREI || /(?:^#|&)f=/.test(location.hash))) location.reload(); });
+
   /* ---------- wiring ---------- */
   $("startBtn").addEventListener("click", () => {
+    if (freiOver()) return freiStop();
     const n = $("nameInput").value.trim();
     S.name = n ? cap(n) : ""; save(); resetAmpel();
-    tone([440], 0.01); renderWorlds();
+    tone([440], 0.01);
+    if (FREI) { setWorld(FREI.world); renderHome(); } else renderWorlds();
   });
   $("nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("startBtn").click(); });
-  $("backBtn").addEventListener("click", () => { if (current === "scrHome") renderWorlds(); else if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap(); });
+  $("backBtn").addEventListener("click", () => { if (current === "scrHome") { if (!FREI) renderWorlds(); } else if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap(); });
   $("goNemo").addEventListener("click", () => enterWorld("nemo"));
   $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
   $("goPolly").addEventListener("click", () => enterWorld("polly"));
@@ -5459,7 +5534,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     else if (e.key === "Backspace") { e.preventDefault(); L.padKey("del"); }
     else if (e.key === "Enter") { e.preventDefault(); L.padKey("ok"); }
   });
-  $("wallet").addEventListener("click", () => { if (current === "scrHome" || current === "scrMap") renderAqua(); });
+  $("wallet").addEventListener("click", () => { if ((current === "scrHome" || current === "scrMap") && (!FREI || FREI.aq)) renderAqua(); });
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
   $("taskRule").addEventListener("click", () => openRule(CH, currentRuleLi(), false));
@@ -5552,7 +5627,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     }
   } else {
     setCoins(false);
-    if (S.name || Object.keys(S.stars).length) renderHome(); else show("scrStart");
+    if (freiOver()) freiStop();
+    else if (S.name || Object.keys(S.stars).length) renderHome(); else show("scrStart");
   }
 })();
 </script>
