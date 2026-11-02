@@ -804,7 +804,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 28.10. · Freigabe-Codes</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 2.11. · Lernwörter 2</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1170,6 +1170,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   try { sessionStorage.removeItem(KEY); } catch (e) {}
   const SCHOOL = (function () { const m = document.querySelector('meta[name="nemo-schule"]'); return m ? m.getAttribute("content") : ""; })();
   let FREI = null; // Freigabe-Link der freien Version (siehe unten: "Freigabe-Link")
+  let lernView = false; // true, solange die Karte der Lernwörter-Inseln offen ist
   const TKEY = "nemo-anmeldung";
   const TIERE = [["🐬", "Delfin"], ["🐢", "Schildkröte"], ["🐙", "Krake"], ["🦀", "Krabbe"], ["🐳", "Wal"], ["🐠", "Fisch"], ["🦭", "Robbe"], ["🐧", "Pinguin"], ["🦦", "Otter"], ["🐡", "Kugelfisch"],
     ["🦑", "Tintenfisch"], ["🦞", "Hummer"], ["🦐", "Garnele"], ["🐸", "Frosch"], ["🦆", "Ente"], ["🦢", "Schwan"], ["🦜", "Papagei"], ["🦋", "Schmetterling"], ["🐞", "Marienkäfer"], ["🐝", "Biene"],
@@ -1338,8 +1339,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     document.body.classList.toggle("calm", ["scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"].indexOf(id) >= 0);
     SCREENS.forEach(s => $(s).hidden = s !== id);
     const back = $("backBtn");
-    back.hidden = (id === "scrStart" || id === "scrWorld" || (id === "scrHome" && !!FREI));
-    const toHome = id === "scrMap" || id === "scrAqua", toWorld = id === "scrHome";
+    back.hidden = (id === "scrStart" || id === "scrWorld" || (id === "scrHome" && !!FREI && !lernView));
+    const toHome = id === "scrMap" || id === "scrAqua" || (id === "scrHome" && lernView), toWorld = id === "scrHome" && !lernView;
     back.textContent = toWorld ? "🌍" : toHome ? "🏠" : "🗺️";
     back.setAttribute("aria-label", toWorld ? "Welt wechseln: Nemo oder Polly" : toHome ? "Zum Menü" : "Zur Karte");
     try { speechSynthesis.cancel(); } catch (e) {}
@@ -1782,6 +1783,20 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { w: "Taxi", art: "das", pic: "🚕", gap: ["Ta_i", "x", "ks", "chs"], bad: ["Taksi", "Tacksi", "Taxie"], syl: ["Ta", "xi"], extra: ["k", "s"] },
     { w: "Straße", art: "die", pic: "🛣️", gap: ["Stra_e", "ß", "s", "ss"], bad: ["Strase", "Strahse", "Schtraße"], syl: ["Stra", "ße"], extra: ["s", "s"] }
   ];
+  // Lernwörter 2 (Sprachbuch: Mein Grundwortschatz – Nomen). long = Mehrzahl zum Silbenklatschen bei einsilbigen Wörtern.
+  const BANK = '<svg viewBox="0 0 120 90" aria-hidden="true"><rect x="22" y="10" width="7" height="44" rx="2" fill="#3d4a55"/><rect x="91" y="10" width="7" height="44" rx="2" fill="#3d4a55"/><rect x="12" y="14" width="96" height="11" rx="4" fill="#c47a3a"/><rect x="12" y="29" width="96" height="11" rx="4" fill="#b06a2e"/><rect x="6" y="49" width="108" height="12" rx="4" fill="#d18a46"/><path d="M20 61 L15 84 M34 61 L37 84 M100 61 L105 84 M86 61 L83 84" stroke="#3d4a55" stroke-width="6" stroke-linecap="round"/></svg>';
+  const LERN2 = [
+    { w: "Ampel", art: "die", pic: "🚦", gap: ["Am_el", "p", "b", "pp"], bad: ["Ambel", "Ampl", "Anpel"], syl: ["Am", "pel"], extra: ["b", "e"] },
+    { w: "Auto", art: "das", pic: "🚗", gap: ["Au_o", "t", "d", "tt"], bad: ["Audo", "Ato", "Autoh"], syl: ["Au", "to"], extra: ["d", "o"] },
+    { w: "Bank", art: "die", pic: BANK, gap: ["Ban_", "k", "g", "ck"], bad: ["Bang", "Banck", "Bannk"], syl: ["Bank"], long: ["Bänke", ["Bän", "ke"]], extra: ["g", "c"] },
+    { w: "Farbe", art: "die", pic: "🎨", gap: ["Far_e", "b", "p", "bb"], bad: ["Farpe", "Fabe", "Varbe"], syl: ["Far", "be"], extra: ["p", "v"] },
+    { w: "Freund", art: "der", pic: "🧑‍🤝‍🧑", gap: ["Fr_nd", "eu", "oi", "äu"], gap2: ["Freun_", "d", "t", "dt"], bad: ["Froind", "Freunt", "Freind"], syl: ["Freund"], long: ["Freunde", ["Freun", "de"]], extra: ["t", "o"] },
+    { w: "Herr", art: "der", pic: "🤵‍♂️", gap: ["He_", "rr", "r", "hr"], bad: ["Her", "Hehr", "Härr"], syl: ["Herr"], long: ["Herren", ["Her", "ren"]], extra: ["h", "ä"] },
+    { w: "Katze", art: "die", pic: "🐱", gap: ["Ka_e", "tz", "z", "zz"], bad: ["Kaze", "Katse", "Kazze"], syl: ["Kat", "ze"], extra: ["s", "z"] },
+    { w: "Rad", art: "das", pic: "🚲", gap: ["Ra_", "d", "t", "dt"], bad: ["Rat", "Raad", "Radt"], syl: ["Rad"], long: ["Räder", ["Rä", "der"]], extra: ["t", "h"] },
+    { w: "Tasche", art: "die", pic: "👜", gap: ["Ta_e", "sch", "sh", "ch"], bad: ["Tache", "Tashe", "Taschä"], syl: ["Ta", "sche"], extra: ["s", "h"] },
+    { w: "Tür", art: "die", pic: "🚪", gap: ["T_r", "ü", "u", "üh"], bad: ["Tühr", "Tüer", "Dür"], syl: ["Tür"], long: ["Türen", ["Tü", "ren"]], extra: ["u", "h"] }
+  ];
   const picHTML = (x) => x.pic.charAt(0) === "<" ? x.pic : x.pic;
   const gapHTML = (g) => g[0].replace("_", `<span class="g" id="gapSlot">?</span>`);
 
@@ -1816,9 +1831,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       id: "salat", name: "Buchstaben-Salat", icon: "🔤", color: "#e76f51",
       task: () => "Setze das Wort zusammen!",
       intro: (d) => d === "leicht" ? "Tippe die Buchstaben in der richtigen Reihenfolge an. Das Wort steht schon da." : d === "mittel" ? "Die Buchstaben sind durcheinander. Setze das Wort zusammen!" : "Achtung: Es sind auch falsche Buchstaben dabei!",
-      ex: () => "T · i · a · x → Taxi",
+      ex: () => LWD().ex.salat,
       say: (d) => d === "schwer" ? "Setze das Wort zusammen. Achtung: Es sind auch falsche Buchstaben dabei!" : "Tippe die Buchstaben in der richtigen Reihenfolge an.",
-      build(d) { return shuffle(LERN).slice(0, d === "leicht" ? 6 : d === "mittel" ? 8 : 10); },
+      build(d) { return shuffle(LWW()).slice(0, d === "leicht" ? 6 : d === "mittel" ? 8 : 10); },
       render(x, stage, d) {
         stage.appendChild(el("div", "pic", picHTML(x)));
         tileTask(stage, x, { ghost: d === "leicht", extra: d === "schwer", factor: d === "leicht" ? 1 : 2 });
@@ -1829,11 +1844,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       id: "luecke", name: "Lücken-Detektiv", icon: "🕵️", color: "#2a9d8f",
       task: (d) => d === "schwer" ? "Welches Wort ist richtig geschrieben?" : "Was fehlt in der Lücke?",
       intro: (d) => d === "schwer" ? "Nur ein Wort ist richtig geschrieben. Findest du es?" : "In jedem Lernwort gibt es eine knifflige Stelle. Was gehört in die Lücke?",
-      ex: (d) => d === "schwer" ? "Kenguru ✗ · Känguru ✓" : 'K<b>ä</b>nguru · Stra<b>ß</b>e',
+      ex: (d) => LWD().ex[d === "schwer" ? "luecke2" : "luecke"],
       say: (d) => d === "schwer" ? "Nur ein Wort ist richtig geschrieben. Findest du es?" : "In jedem Lernwort gibt es eine knifflige Stelle. Was gehört in die Lücke?",
       build(d) {
-        const list = shuffle(LERN).map(x => ({ x, g: x.gap }));
-        if (d !== "schwer") { const xy = LERN.find(z => z.gap2); list.push({ x: xy, g: xy.gap2 }); }
+        const list = shuffle(LWW()).map(x => ({ x, g: x.gap }));
+        if (d !== "schwer") { const xy = LWW().find(z => z.gap2); if (xy) list.push({ x: xy, g: xy.gap2 }); }
         return shuffle(list).slice(0, d === "schwer" ? 10 : 9);
       },
       render(it, stage, d) {
@@ -1858,7 +1873,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       intro: (d) => d === "schwer" ? "Schau dir das Wort genau an. Dann verschwindet es – und du setzt es aus dem Kopf zusammen!" : "Schau dir das Wort genau an. Es verschwindet gleich! Welches Wort war es?",
       ex: () => "👀 Schauen · 🧠 Merken · ✏️ Schreiben",
       say: (d) => d === "schwer" ? "Schau dir das Wort genau an. Merk es dir. Dann verschwindet es, und du setzt es aus dem Kopf zusammen." : "Schau dir das Wort genau an. Es verschwindet gleich. Welches Wort war es?",
-      build(d) { return shuffle(LERN).slice(0, d === "schwer" ? 8 : 10); },
+      build(d) { return shuffle(LWW()).slice(0, d === "schwer" ? 8 : 10); },
       render(x, stage, d) {
         const secs = d === "leicht" ? 4 : d === "mittel" ? 3 : 2.5;
         const showWord = () => {
@@ -1885,16 +1900,16 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       id: "hoeren", name: "Hör-Insel", icon: "👂", color: "#457b9d",
       task: (d) => d === "leicht" ? "Welches Bild passt zum Wort?" : d === "mittel" ? "Welches Wort hast du gehört?" : "Schreib das Wort, das du hörst!",
       intro: (d) => d === "leicht" ? "Hör gut zu! Tippe das passende Bild an." : d === "mittel" ? "Hör gut zu! Welches Wort ist richtig geschrieben?" : "Hör gut zu und setze das Wort aus Buchstaben zusammen – ohne Bild!",
-      ex: () => "🔊 „Taxi“ → 🚕",
+      ex: () => LWD().ex.hoeren,
       say: (d) => d === "leicht" ? "Hör gut zu! Tippe das passende Bild an." : d === "mittel" ? "Hör gut zu! Welches Wort ist richtig geschrieben?" : "Hör gut zu und setze das Wort zusammen.",
-      build(d) { return shuffle(LERN).slice(0, d === "schwer" ? 8 : 10); },
+      build(d) { return shuffle(LWW()).slice(0, d === "schwer" ? 8 : 10); },
       render(x, stage, d) {
         const play = () => speak(x.w);
         const h = el("button", "hear", "🔊"); h.setAttribute("aria-label", "Wort anhören"); h.addEventListener("click", play);
         stage.appendChild(h);
         setTimeout(play, 350);
         if (d === "leicht") {
-          const others = shuffle(LERN.filter(z => z !== x)).slice(0, 2);
+          const others = shuffle(LWW().filter(z => z !== x)).slice(0, 2);
           const row = el("div", "pics");
           shuffle([x].concat(others)).forEach(z => {
             const b = el("button", "picbtn", picHTML(z)); b.setAttribute("aria-label", z.w);
@@ -1913,16 +1928,17 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     {
       id: "silben", name: "Silben-Insel", icon: "👏", color: "#d6336c",
       task: (d) => d === "leicht" ? "Wie viele Silben hat das Wort?" : d === "mittel" ? "Welche Silbentrennung stimmt?" : "Wo trennst du das Wort?",
-      intro: (d) => d === "leicht" ? "Sprich das Wort und klatsche dazu. Wie oft klatschst du?" : d === "mittel" ? "Welches Wort ist richtig in Silben getrennt?" : "Tippe zwischen die Buchstaben, wo eine neue Silbe beginnt!",
-      ex: () => "Schmet | ter | ling 👏👏👏",
-      say: (d) => d === "leicht" ? "Sprich das Wort und klatsche dazu. Wie oft klatschst du?" : d === "mittel" ? "Welches Wort ist richtig in Silben getrennt?" : "Tippe zwischen die Buchstaben, wo eine neue Silbe beginnt. Dann tippe auf Fertig.",
-      build(d) { return shuffle(LERN).slice(0, d === "schwer" ? 8 : 10); },
+      intro: (d) => (d === "leicht" ? "Sprich das Wort und klatsche dazu. Wie oft klatschst du?" : d === "mittel" ? "Welches Wort ist richtig in Silben getrennt?" : "Tippe zwischen die Buchstaben, wo eine neue Silbe beginnt!") + lwShort(d, "Kurze Wörter machst du länger: das Rad – die Rä|der."),
+      ex: () => LWD().ex.silben,
+      say: (d) => (d === "leicht" ? "Sprich das Wort und klatsche dazu. Wie oft klatschst du?" : d === "mittel" ? "Welches Wort ist richtig in Silben getrennt?" : "Tippe zwischen die Buchstaben, wo eine neue Silbe beginnt. Dann tippe auf Fertig.") + lwShort(d, "Kurze Wörter machst du länger: das Rad, die Räder."),
+      build(d) { return shuffle(LWW()).slice(0, d === "schwer" ? 8 : 10); },
       render(x, stage, d) {
+        if (d !== "leicht" && x.syl.length === 1 && x.long) { stage.appendChild(el("div", "counter", `${x.art} ${x.w} → die ${x.long[0]}`)); x = Object.assign({}, x, { w: x.long[0], syl: x.long[1], art: "die" }); }
         const n = x.syl.length, sylSay = x.syl.join(" … ");
         if (d === "leicht") {
           stage.appendChild(el("div", "pic", picHTML(x)));
           stage.appendChild(el("div", "qline", x.w));
-          choiceTask(stage, { opts: [2, 3, 4, 5].map(k => ({ label: "👏".repeat(1) + " " + k, correct: k === n, wrongText: `Klatsch nochmal mit: ${sylSay}` })), okText: x.syl.join(" | "), okSpeak: sylSay });
+          choiceTask(stage, { opts: (LWW().some(z => z.syl.length === 1) ? [1, 2, 3, 4] : [2, 3, 4, 5]).map(k => ({ label: "👏".repeat(1) + " " + k, correct: k === n, wrongText: `Klatsch nochmal mit: ${sylSay}` })), okText: x.syl.join(" | "), okSpeak: sylSay });
           L.speakNow = () => speak(x.w + ". " + sylSay);
           return;
         }
@@ -1961,9 +1977,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       id: "memory", name: "Wort-Memory", icon: "🧩", color: "#6c63ff",
       task: (d) => d === "schwer" ? "Finde Wort und fehlende Buchstaben!" : "Finde die Paare: Wort und Bild!",
       intro: (d) => d === "schwer" ? "Ein Wort mit Lücke und die fehlenden Buchstaben gehören zusammen." : "Decke zwei Karten auf. Finde das Wort und das passende Bild!",
-      ex: (d) => d === "schwer" ? "K▢nguru ↔ ä" : "Taxi ↔ 🚕",
+      ex: (d) => LWD().ex[d === "schwer" ? "memory2" : "memory"],
       say: (d) => d === "schwer" ? "Ein Wort mit Lücke und die fehlenden Buchstaben gehören zusammen. Finde die Paare!" : "Decke zwei Karten auf. Finde das Wort und das passende Bild!",
-      build(d) { return [{ words: shuffle(LERN).slice(0, d === "leicht" ? 6 : d === "mittel" ? 10 : 8) }]; },
+      build(d) { return [{ words: shuffle(LWW()).slice(0, d === "leicht" ? 6 : d === "mittel" ? 10 : 8) }]; },
       score(L) { const p = L.items[0].words.length, m = L.moves || 0; const stars = m <= p * 1.6 ? 3 : m <= p * 2.4 ? 2 : 1; return { stars, perfect: stars === 3 }; },
       render(item, stage, d) {
         const words = item.words, cards = [];
@@ -3710,7 +3726,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
                   ["mehrzahl", "schwer", 2], ["sortieren", "schwer", 2], ["satz", "mittel", 1], ["satz", "schwer", 1], ["detektiv", "schwer", 1]] },
     { id: "adjektive", name: "Adjektive", sub: "Wiewörter", icon: "🎨", ready: false, levels: [] },
-    { id: "lernwoerter", name: "Lernwörter", sub: "Wörter zum Üben", icon: "📝", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
+    { id: "lernwoerter", name: "Lernwörter 1", title: "Känguru-Inseln", sub: "Lernwörter 1", icon: "🦘", group: "lern", hunter: "Lernwörter", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
+      bonusPlan: [["salat", "schwer", 2], ["luecke", "schwer", 2], ["blitz", "mittel", 2], ["hoeren", "mittel", 2], ["silben", "schwer", 2]] },
+    { id: "lw2", name: "Lernwörter 2", title: "Ampel-Inseln", sub: "Lernwörter 2", icon: "🚦", group: "lern", rulesAs: "lernwoerter", neu: true, hunter: "Lernwörter", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
       bonusPlan: [["salat", "schwer", 2], ["luecke", "schwer", 2], ["blitz", "mittel", 2], ["hoeren", "mittel", 2], ["silben", "schwer", 2]] },
     { id: "leuchtturm", name: "Leuchtturm", title: "Leuchtturm-Insel", sub: "der, die, das", icon: "💡", ready: true, levels: LTLEVELS, award: "Artikel-Profi",
       bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] },
@@ -3858,22 +3876,22 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     lernwoerter: {
       salat: {
         task: () => "Setze die Mehrzahl zusammen!", intro: () => XI + "Jetzt sind es viele! Setze die Mehrzahl des Lernworts zusammen. Achtung: Falsche Buchstaben sind dabei.",
-        ex: () => "🚕 → 🚕🚕 die Taxis", say: () => "Experten-Aufgabe! Setze die Mehrzahl des Lernworts zusammen.",
-        build() { return shuffle(LERN).slice(0, 8); },
-        render(x, stage) { const pl = LERN_PL[x.w]; stage.appendChild(el("div", "pic", picHTML(x) + picHTML(x))); stage.appendChild(el("div", "counter", `${x.art} ${x.w} → die …`)); tileTask(stage, { w: pl, art: "die", extra: x.extra.concat(["n", "e"]).slice(0, 3) }, { extra: true, factor: 1, missText: "Wie heißt es, wenn es viele sind?" }); L.speakNow = () => speak(`${x.art} ${x.w}. Und wenn es viele sind?`); }
+        ex: () => LWD().ex.xsalat, say: () => "Experten-Aufgabe! Setze die Mehrzahl des Lernworts zusammen.",
+        build() { return shuffle(LWW()).slice(0, 8); },
+        render(x, stage) { const pl = LWD().pl[x.w]; stage.appendChild(el("div", "pic", picHTML(x) + picHTML(x))); stage.appendChild(el("div", "counter", `${x.art} ${x.w} → die …`)); tileTask(stage, { w: pl, art: "die", extra: x.extra.concat(["n", "e"]).slice(0, 3) }, { extra: true, factor: 1, missText: "Wie heißt es, wenn es viele sind?" }); L.speakNow = () => speak(`${x.art} ${x.w}. Und wenn es viele sind?`); }
       },
       luecke: {
         task: () => "Was fehlt im langen Wort?", intro: () => XI + "Die Lernwörter verstecken sich in langen Wörtern! Was gehört in die Lücke?",
-        ex: () => "Stra<b>ß</b>enbahn · Ta<b>x</b>ifahrer", say: () => "Experten-Aufgabe! Die Lernwörter verstecken sich in langen Wörtern. Was gehört in die Lücke?",
-        build() { return shuffle(LW_COMP).slice(0, 9); },
+        ex: () => LWD().ex.xluecke, say: () => "Experten-Aufgabe! Die Lernwörter verstecken sich in langen Wörtern. Was gehört in die Lücke?",
+        build() { return shuffle(LWD().comp).slice(0, 9); },
         render(x, stage) { const [w, g, right, wrong] = x; stage.appendChild(el("div", "gapword", g.replace("_", `<span class="g" id="gapSlot">?</span>`))); choiceTask(stage, { opts: [{ label: right, correct: true }].concat(wrong.map(o => ({ label: o, wrongText: `${g.replace("_", o)}? Das ist falsch. Welches Lernwort steckt darin?` }))), onRight: () => { const sl = $("gapSlot"); if (sl) sl.textContent = right; }, okText: w, okSpeak: w }); L.speakNow = () => speak(w + ". Was fehlt?"); }
       },
       blitz: {
         task: () => "Schreib das Wort aus dem Kopf!", intro: () => XI + "Das Wort blitzt nur ganz kurz auf – und es ist die Mehrzahl! Setze es dann aus dem Kopf zusammen.",
-        ex: () => "⚡ die Kängurus → ✏️", say: () => "Experten-Aufgabe! Das Wort blitzt nur ganz kurz auf, und es ist die Mehrzahl. Setze es aus dem Kopf zusammen.",
-        build() { return shuffle(LERN).slice(0, 7); },
+        ex: () => LWD().ex.xblitz, say: () => "Experten-Aufgabe! Das Wort blitzt nur ganz kurz auf, und es ist die Mehrzahl. Setze es aus dem Kopf zusammen.",
+        build() { return shuffle(LWW()).slice(0, 7); },
         render(x, stage) {
-          const pl = LERN_PL[x.w];
+          const pl = LWD().pl[x.w];
           const showWord = () => { stage.innerHTML = ""; stage.appendChild(el("div", "counter", "👀 Schau genau!")); stage.appendChild(el("div", "flash", "die " + pl)); const bar = el("div", "timebar", "<i></i>"); stage.appendChild(bar);
             requestAnimationFrame(() => { const i = bar.firstChild; i.style.transitionDuration = "2s"; requestAnimationFrame(() => { i.style.width = "0%"; }); });
             L.locked = true; const token = L, at = L.pos; setTimeout(() => { if (L !== token || L.pos !== at || current !== "scrPlay") return; L.locked = false; ask(); }, 2000); };
@@ -3883,8 +3901,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       },
       hoeren: {
         task: () => "Welches lange Wort hast du gehört?", intro: () => XI + "Hör gut zu: ein langes Wort mit einem Lernwort darin. Welches ist richtig geschrieben?",
-        ex: () => "🔊 „Taxifahrer“", say: () => "Experten-Aufgabe! Hör gut zu. Welches lange Wort ist richtig geschrieben?",
-        build() { return shuffle(LW_COMP).slice(0, 8); },
+        ex: () => LWD().ex.xhoeren, say: () => "Experten-Aufgabe! Hör gut zu. Welches lange Wort ist richtig geschrieben?",
+        build() { return shuffle(LWD().comp).slice(0, 8); },
         render(x, stage) {
           const [w, g, right, wrong] = x, play = () => speak(w);
           const h = el("button", "hear", "🔊"); h.setAttribute("aria-label", "Wort anhören"); h.addEventListener("click", play); stage.appendChild(h); setTimeout(play, 350);
@@ -3894,14 +3912,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       },
       silben: {
         task: () => "Wo trennst du das lange Wort?", intro: () => XI + "Lange Wörter mit Lernwörtern darin. Setze alle Trennstriche!",
-        ex: () => "Kän | gu | ru | ba | by", say: () => "Experten-Aufgabe! Setze die Trennstriche in langen Wörtern.",
-        build() { return shuffle(LW_SYLX).slice(0, 7).map(z => ({ w: z[0].join(""), syl: z[0], pic: (LERN.find(l => l.w === z[1]) || LERN[0]).pic })); },
+        ex: () => LWD().ex.xsilben, say: () => "Experten-Aufgabe! Setze die Trennstriche in langen Wörtern.",
+        build() { return shuffle(LWD().sylx).slice(0, 7).map(z => ({ w: z[0].join(""), syl: z[0], pic: (LWW().find(l => l.w === z[1]) || LWW()[0]).pic })); },
         render(x, stage, d) { LERNLEVELS.find(l => l.id === "silben").render(x, stage, "schwer"); }
       },
       memory: {
         task: () => "Finde Wort und Erklärung!", intro: () => XI + "Finde das Lernwort und die passende Erklärung. Dafür musst du gut lesen!",
-        ex: () => "Taxi ↔ Damit fährt man gegen Geld.", say: () => "Experten-Aufgabe! Finde das Lernwort und die passende Erklärung.",
-        build() { return [{ pairs: shuffle(LW_DEF).slice(0, 8) }]; },
+        ex: () => LWD().ex.xmemory, say: () => "Experten-Aufgabe! Finde das Lernwort und die passende Erklärung.",
+        build() { return [{ pairs: shuffle(LWD().def).slice(0, 8) }]; },
         score(L) { const p = 8, m = L.moves || 0; const stars = m <= p * 1.6 ? 3 : m <= p * 2.4 ? 2 : 1; return { stars, perfect: stars === 3 }; },
         render(item, stage) { expertMemory(stage, item.pairs); }
       }
@@ -3965,6 +3983,28 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const LW_COMP = [["Taxifahrer", "Ta_ifahrer", "x", ["ks", "chs", "gs"]], ["Straßenbahn", "Stra_enbahn", "ß", ["s", "ss", "z"]], ["Kängurubaby", "K_ngurubaby", "ä", ["e", "a", "ö"]], ["Schmetterlingsflügel", "Schme_erlingsflügel", "tt", ["t", "d", "dd"]], ["Apothekerin", "Apo_ekerin", "th", ["t", "tt", "d"]], ["Pyjamahose", "P_jamahose", "y", ["ü", "i", "j"]], ["Xylophonspieler", "_ylophonspieler", "X", ["Ks", "Z", "Chs"]], ["Fahrradklingel", "Fa_radklingel", "hr", ["r", "rr", "h"]], ["Fotoapparattasche", "Fotoa_arattasche", "pp", ["p", "b", "bb"]], ["Quadratmuster", "_adratmuster", "Qu", ["Kw", "Kv", "Q"]]];
   const LW_SYLX = [[["Kän", "gu", "ru", "ba", "by"], "Känguru"], [["Fahr", "rad", "klin", "gel"], "Fahrrad"], [["Stra", "ßen", "bahn"], "Straße"], [["Ta", "xi", "fah", "rer"], "Taxi"], [["Schmet", "ter", "lings", "flü", "gel"], "Schmetterling"], [["A", "po", "the", "ke", "rin"], "Apotheke"], [["Py", "ja", "ma", "ho", "se"], "Pyjama"], [["Xy", "lo", "phon", "spie", "ler"], "Xylophon"]];
   const LW_DEF = [["Taxi", "Damit fährt man gegen Geld."], ["Apotheke", "Hier kauft man Medizin."], ["Känguru", "Es springt und hat einen Beutel."], ["Quadrat", "Es hat vier gleich lange Seiten."], ["Xylophon", "Man spielt darauf mit Schlägeln."], ["Pyjama", "Den zieht man zum Schlafen an."], ["Fotoapparat", "Damit macht man Bilder."], ["Schmetterling", "Er war vorher eine Raupe."], ["Fahrrad", "Es hat Pedale und zwei Räder."], ["Straße", "Hier fahren die Autos."]];
+  const LERN2_PL = { Ampel: "Ampeln", Auto: "Autos", Bank: "Bänke", Farbe: "Farben", Freund: "Freunde", Herr: "Herren", Katze: "Katzen", Rad: "Räder", Tasche: "Taschen", "Tür": "Türen" };
+  const LW2_COMP = [["Ampelmännchen", "Am_elmännchen", "p", ["b", "pp", "bb"]], ["Autobahn", "Au_obahn", "t", ["d", "tt", "dt"]], ["Parkbank", "Parkban_", "k", ["g", "ck", "gk"]], ["Farbkasten", "Far_kasten", "b", ["p", "bb", "pp"]],
+    ["Freundschaft", "Fr_ndschaft", "eu", ["oi", "äu", "ei"]], ["Herrchen", "He_chen", "rr", ["r", "hr", "rh"]], ["Katzenfutter", "Ka_enfutter", "tz", ["z", "zz", "ts"]], ["Radweg", "Ra_weg", "d", ["t", "dt", "tt"]],
+    ["Schultasche", "Schulta_e", "sch", ["sh", "ch", "s"]], ["Haustür", "Haust_r", "ü", ["u", "üh", "ue"]]];
+  const LW2_SYLX = [[["Am", "pel", "männ", "chen"], "Ampel"], [["Au", "to", "bahn"], "Auto"], [["Park", "bank"], "Bank"], [["Farb", "kas", "ten"], "Farbe"], [["Freund", "schaft"], "Freund"],
+    [["Her", "ren", "rad"], "Herr"], [["Kat", "zen", "fut", "ter"], "Katze"], [["Rad", "fah", "rer"], "Rad"], [["Schul", "ta", "sche"], "Tasche"], [["Haus", "tür"], "Tür"]];
+  const LW2_DEF = [["Ampel", "Sie zeigt Rot, Gelb und Grün."], ["Auto", "Es hat einen Motor und fährt auf der Straße."], ["Bank", "Darauf kann man im Park sitzen."], ["Farbe", "Damit malt man ein Bild bunt."],
+    ["Freund", "Mit ihm spielst du am liebsten."], ["Herr", "So sagt man höflich zu einem Mann."], ["Katze", "Sie miaut und fängt Mäuse."], ["Rad", "Darauf fährst du und trittst in die Pedale."],
+    ["Tasche", "Darin trägt man seine Sachen."], ["Tür", "Man macht sie auf und zu."]];
+  // Lernwörter-Einheiten: Jede Einheit ist ein eigenes Kapitel (eine eigene Insel) mit denselben sechs Spielen.
+  // Neue Einheit: Wortliste + Daten oben anlegen, hier eintragen und in CHAPTERS ein Kapitel mit group: "lern" ergänzen.
+  const LW_UNITS = {
+    lernwoerter: { w: LERN, pl: LERN_PL, comp: LW_COMP, sylx: LW_SYLX, def: LW_DEF,
+      ex: { salat: "T · i · a · x → Taxi", luecke: 'K<b>ä</b>nguru · Stra<b>ß</b>e', luecke2: "Kenguru ✗ · Känguru ✓", hoeren: "🔊 „Taxi“ → 🚕", silben: "Schmet | ter | ling 👏👏👏", memory: "Taxi ↔ 🚕", memory2: "K▢nguru ↔ ä",
+        xsalat: "🚕 → 🚕🚕 die Taxis", xluecke: "Stra<b>ß</b>enbahn · Ta<b>x</b>ifahrer", xblitz: "⚡ die Kängurus → ✏️", xhoeren: "🔊 „Taxifahrer“", xsilben: "Kän | gu | ru | ba | by", xmemory: "Taxi ↔ Damit fährt man gegen Geld." } },
+    lw2: { w: LERN2, pl: LERN2_PL, comp: LW2_COMP, sylx: LW2_SYLX, def: LW2_DEF, short: true,
+      ex: { salat: "u · A · o · t → Auto", luecke: 'Ka<b>tz</b>e · T<b>ü</b>r', luecke2: "Kaze ✗ · Katze ✓", hoeren: "🔊 „Auto“ → 🚗", silben: "Kat | ze 👏👏 · Rad → Rä | der", memory: "Auto ↔ 🚗", memory2: "Ka▢e ↔ tz",
+        xsalat: "🚗 → 🚗🚗 die Autos", xluecke: "Ka<b>tz</b>enfutter · Haust<b>ü</b>r", xblitz: "⚡ die Räder → ✏️", xhoeren: "🔊 „Autobahn“", xsilben: "Kat | zen | fut | ter", xmemory: "Ampel ↔ Sie zeigt Rot, Gelb und Grün." } }
+  };
+  const LWD = () => LW_UNITS[CH && LW_UNITS[CH.id] ? CH.id : "lernwoerter"], LWW = () => LWD().w;
+  const lwShort = (d, t) => d !== "leicht" && LWD().short ? " " + t : "";
+  const LERNCH = () => CHAPTERS.filter(c => c.group === "lern");
 
   // Daten Leuchtturm-Experte: zusammengesetzte Wörter je Thema + neue Endungen
   const LT_X = {
@@ -4291,7 +4331,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { id: "regenbogentukan", n: "Regenbogen-Tukan", art: "der", pr: "Er", ch: "zahlen", k: "deco", z: 108, w: "polly" },
     { id: "recheneule", n: "Goldene Rechen-Eule", art: "die", pr: "Sie", ch: "rechnen", k: "deco", z: 96, w: "polly" }
   ];
-  const treasureOf = (ch) => TREASURES.find(t => t.ch === ch.id);
+  const treasureOf = (ch) => TREASURES.find(t => t.ch === (ch.rulesAs || ch.id));
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   const SHOP_CATS_P = [["voegel", "🦜 Vögel"], ["tiere", "🐸 Dschungel-Tiere"], ["deko", "🌺 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle). Die Münzen gelten in beiden Welten.
@@ -4408,7 +4448,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     box.appendChild(el("div", "head s", "🏆 Experten-Schätze – nur auf den Experten-Inseln"));
     const tg = el("div", "shop");
     treasW().forEach(w => {
-      const ch = CHAPTERS.find(c => c.id === w.ch), where = ch ? (ch.title || ch.name + "-Inseln") : "", got = owned(w);
+      const ch = CHAPTERS.find(c => c.id === w.ch), where = ch ? (ch.group === "lern" ? "Lernwörter-Inseln" : ch.title || ch.name + "-Inseln") : "", got = owned(w);
       const b = el("button", "ware treasure " + (got ? "won" : "locked"));
       b.innerHTML = `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span><span class="wp">${got ? "✓ gewonnen" : "🔒 " + where}</span>`;
       b.setAttribute("aria-label", `${w.n}: ${got ? "gewonnen" : "nur auf der Experten-Insel der " + where}`);
@@ -4740,6 +4780,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
   /* ---------- Hauptmenü: der Ozean ---------- */
   function renderHome() {
+    lernView = false; $("homeTitle").textContent = W.name;
     if (isPolly()) return renderHomePolly();
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Nemo schwimmen?` : S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
@@ -4753,6 +4794,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
     const canBuy = SHOP.some(w => !owned(w) && S.coins >= w.p);
+    const LC = LERNCH(), lernNew = LC.find(c => c.neu && !starTotal(c)), dnL = LC.some(c => islandsDoneCount(c)) ? "done" : "";
+    const lernSub = `⭐ ${LC.reduce((a, c) => a + starTotal(c), 0)}/${LC.reduce((a, c) => a + c.levels.length * DK.length * 3, 0)} · 💎 ${LC.reduce((a, c) => a + perfectCount(c), 0)}/${LC.reduce((a, c) => a + c.levels.length, 0)}`;
     const nodes = [
       { x: pos.bay[0], y: pos.bay[1], r: pos.r, icon: "🐠", draw: "reef", subGold: canBuy, grass: "#7fdbe8", label: "Nemos Riff", big: true,
         sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (S.aqua.length ? `🐠 ${S.aqua.length} ${S.aqua.length === 1 ? "Sache" : "Sachen"} im Aquarium` : "Sammle Münzen für dein Aquarium!"),
@@ -4763,8 +4806,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       { x: pos.adj[0], y: pos.adj[1], r: pos.r * 0.85, icon: "🎨", label: "Adjektiv-Inseln", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
         deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Kapitel Adjektive, kommt bald",
         tap: (i) => { S.homeAt = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🎨", "Adjektiv-Inseln", "Wiewörter"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Nemo hier landen!")); })); } },
-      { x: pos.lern[0], y: pos.lern[1], r: pos.r, icon: "📝", grass: "#b5e48c", label: "Lernwörter-Inseln", big: true, sub: chapSub(lern),
-        deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Lernwörter", ch: lern, tap: enter(lern) },
+      { x: pos.lern[0], y: pos.lern[1], r: pos.r, icon: "📝", grass: "#b5e48c", label: "Lernwörter-Inseln", big: true, sub: lernNew ? "✨ Neue Lernwörter!" : lernSub, subGold: !!lernNew,
+        deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Lernwörter-Inseln", chs: LC.map(c => c.id), tap: (i) => { S.homeAt = i; save(); swimTo(i, renderLernHome); } },
       { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", ch: lt, tap: enter(lt) },
       { x: pos.fog[0], y: pos.fog[1], r: pos.r * 0.85, icon: "📖", grass: "#9ad1d4", label: "Lese-Lagune", big: true, sub: chapSub(lese),
         deco: [[-0.55, -0.25, "🐚", 0.4], [0.55, -0.25, "🌴", 0.44]], aria: "Lese-Lagune: Lesen üben", ch: lese, tap: enter(lese) },
@@ -4772,13 +4815,49 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.54, -0.28, "🌴", 0.44]], aria: "Rechtschreib-Inseln: richtig schreiben", ch: rs, tap: enter(rs) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
-    const edges = P ? [[0, 3, dn(lern)], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, "faint"]]
-                    : [[0, 3, dn(lern)], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, "faint"]];
+    const edges = P ? [[0, 3, dnL], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, "faint"]]
+                    : [[0, 3, dnL], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, "faint"]];
     if (FREI) freiLock(nodes);
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
   }
   const islandsDoneCount = (ch) => ch.levels.filter((_, li) => islandDone(ch, li)).length;
+
+  /* ---------- Lernwörter-Inseln: jede Lernwörter-Einheit ist eine eigene Insel ---------- */
+  function lernPts(n, P) {
+    const p = [];
+    if (P) {
+      const rows = Math.ceil(n / 2), h = Math.max(700, rows * 310 + 200);
+      for (let i = 0; i < n; i++) { const r = Math.floor(i / 2), c = r % 2 ? 1 - (i % 2) : i % 2; p.push({ x: c ? 440 : 160, y: h - 200 - r * 310 - (c ? 70 : 0) }); }
+      return { w: 600, h, p, r: 84 };
+    }
+    const per = Math.min(Math.max(n, 3), 4), rows = Math.ceil(n / per), h = Math.max(640, rows * 320 + 40);
+    for (let i = 0; i < n; i++) { const r = Math.floor(i / per), k = i % per, c = r % 2 ? per - 1 - k : k; p.push({ x: Math.round(1340 * (c + 0.5) / per), y: 160 + r * 320 + (c % 2 ? 0 : 190) }); }
+    return { w: 1340, h, p, r: 90 };
+  }
+  function renderLernHome() {
+    lernView = true;
+    $("homeTitle").textContent = "📝 Lernwörter-Inseln";
+    updateFoot(); freiHello();
+    $("homeHello").textContent = "Welche Lernwörter möchtest du üben?";
+    show("scrHome");
+    const P = portrait(), units = LERNCH(), n = units.length + 1, L0 = lernPts(n, P);
+    const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
+    const nodes = units.map((ch, k) => {
+      const U = LW_UNITS[ch.id], em = U.w.filter(x => x.pic.charAt(0) !== "<"), isNew = !!ch.neu && !starTotal(ch);
+      return { ...L0.p[k], r: L0.r, icon: ch.icon, label: ch.title, big: true, grass: ["#b5e48c", "#ffd6a5", "#a7d8a0", "#9ad1d4"][k % 4],
+        sub: isNew ? "✨ Neu!" : chapSub(ch), subGold: isNew, next: isNew,
+        deco: [[-0.52, -0.3, em[1].pic, 0.4], [0.54, -0.28, em[2].pic, 0.4]], aria: `${ch.title}, ${ch.sub}: ${U.w.map(x => x.w).join(", ")}`, ch,
+        tap: (i) => { CH = ch; S.lernAt = i; save(); swimTo(i, renderMap); } };
+    });
+    nodes.push({ ...L0.p[n - 1], r: L0.r * 0.85, icon: "📝", label: "Neue Lernwörter", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧", aria: "Neue Lernwörter, kommen bald",
+      tap: (i) => { S.lernAt = i; swimTo(i, () => openSheet(c => { sheetTop(c, "📝", "Neue Lernwörter", "kommen bald"); c.appendChild(el("p", "note", "🚧 Hier entsteht bald eine Insel mit neuen Lernwörtern!")); })); } });
+    if (FREI) freiLock(nodes);
+    const edges = []; for (let k = 0; k < n - 1; k++) edges.push([k, k + 1, k === n - 2 ? "faint" : islandsDoneCount(units[k + 1]) ? "done" : ""]);
+    const at = S.lernAt == null ? units.length - 1 : Math.min(S.lernAt, n - 1);
+    drawSea($("homeMap"), { w: L0.w, h: L0.h, nodes, edges, at, label: "Lernwörter-Inseln", seed: 9, nemo: 64, wrapBig: P });
+    setCoins(false);
+  }
 
   /* ---------- Hauptmenü in Pollys Welt: die Papageien-Inseln ---------- */
   function renderHomePolly() {
@@ -4899,7 +4978,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     clearTimeout(rz); rz = setTimeout(() => {
       const P = portrait(); if (P === lastP) return; lastP = P;
       if (MAP && MAP.busy) return;
-      if (current === "scrHome") renderHome(); else if (current === "scrMap") renderMap();
+      if (current === "scrHome") (lernView ? renderLernHome : renderHome)(); else if (current === "scrMap") renderMap();
     }, 250);
   });
 
@@ -5004,11 +5083,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     } else if (L.li === "expert") {
       const t = treasureOf(CH), before = S.expert[CH.id] || 0, passed = stars >= 2, firstWin = passed && before < 2;
       S.expert[CH.id] = Math.max(before, stars);
-      if (firstWin && t && !owned(t)) invOf(t).push(newInstance(t));
+      const newT = firstWin && t && !owned(t); if (newT) invOf(t).push(newInstance(t));
       save();
       $("resTitle").textContent = passed ? (stars === 3 ? "Echte Expertenleistung!" : "Experten-Insel geschafft!") : "Fast geschafft!";
       $("resStars").innerHTML = starStr(stars);
-      if (passed && t) { $("resBonus").hidden = false; $("resBonus").innerHTML = `<span class="rb-art">${artSVG(t.id)}</span> ` + (firstWin ? `Neuer Schatz: ${t.n}! ${t.pr} ist jetzt ${W.inPlace}.` : `Dein Experten-Schatz: ${t.n}`); }
+      if (passed && t) { $("resBonus").hidden = false; $("resBonus").innerHTML = `<span class="rb-art">${artSVG(t.id)}</span> ` + (newT ? `Neuer Schatz: ${t.n}! ${t.pr} ist jetzt ${W.inPlace}.` : `Dein Experten-Schatz: ${t.n}`); }
       $("resText").textContent = passed ? "" : "Für den Experten-Schatz brauchst du mindestens 2 Sterne. " + SH().retry;
       $("resCert").hidden = !passed;
     } else {
@@ -5229,7 +5308,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       say: "Minus mit Material. Die erste Zahl liegt da. Nimm so viele Teile weg, wie abgezogen werden. Reichen die Einer nicht, brich einen Zehner auf. Dann zählst du, was übrig bleibt: 57 minus 23 gleich 34." }
   };
   let ruleSeen = {};
-  const ruleKey = (ch, lv) => ch.id + ":" + lv.id;
+  const ruleKey = (ch, lv) => (ch.rulesAs || ch.id) + ":" + lv.id;
   function ruleOf(ch, li) { const lv = typeof li === "number" ? ch.levels[li] : null, r = lv && RULES[ruleKey(ch, lv)]; return r ? { r, lv } : null; }
   const rPlain = (s) => s.replace(/[*|]/g, "");
   // Wort-Markup → HTML: Begleiter farbig, *markiert*, Sil|ben mit Bögen
@@ -5288,12 +5367,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   let ampelSession = { asked: 0, since: 0 };
   function resetAmpel() { ampelSession = { asked: 0, since: 0 }; ruleSeen = {}; coinCarry = 0; }
   function askAmpel() {
-    if (L.li === "bonus" || L.li === "expert" || L.practice || !ICH_KANN[pkey(CH, L.li)]) return false;
+    if (L.li === "bonus" || L.li === "expert" || L.practice || !ICH_KANN[ruleKey(CH, CH.levels[L.li])]) return false;
     return ampelSession.asked === 0 || (ampelSession.asked === 1 && ampelSession.since >= 2);
   }
   function openAmpel(stars, then) {
     ampelSession.asked++; ampelSession.since = 0;
-    const satz = ICH_KANN[pkey(CH, L.li)], box = $("chkBtns");
+    const satz = ICH_KANN[ruleKey(CH, CH.levels[L.li])], box = $("chkBtns");
     $("chkText").textContent = satz; box.innerHTML = "";
     $("chkSay").onclick = () => speak(satz);
     const nWrong = L.wrong.length, n = L.items.length, d = L.d, scored = !!L.lv.score;
@@ -5461,7 +5540,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      Inhalt (base64url): "1|kapitel,kapitel|aq oder -|Ablauf als ISO-Zeit|Prüfsumme". Es wird nichts gespeichert.
      Die Prüfsumme verhindert nur Tippfehler und einfaches Herumändern – der normale Link öffnet weiterhin alles. */
   function fsig(s) { let h = 0x811c9dc5; s = "nemo-freigabe|" + s; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); }
-  const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], lernwoerter: ["Lernwörter-Inseln", "den Lernwörter-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
+  const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
     lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
     rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"] };
   function freiParse() {
@@ -5475,7 +5554,16 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       return { chs, aq: p[2] === "aq", until, world: worldOf(CHAPTERS.find(c => c.id === chs[0])) };
     } catch (e) { return { bad: true }; }
   }
-  const freiList = (k) => { const a = FREI.chs.map(id => (FREI_NAME[id] || [id, id])[k]); return a.length > 1 ? a.slice(0, -1).join(", ") + " und " + a[a.length - 1] : a[0]; };
+  const freiList = (k) => {
+    // Sind alle Lernwörter-Einheiten frei, heißen sie zusammen „Lernwörter-Inseln“.
+    const allLern = LERNCH().every(c => FREI.chs.indexOf(c.id) >= 0), a = [];
+    FREI.chs.forEach(id => {
+      const ch = CHAPTERS.find(c => c.id === id), t = ch.title || ch.name + "-Inseln";
+      const nm = ch.group === "lern" && allLern ? ["Lernwörter-Inseln", "den Lernwörter-Inseln"] : FREI_NAME[id] || [t, (/Inseln$/.test(t) ? "den " : "der ") + t];
+      if (a.indexOf(nm[k]) < 0) a.push(nm[k]);
+    });
+    return a.length > 1 ? a.slice(0, -1).join(", ") + " und " + a[a.length - 1] : a[0];
+  };
   function freiUntil() {
     const d = new Date(FREI.until), T = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
     return `${T[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}., ${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")} Uhr`;
@@ -5492,12 +5580,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function freiHello() {
     const t = $("freiTag"); t.hidden = !FREI; if (!FREI) return;
     t.textContent = `🔑 Heute: ${freiList(0)}${FREI.aq ? " + " + (FREI.world === "polly" ? "Dschungel" : "Aquarium") : ""} · bis ${freiUntil()}`;
-    $("homeHello").textContent = (S.name ? `Hallo ${S.name}! ` : "") + `Heute übst du auf ${freiList(1)}.`;
+    if (!lernView) $("homeHello").textContent = (S.name ? `Hallo ${S.name}! ` : "") + `Heute übst du auf ${freiList(1)}.`;
   }
   function freiLock(nodes) {
     nodes.forEach(n => {
       if (n.fog) return; // „Bald geht's los“ bleibt, wie es ist
-      if (n.aqua ? FREI.aq : (!n.ch || FREI.chs.indexOf(n.ch.id) >= 0)) return;
+      if (n.aqua ? FREI.aq : n.chs ? n.chs.some(id => FREI.chs.indexOf(id) >= 0) : (!n.ch || FREI.chs.indexOf(n.ch.id) >= 0)) return;
       const lab = n.label;
       Object.assign(n, { fog: true, fogIcon: "🔒", sub: "Heute geschlossen", subGold: false, next: false, canBuy: false, items: [], aria: lab + ": heute geschlossen",
         tap: (i) => { if (isPolly()) S.homeAtP = i; else S.homeAt = i; swimTo(i, () => openSheet(c => {
@@ -5523,7 +5611,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     if (FREI) { setWorld(FREI.world); renderHome(); } else renderWorlds();
   });
   $("nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("startBtn").click(); });
-  $("backBtn").addEventListener("click", () => { if (current === "scrHome") { if (!FREI) renderWorlds(); } else if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap(); });
+  $("backBtn").addEventListener("click", () => {
+    if (current === "scrHome") { if (lernView) renderHome(); else if (!FREI) renderWorlds(); }
+    else if (current === "scrMap" && CH && CH.group === "lern") renderLernHome();
+    else if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap();
+  });
   $("goNemo").addEventListener("click", () => enterWorld("nemo"));
   $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
   $("goPolly").addEventListener("click", () => enterWorld("polly"));
