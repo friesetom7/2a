@@ -655,8 +655,9 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .hfeld.tap { cursor: pointer; touch-action: manipulation; }
 .minif { display: inline-block; vertical-align: middle; }
 .zf { flex: none; }
-.zfeld { width: clamp(260px, min(42vw, 50vh), 440px); height: auto; display: block; filter: drop-shadow(0 8px 14px var(--shadow)); }
-.xp-now .zfeld { width: min(100%, 380px); filter: none; }
+.zfeld { width: min(calc(clamp(240px, min(32vw, 44vh), 380px) * var(--zw, 1)), 44vw); height: auto; display: block; filter: drop-shadow(0 8px 14px var(--shadow)); }
+@media (max-aspect-ratio: 1/1) { .zfeld { width: min(calc(clamp(240px, 62vw, 380px) * var(--zw, 1)), 86vw); } }
+.xp-now .zfeld { width: min(calc(340px * var(--zw, 1)), 78vw); filter: none; }
 .zfeld .zf-bg { fill: #fffaf0; stroke: #e9cf98; stroke-width: 2.5; }
 .zfeld .zd { fill: #fff; stroke: #c9b48a; stroke-width: 1.6; }
 .zfeld .zd.on { fill: #e63946; stroke: #a4161a; }
@@ -665,6 +666,9 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .zfeld .zf-x { stroke: #6b1d22; stroke-width: 3.2; stroke-linecap: round; }
 .zfeld .zf-br { fill: none; stroke: #c2410c; stroke-width: 3; stroke-linejoin: round; }
 .zfeld .zf-t { font-size: 21px; font-weight: 900; fill: #c2410c; }
+.zfeld .zf-bar { fill: #e63946; stroke: #a4161a; stroke-width: 1.5; }
+.zfeld .zf-barl { stroke: rgba(255,255,255,.7); stroke-width: 1.3; }
+.zfeld .zf-tl { font-size: 21px; font-weight: 900; fill: #1b2a4a; }
 .zcard { background: var(--sand); border-radius: 26px; padding: 6px 12px 0; box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); width: min(960px, 100%); box-sizing: border-box; }
 .zstrahl { width: 100%; height: auto; display: block; overflow: visible; }
 .zstrahl .zs-line { stroke: var(--ink); stroke-width: 5; stroke-linecap: round; }
@@ -857,7 +861,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Über die 10</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Über den Zehner bis 100</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -3055,18 +3059,26 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   /* ---------- Zwanzigerfeld (2 × 10 Punkte) für Aufgaben über die 10 ----------
      o.a = rote Punkte · o.b = blaue Punkte dazu (plus) · o.x = so viele der roten Punkte weggenommen (minus) · o.rows = 1 oder 2 · o.split = Teile beschriften */
   function zfHTML(o) {
-    const S0 = 26, G = 9, M = 9, rows = o.rows || 2, lab = o.split ? 28 : 0;
-    const W0 = M * 2 + S0 * 10 + G, H0 = M * 2 + S0 * rows + (rows - 1) * 8 + lab * 2;
-    const cx = (i) => M + (i % 10) * S0 + (i % 10 >= 5 ? G : 0) + S0 / 2, cy = (i) => lab + M + Math.floor(i / 10) * (S0 + 8) + S0 / 2;
+    // o.tens = so viele volle Zehner als Stangen links davor (38 + 5: 3 Stangen, im Feld 8 + 5)
+    const S0 = 26, G = 9, M = 9, rows = o.rows || 2, lab = o.split ? 28 : 0, T = o.tens || 0;
+    const X0 = T ? 20 + T * 16 : 0, top = lab, bot = Math.max(lab, T ? 30 : 0);
+    const FW = M * 2 + S0 * 10 + G, FH = M * 2 + S0 * rows + (rows - 1) * 8, W0 = X0 + FW, H0 = top + FH + bot;
+    const cx = (i) => X0 + M + (i % 10) * S0 + (i % 10 >= 5 ? G : 0) + S0 / 2, cy = (i) => top + M + Math.floor(i / 10) * (S0 + 8) + S0 / 2;
     const a = o.a || 0, b = o.b || 0, x = o.x || 0;
-    let s = `<svg viewBox="0 0 ${W0} ${H0}" class="zfeld" role="img" aria-label="${rows === 1 ? "Zehnerfeld" : "Zwanzigerfeld"}"><rect x="1.5" y="${lab + 1.5}" width="${W0 - 3}" height="${H0 - 2 * lab - 3}" rx="12" class="zf-bg"/>`;
+    let s = `<svg viewBox="0 0 ${W0} ${H0}" class="zfeld" style="--zw:${(W0 / FW).toFixed(3)}" role="img" aria-label="${T ? T * 10 + " und " : ""}${rows === 1 ? "Zehnerfeld" : "Zwanzigerfeld"}"><rect x="${X0 + 1.5}" y="${top + 1.5}" width="${FW - 3}" height="${FH - 3}" rx="12" class="zf-bg"/>`;
+    for (let k = 0; k < T; k++) {
+      const x0 = 6 + k * 16;
+      s += `<rect x="${x0}" y="${top + 2}" width="12" height="${FH - 4}" rx="3" class="zf-bar"/>`;
+      for (let j = 1; j < 10; j++) { const y = top + 2 + j * (FH - 4) / 10; s += `<line x1="${x0 + 1}" x2="${x0 + 11}" y1="${y}" y2="${y}" class="zf-barl"/>`; }
+    }
+    if (T) s += `<text x="${(6 + T * 16 - 4) / 2 + 3}" y="${top + FH + 24}" text-anchor="middle" class="zf-tl">${T * 10}</text>`;
     for (let i = 0; i < rows * 10; i++) {
       const gone = x && i < a && i >= a - x;
       s += `<circle cx="${cx(i)}" cy="${cy(i)}" r="9.6" class="zd${i < a ? (gone ? " gone" : " on") : i < a + b ? " on2" : ""}"/>`;
       if (gone) s += `<path d="M${cx(i) - 7} ${cy(i) - 7} L${cx(i) + 7} ${cy(i) + 7} M${cx(i) + 7} ${cy(i) - 7} L${cx(i) - 7} ${cy(i) + 7}" class="zf-x"/>`;
     }
     if (o.split) {
-      const brace = (i0, i1, above, txt) => { const x0 = cx(i0) - 11, x1 = cx(i1) + 11, y = above ? lab - 3 : H0 - lab + 3, k = above ? 7 : -7;
+      const brace = (i0, i1, above, txt) => { const x0 = cx(i0) - 11, x1 = cx(i1) + 11, y = above ? lab - 3 : top + FH + 3, k = above ? 7 : -7;
         return `<path d="M${x0} ${y + k} V${y} H${x1} V${y + k}" class="zf-br"/><text x="${(x0 + x1) / 2}" y="${above ? y - 6 : y + 22}" text-anchor="middle" class="zf-t">${txt}</text>`; };
       if (b) { const t = 10 - a, r = b - t; if (t > 0) s += brace(a, 9, true, t); if (r > 0) s += brace(10, 9 + r, false, r); }
       if (x) { const e = a - 10, r = x - e; if (e > 0) s += brace(10, a - 1, false, e); if (r > 0) s += brace(10 - r, 9, true, r); }
@@ -3622,77 +3634,91 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       xintro: "Hier fehlt eine Zahl – mit Zehnerübergang. Rechne rückwärts!", xex: "38 + <b>25</b> = 63 · <b>72</b> − 48 = 24" })
   ];
 
-  /* ======================= Über die 10: Plus und Minus in zwei Schritten (Zahlenraum bis 20) =======================
-     Nur einstellige Zahlen, immer über den Zehner. Erst bis zur 10, dann weiter:
-     8 + 5 → 8 + 2 = 10, 10 + 3 = 13 · 13 − 5 → 13 − 3 = 10, 10 − 2 = 8   (t = Teil bis zur 10, s = Rest) */
-  function u10(op, easy) {
-    if (op === "+") { const a = easy ? rint(7, 9) : rint(4, 9), b = rint(Math.max(11 - a, 2), 9); if (a + b < 11) return null; return { a, op, b, r: a + b, t: 10 - a, s: a + b - 10, lab: `${a}+${b}` }; }
-    const a = rint(11, easy ? 14 : 18), e = a - 10, b = rint(e + 1, Math.min(9, easy ? e + 3 : 9)); if (b <= e) return null;
-    return { a, op, b, r: a - b, t: e, s: b - e, lab: `${a}-${b}` };
+  /* ======================= Über den Zehner: Plus und Minus in zwei Schritten =======================
+     Die zweite Zahl ist immer einstellig, und es geht immer über den Zehner. Erst bis zum Zehner, dann weiter:
+     8 + 5 → 8 + 2 = 10, 10 + 3 = 13 · 38 + 5 → 38 + 2 = 40, 40 + 3 = 43 · 43 − 5 → 43 − 3 = 40, 40 − 2 = 38
+     leicht: Zahlenraum bis 20 · mittel und schwer: Zahlenraum bis 100.   (Z = Zehner unterwegs, t = Teil bis zum Zehner, s = Rest) */
+  const zrOf = (d) => d === "leicht" ? 20 : 100;
+  function u10(op, zr, easy) {
+    if (op === "+") {
+      const z = zr === 20 ? 0 : rint(1, 8), e = easy ? rint(7, 9) : rint(zr === 20 ? 4 : 2, 9), a = 10 * z + e, b = rint(Math.max(11 - e, 2), 9);
+      if (e + b < 11) return null;
+      const Z = 10 * z + 10; return { a, op, b, r: a + b, t: Z - a, s: a + b - Z, Z, lab: `${a}+${b}` };
+    }
+    const z = zr === 20 ? 1 : rint(2, 9), e = rint(1, easy ? 4 : 8), a = 10 * z + e, b = rint(e + 1, Math.min(9, easy ? e + 3 : 9));
+    if (b <= e) return null;
+    return { a, op, b, r: a - b, t: e, s: b - e, Z: 10 * z, lab: `${a}-${b}` };
   }
   function ueberLevels(op) {
-    const P = op === "+", o = opS(op), W = opW(op), z10 = P ? "bis zur 10" : "zurück zur 10";
-    const zf = (x, split) => P ? { a: x.a, b: x.b, split } : { a: x.a, x: x.b, split };
-    // Rechenweg in Worten (bei Tauschaufgaben mit der größeren Zahl zuerst)
+    const P = op === "+", o = opS(op), W = opW(op);
+    const toZ = (x) => P ? `bis zur ${x.Z}` : `zurück zur ${x.Z}`;
+    // Bild: Zehnerstangen für die vollen Zehner, im Feld nur der letzte Teil (plus: Einer + Neue · minus: Zehner + Einer, davon weg)
+    const zfOpt = (x, split) => P ? { tens: Math.floor(x.a / 10), a: x.a % 10, b: x.b, split } : { tens: Math.floor(x.a / 10) - 1, a: 10 + x.a % 10, x: x.b, split };
     const way = (x) => { const A = x.swap ? x.b : x.a, B = x.swap ? x.a : x.b;
-      return { A, B, html: (x.swap ? `Tausche: <b>${A} + ${B}</b>. ` : "") + `Erst ${z10}: <b>${A} ${o} ${x.t} = 10</b>. Dann den Rest: <b>10 ${o} ${x.s} = ${x.r}</b>.`,
-        say: (x.swap ? `Tausche: ${A} plus ${B}. ` : "") + `Erst ${z10}: ${A} ${W} ${x.t} gleich 10. Dann den Rest: 10 ${W} ${x.s} gleich ${x.r}.` }; };
+      return { A, B, html: (x.swap ? `Tausche: <b>${A} + ${B}</b>. ` : "") + `Erst ${toZ(x)}: <b>${A} ${o} ${x.t} = ${x.Z}</b>. Dann den Rest: <b>${x.Z} ${o} ${x.s} = ${x.r}</b>.`,
+        say: (x.swap ? `Tausche: ${A} plus ${B}. ` : "") + `Erst ${toZ(x)}: ${A} ${W} ${x.t} gleich ${x.Z}. Dann den Rest: ${x.Z} ${W} ${x.s} gleich ${x.r}.` }; };
     const explainWay = (x) => {
-      if (x.small) { const s = explainWay(x.small), Z = x.a - x.small.a, T = P ? x.a + x.small.t : x.a - x.small.t;
-        return { html: s.html + `<p>Mit großen Zahlen geht es genauso: <b>${x.a} ${o} ${x.small.t} = ${T}</b>, dann <b>${T} ${o} ${x.small.s} = ${x.r}</b>.</p>`, say: s.say + ` Mit großen Zahlen geht es genauso: ${x.a} ${W} ${x.small.t} gleich ${T}, dann ${T} ${W} ${x.small.s} gleich ${x.r}.` }; }
-      const w = way(x), A = w.A, B = w.B;
-      return { html: zfHTML(P ? { a: A, b: B, split: true } : { a: x.a, x: x.b, split: true }) + `<p><b>${x.a} ${o} ${x.b}</b>: ${w.html} Die ${B} zerlegst du in ${x.t} und ${x.s}.</p>`,
+      if (x.chain) { const parts = x.chain.map(c => ({ c, w: way(c) }));
+        return { html: parts.map(({ c, w }) => `<p><b>${c.a} ${o} ${c.b}</b>: ${w.html}</p>`).join(""), say: parts.map(({ c, w }) => `${c.a} ${W} ${c.b}. ${w.say}`).join(" ") }; }
+      const w = way(x), A = w.A, B = w.B, pic = zfHTML(zfOpt(x.swap ? Object.assign({}, x, { a: A, b: B }) : x, true));
+      return { html: pic + `<p><b>${x.a} ${o} ${x.b}</b>: ${w.html} Die ${B} zerlegst du in ${x.t} und ${x.s}.</p>`,
         say: `${x.a} ${W} ${x.b}. ${w.say} Die ${B} zerlegst du in ${x.t} und ${x.s}.` };
     };
     const first = P ? {
       id: "freunde", name: "Zehner-Freunde", icon: "🤝", color: "#f77f00",
-      task: (d) => d === "schwer" ? "Finde den Zehner-Freund!" : "Wie viele fehlen bis 10?",
-      intro: (d) => d === "leicht" ? "Im Zehnerfeld liegen schon rote Punkte. Wie viele Plätze sind noch frei? So viele fehlen bis 10." : d === "mittel" ? "Wie viel fehlt bis 10? Jetzt ohne Bild." : "Zehner-Freunde ergeben zusammen 10. Manchmal fehlt die erste Zahl, manchmal die zweite.",
-      ex: () => "7 + <b>3</b> = 10",
-      say: (d) => d === "leicht" ? "Im Zehnerfeld liegen schon rote Punkte. Wie viele Plätze sind noch frei? So viele fehlen bis 10." : d === "mittel" ? "Wie viel fehlt bis 10? Jetzt ohne Bild." : "Zehner-Freunde ergeben zusammen 10. Manchmal fehlt die erste Zahl, manchmal die zweite.",
-      build(d) { return gen(8, (k) => { const a = rint(1, 9), form = d === "schwer" ? ["b", "a", "eq"][k % 3] : "b"; return { a, b: 10 - a, form, lab: a + form }; }); },
+      task: (d) => d === "schwer" ? "Welche Zahl fehlt?" : "Wie viel fehlt bis zum Zehner?",
+      intro: (d) => d === "leicht" ? "Im Zehnerfeld liegen schon rote Punkte. Wie viele Plätze sind noch frei? So viele fehlen bis 10."
+        : d === "mittel" ? "Jetzt mit großen Zahlen: Wie viel fehlt bis zum nächsten Zehner? 38 + 2 = 40 – genau wie 8 + 2 = 10." : "Ohne Bild – und manchmal fehlt die erste Zahl. Die Zehner-Freunde helfen dir!",
+      ex: (d) => d === "leicht" ? "7 + <b>3</b> = 10" : "38 + <b>2</b> = 40",
+      say: (d) => d === "leicht" ? "Im Zehnerfeld liegen schon rote Punkte. Wie viele Plätze sind noch frei? So viele fehlen bis 10."
+        : d === "mittel" ? "Jetzt mit großen Zahlen. Wie viel fehlt bis zum nächsten Zehner? 38 plus 2 gleich 40, genau wie 8 plus 2 gleich 10." : "Ohne Bild, und manchmal fehlt die erste Zahl. Die Zehner-Freunde helfen dir!",
+      build(d) { return gen(8, (k) => { const a = zrOf(d) === 20 ? rint(1, 9) : 10 * rint(1, 9) + rint(1, 9), Z = 10 * Math.floor(a / 10) + 10, form = d === "schwer" ? ["b", "a", "eq"][k % 3] : "b";
+        return { a, b: Z - a, Z, form, lab: a + form }; }); },
       render(x, stage, d) {
-        const col = mathRow(stage, d === "leicht" ? zfEl({ a: x.a, rows: 1 }) : null), ans = x.form === "a" ? x.a : x.b;
-        const line = x.form === "a" ? [{ a: x.a }, "+", x.b, "=", 10] : x.form === "eq" ? [10, "=", x.a, "+", { a: x.b }] : [x.a, "+", { a: x.b }, "=", 10];
-        padTask(col, { layout: eqLayout([{ t: line }]), say: x.form === "a" ? `Wie viel plus ${x.b} gleich 10?` : `${x.a} plus wie viel gleich 10?`,
-          why: (k, v) => numWhy(ans, v, d === "leicht" ? "Zähle die freien Plätze im Zehnerfeld." : "Zehner-Freunde ergeben zusammen 10."),
-          okText: `${x.a} + ${x.b} = 10`, okSay: `${x.a} plus ${x.b} gleich 10.` });
+        const col = mathRow(stage, d === "schwer" ? null : zfEl({ tens: Math.floor(x.a / 10), a: x.a % 10, rows: 1 })), ans = x.form === "a" ? x.a : x.b;
+        const line = x.form === "a" ? [{ a: x.a }, "+", x.b, "=", x.Z] : x.form === "eq" ? [x.Z, "=", x.a, "+", { a: x.b }] : [x.a, "+", { a: x.b }, "=", x.Z];
+        padTask(col, { layout: eqLayout([{ t: line }]), say: x.form === "a" ? `Wie viel plus ${x.b} gleich ${x.Z}?` : `${x.a} plus wie viel gleich ${x.Z}?`,
+          why: (k, v) => numWhy(ans, v, d !== "schwer" ? "Zähle die freien Plätze im Zehnerfeld." : x.form === "a" ? `Rechne rückwärts: ${x.Z} ${MI} ${x.b}.` : `Schau auf die Einer: ${x.a % 10} + ? = 10.`),
+          okText: `${x.a} + ${x.b} = ${x.Z}`, okSay: `${x.a} plus ${x.b} gleich ${x.Z}.` });
       },
-      explain: (x) => ({ html: zfHTML({ a: x.a, b: x.b, rows: 1 }) + `<p><b>${x.a} + ${x.b} = 10</b>: Zu den ${x.a} roten Punkten passen noch ${x.b} blaue – dann ist die Reihe voll.</p>`,
-        say: `${x.a} plus ${x.b} gleich 10. Zu den ${x.a} roten Punkten passen noch ${x.b} blaue. Dann ist die Reihe voll.` })
+      explain: (x) => ({ html: zfHTML({ tens: Math.floor(x.a / 10), a: x.a % 10, b: x.b, rows: 1 }) + `<p><b>${x.a} + ${x.b} = ${x.Z}</b>: Zu den ${x.a % 10} roten Punkten passen noch ${x.b} blaue – dann ist die Reihe voll${x.Z > 10 ? `. Das ist wie <b>${x.a % 10} + ${x.b} = 10</b>` : ""}.</p>`,
+        say: `${x.a} plus ${x.b} gleich ${x.Z}. Zu den ${x.a % 10} roten Punkten passen noch ${x.b} blaue. Dann ist die Reihe voll.` + (x.Z > 10 ? ` Das ist wie ${x.a % 10} plus ${x.b} gleich 10.` : "") })
     } : {
-      id: "zurueck", name: "Zurück zur 10", icon: "🔙", color: "#f77f00",
-      task: (d) => d === "schwer" ? "Welche Zahl fehlt?" : "Wie viel nimmst du weg bis zur 10?",
-      intro: (d) => d === "leicht" ? "Nimm die Punkte in der zweiten Reihe weg – dann bleibt genau 10. Wie viele sind das?" : d === "mittel" ? "Wie viel musst du wegnehmen, damit genau 10 übrig bleibt? Jetzt ohne Bild." : "Manchmal fehlt die erste Zahl: Was minus 4 gleich 10?",
-      ex: () => "13 − <b>3</b> = 10",
-      say: (d) => d === "leicht" ? "Nimm die Punkte in der zweiten Reihe weg. Dann bleibt genau 10. Wie viele sind das?" : d === "mittel" ? "Wie viel musst du wegnehmen, damit genau 10 übrig bleibt? Jetzt ohne Bild." : "Manchmal fehlt die erste Zahl. Was minus 4 gleich 10?",
-      build(d) { return gen(8, (k) => { const a = rint(11, 19), form = d === "schwer" && k % 2 ? "a" : "b"; return { a, b: a - 10, form, lab: a + form }; }); },
+      id: "zurueck", name: "Zurück zum Zehner", icon: "🔙", color: "#f77f00",
+      task: (d) => d === "schwer" ? "Welche Zahl fehlt?" : "Wie viel nimmst du weg bis zum Zehner?",
+      intro: (d) => d === "leicht" ? "Nimm die Punkte in der zweiten Reihe weg – dann bleibt genau 10. Wie viele sind das?"
+        : d === "mittel" ? "Jetzt mit großen Zahlen: Nimm die Einer weg, dann bist du genau beim Zehner. 43 − 3 = 40." : "Ohne Bild – und manchmal fehlt die erste Zahl: Was minus 3 gleich 40?",
+      ex: (d) => d === "leicht" ? "13 − <b>3</b> = 10" : "43 − <b>3</b> = 40",
+      say: (d) => d === "leicht" ? "Nimm die Punkte in der zweiten Reihe weg. Dann bleibt genau 10. Wie viele sind das?"
+        : d === "mittel" ? "Jetzt mit großen Zahlen. Nimm die Einer weg, dann bist du genau beim Zehner. 43 minus 3 gleich 40." : "Ohne Bild, und manchmal fehlt die erste Zahl. Was minus 3 gleich 40?",
+      build(d) { return gen(8, (k) => { const a = zrOf(d) === 20 ? rint(11, 19) : 10 * rint(2, 9) + rint(1, 9), form = d === "schwer" && k % 2 ? "a" : "b";
+        return { a, b: a % 10, Z: a - a % 10, form, lab: a + form }; }); },
       render(x, stage, d) {
-        const col = mathRow(stage, d === "leicht" ? zfEl({ a: x.a }) : null), ans = x.form === "a" ? x.a : x.b;
-        padTask(col, { layout: eqLayout([{ t: x.form === "a" ? [{ a: x.a }, MI, x.b, "=", 10] : [x.a, MI, { a: x.b }, "=", 10] }]), say: x.form === "a" ? `Wie viel minus ${x.b} gleich 10?` : `${x.a} minus wie viel gleich 10?`,
-          why: (k, v) => numWhy(ans, v, d === "leicht" ? "Zähle die Punkte in der zweiten Reihe." : x.form === "a" ? "Rechne rückwärts: 10 + " + x.b + "." : `Schau auf die Einer von ${x.a}.`),
-          okText: `${x.a} − ${x.b} = 10`, okSay: `${x.a} minus ${x.b} gleich 10.` });
+        const col = mathRow(stage, d === "schwer" ? null : zfEl({ tens: Math.floor(x.a / 10) - 1, a: 10 + x.a % 10 })), ans = x.form === "a" ? x.a : x.b;
+        padTask(col, { layout: eqLayout([{ t: x.form === "a" ? [{ a: x.a }, MI, x.b, "=", x.Z] : [x.a, MI, { a: x.b }, "=", x.Z] }]), say: x.form === "a" ? `Wie viel minus ${x.b} gleich ${x.Z}?` : `${x.a} minus wie viel gleich ${x.Z}?`,
+          why: (k, v) => numWhy(ans, v, d !== "schwer" ? "Zähle die Punkte in der zweiten Reihe." : x.form === "a" ? `Rechne rückwärts: ${x.Z} + ${x.b}.` : `Schau auf die Einer von ${x.a}.`),
+          okText: `${x.a} − ${x.b} = ${x.Z}`, okSay: `${x.a} minus ${x.b} gleich ${x.Z}.` });
       },
-      explain: (x) => ({ html: zfHTML({ a: x.a, x: x.b }) + `<p><b>${x.a} − ${x.b} = 10</b>: Die ${x.b} Punkte in der zweiten Reihe nimmst du weg. Dann bleibt die volle Reihe: 10.</p>`,
-        say: `${x.a} minus ${x.b} gleich 10. Die ${x.b} Punkte in der zweiten Reihe nimmst du weg. Dann bleibt die volle Reihe: 10.` })
+      explain: (x) => ({ html: zfHTML({ tens: Math.floor(x.a / 10) - 1, a: 10 + x.a % 10, x: x.b }) + `<p><b>${x.a} − ${x.b} = ${x.Z}</b>: Die ${x.b} Punkte in der zweiten Reihe nimmst du weg. Dann bleibt die volle Reihe – das sind ${x.Z}.</p>`,
+        say: `${x.a} minus ${x.b} gleich ${x.Z}. Die ${x.b} Punkte in der zweiten Reihe nimmst du weg. Dann bleibt die volle Reihe. Das sind ${x.Z}.` })
     };
     return [first,
       {
         id: "zerlegen", name: "Zerlege-Nest", icon: "🪺", color: "#2a9d8f",
         task: (d) => d === "leicht" ? "Wie viel bleibt übrig?" : "Zerlege die zweite Zahl!",
         intro: (d) => d === "leicht" ? (P ? "8 + 5: Bis zur 10 fehlen 2. Wie viel bleibt dann von der 5 übrig?" : "13 − 5: Bis zur 10 nimmst du 3 weg. Wie viel musst du dann noch wegnehmen?")
-          : d === "mittel" ? `Zerlege die zweite Zahl in zwei Teile: erst so viel, dass du genau ${P ? "zur 10 kommst" : "bei 10 bist"} – dann den Rest.` : "Zerlegen ohne Bild – du schaffst das!",
-        ex: () => P ? "8 + 5 → 5 = <b>2</b> + <b>3</b>" : "13 − 5 → 5 = <b>3</b> + <b>2</b>",
+          : d === "mittel" ? `Jetzt mit großen Zahlen: Zerlege die zweite Zahl – ein Teil bis zum Zehner, dann der Rest. ${P ? "38 + 5: 5 = 2 + 3." : "43 − 5: 5 = 3 + 2."}` : "Zerlegen ohne Bild – du schaffst das!",
+        ex: (d) => d === "leicht" ? (P ? "8 + 5 → 5 = <b>2</b> + <b>3</b>" : "13 − 5 → 5 = <b>3</b> + <b>2</b>") : (P ? "38 + 5 → 5 = <b>2</b> + <b>3</b>" : "43 − 5 → 5 = <b>3</b> + <b>2</b>"),
         say: (d) => d === "leicht" ? (P ? "8 plus 5. Bis zur 10 fehlen 2. Wie viel bleibt dann von der 5 übrig?" : "13 minus 5. Bis zur 10 nimmst du 3 weg. Wie viel musst du dann noch wegnehmen?")
-          : d === "mittel" ? `Zerlege die zweite Zahl in zwei Teile. Erst so viel, dass du genau ${P ? "zur 10 kommst" : "bei 10 bist"}. Dann den Rest.` : "Zerlegen ohne Bild. Du schaffst das!",
-        build(d) { return gen(8, () => u10(op, d === "leicht")); },
+          : d === "mittel" ? `Jetzt mit großen Zahlen. Zerlege die zweite Zahl: ein Teil bis zum Zehner, dann der Rest. ${P ? "38 plus 5: 5 gleich 2 plus 3." : "43 minus 5: 5 gleich 3 plus 2."}` : "Zerlegen ohne Bild. Du schaffst das!",
+        build(d) { return gen(8, () => u10(op, zrOf(d), d === "leicht")); },
         render(x, stage, d) {
-          const col = mathRow(stage, d === "schwer" ? null : zfEl(zf(x, false))), g = d === "leicht";
+          const col = mathRow(stage, d === "schwer" ? null : zfEl(zfOpt(x, false))), g = d === "leicht";
           const lines = [{ t: [x.a, o, { t: String(x.b), c: "stepnum" }], c: "eqhead" },
-            { t: [{ t: z10, c: "tag" }, x.a, o, g ? x.t : { a: x.t }, "=", 10], c: "step" },
+            { t: [{ t: (P ? "bis " : "zur ") + x.Z, c: "tag" }, x.a, o, g ? x.t : { a: x.t }, "=", x.Z], c: "step" },
             { t: [{ t: "Rest", c: "tag" }, { t: String(x.b), c: "stepnum" }, "=", g ? x.t : { ref: 0 }, "+", { a: x.s }], c: "step" }];
           padTask(col, { layout: eqLayout(lines), say: `${x.a} ${W} ${x.b}. Zerlege die ${x.b}.`,
-            why: (k, v) => !g && k === 0 ? numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis 10?` : `Wie viel musst du von ${x.a} wegnehmen, damit 10 übrig bleibt?`) : numWhy(x.s, v, `${x.b} = ${x.t} + ? Wie viel fehlt noch bis ${x.b}?`),
+            why: (k, v) => !g && k === 0 ? numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis ${x.Z}?` : `Wie viel musst du von ${x.a} wegnehmen, damit ${x.Z} übrig bleibt?`) : numWhy(x.s, v, `${x.b} = ${x.t} + ? Wie viel fehlt noch bis ${x.b}?`),
             okText: `${x.b} = ${x.t} + ${x.s}`, okSay: `${x.b} gleich ${x.t} plus ${x.s}.` });
         },
         explain: explainWay
@@ -3700,65 +3726,70 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       {
         id: "schritte", name: "Zwei-Schritte-Weg", icon: "👣", color: "#e63946",
         task: () => "Rechne in zwei Schritten!",
-        intro: (d) => (P ? "Rechne in zwei Schritten: erst bis zur 10, dann den Rest dazu." : "Rechne in zwei Schritten: erst zurück zur 10, dann den Rest weg.") + (d === "leicht" ? " Die Zahlen für die Schritte stehen schon da." : d === "mittel" ? " Jetzt zerlegst du selbst." : " Jetzt ohne Bild."),
-        ex: () => P ? "8 + 2 = 10 · 10 + 3 = <b>13</b>" : "13 − 3 = 10 · 10 − 2 = <b>8</b>",
-        say: (d) => (P ? "Rechne in zwei Schritten. Erst bis zur 10, dann den Rest dazu." : "Rechne in zwei Schritten. Erst zurück zur 10, dann den Rest weg.") + (d === "leicht" ? " Die Zahlen für die Schritte stehen schon da." : d === "mittel" ? " Jetzt zerlegst du selbst." : " Jetzt ohne Bild."),
-        build(d) { return gen(d === "leicht" ? 6 : 6, () => u10(op, d === "leicht")); },
+        intro: (d) => (P ? "Rechne in zwei Schritten: erst bis zum Zehner, dann den Rest dazu." : "Rechne in zwei Schritten: erst zurück zum Zehner, dann den Rest weg.") + (d === "leicht" ? " Die Zahlen für die Schritte stehen schon da." : d === "mittel" ? " Jetzt mit großen Zahlen – und du zerlegst selbst." : " Große Zahlen, ohne Bild."),
+        ex: (d) => d === "leicht" ? (P ? "8 + 2 = 10 · 10 + 3 = <b>13</b>" : "13 − 3 = 10 · 10 − 2 = <b>8</b>") : (P ? "38 + 2 = 40 · 40 + 3 = <b>43</b>" : "43 − 3 = 40 · 40 − 2 = <b>38</b>"),
+        say: (d) => (P ? "Rechne in zwei Schritten. Erst bis zum Zehner, dann den Rest dazu." : "Rechne in zwei Schritten. Erst zurück zum Zehner, dann den Rest weg.") + (d === "leicht" ? " Die Zahlen für die Schritte stehen schon da." : d === "mittel" ? " Jetzt mit großen Zahlen, und du zerlegst selbst." : " Große Zahlen, ohne Bild."),
+        build(d) { return gen(6, () => u10(op, zrOf(d), d === "leicht")); },
         render(x, stage, d) {
-          const col = mathRow(stage, d === "schwer" ? null : zfEl(zf(x, false))), g = d === "leicht";
+          const col = mathRow(stage, d === "schwer" ? null : zfEl(zfOpt(x, false))), g = d === "leicht";
           const lines = [{ t: [x.a, o, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" },
-            { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.t), c: "stepnum" } : { a: x.t }, "=", { a: 10 }], c: "step" },
+            { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.t), c: "stepnum" } : { a: x.t }, "=", { a: x.Z }], c: "step" },
             { t: [{ t: "2.", c: "tag" }, { ref: g ? 0 : 1 }, o, g ? { t: String(x.s), c: "stepnum" } : { a: x.s }, "=", { a: x.r }], c: "step" }];
           const kind = g ? ["ten", "res"] : ["t", "ten", "s", "res"];
           padTask(col, { layout: eqLayout(lines), say: `${x.a} ${W} ${x.b}. Rechne in zwei Schritten.`,
             why: (k, v) => { const w = kind[k];
-              if (w === "t") return numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis 10?` : `Wie viel nimmst du von ${x.a} weg bis zur 10?`);
-              if (w === "ten") return numWhy(10, v, `Rechne genau: ${x.a} ${o} ${x.t}. Du landest genau bei 10.`);
+              if (w === "t") return numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis ${x.Z}?` : `Wie viel nimmst du von ${x.a} weg bis ${x.Z}?`);
+              if (w === "ten") return numWhy(x.Z, v, `Rechne genau: ${x.a} ${o} ${x.t}. Du landest genau beim Zehner.`);
               if (w === "s") return numWhy(x.s, v, `Die ${x.b} hast du zerlegt: ${x.t} hast du schon. Wie viel fehlt noch bis ${x.b}?`);
-              return numWhy(x.r, v, `Rechne: 10 ${o} ${x.s}.`); },
+              return numWhy(x.r, v, `Rechne: ${x.Z} ${o} ${x.s}.`); },
             onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } },
             okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${W} ${x.b} gleich ${x.r}.` });
         },
         explain: explainWay,
         expert: {
-          task: () => "Welche Zahl fehlt?", intro: () => XI + (P ? "Hier fehlt eine Zahl: 8 + ? = 13. Denk an die zwei Schritte oder rechne rückwärts!" : "Hier fehlt eine Zahl: 13 − ? = 8. Denk an die zwei Schritte oder rechne rückwärts!"),
-          ex: () => P ? "8 + <b>5</b> = 13 · <b>7</b> + 6 = 13" : "13 − <b>5</b> = 8 · <b>15</b> − 7 = 8",
+          task: () => "Welche Zahl fehlt?", intro: () => XI + (P ? "Hier fehlt eine Zahl: 38 + ? = 43. Denk an die zwei Schritte oder rechne rückwärts!" : "Hier fehlt eine Zahl: 43 − ? = 38. Denk an die zwei Schritte oder rechne rückwärts!"),
+          ex: () => P ? "38 + <b>5</b> = 43 · <b>57</b> + 6 = 63" : "43 − <b>5</b> = 38 · <b>65</b> − 7 = 58",
           say: () => "Experten-Aufgabe! Hier fehlt eine Zahl. Denk an die zwei Schritte oder rechne rückwärts.",
-          build() { return gen(8, (k) => { const x = u10(op); if (!x) return null; x.form = k % 2 ? "pa" : "pb"; x.lab += x.form; return x; }); },
+          build() { return gen(8, (k) => { const x = u10(op, 100); if (!x) return null; x.form = k % 2 ? "pa" : "pb"; x.lab += x.form; return x; }); },
           render(x, stage) {
             const col = mathRow(stage, null), ans = x.form === "pa" ? x.b : x.a;
             padTask(col, { layout: eqLayout([{ t: x.form === "pa" ? [x.a, o, { a: x.b }, "=", x.r] : [{ a: x.a }, o, x.b, "=", x.r] }]), say: x.form === "pa" ? `${x.a} ${W} wie viel gleich ${x.r}?` : `Wie viel ${W} ${x.b} gleich ${x.r}?`,
-              why: (k, v) => numWhy(ans, v, x.form === "pa" ? (P ? `Von ${x.a} bis 10 sind es ${x.t}, von 10 bis ${x.r} noch ${x.s}.` : `Von ${x.a} zurück bis 10 sind es ${x.t}, von 10 bis ${x.r} noch ${x.s}.`) : `Rechne rückwärts: ${x.r} ${P ? MI : "+"} ${x.b}.`),
+              why: (k, v) => numWhy(ans, v, x.form === "pa" ? (P ? `Von ${x.a} bis ${x.Z} sind es ${x.t}, von ${x.Z} bis ${x.r} noch ${x.s}.` : `Von ${x.a} zurück bis ${x.Z} sind es ${x.t}, von ${x.Z} bis ${x.r} noch ${x.s}.`) : `Rechne rückwärts: ${x.r} ${P ? MI : "+"} ${x.b}.`),
               okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${W} ${x.b} gleich ${x.r}.`, factor: 2 });
           }
         }
       },
       {
         id: "blitz", name: "Blitz-Brücke", icon: "⚡", color: "#3a86ff",
-        task: () => P ? "Rechne plus über die 10!" : "Rechne minus über die 10!",
-        intro: (d) => (d === "leicht" ? "Rechne die Aufgabe. Das Zwanzigerfeld hilft dir." : d === "mittel" ? "Jetzt ohne Bild: Denk an die zwei Schritte im Kopf." : "Rechne im Kopf – so schnell wie ein Blitz!") + (P && d === "schwer" ? " Ist die erste Zahl klein, tausche: 3 + 9 = 9 + 3." : ""),
-        ex: () => P ? "8 + 5 = <b>13</b>" : "13 − 5 = <b>8</b>",
-        say: (d) => (d === "leicht" ? "Rechne die Aufgabe. Das Zwanzigerfeld hilft dir." : d === "mittel" ? "Jetzt ohne Bild. Denk an die zwei Schritte im Kopf." : "Rechne im Kopf, so schnell wie ein Blitz!") + (P && d === "schwer" ? " Ist die erste Zahl klein, tausche: 3 plus 9 ist wie 9 plus 3." : ""),
-        build(d) { return gen(8, (k) => { const x = u10(op, d === "leicht"); if (!x) return null;
-          if (P && d === "schwer" && k % 3 === 2 && x.a > x.b) { const t = 10 - x.a; return { a: x.b, op, b: x.a, r: x.r, t, s: x.b - t, swap: true, lab: `${x.b}+${x.a}` }; }
+        task: () => P ? "Rechne plus über den Zehner!" : "Rechne minus über den Zehner!",
+        intro: (d) => (d === "leicht" ? "Rechne die Aufgabe. Das Zwanzigerfeld hilft dir." : d === "mittel" ? "Jetzt mit großen Zahlen. Das Bild hilft dir." : "Rechne im Kopf – so schnell wie ein Blitz!") + (P && d === "schwer" ? " Steht die kleine Zahl vorne, tausche: 5 + 38 = 38 + 5." : ""),
+        ex: (d) => d === "leicht" ? (P ? "8 + 5 = <b>13</b>" : "13 − 5 = <b>8</b>") : (P ? "38 + 5 = <b>43</b>" : "43 − 5 = <b>38</b>"),
+        say: (d) => (d === "leicht" ? "Rechne die Aufgabe. Das Zwanzigerfeld hilft dir." : d === "mittel" ? "Jetzt mit großen Zahlen. Das Bild hilft dir." : "Rechne im Kopf, so schnell wie ein Blitz!") + (P && d === "schwer" ? " Steht die kleine Zahl vorne, tausche: 5 plus 38 ist wie 38 plus 5." : ""),
+        build(d) { return gen(8, (k) => { const x = u10(op, zrOf(d), d === "leicht"); if (!x) return null;
+          if (P && d === "schwer" && k % 3 === 2) return Object.assign({}, x, { a: x.b, b: x.a, swap: true, lab: `${x.b}+${x.a}` });
           return x; }); },
         render(x, stage, d) {
-          const col = mathRow(stage, d === "leicht" ? zfEl(zf(x, false)) : null);
+          const col = mathRow(stage, d === "schwer" ? null : zfEl(zfOpt(x, false)));
           padTask(col, { layout: eqLayout([{ t: [x.a, o, x.b, "=", { a: x.r }] }]), say: `${x.a} ${W} ${x.b}`,
-            why: (k, v, tr) => { const w = way(x); return numWhy(x.r, v, tr >= 2 ? `Rechne in zwei Schritten: ${w.html.replace(/<[^>]+>/g, "")}` : (x.swap ? "Tausche die Zahlen. Dann " : "Rechne in zwei Schritten: ") + `erst ${z10}, dann weiter.`); },
+            why: (k, v, tr) => { const w = way(x); return numWhy(x.r, v, tr >= 2 ? `Rechne in zwei Schritten: ${w.html.replace(/<[^>]+>/g, "")}` : (x.swap ? "Tausche die Zahlen. Dann " : "Rechne in zwei Schritten: ") + `erst ${toZ(x)}, dann weiter.`); },
             okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${W} ${x.b} gleich ${x.r}.` });
         },
         explain: explainWay,
         expert: {
-          task: () => "Die kleine Aufgabe hilft!", intro: () => XI + (P ? "Jetzt mit großen Zahlen! 8 + 5 = 13, also 38 + 5 = 43. Die Einer rechnest du genauso." : "Jetzt mit großen Zahlen! 13 − 5 = 8, also 43 − 5 = 38. Die Einer rechnest du genauso."),
-          ex: () => P ? "8 + 5 = 13 → <b>38 + 5 = 43</b>" : "13 − 5 = 8 → <b>43 − 5 = 38</b>",
-          say: () => P ? "Experten-Aufgabe! Jetzt mit großen Zahlen. 8 plus 5 gleich 13, also 38 plus 5 gleich 43." : "Experten-Aufgabe! Jetzt mit großen Zahlen. 13 minus 5 gleich 8, also 43 minus 5 gleich 38.",
-          build() { return gen(8, () => { const s = u10(op); if (!s) return null; const z = 10 * rint(1, 8); return { a: s.a + z, op, b: s.b, r: s.r + z, small: s, lab: `${s.a + z}${op}${s.b}` }; }); },
+          task: () => "Rechenkette!", intro: () => XI + (P ? "Zweimal über den Zehner: 47 + 6 = 53, dann 53 + 8 = 61. Rechne Schritt für Schritt!" : "Zweimal über den Zehner: 72 − 5 = 67, dann 67 − 9 = 58. Rechne Schritt für Schritt!"),
+          ex: () => P ? "47 + 6 = <b>53</b> · 53 + 8 = <b>61</b>" : "72 − 5 = <b>67</b> · 67 − 9 = <b>58</b>",
+          say: () => P ? "Experten-Aufgabe! Zweimal über den Zehner. 47 plus 6 gleich 53, dann 53 plus 8 gleich 61." : "Experten-Aufgabe! Zweimal über den Zehner. 72 minus 5 gleich 67, dann 67 minus 9 gleich 58.",
+          build() { return gen(8, () => {
+            const x1 = u10(op, 100); if (!x1) return null; const m = x1.r, e = m % 10;
+            if (P ? (e < 2 || m > 89) : (e < 1 || e > 8 || m < 21)) return null;
+            const b2 = P ? rint(11 - e, 9) : rint(e + 1, 9), r = P ? m + b2 : m - b2, Z2 = P ? m - e + 10 : m - e;
+            const x2 = { a: m, op, b: b2, r, Z: Z2, t: P ? Z2 - m : e, s: P ? r - Z2 : b2 - e };
+            return { a: x1.a, op, b: x1.b, mid: m, b2, r, chain: [x1, x2], lab: `${x1.a}${op}${x1.b}${op}${b2}` }; }); },
           render(x, stage) {
-            const col = mathRow(stage, null), s = x.small;
-            padTask(col, { layout: eqLayout([{ t: [{ t: "🐣 kleine Aufgabe", c: "tag" }, s.a, o, s.b, "=", s.r], c: "small" }, { t: [x.a, o, x.b, "=", { a: x.r }] }]), say: `${x.a} ${W} ${x.b}`,
-              why: (k, v) => numWhy(x.r, v, `Die kleine Aufgabe hilft: ${s.a} ${o} ${s.b} = ${s.r}. Die Zehner kommen dazu.`),
-              okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${W} ${x.b} gleich ${x.r}.`, factor: 2 });
+            const col = mathRow(stage, null);
+            padTask(col, { layout: eqLayout([{ t: [x.a, o, x.b, "=", { a: x.mid }] }, { t: [{ ref: 0 }, o, x.b2, "=", { a: x.r }] }]), say: `${x.a} ${W} ${x.b}, dann ${W} ${x.b2}`,
+              why: (k, v) => { const c = x.chain[k]; return numWhy(c.r, v, `Rechne in zwei Schritten: erst ${toZ(c)}, dann weiter.`); },
+              okText: `${x.a} ${o} ${x.b} ${o} ${x.b2} = ${x.r}`, okSay: `${x.a} ${W} ${x.b} ${W} ${x.b2} gleich ${x.r}.`, factor: 2 });
           }
         }
       }
@@ -4145,9 +4176,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     // ---- Pollys Spielplatz (Mathe) ----
     { id: "zahlen", world: "polly", name: "Zahlen", title: "Zahlen-Inseln", sub: "Zahlenraum bis 100", icon: "🔢", ready: true, levels: ZAHLLEVELS, award: "Zahlen-Profi", hunter: "Zahlen",
       bonusPlan: [["hunderterfeld", "schwer", 2], ["zahlenstrahl", "schwer", 2], ["nachbarn", "schwer", 2], ["nachbarzehner", "schwer", 2], ["ordnen", "mittel", 2]] },
-    { id: "plus10", world: "polly", name: "Plus über 10", title: "Plus über die 10", sub: "In zwei Schritten rechnen", icon: "🧗", ready: true, levels: PLUS10, award: "Plus-Profi", hunter: "Plus", treasureAs: "rechnen",
+    { id: "plus10", world: "polly", name: "Plus über den Zehner", title: "Plus über den Zehner", sub: "In zwei Schritten rechnen", icon: "🧗", ready: true, levels: PLUS10, award: "Plus-Profi", hunter: "Plus", treasureAs: "rechnen",
       bonusPlan: [["freunde", "schwer", 2], ["zerlegen", "mittel", 2], ["schritte", "mittel", 2], ["blitz", "schwer", 4]] },
-    { id: "minus10", world: "polly", name: "Minus über 10", title: "Minus über die 10", sub: "In zwei Schritten rechnen", icon: "⛷️", ready: true, levels: MINUS10, award: "Minus-Profi", hunter: "Minus", treasureAs: "rechnen",
+    { id: "minus10", world: "polly", name: "Minus über den Zehner", title: "Minus über den Zehner", sub: "In zwei Schritten rechnen", icon: "⛷️", ready: true, levels: MINUS10, award: "Minus-Profi", hunter: "Minus", treasureAs: "rechnen",
       bonusPlan: [["zurueck", "schwer", 2], ["zerlegen", "mittel", 2], ["schritte", "mittel", 2], ["blitz", "schwer", 4]] },
     { id: "rechnen", world: "polly", name: "Plus & Minus", title: "Plus-Minus-Inseln", sub: "Rechnen bis 100", icon: "🧮", ready: true, levels: RECHENLEVELS, award: "Rechen-Profi", hunter: "Rechen",
       bonusPlan: [["zehner", "schwer", 2], ["einer", "schwer", 2], ["zehnerdazu", "schwer", 2], ["uebergang", "schwer", 2], ["zweistellig", "schwer", 1], ["profi", "schwer", 1]] },
@@ -5285,7 +5316,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const pc = CHAPTERS.find(c => c.id === "plus10"), mc = CHAPTERS.find(c => c.id === "minus10");
     // Hochformat: Pollys Dschungel unten, Inseln im Zickzack nach oben. Querformat: Dschungel links, Inseln im Zickzack nach rechts.
     const pos = P ? { nest: [300, 1450], z: [130, 1170], p: [450, 930], mi: [150, 690], r: [450, 450], m: [160, 200], wk: [480, 1210], w: 600, h: 1600, r0: 90 }
-                  : { nest: [200, 300], z: [480, 480], p: [710, 295], mi: [940, 480], r: [1170, 295], m: [940, 120], wk: [470, 140], w: 1340, h: 640, r0: 90 };
+                  : { nest: [200, 300], z: [480, 480], p: [690, 275], mi: [960, 495], r: [1175, 290], m: [935, 115], wk: [470, 140], w: 1340, h: 640, r0: 90 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtP = i; save(); swimTo(i, renderMap); };
     const J = invOf({ w: "polly" }), canBuy = SHOP_P.some(w => !owned(w) && S.coins >= w.p);
@@ -5297,10 +5328,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         deco: [[-0.52, -0.3, "🌴", 0.48], [0.56, -0.26, "🌺", 0.34]], aria: "Zahlen-Inseln: Zahlenraum bis 100", ch: zc, tap: enter(zc) },
       { x: pos.r[0], y: pos.r[1], r: pos.r0, icon: "🧮", grass: "#ffd6a5", label: "Plus & Minus", big: true, sub: chapSub(rc),
         deco: [[-0.55, -0.26, "🌺", 0.34], [0.54, -0.3, "🌴", 0.48]], aria: "Plus-Minus-Inseln: Rechnen bis 100", ch: rc, tap: enter(rc) },
-      { x: pos.p[0], y: pos.p[1], r: pos.r0, icon: "🧗", grass: "#b9e6a6", label: "Plus über die 10", big: true, sub: chapSub(pc),
-        deco: [[-0.54, -0.28, "🌺", 0.34], [0.55, -0.3, "🌴", 0.46]], aria: "Plus über die 10: in zwei Schritten rechnen", ch: pc, tap: enter(pc) },
-      { x: pos.mi[0], y: pos.mi[1], r: pos.r0, icon: "⛷️", grass: "#d7ecff", label: "Minus über die 10", big: true, sub: chapSub(mc),
-        deco: [[-0.54, -0.28, "🌴", 0.46], [0.55, -0.3, "🌺", 0.34]], aria: "Minus über die 10: in zwei Schritten rechnen", ch: mc, tap: enter(mc) },
+      { x: pos.p[0], y: pos.p[1], r: pos.r0, icon: "🧗", grass: "#b9e6a6", label: "Plus über den Zehner", big: true, sub: chapSub(pc),
+        deco: [[-0.54, -0.28, "🌺", 0.34], [0.55, -0.3, "🌴", 0.46]], aria: "Plus über den Zehner: in zwei Schritten rechnen", ch: pc, tap: enter(pc) },
+      { x: pos.mi[0], y: pos.mi[1], r: pos.r0, icon: "⛷️", grass: "#d7ecff", label: "Minus über den Zehner", big: true, sub: chapSub(mc),
+        deco: [[0.55, -0.3, "🌴", 0.46], [-0.56, -0.2, "🌺", 0.34]], aria: "Minus über den Zehner: in zwei Schritten rechnen", ch: mc, tap: enter(mc) },
       { x: pos.m[0], y: pos.m[1], r: pos.r0 * 0.85, icon: "✖️", label: "Einmaleins", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
         deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Einmaleins-Inseln, kommen bald",
         tap: (i) => { S.homeAtP = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "✖️", "Einmaleins-Inseln", "Malnehmen"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Polly hier landen!")); })); } },
@@ -5592,14 +5623,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "rechnen:einer": "Ich rechne Einer plus und minus.",
     "rechnen:zehnerdazu": "Ich rechne ganze Zehner plus und minus.",
     "rechnen:uebergang": "Ich rechne über den Zehner.",
-    "plus10:freunde": "Ich weiß, wie viel bis 10 fehlt.",
-    "plus10:zerlegen": "Ich zerlege eine Zahl, damit ich genau zur 10 komme.",
-    "plus10:schritte": "Ich rechne plus in zwei Schritten über die 10.",
-    "plus10:blitz": "Ich rechne plus über die 10 im Kopf.",
-    "minus10:zurueck": "Ich weiß, wie viel ich bis zur 10 wegnehmen muss.",
-    "minus10:zerlegen": "Ich zerlege eine Zahl, damit ich genau bei 10 lande.",
-    "minus10:schritte": "Ich rechne minus in zwei Schritten über die 10.",
-    "minus10:blitz": "Ich rechne minus über die 10 im Kopf.",
+    "plus10:freunde": "Ich weiß, wie viel bis zum nächsten Zehner fehlt.",
+    "plus10:zerlegen": "Ich zerlege eine Zahl, damit ich genau zum Zehner komme.",
+    "plus10:schritte": "Ich rechne plus in zwei Schritten über den Zehner.",
+    "plus10:blitz": "Ich rechne plus über den Zehner im Kopf.",
+    "minus10:zurueck": "Ich weiß, wie viel ich bis zum Zehner wegnehmen muss.",
+    "minus10:zerlegen": "Ich zerlege eine Zahl, damit ich genau beim Zehner lande.",
+    "minus10:schritte": "Ich rechne minus in zwei Schritten über den Zehner.",
+    "minus10:blitz": "Ich rechne minus über den Zehner im Kopf.",
     "rechnen:zweistellig": "Ich rechne mit zwei zweistelligen Zahlen.",
     "rechnen:profi": "Ich rechne zweistellig auch über den Zehner.",
     "werkstatt:bauen": "Ich lege Zahlen mit Zehnern und Einern.",
@@ -5719,30 +5750,30 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "rechnen:zehnerdazu": { k: "tipp", t: "Nur die Zehner ändern sich", s: "Rechnest du <b>ganze Zehner</b> dazu oder weg, ändern sich nur die Zehner. Die <b>Einer bleiben gleich</b>.",
       ex: [["🦘", "34 + 20 = *5*4", "3 + 2 = 5 Zehner"], ["🦘", "76 − 30 = *4*6", "7 − 3 = 4 Zehner"]], v: PIs + " Am Zahlenstrahl hüpfst du in großen Zehnersprüngen.",
       say: "Nur die Zehner ändern sich. Rechnest du ganze Zehner dazu oder weg, ändern sich nur die Zehner. Die Einer bleiben gleich. 34 plus 20 gleich 54. 76 minus 30 gleich 46." },
-    "plus10:freunde": { k: "merk", t: "Zehner-Freunde", s: "Zwei Zahlen, die zusammen <b>10</b> ergeben, sind Zehner-Freunde.",
-      ex: [["", "1 + 9"], ["", "2 + 8"], ["", "3 + 7"], ["", "4 + 6"], ["", "5 + 5"]], v: "Wie viel fehlt bis 10? Zähle die freien Plätze.",
-      say: "Zehner-Freunde. Zwei Zahlen, die zusammen 10 ergeben, sind Zehner-Freunde: 1 und 9, 2 und 8, 3 und 7, 4 und 6, 5 und 5." },
-    "plus10:zerlegen": { k: "tipp", t: "Zerlegen", s: "Zerlege die zweite Zahl: Ein Teil bringt dich <b>bis zur 10</b>, der <b>Rest</b> kommt danach.",
-      ex: [["", "8 + 5", "Aufgabe"], ["🪺", "5 = *2* + *3*", "zerlegen"]], v: "8 + 2 = 10 · 10 + 3 = 13",
-      say: "Zerlegen. Zerlege die zweite Zahl: Ein Teil bringt dich bis zur 10, der Rest kommt danach. 8 plus 5: 5 gleich 2 plus 3." },
-    "plus10:schritte": { k: "merk", t: "Über die 10 in 2 Schritten", s: "<b>1.</b> Erst bis zur 10. <b>2.</b> Dann den Rest dazu.",
-      ex: [["1️⃣", "8 + *2* = 10", "bis zur 10"], ["2️⃣", "10 + *3* = 13", "Rest dazu"]], v: "8 + 5 = 13",
-      say: "Über die 10 in zwei Schritten. Erst bis zur 10, dann den Rest dazu. 8 plus 2 gleich 10, dann 10 plus 3 gleich 13." },
-    "plus10:blitz": { k: "tipp", t: "Blitz-Tipp", s: "Rechne die zwei Schritte im Kopf. Ist die erste Zahl klein, <b>tausche</b>: 3 + 9 = 9 + 3.",
-      ex: [["", "9 + 3"], ["", "9 + *1* = 10"], ["", "10 + *2* = 12"]],
-      say: "Blitz-Tipp. Rechne die zwei Schritte im Kopf. Ist die erste Zahl klein, tausche: 3 plus 9 ist wie 9 plus 3." },
-    "minus10:zurueck": { k: "merk", t: "Zurück zur 10", s: "Nimm zuerst die <b>Einer</b> weg – dann bist du genau bei <b>10</b>.",
-      ex: [["", "13 − *3* = 10"], ["", "16 − *6* = 10"], ["", "18 − *8* = 10"]],
-      say: "Zurück zur 10. Nimm zuerst die Einer weg. Dann bist du genau bei 10: 13 minus 3 gleich 10." },
-    "minus10:zerlegen": { k: "tipp", t: "Zerlegen", s: "Zerlege die zweite Zahl: Ein Teil bringt dich <b>zurück zur 10</b>, der <b>Rest</b> kommt danach.",
-      ex: [["", "13 − 5", "Aufgabe"], ["🪺", "5 = *3* + *2*", "zerlegen"]], v: "13 − 3 = 10 · 10 − 2 = 8",
-      say: "Zerlegen. Zerlege die zweite Zahl: Ein Teil bringt dich zurück zur 10, der Rest kommt danach. 13 minus 5: 5 gleich 3 plus 2." },
-    "minus10:schritte": { k: "merk", t: "Minus über die 10 in 2 Schritten", s: "<b>1.</b> Erst zurück zur 10. <b>2.</b> Dann den Rest weg.",
-      ex: [["1️⃣", "13 − *3* = 10", "zurück zur 10"], ["2️⃣", "10 − *2* = 8", "Rest weg"]], v: "13 − 5 = 8",
-      say: "Minus über die 10 in zwei Schritten. Erst zurück zur 10, dann den Rest weg. 13 minus 3 gleich 10, dann 10 minus 2 gleich 8." },
-    "minus10:blitz": { k: "tipp", t: "Blitz-Tipp", s: "Rechne die zwei Schritte im Kopf: erst <b>zurück zur 10</b>, dann weiter.",
-      ex: [["", "14 − 7"], ["", "14 − *4* = 10"], ["", "10 − *3* = 7"]],
-      say: "Blitz-Tipp. Rechne die zwei Schritte im Kopf: erst zurück zur 10, dann weiter. 14 minus 7: 14 minus 4 gleich 10, 10 minus 3 gleich 7." },
+    "plus10:freunde": { k: "merk", t: "Zehner-Freunde", s: "Zwei Zahlen, die zusammen <b>10</b> ergeben, sind Zehner-Freunde. Sie bringen dich zum nächsten Zehner: 38 + 2 = 40, weil 8 + 2 = 10.",
+      ex: [["", "1 + 9"], ["", "2 + 8"], ["", "3 + 7"], ["", "4 + 6"], ["", "5 + 5"]], v: "38 + 2 = 40 · 67 + 3 = 70",
+      say: "Zehner-Freunde. Zwei Zahlen, die zusammen 10 ergeben, sind Zehner-Freunde: 1 und 9, 2 und 8, 3 und 7, 4 und 6, 5 und 5. Sie bringen dich zum nächsten Zehner: 38 plus 2 gleich 40." },
+    "plus10:zerlegen": { k: "tipp", t: "Zerlegen", s: "Zerlege die zweite Zahl: Ein Teil bringt dich <b>bis zum Zehner</b>, der <b>Rest</b> kommt danach.",
+      ex: [["", "38 + 5", "Aufgabe"], ["🪺", "5 = *2* + *3*", "zerlegen"]], v: "38 + 2 = 40 · 40 + 3 = 43",
+      say: "Zerlegen. Zerlege die zweite Zahl: Ein Teil bringt dich bis zum Zehner, der Rest kommt danach. 38 plus 5: 5 gleich 2 plus 3." },
+    "plus10:schritte": { k: "merk", t: "Über den Zehner in 2 Schritten", s: "<b>1.</b> Erst bis zum Zehner. <b>2.</b> Dann den Rest dazu.",
+      ex: [["1️⃣", "38 + *2* = 40", "bis zum Zehner"], ["2️⃣", "40 + *3* = 43", "Rest dazu"]], v: "Genauso: 8 + 2 = 10 · 10 + 3 = 13",
+      say: "Über den Zehner in zwei Schritten. Erst bis zum Zehner, dann den Rest dazu. 38 plus 2 gleich 40, dann 40 plus 3 gleich 43." },
+    "plus10:blitz": { k: "tipp", t: "Blitz-Tipp", s: "Rechne die zwei Schritte im Kopf. Steht die kleine Zahl vorne, <b>tausche</b>: 5 + 38 = 38 + 5.",
+      ex: [["", "38 + 5"], ["", "38 + *2* = 40"], ["", "40 + *3* = 43"]],
+      say: "Blitz-Tipp. Rechne die zwei Schritte im Kopf. Steht die kleine Zahl vorne, tausche: 5 plus 38 ist wie 38 plus 5." },
+    "minus10:zurueck": { k: "merk", t: "Zurück zum Zehner", s: "Nimm zuerst die <b>Einer</b> weg – dann bist du genau beim <b>Zehner</b>.",
+      ex: [["", "13 − *3* = 10"], ["", "43 − *3* = 40"], ["", "68 − *8* = 60"]],
+      say: "Zurück zum Zehner. Nimm zuerst die Einer weg. Dann bist du genau beim Zehner: 43 minus 3 gleich 40." },
+    "minus10:zerlegen": { k: "tipp", t: "Zerlegen", s: "Zerlege die zweite Zahl: Ein Teil bringt dich <b>zurück zum Zehner</b>, der <b>Rest</b> kommt danach.",
+      ex: [["", "43 − 5", "Aufgabe"], ["🪺", "5 = *3* + *2*", "zerlegen"]], v: "43 − 3 = 40 · 40 − 2 = 38",
+      say: "Zerlegen. Zerlege die zweite Zahl: Ein Teil bringt dich zurück zum Zehner, der Rest kommt danach. 43 minus 5: 5 gleich 3 plus 2." },
+    "minus10:schritte": { k: "merk", t: "Minus über den Zehner in 2 Schritten", s: "<b>1.</b> Erst zurück zum Zehner. <b>2.</b> Dann den Rest weg.",
+      ex: [["1️⃣", "43 − *3* = 40", "zurück zum Zehner"], ["2️⃣", "40 − *2* = 38", "Rest weg"]], v: "Genauso: 13 − 3 = 10 · 10 − 2 = 8",
+      say: "Minus über den Zehner in zwei Schritten. Erst zurück zum Zehner, dann den Rest weg. 43 minus 3 gleich 40, dann 40 minus 2 gleich 38." },
+    "minus10:blitz": { k: "tipp", t: "Blitz-Tipp", s: "Rechne die zwei Schritte im Kopf: erst <b>zurück zum Zehner</b>, dann weiter.",
+      ex: [["", "54 − 7"], ["", "54 − *4* = 50"], ["", "50 − *3* = 47"]],
+      say: "Blitz-Tipp. Rechne die zwei Schritte im Kopf: erst zurück zum Zehner, dann weiter. 54 minus 7: 54 minus 4 gleich 50, 50 minus 3 gleich 47." },
     "rechnen:uebergang": { k: "merk", t: "Über den Zehner", s: "Rechne in <b>zwei Schritten</b>: erst bis zum <b>vollen Zehner</b>, dann den <b>Rest</b>.",
       ex: [["1️⃣", "38 + *2* = 40", "bis zum Zehner"], ["2️⃣", "40 + *3* = 43", "Rest dazu"], ["➖", "42 − *2* − *4* = 36", "minus genauso"]], v: "🧩 Zerlege: 5 = 2 + 3 · 6 = 2 + 4",
       say: "Über den Zehner. Rechne in zwei Schritten: erst bis zum vollen Zehner, dann den Rest. 38 plus 5: erst 38 plus 2 gleich 40, dann 40 plus 3 gleich 43. Bei minus genauso: 42 minus 6: erst 42 minus 2 gleich 40, dann 40 minus 4 gleich 36." },
@@ -6032,7 +6063,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function fsig(s) { let h = 0x811c9dc5; s = "nemo-freigabe|" + s; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); }
   const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
     lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
-    rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über die 10", "der Insel Plus über die 10"], minus10: ["Minus über die 10", "der Insel Minus über die 10"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"] };
+    rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über den Zehner", "der Insel Plus über den Zehner"], minus10: ["Minus über den Zehner", "der Insel Minus über den Zehner"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"] };
   function freiParse() {
     if (SCHOOL) return null;
     const m = location.hash.match(/(?:^#|&)f=([A-Za-z0-9_-]+)/); if (!m) return null;
