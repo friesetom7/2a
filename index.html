@@ -581,6 +581,58 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 .duo .nemo { font-size: 96px; }
 .polly-m { animation: flap 2.6s ease-in-out infinite !important; }
 @keyframes flap { 0%, 100% { transform: translateY(-10px) rotate(-6deg); } 50% { transform: translateY(10px) rotate(5deg); } }
+/* Schulhaus mit Nemos Klasse (unten) und Pollys Klasse (oben) */
+.schoolwrap { width: min(100%, calc((100vh - 300px) * 1400 / 860), 1100px); border-radius: 26px; overflow: hidden; box-shadow: 0 10px 30px var(--shadow); background: #e6f5ff; flex: none; }
+.school { display: block; width: 100%; height: auto; transition: transform .6s ease-in, opacity .6s ease-in; }
+.school.zoomin { transform: scale(3.2); opacity: 0; }
+.school.zoomout { transform: scale(3.2); opacity: 0; transition: none; }
+.school .hot { fill: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.school text { font-family: inherit; }
+.school .chalk { font-size: 30px; font-weight: 900; fill: #f1faee; }
+.school .flagt { font-size: 13px; font-weight: 900; fill: #fff; }
+.school .board { font-size: 21px; font-weight: 900; fill: #1b2a4a; }
+.school .ra-die { fill: #d62839; } .school .ra-der { fill: #1d6fd6; }
+.school .signt { font-size: 27px; font-weight: 900; fill: #1b2a4a; }
+.school .bigabc { font-size: 34px; font-weight: 900; fill: #e63946; }
+.school .sign { animation: signPulse 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; pointer-events: none; }
+@keyframes signPulse { 50% { transform: scale(1.05); } }
+.school .emo, .school .tree, .school .mural, .school .climb { pointer-events: none; }
+#schKid { pointer-events: none; }
+.kid .kleg, .kid .karm, .kid .kcape { transform-box: fill-box; transform-origin: 50% 0; }
+.kid .kfig { transform-box: fill-box; transform-origin: 50% 100%; }
+.kid:not(.walk):not(.fly) .kfig { animation: kIdle 2.4s ease-in-out infinite; }
+@keyframes kIdle { 50% { transform: scaleY(1.03); } }
+.kid.walk .kl, .kid.walk .ar { animation: kStep .32s ease-in-out infinite alternate; }
+.kid.walk .kr, .kid.walk .al { animation: kStep .32s ease-in-out infinite alternate-reverse; }
+.kid.walk .kcape { animation: kCape .32s ease-in-out infinite alternate; }
+@keyframes kStep { from { transform: rotate(16deg); } to { transform: rotate(-16deg); } }
+@keyframes kCape { from { transform: skewX(-8deg); } to { transform: skewX(8deg); } }
+.kid.fly .ar { transform: rotate(175deg); }
+.kid.fly .al { transform: rotate(-20deg); }
+.kid.fly .kcape { animation: kCapeF .18s linear infinite alternate; }
+@keyframes kCapeF { from { transform: skewX(16deg); } to { transform: skewX(26deg); } }
+.kid.fly .kshadow { opacity: 0; }
+.kid.hello .ar { animation: kWave .4s ease-in-out 4 alternate; }
+@keyframes kWave { from { transform: rotate(150deg); } to { transform: rotate(190deg); } }
+.rooms { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.room { display: flex; align-items: center; gap: 12px; border: none; border-radius: 28px; padding: 10px 20px 10px 14px; color: #fff; font: inherit; text-shadow: 0 2px 0 rgba(0,0,0,.25); cursor: pointer; box-shadow: 0 6px 0 var(--edge), 0 10px 20px var(--shadow); touch-action: manipulation; }
+.room.nemo-r { background: linear-gradient(160deg, #5cc8ea, #1270a8 70%); --edge: #072a44; }
+.room.polly-r { background: linear-gradient(160deg, #c5f27a, #35b56b 60%, #0e7a55); --edge: #0a5a3e; }
+.room:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--edge); }
+.room .wi { font-size: 46px; line-height: 1; }
+.room .rt { display: flex; flex-direction: column; align-items: flex-start; }
+.room .wn { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.room .ws { font-size: 17px; font-weight: 800; }
+.room .wt { background: rgba(255,255,255,.24); border-radius: 999px; padding: 4px 12px; font-size: 16px; font-weight: 900; }
+.overlay.fig-pop { z-index: 11; }
+.overlay .card.fig-card { max-width: 720px; width: 100%; box-sizing: border-box; }
+.fig-card h2 { margin: 0; font-size: clamp(26px, 4.6vw, 36px); }
+.figs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.figopt { background: #fff; border: none; border-radius: 22px; padding: 6px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); cursor: pointer; aspect-ratio: 3 / 4; touch-action: manipulation; }
+.figopt svg { display: block; width: 100%; height: 100%; }
+.figopt.on { outline: 5px solid var(--gold); }
+.figopt:active { transform: translateY(3px); }
+@media (max-aspect-ratio: 1/1) { .schoolwrap { width: 100%; } .room .wi { font-size: 38px; } .room .wn { font-size: 22px; } }
 .worlds { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 22px; width: min(900px, 100%); }
 .world { border-radius: 34px; padding: 24px 18px 22px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.25); box-shadow: 0 8px 0 var(--edge), 0 16px 30px var(--shadow); border: 4px solid rgba(255,255,255,.55); }
 .world:active { transform: translateY(5px); box-shadow: 0 3px 0 var(--edge); }
@@ -849,11 +901,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   <!-- WELT WÄHLEN -->
   <section class="screen center" id="scrWorld" hidden>
     <div class="head l" id="worldHello">Wohin möchtest du?</div>
-    <div class="worlds">
-      <button class="world nemo-w" id="goNemo"><span class="wi" aria-hidden="true">🦈</span><span class="wn">Nemos Spielplatz</span><span class="ws">Deutsch: Nomen, Lernwörter,<br>Lesen und Rechtschreiben</span><span class="wt" id="wtNemo"></span></button>
-      <button class="world polly-w" id="goPolly"><span class="wi pollyfig" aria-hidden="true">🦜</span><span class="wn">Pollys Spielplatz</span><span class="ws">Mathe: Zahlen bis 100,<br>Plus und Minus</span><span class="wt" id="wtPolly"></span></button>
+    <div class="schoolwrap" id="schoolWrap"></div>
+    <div class="rooms">
+      <button class="room nemo-r" id="goNemo"><span class="wi" aria-hidden="true">🦈</span><span class="rt"><span class="wn">Nemos Klasse</span><span class="ws">unten · Deutsch</span></span><span class="wt" id="wtNemo"></span></button>
+      <button class="room polly-r" id="goPolly"><span class="wi pollyfig" aria-hidden="true">🦜</span><span class="rt"><span class="wn">Pollys Klasse</span><span class="ws">oben · Mathe</span></span><span class="wt" id="wtPolly"></span></button>
     </div>
-    <div class="foot"><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
+    <div class="foot"><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
   </section>
 
   <!-- HOME -->
@@ -861,7 +914,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Über den Zehner bis 100</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Schulhaus</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -954,6 +1007,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 <div class="overlay" id="buyPop" hidden><div class="card buy-card" id="buyCard"></div></div>
+<div class="overlay fig-pop" id="figPop" hidden role="dialog" aria-modal="true" aria-labelledby="figTitle"><div class="card fig-card"><h2 id="figTitle">Wähle deinen Superhelden!</h2><div class="figs" id="figs"></div></div></div>
 <div class="overlay rule-pop" id="rulePop" hidden role="dialog" aria-modal="true" aria-labelledby="ruleTitle"><div class="card rule-card" id="ruleCard"></div></div>
 <div class="sheet-back" id="sheetBack" hidden></div>
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true"><div class="card" id="sheetCard"></div></div>
@@ -1185,9 +1239,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
   /* ---------- zwei Welten: Nemos Spielplatz (Deutsch) und Pollys Spielplatz (Mathe) ---------- */
   const WORLDS = {
-    nemo: { id: "nemo", name: "Nemos Spielplatz", hero: "Nemo", emo: "🦈", goes: "schwimmt", go: "schwimmen", place: "Aquarium", inPlace: "in deinem Aquarium", forPlace: "für dein Aquarium",
+    nemo: { id: "nemo", name: "Nemos Spielplatz", room: "Nemos Klasse", hero: "Nemo", emo: "🦈", goes: "schwimmt", go: "schwimmen", place: "Aquarium", inPlace: "in deinem Aquarium", forPlace: "für dein Aquarium",
       shopTitle: "🐠 Nemos Aquarium", chest: "Nemos Schatztruhe", start: "⚓", conf: ["🐟", "🐠", "⭐", "🫧", "🦈", "🐚", "✨"], buyConf: ["🫧", "✨", "⭐", "🐚"] },
-    polly: { id: "polly", name: "Pollys Spielplatz", hero: "Polly", emo: "🦜", goes: "fliegt", go: "fliegen", place: "Dschungel", inPlace: "in deinem Dschungel", forPlace: "für deinen Dschungel",
+    polly: { id: "polly", name: "Pollys Spielplatz", room: "Pollys Klasse", hero: "Polly", emo: "🦜", goes: "fliegt", go: "fliegen", place: "Dschungel", inPlace: "in deinem Dschungel", forPlace: "für deinen Dschungel",
       shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] }
   };
   let W = WORLDS.nemo;
@@ -1209,7 +1263,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     W = WORLDS[id] || WORLDS.nemo;
     document.body.classList.toggle("polly", isPolly());
     document.querySelectorAll(".mascot").forEach(m => { m.innerHTML = isPolly() ? pollyHTML("1.05em") : W.emo; m.classList.toggle("polly-m", isPolly()); });
-    $("homeTitle").textContent = W.name; $("aquaTitle").textContent = W.shopTitle;
+    $("homeTitle").textContent = W.room; $("aquaTitle").textContent = W.shopTitle;
     $("mapHint").textContent = `Tippe auf eine Insel – ${W.hero} ${W.goes} hin!`;
     $("certFoot").innerHTML = `${isPolly() ? pollyHTML("1.3em") : W.emo} ${W.hero} und die Klasse 2a gratulieren!`;
     $("resShellBtn").textContent = SH().btn(2, false);
@@ -1398,8 +1452,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const back = $("backBtn");
     back.hidden = (id === "scrStart" || id === "scrWorld" || (id === "scrHome" && !!FREI && !lernView));
     const toHome = id === "scrMap" || id === "scrAqua" || (id === "scrHome" && lernView), toWorld = id === "scrHome" && !lernView;
-    back.textContent = toWorld ? "🌍" : toHome ? "🏠" : "🗺️";
-    back.setAttribute("aria-label", toWorld ? "Welt wechseln: Nemo oder Polly" : toHome ? "Zum Menü" : "Zur Karte");
+    back.textContent = toWorld ? "🏫" : toHome ? "🏠" : "🗺️";
+    back.setAttribute("aria-label", toWorld ? "Zurück zum Schulhaus" : toHome ? "Zum Menü" : "Zur Karte");
+    const fp = $("figPop"); if (fp && id !== "scrWorld") fp.hidden = true;
     try { speechSynthesis.cancel(); } catch (e) {}
     const rp = $("rulePop"); if (rp) rp.hidden = true;
     window.scrollTo(0, 0);
@@ -5227,7 +5282,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
   /* ---------- Hauptmenü: der Ozean ---------- */
   function renderHome() {
-    lernView = false; $("homeTitle").textContent = W.name;
+    lernView = false; $("homeTitle").textContent = W.room;
     if (isPolly()) return renderHomePolly();
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Nemo schwimmen?` : S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
@@ -6044,6 +6099,262 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   document.querySelectorAll(".pollyfig").forEach(e => { e.innerHTML = pollyHTML("1.2em"); });
 
   /* ---------- Welt wählen: Nemo oder Polly ---------- */
+  /* ==== SCHULHAUS START ====
+     Das Schulhaus der Klasse 2a als Zeichentrick (nach einem Foto der Schule).
+     Unten unter dem Vordach: Nemos Klasse (Deutsch). Oben im Neubau: Pollys Klasse (Mathe) – hinauf über die Außentreppe am Altbau.
+     Jedes Kind sucht sich eine Figur aus und läuft damit über den Schulhof in den Raum. Im Raum geht es wie gewohnt über die Inseln. */
+  const KIDS = [ // kleine Superheldinnen und Superhelden: Haut, Haare, Frisur, Anzug, Umhang, Maske, Abzeichen
+    { skin: "#f6d3b3", hair: "#6b3e1f", style: "short", suit: "#3a86ff", cape: "#ffb703", mask: "#ffb703", logo: "star" },
+    { skin: "#f1c9a5", hair: "#e3b04b", style: "pony", suit: "#9b5de5", cape: "#2ec4b6", mask: "#2ec4b6", logo: "bolt" },
+    { skin: "#c68a62", hair: "#2b1a12", style: "curly", suit: "#2a9d8f", cape: "#f77f00", mask: "#f77f00", logo: "heart" },
+    { skin: "#8d5a3b", hair: "#1b1210", style: "long", suit: "#ef476f", cape: "#6a4c93", mask: "#6a4c93", logo: "moon" },
+    { skin: "#e8b48f", hair: "#a0411d", style: "long", suit: "#43aa8b", cape: "#e63946", mask: "#e63946", logo: "star" },
+    { skin: "#f6d3b3", hair: "#1b1b1b", style: "short", suit: "#f77f00", cape: "#264653", mask: "#264653", logo: "bolt" },
+    { skin: "#a86f4c", hair: "#2b1a12", style: "pony", suit: "#ffb703", cape: "#3a86ff", mask: "#3a86ff", logo: "heart" },
+    { skin: "#f1c9a5", hair: "#c9a227", style: "curly", suit: "#e63946", cape: "#5a189a", mask: "#5a189a", logo: "2a" }
+  ];
+  const LOGO = {
+    star: `<polygon points="0,-9 2.6,-3 9,-2.8 4,1.4 5.6,8 0,4.4 -5.6,8 -4,1.4 -9,-2.8 -2.6,-3" fill="#ffd60a" stroke="#c99700" stroke-width="1"/>`,
+    bolt: `<polygon points="2,-10 -6,1 -0.5,1 -3,10 6,-2 0.5,-2" fill="#ffd60a" stroke="#c99700" stroke-width="1"/>`,
+    heart: `<path d="M0 8 C-10 1 -9 -7 -4 -7 C-1.5 -7 0 -5 0 -3.5 C0 -5 1.5 -7 4 -7 C9 -7 10 1 0 8 Z" fill="#ff4d6d" stroke="#b5173b" stroke-width="1"/>`,
+    moon: `<path d="M3 -8 A8.5 8.5 0 1 0 3 8 A6.5 6.5 0 1 1 3 -8 Z" fill="#ffd60a" stroke="#c99700" stroke-width="1"/>`,
+    "2a": `<text x="0" y="4.5" text-anchor="middle" font-size="12" font-weight="900" fill="#1b2a4a">2a</text>`
+  };
+  // Superheld-Kind, Ursprung zwischen den Füßen, etwa 120 hoch
+  function kidSVG(k) {
+    const K = KIDS[k] || KIDS[0], H = K.hair, dk = "rgba(0,0,0,.18)";
+    const back = K.style === "long" ? `<path d="M-22 -96 Q-24 -62 -18 -60 L18 -60 Q24 -62 22 -96 Z" fill="${H}"/>`
+      : K.style === "pony" ? `<path d="M15 -110 Q38 -108 33 -78 Q30 -66 24 -64 Q30 -84 17 -98 Z" fill="${H}"/>` : "";
+    const front = K.style === "curly" ? [[-17, -104], [-10, -113], [0, -116], [10, -113], [17, -104], [20, -96], [-20, -96]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="8" fill="${H}"/>`).join("")
+      : K.style === "long" ? `<path d="M-21 -94 Q-22 -119 0 -119 Q22 -119 21 -94 Q16 -106 4 -104 Q-6 -110 -14 -102 Q-18 -99 -21 -94 Z" fill="${H}"/>`
+      : `<path d="M-20 -95 Q-21 -118 0 -119 Q21 -118 20 -95 Q15 -105 3 -104 Q-9 -108 -20 -95 Z" fill="${H}"/>` + (K.style === "pony" ? `<circle cx="18" cy="-107" r="4.5" fill="${K.cape}"/>` : "");
+    return `<g class="kid">
+      <ellipse class="kshadow" cx="0" cy="0" rx="25" ry="6" fill="rgba(0,0,0,.22)"/>
+      <g class="kfig">
+      <path class="kcape" d="M-15 -78 Q-36 -50 -34 -26 Q-24 -20 -17 -25 Q-8 -19 0 -24 Q8 -19 17 -25 Q24 -20 34 -26 Q36 -50 15 -78 Z" fill="${K.cape}" stroke="${dk}" stroke-width="2"/>
+      <g class="kleg kl"><rect x="-12" y="-40" width="10" height="36" rx="5" fill="${K.suit}"/><rect x="-13" y="-18" width="12" height="15" rx="4" fill="${K.cape}"/><ellipse cx="-8" cy="-3" rx="9.5" ry="5" fill="${K.cape}" stroke="${dk}" stroke-width="1.5"/></g>
+      <g class="kleg kr"><rect x="2" y="-40" width="10" height="36" rx="5" fill="${K.suit}"/><rect x="1" y="-18" width="12" height="15" rx="4" fill="${K.cape}"/><ellipse cx="8" cy="-3" rx="9.5" ry="5" fill="${K.cape}" stroke="${dk}" stroke-width="1.5"/></g>
+      <g class="kbody">
+        ${back}
+        <g class="karm al"><rect x="-27" y="-74" width="10" height="31" rx="5" fill="${K.suit}"/><circle cx="-22" cy="-42" r="6" fill="${K.cape}"/></g>
+        <g class="karm ar"><rect x="17" y="-74" width="10" height="31" rx="5" fill="${K.suit}"/><circle cx="22" cy="-42" r="6" fill="${K.cape}"/></g>
+        <rect x="-17" y="-78" width="34" height="44" rx="13" fill="${K.suit}"/>
+        <rect x="-17" y="-44" width="34" height="7" rx="3" fill="${K.cape}"/>
+        <circle cx="0" cy="-62" r="11" fill="#fff" stroke="${dk}" stroke-width="1.5"/><g transform="translate(0 -62)">${LOGO[K.logo]}</g>
+        <rect x="-5" y="-84" width="10" height="8" rx="3" fill="${K.skin}"/>
+        <circle cx="0" cy="-96" r="20" fill="${K.skin}"/>${front}
+        <path d="M-19 -100 Q-10 -104 0 -99 Q10 -104 19 -100 L18 -91 Q10 -88 4 -92 L0 -95 L-4 -92 Q-10 -88 -18 -91 Z" fill="${K.mask}"/>
+        <ellipse cx="-8" cy="-95" rx="4.6" ry="3.8" fill="#fff"/><ellipse cx="8" cy="-95" rx="4.6" ry="3.8" fill="#fff"/>
+        <circle cx="-7.5" cy="-95" r="2.4" fill="#1b2a4a"/><circle cx="8.5" cy="-95" r="2.4" fill="#1b2a4a"/>
+        <path d="M-6 -85 Q0 -80 6 -85" stroke="#1b2a4a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      </g></g></g>`;
+  }
+  const kidIcon = (k, sz) => `<svg viewBox="-34 -128 68 136" style="width:${sz};height:${sz}" aria-hidden="true">${kidSVG(k)}</svg>`;
+  // kleine Zufallsfolge, damit Blätter und Pflastersteine bei jedem Zeichnen gleich liegen
+  const rnd = (seed) => () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  function schoolSVG() {
+    const R = rnd(42), win = [];
+    let s = `<svg viewBox="0 0 1400 860" class="school" role="img" aria-label="Unser Schulhaus: unten Nemos Klasse, oben Pollys Klasse">
+    <defs>
+      <linearGradient id="skG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9dcf7"/><stop offset="1" stop-color="#e6f5ff"/></linearGradient>
+      <linearGradient id="colG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd3d6"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#c3c8cc"/></linearGradient>
+      <linearGradient id="padG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f47a8"/><stop offset=".45" stop-color="#3c6fe0"/><stop offset="1" stop-color="#1c3f96"/></linearGradient>
+      <pattern id="pave" width="48" height="24" patternUnits="userSpaceOnUse"><rect width="48" height="24" fill="#a9b0b5"/><path d="M0 0.5 H48 M0 12.5 H48 M0.5 0 V12 M24.5 12 V24" stroke="#959ca1" stroke-width="2"/></pattern>
+      <pattern id="rubber" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#c65a3f"/><circle cx="4" cy="5" r="1.4" fill="#a8452f"/><circle cx="12" cy="11" r="1.2" fill="#dc7b5c"/></pattern>
+    </defs>
+    <rect width="1400" height="860" fill="url(#skG)"/>`;
+    // Wolken
+    [[600, 95, 1], [820, 60, .8], [1290, 110, .7]].forEach(([x, y, k]) => { s += `<g opacity=".95" transform="translate(${x} ${y}) scale(${k})"><ellipse cx="0" cy="0" rx="58" ry="24" fill="#fff"/><ellipse cx="-32" cy="6" rx="34" ry="18" fill="#fff"/><ellipse cx="34" cy="8" rx="38" ry="18" fill="#fff"/><ellipse cx="6" cy="-16" rx="32" ry="20" fill="#fff"/></g>`; });
+    // Bäume hinter dem Neubau
+    [[110, 236, 62, "#e0a458"], [235, 222, 74, "#c97b4a"], [385, 232, 58, "#b8c46a"], [520, 222, 70, "#e39b4f"], [665, 236, 52, "#c97b4a"], [780, 240, 48, "#a7c06a"]].forEach(([x, y, r, c]) => { s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".9"/>`; });
+
+    /* ---- Altbau mit Giebel ---- */
+    s += `<rect x="1050" y="118" width="38" height="110" fill="#5b616a"/><rect x="1044" y="110" width="50" height="12" rx="2" fill="#464b52"/>
+      <path d="M1069 110 V42 M1050 62 H1088 M1056 78 H1082" stroke="#6c737b" stroke-width="3" fill="none"/>
+      <polygon points="880,700 880,335 1125,185 1372,335 1372,700" fill="#f4f1ea" stroke="#ddd6c9" stroke-width="2"/>
+      <polygon points="852,346 1125,158 1398,346 1398,370 1125,182 852,370" fill="#4a5059"/>
+      <polyline points="852,346 1125,158 1398,346" fill="none" stroke="#666d77" stroke-width="5" stroke-linejoin="round"/>
+      <circle cx="1125" cy="262" r="17" fill="#5b6b78" stroke="#fff" stroke-width="6"/><path d="M1108 262 H1142 M1125 245 V279" stroke="#fff" stroke-width="3"/>`;
+    // Wandbild: Regenbogen und Sonne
+    s += `<g class="mural">
+      <path d="M1170 520 A80 80 0 0 1 1330 520" fill="none" stroke="#e63946" stroke-width="15" stroke-linecap="round"/>
+      <path d="M1185 520 A65 65 0 0 1 1315 520" fill="none" stroke="#ffb703" stroke-width="15" stroke-linecap="round"/>
+      <path d="M1200 520 A50 50 0 0 1 1300 520" fill="none" stroke="#2a9d8f" stroke-width="15" stroke-linecap="round"/>
+      <path d="M1215 520 A35 35 0 0 1 1285 520" fill="none" stroke="#3a86ff" stroke-width="15" stroke-linecap="round"/>
+      <ellipse cx="1170" cy="526" rx="26" ry="11" fill="#cfe8ff"/><ellipse cx="1330" cy="526" rx="26" ry="11" fill="#cfe8ff"/>
+      <g transform="translate(1318 398)">${Array.from({ length: 8 }, (_, i) => `<path d="M0 -38 L5 -26 L-5 -26 Z" fill="#ffb703" transform="rotate(${i * 45})"/>`).join("")}<circle r="23" fill="#f77f00"/></g>
+      <path d="M1196 410 q8 -8 16 0 q8 -8 16 0 M1236 380 q6 -6 12 0 q6 -6 12 0" fill="none" stroke="#1b2a4a" stroke-width="3" stroke-linecap="round"/></g>`;
+    // Tür oben, Podest und Außentreppe
+    s += `<rect x="898" y="340" width="78" height="10" rx="3" fill="#8f989f"/>
+      <rect x="905" y="350" width="64" height="122" rx="4" fill="#3b4752"/><rect x="913" y="360" width="48" height="42" rx="3" fill="#9ed0f0"/><circle cx="959" cy="420" r="4" fill="#d9d9d9"/>
+      <path d="M902 482 V700 M1012 482 V700" stroke="#8a949c" stroke-width="6"/>
+      <rect x="886" y="470" width="132" height="12" rx="2" fill="#8a949c"/>
+      <path d="M1014 476 L1252 700" stroke="#79838b" stroke-width="12" stroke-linecap="round"/>`;
+    for (let k = 0; k <= 13; k++) { const x = 1014 + k * 238 / 13, y = 476 + k * 224 / 13; s += `<rect x="${x - 3}" y="${y - 3}" width="24" height="6" rx="2" fill="#a2acb4"/>`; }
+    s += `<path d="M886 422 H1014 L1252 646" fill="none" stroke="#79838b" stroke-width="5" stroke-linejoin="round"/>`;
+    for (let x = 892; x <= 1008; x += 14) s += `<path d="M${x} 422 V470" stroke="#8f99a1" stroke-width="2.5"/>`;
+    for (let k = 1; k <= 16; k++) { const x = 1014 + k * 238 / 16, y = 476 + k * 224 / 16; s += `<path d="M${x} ${y - 52} V${y}" stroke="#8f99a1" stroke-width="2.5"/>`; }
+
+    /* ---- Neubau: oben Pollys Klasse ---- */
+    // Raum hinter den Fenstern
+    s += `<rect x="-10" y="314" width="917" height="122" fill="#fff3d6"/>
+      <rect x="344" y="346" width="108" height="56" rx="5" fill="#2d6a4f" stroke="#8d6346" stroke-width="5"/>
+      <text x="398" y="381" text-anchor="middle" class="chalk" font-size="24">8+2=10</text>
+      <rect x="512" y="336" width="82" height="82" rx="4" fill="#fff" stroke="#e0a400" stroke-width="3"/>
+      ${Array.from({ length: 100 }, (_, i) => `<circle cx="${519 + (i % 10) * 7.4 + (i % 10 >= 5 ? 2 : 0)}" cy="${343 + Math.floor(i / 10) * 7.4 + (i >= 50 ? 2 : 0)}" r="2.7" fill="${i < 38 ? "#e63946" : i < 43 ? "#3a86ff" : "#eadfca"}"/>`).join("")}
+      <path d="M28 334 Q160 360 300 334" fill="none" stroke="#8d6346" stroke-width="2"/>`;
+    ["#e63946", "#ffb703", "#3a86ff", "#2a9d8f", "#9b5de5", "#f77f00", "#e63946", "#3a86ff"].forEach((c, i) => { const x = 46 + i * 34, y = 336 + Math.sin((i + .5) / 8 * Math.PI) * 12; s += `<path d="M${x - 11} ${y} L${x + 11} ${y} L${x} ${y + 22} Z" fill="${c}"/><text x="${x}" y="${y + 13}" text-anchor="middle" class="flagt">${i + 1}</text>`; });
+    // Rechenrahmen
+    s += `<rect x="665" y="345" width="92" height="64" rx="5" fill="none" stroke="#8d6346" stroke-width="5"/>`;
+    for (let r = 0; r < 4; r++) { const y = 357 + r * 14; s += `<path d="M667 ${y} H755" stroke="#8d6346" stroke-width="2"/>`; for (let b = 0; b < 6; b++) s += `<circle cx="${676 + b * 9 + (b >= 3 ? 4 : 0)}" cy="${y}" r="4.6" fill="${b < 3 ? "#e63946" : "#3a86ff"}"/>`; }
+    // Pflanzen und Polly auf der Stange
+    s += `<g fill="#43aa8b"><ellipse cx="830" cy="404" rx="12" ry="26" transform="rotate(-25 830 404)"/><ellipse cx="852" cy="400" rx="12" ry="28" transform="rotate(15 852 400)"/><ellipse cx="842" cy="392" rx="10" ry="26"/></g><rect x="826" y="414" width="34" height="22" rx="4" fill="#d1774a"/>
+      <path d="M196 418 H300" stroke="#8d6346" stroke-width="6" stroke-linecap="round"/>
+      <svg x="206" y="336" width="86" height="86" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
+    // Wand mit Fensteröffnungen (oben)
+    const WO = [[25, 320, 125, 108], [180, 320, 125, 108], [335, 320, 125, 108], [490, 320, 125, 108], [645, 320, 125, 108], [800, 320, 90, 108]];
+    s += `<path fill-rule="evenodd" fill="#ebe6de" d="M-10 300 H907 V470 H-10 Z ${WO.map(([x, y, w, h]) => `M${x} ${y} h${w} v${h} h${-w} Z`).join(" ")}"/>`;
+    WO.forEach(([x, y, w, h]) => { s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="7"/><path d="M${x + w / 2} ${y + 26} V${y + h} M${x} ${y + 26} H${x + w}" stroke="#fff" stroke-width="5"/><path d="M${x + 8} ${y + 34} l18 0 l-14 30 l-18 0 Z" fill="rgba(255,255,255,.28)"/><rect x="${x - 6}" y="${y + h + 3}" width="${w + 12}" height="7" rx="2" fill="#d7d0c5"/>`; });
+    // Lisenen mit Spitzen und Blechblende
+    [165, 320, 475, 630, 785].forEach(x => { s += `<polygon points="${x - 11},300 ${x + 11},300 ${x + 11},478 ${x},502 ${x - 11},478" fill="#ded7cc" stroke="#c6bdb0" stroke-width="2"/><path d="M${x + 4} 302 V480" stroke="#cbc3b7" stroke-width="5"/>`; });
+    s += `<rect x="-10" y="244" width="917" height="56" fill="#8f989f"/><rect x="-10" y="238" width="917" height="10" rx="2" fill="#78818a"/>`;
+    for (let x = 6; x < 905; x += 28) s += `<path d="M${x} 248 V300" stroke="#838c93" stroke-width="2"/>`;
+    s += `<path d="M-10 300 H907" stroke="#6f787f" stroke-width="3"/>`;
+    // Schild „Pollys Klasse“
+    s += `<g class="sign sign-p"><rect x="318" y="248" width="300" height="46" rx="23" fill="#ffd166" stroke="#e0a400" stroke-width="3"/>
+      <svg x="326" y="244" width="52" height="52" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>
+      <text x="498" y="281" text-anchor="middle" class="signt">Pollys Klasse</text></g>`;
+
+    /* ---- Erdgeschoss: Nemos Klasse unter dem Vordach ---- */
+    s += `<rect x="-10" y="503" width="660" height="142" fill="#d6f0ff"/>
+      <path d="M-10 625 Q30 610 70 625 T150 625 T230 625 T310 625 T390 625 T470 625 T550 625 T650 625 V645 H-10 Z" fill="#8fd3f4"/>
+      <rect x="184" y="530" width="122" height="66" rx="6" fill="#fff" stroke="#219ebc" stroke-width="5"/>
+      <text x="245" y="557" text-anchor="middle" class="board"><tspan class="ra-die">die</tspan> Katze</text><text x="245" y="584" text-anchor="middle" class="board"><tspan class="ra-der">der</tspan> Hund</text>`;
+    ["A", "B", "C", "D"].forEach((c, i) => { s += `<rect x="${30 + i * 28}" y="${540 + (i % 2) * 4}" width="24" height="26" rx="4" fill="${["#e63946", "#ffb703", "#2a9d8f", "#3a86ff"][i]}"/><text x="${42 + i * 28}" y="${560 + (i % 2) * 4}" text-anchor="middle" class="flagt">${c}</text>`; });
+    s += `<text x="84" y="628" text-anchor="middle" class="emo" font-size="58">🦈</text><text x="532" y="575" text-anchor="middle" class="emo" font-size="30">🐠</text><text x="585" y="612" text-anchor="middle" class="emo" font-size="26">🐟</text>
+      <g fill="none" stroke="#fff" stroke-width="2.5" opacity=".9"><circle cx="130" cy="590" r="6"/><circle cx="142" cy="572" r="4"/><circle cx="560" cy="545" r="5"/></g>
+      <text x="405" y="566" text-anchor="middle" class="bigabc">A a</text>
+      <g transform="translate(405 590)"><rect x="-26" y="0" width="52" height="40" rx="3" fill="#8d6346"/><rect x="-22" y="-8" width="10" height="34" fill="#e63946"/><rect x="-10" y="-4" width="10" height="30" fill="#3a86ff"/><rect x="2" y="-10" width="10" height="36" fill="#2a9d8f"/><rect x="14" y="-6" width="8" height="32" fill="#ffb703"/></g>`;
+    const WU = [[15, 512, 140, 126], [175, 512, 140, 126], [335, 512, 140, 126], [495, 512, 125, 126]];
+    s += `<rect x="-10" y="470" width="917" height="20" fill="#cbc3b6"/>
+      <path fill-rule="evenodd" fill="#b8b1a6" d="M-10 490 H907 V700 H-10 Z ${WU.map(([x, y, w, h]) => `M${x} ${y} h${w} v${h} h${-w} Z`).join(" ")} M650 522 h92 v178 h-92 Z"/>`;
+    WU.forEach(([x, y, w, h]) => { s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(255,255,255,.1)" stroke="#f4f4f4" stroke-width="6"/><path d="M${x + 10} ${y + 12} l16 0 l-12 26 l-16 0 Z" fill="rgba(255,255,255,.3)"/>`; });
+    // Eingangstür
+    s += `<rect x="650" y="522" width="92" height="178" fill="#cde9f7" stroke="#55606a" stroke-width="7"/><path d="M696 522 V700" stroke="#55606a" stroke-width="4"/><rect x="684" y="590" width="5" height="40" rx="2" fill="#55606a"/><rect x="703" y="590" width="5" height="40" rx="2" fill="#55606a"/>
+      <path d="M660 540 l16 0 l-10 26 l-16 0 Z" fill="rgba(255,255,255,.55)"/>`;
+    // Bank unter dem Vordach und Tischtennisplatte
+    s += `<rect x="440" y="668" width="170" height="10" rx="3" fill="#b07a4a"/><path d="M452 678 V696 M598 678 V696" stroke="#6b4e35" stroke-width="5"/>
+      <rect x="28" y="646" width="206" height="12" rx="3" fill="#7d8a95"/><path d="M131 632 V646" stroke="#e8e8e8" stroke-width="3"/><path d="M60 658 L80 698 M200 658 L180 698" stroke="#5f6b75" stroke-width="7" stroke-linecap="round"/>`;
+    // Sonnensegel
+    s += `<polygon points="-10,492 520,486 568,512 -10,532" fill="#2f5fd0"/><path d="M-10 532 L568 512" stroke="#1f47a8" stroke-width="3"/>`;
+    // Säulen
+    [325, 884].forEach(x => { s += `<rect x="${x - 14}" y="488" width="28" height="212" fill="url(#colG)"/><ellipse cx="${x}" cy="700" rx="16" ry="5" fill="#9aa1a6"/>`; });
+    [165, 485, 790].forEach(x => { s += `<rect x="${x - 6}" y="488" width="12" height="212" fill="#b3bcc3"/><rect x="${x - 14}" y="592" width="28" height="108" rx="7" fill="url(#padG)"/><path d="M${x - 6} 600 V692" stroke="rgba(255,255,255,.35)" stroke-width="3"/>`; });
+    // Schild „Nemos Klasse“
+    s += `<g class="sign sign-n"><rect x="574" y="492" width="270" height="44" rx="22" fill="#8ecae6" stroke="#219ebc" stroke-width="3"/>
+      <text x="608" y="527" text-anchor="middle" class="emo" font-size="32">🦈</text><text x="728" y="524" text-anchor="middle" class="signt">Nemos Klasse</text></g>`;
+
+    /* ---- Schulhof ---- */
+    s += `<rect x="0" y="700" width="1400" height="160" fill="url(#pave)"/>
+      <path d="M330 760 Q600 718 900 728" fill="none" stroke="#f1f1f1" stroke-width="5" opacity=".8"/>
+      <g class="chalk-h" fill="none" stroke="#ffffff" stroke-width="3" opacity=".75"><rect x="470" y="800" width="44" height="40"/><rect x="514" y="800" width="44" height="40"/><rect x="492" y="760" width="44" height="40"/><rect x="470" y="720" width="44" height="40" opacity="0"/></g>
+      <polygon points="1110,712 1400,712 1400,860 1050,860" fill="url(#rubber)"/>
+      <g class="climb"><polygon points="1270,838 1400,838 1400,700 1340,606" fill="#3b2a20"/>
+        <circle cx="1340" cy="700" r="20" fill="#c65a3f"/><circle cx="1318" cy="780" r="16" fill="#c65a3f"/><circle cx="1372" cy="786" r="13" fill="#c65a3f"/>
+        <path d="M1300 760 L1330 760 M1350 730 L1376 730 M1290 810 L1316 810" stroke="#e0a458" stroke-width="7" stroke-linecap="round"/>
+        <path d="M1340 612 L1394 700 M1352 640 L1300 790 M1376 690 L1340 830" stroke="#3a86ff" stroke-width="3"/><path d="M1350 650 L1380 760" stroke="#e63946" stroke-width="3"/></g>
+      <polygon points="0,770 340,770 340,860 0,860" fill="#8b6b4f"/>`;
+    for (let x = 0; x < 340; x += 34) s += `<path d="M${x} 770 V860" stroke="#7a5c43" stroke-width="2"/>`;
+    s += `<path d="M60 796 V852 M292 826 V856" stroke="#4a4f55" stroke-width="8" stroke-linecap="round"/>
+      <path d="M18 772 Q56 742 98 794 Q146 846 320 812 L322 830 Q140 866 88 808 Q54 768 24 790 Z" fill="#d39a5c" stroke="#a8703b" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M30 778 Q58 756 92 798 Q140 852 318 820" fill="none" stroke="#e8b57d" stroke-width="3" stroke-dasharray="2 14"/>`;
+    // Herbstbaum links oben
+    s += `<g class="tree"><path d="M-10 -10 Q120 60 210 40 Q300 20 390 80 M120 50 Q150 140 260 170 M210 40 Q250 -10 330 0 M60 30 Q40 120 90 190 M300 60 Q360 140 470 150" fill="none" stroke="#6b4226" stroke-width="11" stroke-linecap="round"/>`;
+    for (let i = 0; i < 90; i++) { const x = R() * 480 - 10, y = R() * 220 - 10, c = ["#d9622b", "#e8893a", "#b5432a", "#f2a541", "#c0552d"][Math.floor(R() * 5)]; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="10" ry="6" fill="${c}" transform="rotate(${(R() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
+    s += `</g>`;
+    for (let i = 0; i < 14; i++) { const x = 340 + R() * 760, y = 712 + R() * 140; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="7" ry="4" fill="${["#d9622b", "#e8893a", "#b5432a"][i % 3]}" transform="rotate(${(R() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
+
+    // Tippflächen
+    s += `<polygon class="hot" data-room="polly" points="-10,238 907,238 907,470 1018,470 1260,700 1180,700 1000,520 -10,505"/>
+      <rect class="hot" data-room="nemo" x="-10" y="505" width="900" height="200"/>
+      <g id="schKid"></g></svg>`;
+    return s;
+  }
+  /* ==== SCHULHAUS ENDE ==== */
+  /* ---------- Schulhaus: Superheld auswählen, laufen, fliegen ---------- */
+  // Punkte im Bild: Hof, vor Nemos Tür, unter dem Podest, vor Pollys Tür (oben)
+  const SCH = { Y: [720, 812], N: [696, 714], F: [962, 718], P: [940, 478] };
+  let figAt = "Y", walking = null;
+  const reducedMotion = () => { try { return !!window.__FAST_WALK || matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
+  function kidAt(x, y) { const g = $("schKid"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(.95)`); }
+  function drawSchool() {
+    const wrap = $("schoolWrap"); wrap.innerHTML = schoolSVG();
+    $("schKid").innerHTML = kidSVG(S.fig == null ? 0 : S.fig);
+    const p = SCH[figAt === "nemo" ? "N" : figAt === "polly" ? "P" : "Y"]; kidAt(p[0], p[1]);
+    wrap.querySelectorAll(".hot").forEach(h => h.addEventListener("click", () => goRoom(h.dataset.room)));
+  }
+  // In einen Raum gehen: über den Hof laufen, zu Polly nach oben fliegen
+  function goRoom(id) {
+    if (current !== "scrWorld" || !$("figPop").hidden) return;
+    if (walking) { walking.skip = true; return; }
+    const from = figAt === "nemo" ? "N" : figAt === "polly" ? "P" : "Y", segs = [];
+    if (id === "nemo") { if (from === "P") segs.push({ to: SCH.F, fly: true }); if (from !== "N") segs.push({ to: SCH.N }); }
+    else if (from !== "P") { segs.push({ to: SCH.F }); segs.push({ to: SCH.P, fly: true }); }
+    const kid = $("schKid").querySelector(".kid");
+    walking = { skip: reducedMotion() };
+    let pos = SCH[from].slice(), si = 0;
+    const step = (now) => {
+      if (!walking) return;
+      if (walking.skip || si >= segs.length) {
+        const end = segs.length ? segs[segs.length - 1].to : pos; kidAt(end[0], end[1]);
+        if (kid) kid.classList.remove("walk", "fly"); return arrive(id);
+      }
+      const sg = segs[si];
+      if (!sg.a) {
+        sg.a = pos.slice(); sg.t0 = now; sg.dur = Math.max(160, Math.hypot(sg.to[0] - sg.a[0], sg.to[1] - sg.a[1]) / (sg.fly ? 280 : 380) * 1000);
+        if (kid) { kid.classList.toggle("fly", !!sg.fly); kid.classList.toggle("walk", !sg.fly); }
+        if (sg.fly) tone([520, 700, 900], 0.05);
+      }
+      const u = Math.min(1, (now - sg.t0) / sg.dur);
+      let x, y;
+      if (sg.fly) { // im Bogen fliegen
+        const e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2, cx = Math.max(sg.a[0], sg.to[0]) + 90, cy = (sg.a[1] + sg.to[1]) / 2;
+        x = (1 - e) * (1 - e) * sg.a[0] + 2 * (1 - e) * e * cx + e * e * sg.to[0]; y = (1 - e) * (1 - e) * sg.a[1] + 2 * (1 - e) * e * cy + e * e * sg.to[1];
+      } else { x = sg.a[0] + (sg.to[0] - sg.a[0]) * u; y = sg.a[1] + (sg.to[1] - sg.a[1]) * u; }
+      kidAt(x, y); pos = [x, y];
+      if (u >= 1) { pos = sg.to.slice(); si++; }
+      requestAnimationFrame(step);
+    };
+    tone([440, 560], 0.04);
+    requestAnimationFrame(step);
+  }
+  // Angekommen: Tür auf und hinein in den Raum
+  function arrive(id) {
+    figAt = id; walking = null;
+    tone(id === "polly" ? [660, 880, 990] : [520, 660, 780], 0.08);
+    const svg = $("schoolWrap").querySelector("svg"), p = SCH[id === "nemo" ? "N" : "P"];
+    if (reducedMotion() || !svg) return enterWorld(id);
+    svg.style.transformOrigin = `${(p[0] / 14).toFixed(1)}% ${((p[1] - 60) / 8.6).toFixed(1)}%`;
+    svg.classList.add("zoomin");
+    setTimeout(() => { if (current === "scrWorld") enterWorld(id); }, 620);
+  }
+  function openFigPick(first) {
+    const box = $("figs"); box.innerHTML = "";
+    KIDS.forEach((K, k) => {
+      const b = el("button", "figopt" + (S.fig === k ? " on" : ""), kidIcon(k, "100%"));
+      b.setAttribute("aria-label", `Superheld ${k + 1}`);
+      b.addEventListener("click", () => {
+        S.fig = k; save(); $("figPop").hidden = true; drawSchool(); tone([660, 880, 1100], 0.06);
+        const kid = $("schKid").querySelector(".kid"); if (kid) { kid.classList.add("hello"); setTimeout(() => kid.classList.remove("hello"), 1600); }
+        speak("Super! Wohin möchtest du? Unten ist Nemos Klasse, da übst du Deutsch. Oben ist Pollys Klasse, da übst du Mathe.");
+      });
+      box.appendChild(b);
+    });
+    $("figTitle").textContent = first ? "Wähle deinen Superhelden!" : "Welcher Superheld bist du heute?";
+    $("figPop").hidden = false;
+    speak(first ? "Wähle deinen Superhelden! Damit läufst du durch die Schule." : "Welcher Superheld bist du heute?");
+  }
   function renderWorlds() {
     const t = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null, who = S.name || (t ? t[1] : "");
     $("worldHello").textContent = who ? `Hallo ${who}! Wohin möchtest du?` : "Wohin möchtest du?";
@@ -6052,7 +6363,16 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     $("wtPolly").textContent = sp ? `⭐ ${sp} ${sp === 1 ? "Stern" : "Sterne"}` : "✨ Neu!";
     updateFoot(); $("resetBtn2").textContent = $("resetBtn").textContent; $("whoTag2").hidden = $("whoTag").hidden; $("whoTag2").textContent = $("whoTag").textContent;
     setCoins(false); show("scrWorld");
-    speak((who ? `Hallo ${who}! ` : "") + "Wohin möchtest du? Zu Nemo ins Meer, da übst du Deutsch. Oder zu Polly auf die Papageien-Inseln, da übst du Mathe.");
+    walking = null; if (S.fig == null) figAt = "Y";
+    drawSchool();
+    if (figAt !== "Y" && !reducedMotion()) { // aus dem Raum zurück auf den Hof: herauszoomen
+      const svg = $("schoolWrap").querySelector("svg"), p = SCH[figAt === "nemo" ? "N" : "P"];
+      svg.style.transformOrigin = `${(p[0] / 14).toFixed(1)}% ${((p[1] - 60) / 8.6).toFixed(1)}%`;
+      svg.classList.add("zoomout"); void svg.getBoundingClientRect();
+      requestAnimationFrame(() => requestAnimationFrame(() => svg.classList.remove("zoomout")));
+    }
+    if (S.fig == null && !window.__NO_FIGPICK) return openFigPick(true);
+    speak((who ? `Hallo ${who}! ` : "") + "Wohin möchtest du? Unten ist Nemos Klasse, da übst du Deutsch. Oben ist Pollys Klasse, da übst du Mathe. Tippe auf einen Raum!");
   }
   function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); renderHome(); }
 
@@ -6137,9 +6457,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     else if (current === "scrMap" && CH && CH.group === "lern") renderLernHome();
     else if (current === "scrMap" || current === "scrAqua") renderHome(); else renderMap();
   });
-  $("goNemo").addEventListener("click", () => enterWorld("nemo"));
+  $("goNemo").addEventListener("click", () => goRoom("nemo"));
+  $("figBtn").addEventListener("click", () => openFigPick(false));
   $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
-  $("goPolly").addEventListener("click", () => enterWorld("polly"));
+  $("goPolly").addEventListener("click", () => goRoom("polly"));
   // Buchstaben auch mit der Tastatur (Smartboard, PC) – nur in Schreib-Aufgaben
   document.addEventListener("keydown", (e) => {
     if (current !== "scrPlay" || !L || !L.typeKey || !$("rulePop").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
