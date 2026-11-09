@@ -92,6 +92,15 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .nemo { font-size: 110px; line-height: 1; display: inline-block; animation: swim 3s ease-in-out infinite; filter: drop-shadow(0 10px 12px var(--shadow)); }
 @keyframes swim { 0%,100% { transform: translateX(-16px) rotate(-4deg); } 50% { transform: translateX(16px) rotate(4deg); } }
 .start .card { display: flex; flex-direction: column; gap: 14px; width: min(520px, 100%); box-sizing: border-box; }
+.st-title { letter-spacing: 1px; }
+.st-stage { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 22px 30px; width: 100%; }
+.schoolwrap.st-pic { width: min(100%, 760px, calc((100vh - 380px) * 1400 / 960)); min-width: min(100%, 300px); flex: none; }
+@media (min-aspect-ratio: 1/1) and (min-width: 760px) { .schoolwrap.st-pic { width: min(calc(100% - 430px), calc((100vh - 170px) * 1400 / 960)); } .st-cards { flex-basis: 380px; } }
+.st-cards { flex: 0 1 380px; display: flex; flex-direction: column; gap: 14px; align-items: center; min-width: min(100%, 300px); }
+.st-cards .card { width: 100%; }
+.school .nemofin { animation: finBob 3.2s ease-in-out infinite; }
+@keyframes finBob { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(26px, -6px); } }
+.school .roofpolly { overflow: visible; }
 .start label { font-size: 26px; font-weight: 800; }
 #nameInput, #codeInput { font: inherit; font-size: 32px; text-align: center; padding: 12px; border-radius: 18px; border: 3px solid var(--sand-edge); background: var(--white); color: var(--ink); width: 100%; box-sizing: border-box; -webkit-user-select: text; user-select: text; }
 
@@ -582,7 +591,21 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 .polly-m { animation: flap 2.6s ease-in-out infinite !important; }
 @keyframes flap { 0%, 100% { transform: translateY(-10px) rotate(-6deg); } 50% { transform: translateY(10px) rotate(5deg); } }
 /* Schulhaus mit Nemos Klasse (unten) und Pollys Klasse (oben) */
-.schoolwrap { width: min(100%, calc((100vh - 330px) * 1400 / 960), 1100px); border-radius: 26px; overflow: hidden; box-shadow: 0 10px 30px var(--shadow); background: #e6f5ff; flex: none; }
+.schoolwrap { position: relative; width: min(100%, calc((100vh - 330px) * 1400 / 960), 1100px); border-radius: 26px; overflow: hidden; box-shadow: 0 10px 30px var(--shadow); background: #e6f5ff; flex: none; }
+/* Außenansicht: Fassade in drei Klappen – beim Reingehen klappen die Stockwerke auf */
+.facade { position: absolute; inset: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.facade .flap { position: absolute; inset: 0; transform-origin: 50% var(--hy); pointer-events: none; will-change: transform;
+  transition: transform .8s cubic-bezier(.45,0,.3,1) var(--d), opacity .2s linear var(--d); }
+.facade .flap svg { display: block; }
+.facade.open .flap { transform: perspective(1500px) rotateX(92deg); opacity: 0; transition: transform .85s cubic-bezier(.55,0,.35,1) var(--d), opacity .3s linear calc(var(--d) + .5s); }
+.facade .f-kg { --d: 0s; } .facade .f-eg { --d: .18s; } .facade .f-og { --d: .36s; }
+.facade.open .f-og { --d: 0s; } .facade.open .f-kg { --d: .36s; }
+.facade .outk { position: absolute; inset: 0; pointer-events: none; }
+.school .fdoor .leaf { transition: transform .35s ease-in-out; transform-box: fill-box; }
+.school .fdoor .leaf.l { transform-origin: left center; } .school .fdoor .leaf.r { transform-origin: right center; }
+.facade.dooropen .fdoor .leaf { transform: scaleX(.12); }
+.facade:not(.dooropen) .fdoor > rect:first-child { animation: doorGlow 1.8s ease-in-out infinite; }
+.outk .kid.inside { opacity: 0; transform: scale(.8); transition: opacity .3s, transform .3s; transform-box: fill-box; transform-origin: center bottom; }
 .school { display: block; width: 100%; height: auto; transition: transform .6s ease-in, opacity .6s ease-in; }
 .school.zoomin { transform: scale(3.2); opacity: 0; }
 .school.zoomout { transform: scale(3.2); opacity: 0; transition: none; }
@@ -949,8 +972,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
   <!-- START -->
   <section class="screen start center" id="scrStart">
-    <div class="duo" aria-hidden="true"><span class="nemo">🦈</span><span class="nemo polly-m pollyfig">🦜</span></div>
-    <div class="head xl">Nemos & Pollys<br>Spielplatz</div>
+    <div class="head xl st-title">Neuerburginsel</div>
+    <div class="st-stage">
+    <div class="schoolwrap st-pic" id="startPic" aria-hidden="true"></div>
+    <div class="st-cards">
     <div class="card" id="nameCard">
       <label for="nameInput">Wie heißt du?</label>
       <input id="nameInput" type="text" maxlength="16" autocomplete="off" autocapitalize="words" placeholder="Dein Vorname">
@@ -969,6 +994,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       <button class="big-btn" id="codeBtn">Anmelden ✨</button>
       <p class="login-msg" id="codeMsg" role="status" hidden></p>
       <button class="link-btn" id="guestBtn" hidden>Ohne Anmeldung spielen – dann wird nichts gespeichert</button>
+    </div>
+    </div>
     </div>
   </section>
 
@@ -990,7 +1017,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Schulhaus + Tafel</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Neuerburginsel</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1522,6 +1549,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   let current = "scrStart";
   function show(id) {
     current = id; closeSheet();
+    if (id === "scrStart") { try { inside = false; hero = { floor: "eg", x: ST.entry }; const sp = $("startPic"); if (sp && !sp.firstChild) sp.innerHTML = outsideSVG(); } catch (e) {} }
     // Ruhe-Modus: In Aufgaben, Auswertung und Urkunde steht der Hintergrund still – der Blick bleibt bei der Aufgabe.
     document.body.classList.toggle("calm", ["scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"].indexOf(id) >= 0);
     SCREENS.forEach(s => $(s).hidden = s !== id);
@@ -6348,20 +6376,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       <pattern id="pave" width="48" height="24" patternUnits="userSpaceOnUse"><rect width="48" height="24" fill="#a9b0b5"/><path d="M0 0.5 H48 M0 12.5 H48 M0.5 0 V12 M24.5 12 V24" stroke="#959ca1" stroke-width="2"/></pattern>
     </defs>
     <rect width="1400" height="660" fill="url(#skG)"/><rect y="650" width="1400" height="310" fill="url(#soil)"/>`;
-    [[640, 70, .9], [820, 40, .7], [1350, 90, .6]].forEach(([x, y, k]) => { s += `<g opacity=".95" transform="translate(${x} ${y}) scale(${k})"><ellipse rx="58" ry="24" fill="#fff"/><ellipse cx="-32" cy="6" rx="34" ry="18" fill="#fff"/><ellipse cx="34" cy="8" rx="38" ry="18" fill="#fff"/><ellipse cx="6" cy="-16" rx="32" ry="20" fill="#fff"/></g>`; });
-    [[150, 150, 54, "#e0a458"], [300, 140, 64, "#c97b4a"], [450, 150, 50, "#b8c46a"], [590, 142, 60, "#e39b4f"], [740, 152, 46, "#c97b4a"], [860, 156, 42, "#a7c06a"]].forEach(([x, y, r, c]) => { s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".9"/>`; });
-    // Hof rechts neben dem Haus
-    s += `<rect x="1290" y="640" width="120" height="22" fill="url(#pave)"/>
-      <g class="climb"><polygon points="1312,642 1400,642 1400,520 1372,470" fill="#3b2a20"/><circle cx="1370" cy="560" r="14" fill="#a9dcf7"/><circle cx="1352" cy="612" r="11" fill="#a9dcf7"/><path d="M1340 590 L1362 590 M1376 540 L1396 540" stroke="#e0a458" stroke-width="6" stroke-linecap="round"/><path d="M1372 476 L1400 540 M1380 500 L1336 640" stroke="#3a86ff" stroke-width="3"/></g>`;
-
+    s += skyBits() + `<rect x="1290" y="640" width="120" height="22" fill="url(#pave)"/>` + gableBits();
     /* ---- Altbau mit Treppenhaus ---- */
-    s += `<rect x="1050" y="18" width="34" height="80" fill="#5b616a"/><rect x="1045" y="12" width="44" height="10" rx="2" fill="#464b52"/><path d="M1067 12 V-20 M1052 0 H1082" stroke="#6c737b" stroke-width="3"/>
-      <polygon points="952,178 1125,48 1298,178" fill="#f4f1ea"/>
-      <polygon points="930,186 1125,36 1320,186 1320,204 1125,54 930,204" fill="#4a5059"/>
-      <circle cx="1125" cy="104" r="14" fill="#5b6b78" stroke="#fff" stroke-width="5"/><path d="M1111 104 H1139 M1125 90 V118" stroke="#fff" stroke-width="2.5"/>
-      <g class="mural"><path d="M1075 178 A50 50 0 0 1 1175 178" fill="none" stroke="#e63946" stroke-width="9"/><path d="M1085 178 A40 40 0 0 1 1165 178" fill="none" stroke="#ffb703" stroke-width="9"/><path d="M1095 178 A30 30 0 0 1 1155 178" fill="none" stroke="#2a9d8f" stroke-width="9"/><path d="M1105 178 A20 20 0 0 1 1145 178" fill="none" stroke="#3a86ff" stroke-width="9"/>
-        <g transform="translate(1222 150)">${Array.from({ length: 8 }, (_, i) => `<path d="M0 -24 L3 -16 L-3 -16 Z" fill="#ffb703" transform="rotate(${i * 45})"/>`).join("")}<circle r="14" fill="#f77f00"/></g></g>
-      <rect x="960" y="190" width="330" height="672" fill="#f2ede4"/>
+    s += `<rect x="960" y="190" width="330" height="672" fill="#f2ede4"/>
       <rect x="30" y="200" width="930" height="210" fill="#f6efe2"/><rect x="30" y="432" width="930" height="208" fill="#eaf4f6"/><rect x="30" y="662" width="1260" height="198" fill="#e6ddcf"/>
       <rect x="30" y="398" width="930" height="12" fill="#c9a77c"/><rect x="30" y="628" width="930" height="12" fill="#b9c4c9"/><rect x="30" y="848" width="1260" height="12" fill="#a89f92"/>`;
     // Treppen: hoch (EG → OG) und runter (EG → Keller)
@@ -6405,28 +6422,116 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     [380, 670].forEach(x => { s += `<rect x="${x - 5}" y="454" width="10" height="186" fill="#b3bcc3"/><rect x="${x - 12}" y="560" width="24" height="80" rx="6" fill="url(#padG)"/>`; });
     s += `<rect x="928" y="454" width="22" height="186" fill="url(#colG)"/>`;
     [["OG", 1044, 410], ["EG", 1125, 640], ["KG", 1125, 860]].forEach(([t, x, y]) => { s += `<rect x="${x - 26}" y="${y + 1}" width="52" height="20" rx="6" fill="#1b2a4a"/><text x="${x}" y="${y + 17}" text-anchor="middle" class="flrt">${t}</text>`; });
-    // Blechblende und Dach des Neubaus
-    s += `<rect x="14" y="150" width="954" height="50" fill="#8f989f"/><rect x="14" y="144" width="954" height="10" rx="2" fill="#78818a"/>`;
-    for (let x = 30; x < 965; x += 28) s += `<path d="M${x} 154 V200" stroke="#838c93" stroke-width="2"/>`;
-    s += `<text x="490" y="186" text-anchor="middle" class="schoolname">Unsere Schule</text>`;
-    // Herbstbaum links oben
-    s += `<g class="tree"><path d="M-10 -10 Q110 50 190 30 Q270 10 350 60 M110 40 Q140 110 230 130 M190 30 Q230 -10 300 -2 M50 20 Q30 90 70 140" fill="none" stroke="#6b4226" stroke-width="10" stroke-linecap="round"/>`;
-    for (let i = 0; i < 70; i++) { const x = R() * 400 - 10, y = R() * 160 - 10, c = ["#d9622b", "#e8893a", "#b5432a", "#f2a541", "#c0552d"][Math.floor(R() * 5)]; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="9" ry="5.5" fill="${c}" transform="rotate(${(R() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
-    s += `</g><g id="schKid"></g></svg>`;
+    s += fasciaBits() + treeBits(R);
+    s += `<g id="schKid"></g></svg>`;
     return s;
+  }
+  // Wolken, Bäume hinter dem Haus, Klettergerüst im Hof
+  function skyBits() {
+    let s = "";
+    [[640, 70, .9], [820, 40, .7], [1350, 90, .6]].forEach(([x, y, k]) => { s += `<g opacity=".95" transform="translate(${x} ${y}) scale(${k})"><ellipse rx="58" ry="24" fill="#fff"/><ellipse cx="-32" cy="6" rx="34" ry="18" fill="#fff"/><ellipse cx="34" cy="8" rx="38" ry="18" fill="#fff"/><ellipse cx="6" cy="-16" rx="32" ry="20" fill="#fff"/></g>`; });
+    [[150, 150, 54, "#e0a458"], [300, 140, 64, "#c97b4a"], [450, 150, 50, "#b8c46a"], [590, 142, 60, "#e39b4f"], [740, 152, 46, "#c97b4a"], [860, 156, 42, "#a7c06a"]].forEach(([x, y, r, c]) => { s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".9"/>`; });
+    s += `<g class="climb"><polygon points="1312,642 1400,642 1400,520 1372,470" fill="#3b2a20"/><circle cx="1370" cy="560" r="14" fill="#a9dcf7"/><circle cx="1352" cy="612" r="11" fill="#a9dcf7"/><path d="M1340 590 L1362 590 M1376 540 L1396 540" stroke="#e0a458" stroke-width="6" stroke-linecap="round"/><path d="M1372 476 L1400 540 M1380 500 L1336 640" stroke="#3a86ff" stroke-width="3"/></g>`;
+    return s;
+  }
+  // Schornstein, Giebel mit Rundfenster und Wandbild (Regenbogen und Sonne – eigene Zeichnung)
+  const gableBits = () => `<rect x="1050" y="18" width="34" height="80" fill="#5b616a"/><rect x="1045" y="12" width="44" height="10" rx="2" fill="#464b52"/><path d="M1067 12 V-20 M1052 0 H1082" stroke="#6c737b" stroke-width="3"/>
+      <polygon points="952,178 1125,48 1298,178" fill="#f4f1ea"/>
+      <polygon points="930,186 1125,36 1320,186 1320,204 1125,54 930,204" fill="#4a5059"/>
+      <circle cx="1125" cy="104" r="14" fill="#5b6b78" stroke="#fff" stroke-width="5"/><path d="M1111 104 H1139 M1125 90 V118" stroke="#fff" stroke-width="2.5"/>
+      <g class="mural"><path d="M1075 178 A50 50 0 0 1 1175 178" fill="none" stroke="#e63946" stroke-width="9"/><path d="M1085 178 A40 40 0 0 1 1165 178" fill="none" stroke="#ffb703" stroke-width="9"/><path d="M1095 178 A30 30 0 0 1 1155 178" fill="none" stroke="#2a9d8f" stroke-width="9"/><path d="M1105 178 A20 20 0 0 1 1145 178" fill="none" stroke="#3a86ff" stroke-width="9"/>
+        <g transform="translate(1222 150)">${Array.from({ length: 8 }, (_, i) => `<path d="M0 -24 L3 -16 L-3 -16 Z" fill="#ffb703" transform="rotate(${i * 45})"/>`).join("")}<circle r="14" fill="#f77f00"/></g></g>`;
+  // Blechblende des Neubaus mit Schriftzug
+  function fasciaBits() {
+    let s = `<rect x="14" y="150" width="954" height="50" fill="#8f989f"/><rect x="14" y="144" width="954" height="10" rx="2" fill="#78818a"/>`;
+    for (let x = 30; x < 965; x += 28) s += `<path d="M${x} 154 V200" stroke="#838c93" stroke-width="2"/>`;
+    return s + `<text x="490" y="186" text-anchor="middle" class="schoolname">Unsere Schule</text>`;
+  }
+  // Herbstbaum links oben
+  function treeBits(R) {
+    let s = `<g class="tree"><path d="M-10 -10 Q110 50 190 30 Q270 10 350 60 M110 40 Q140 110 230 130 M190 30 Q230 -10 300 -2 M50 20 Q30 90 70 140" fill="none" stroke="#6b4226" stroke-width="10" stroke-linecap="round"/>`;
+    for (let i = 0; i < 70; i++) { const x = R() * 400 - 10, y = R() * 160 - 10, c = ["#d9622b", "#e8893a", "#b5432a", "#f2a541", "#c0552d"][Math.floor(R() * 5)]; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="9" ry="5.5" fill="${c}" transform="rotate(${(R() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
+    return s + `</g>`;
+  }
+
+  /* ---- Außenansicht: die Fassade in drei Klappen (Obergeschoss, Erdgeschoss, Boden der Insel) ----
+     Gleiche Koordinaten wie der Schnitt. Nur flache Farben (keine Verläufe mit IDs), damit mehrere Bilder nebeneinander gehen.
+     Aus jedem Fenster schaut das Klassentier – die Stockwerke selbst sieht man erst, wenn die Klappen aufgehen. */
+  const FLAP_TOP = { og: 200, eg: 432, kg: 650 };
+  const peek = (r, x, y) => r.world === "polly" ? `<svg x="${x - 34}" y="${y - 60}" width="68" height="68" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>`
+    : r.lynx ? lynxSVG(x - 28, y - 54, 56) : `<text x="${x}" y="${y - 8}" text-anchor="middle" class="emo" font-size="44">${r.world === "nemo" ? "🦈" : r.emo}</text>`;
+  function win(x, y, w, h, room) {
+    let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#bfe2f2"/>` + (room ? peek(room, x + w / 2, y + h) : "");
+    s += `<path d="M${x + 10} ${y + 34} l22 0 l-16 34 l-22 0 Z M${x + w - 40} ${y + 12} l14 0 l-10 22 l-14 0 Z" fill="rgba(255,255,255,.45)"/>`;
+    s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#fff" stroke-width="7"/><path d="M${x + w / 2} ${y + 30} V${y + h} M${x} ${y + 30} H${x + w}" stroke="#fff" stroke-width="5"/>`;
+    return s + `<rect x="${x - 6}" y="${y + h + 3}" width="${w + 12}" height="8" rx="2" fill="#a9a196"/>`;
+  }
+  function facadePart(part) {
+    const room = (id) => ROOMS.find(r => r.id === id);
+    let s = "";
+    if (part === "og") {
+      s += `<rect x="22" y="200" width="946" height="232" fill="#ebe6de"/><rect x="22" y="410" width="946" height="22" fill="#d8d1c6"/>`;
+      [[44, 236, 144, 122, "polly"], [208, 236, 144, 122], [400, 236, 120, 122, "eule"], [541, 236, 119, 122], [690, 236, 120, 122, "maus"], [831, 236, 104, 122]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
+      [198, 380, 531, 670, 821].forEach(x => { s += `<polygon points="${x - 11},200 ${x + 11},200 ${x + 11},430 ${x},454 ${x - 11},430" fill="#ded7cc" stroke="#c6bdb0" stroke-width="2"/><path d="M${x + 4} 202 V430" stroke="#cbc3b7" stroke-width="5"/>`; });
+      // Altbau oben
+      s += `<rect x="952" y="196" width="354" height="236" fill="#f4f1ea"/><rect x="952" y="410" width="354" height="22" fill="#e2dccf"/>`;
+      [[990, 236, 70, 140], [1090, 236, 70, 140], [1190, 236, 70, 140]].forEach(([x, y, w, h]) => { s += win(x, y, w, h); });
+      s += `<path d="M952 196 V432 M1306 196 V432" stroke="#ddd6c9" stroke-width="4"/>`;
+    } else if (part === "eg") {
+      s += `<rect x="22" y="432" width="946" height="220" fill="#b8b1a6"/><rect x="22" y="432" width="946" height="14" fill="#cbc3b6"/>`;
+      [[44, 486, 144, 128, "loewe"], [208, 486, 144, 128], [400, 486, 120, 128, "otter"], [541, 486, 119, 128], [690, 486, 120, 128, "nemo"], [831, 486, 80, 128]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
+      // Sonnensegel, Pfosten mit Polstern, weiße Säule, Bank
+      s += `<polygon points="22,452 560,446 610,474 22,494" fill="#2f5fd0"/><path d="M22 494 L610 474" stroke="#1f47a8" stroke-width="3"/>`;
+      [380, 670].forEach(x => { s += `<rect x="${x - 5}" y="454" width="10" height="198" fill="#b3bcc3"/><rect x="${x - 12}" y="566" width="24" height="86" rx="6" fill="#2f5fd0"/><path d="M${x - 4} 574 V644" stroke="rgba(255,255,255,.4)" stroke-width="3"/>`; });
+      s += `<rect x="928" y="454" width="22" height="198" fill="#eef0f2"/><path d="M934 456 V650" stroke="#cfd3d6" stroke-width="4"/>`;
+      s += `<rect x="440" y="622" width="170" height="10" rx="3" fill="#b07a4a"/><path d="M452 632 V652 M598 632 V652" stroke="#6b4e35" stroke-width="5"/>`;
+      // Altbau unten mit Haupteingang
+      s += `<rect x="952" y="432" width="354" height="220" fill="#f4f1ea"/><rect x="952" y="432" width="354" height="14" fill="#e2dccf"/><path d="M952 432 V652 M1306 432 V652" stroke="#ddd6c9" stroke-width="4"/>`;
+      [[985, 505, 62, 92], [1203, 505, 62, 92]].forEach(([x, y, w, h]) => { s += win(x, y, w, h); });
+      s += `<g class="fdoor"><rect x="1078" y="494" width="94" height="158" fill="#55606a"/><rect x="1084" y="500" width="82" height="152" fill="#24323e"/>
+        <g class="leaf l"><rect x="1084" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="1116" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
+        <g class="leaf r"><rect x="1125" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="1130" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
+        <path d="M1090 512 l14 0 l-10 24 l-14 0 Z" fill="rgba(255,255,255,.6)"/></g>
+        <polygon points="1058,478 1192,478 1180,494 1070,494" fill="#4a5059"/><rect x="1068" y="646" width="114" height="8" rx="2" fill="#9aa1a6"/>`;
+    } else {
+      // die Insel: Wiese, Sandstrand, Meer – mit Nemo im Wasser
+      s += `<rect x="0" y="740" width="1400" height="220" fill="#3fa7d6"/>`;
+      [800, 850, 900, 940].forEach((y, i) => { s += `<path d="M${-40 + i * 30} ${y} q35 -14 70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="4" stroke-linecap="round"/>`; });
+      s += `<path d="M0 650 H1400 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#f2d49b"/>
+        <path d="M0 752 Q130 778 260 788 Q470 806 700 806 Q930 806 1150 786 Q1290 774 1400 738 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#e3bd7c"/>
+        <rect x="0" y="650" width="1400" height="24" fill="#7cc46a"/><path d="M0 674 Q60 684 120 674 T240 674 T360 674 T480 674 T600 674 T720 674 T840 674 T960 674 T1080 674 T1200 674 T1320 674 T1440 674" fill="#7cc46a"/><path d="M0 651 H1400" stroke="#5fa64f" stroke-width="3"/>
+        <polygon points="1092,652 1158,652 1190,720 1060,720" fill="#d9d2c4"/>`;
+      [[120, 712], [380, 740], [560, 716], [860, 744], [1250, 708], [1330, 742]].forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="${4 + i % 3}" fill="#c9a66b"/>`; });
+      s += `<text x="1290" y="770" text-anchor="middle" class="emo" font-size="34">⭐</text><text x="210" y="760" text-anchor="middle" class="emo" font-size="30">🐚</text>
+        <g class="nemofin"><text x="330" y="912" text-anchor="middle" class="emo" font-size="70">🦈</text><g fill="none" stroke="#fff" stroke-width="3" opacity=".85"><circle cx="400" cy="860" r="7"/><circle cx="414" cy="838" r="5"/></g></g>
+        <text x="1060" y="930" text-anchor="middle" class="emo" font-size="40">🐠</text><text x="760" y="900" text-anchor="middle" class="emo" font-size="30">🐟</text>`;
+    }
+    return s;
+  }
+  const facadeSVG = (part) => `<svg viewBox="0 0 1400 960" class="school fac" aria-hidden="true">${facadePart(part)}</svg>`;
+  // ganze Außenansicht als ein Bild (Startbildschirm): Himmel, Insel, Schule von außen, Polly auf dem Dach
+  function outsideSVG() {
+    let s = `<svg viewBox="0 0 1400 960" class="school outside" role="img" aria-label="Die Schule auf der Neuerburginsel"><rect width="1400" height="760" fill="#bfe6fa"/><rect y="0" width="1400" height="300" fill="#a9dcf7"/>`;
+    s += skyBits() + gableBits() + facadePart("kg") + facadePart("eg") + facadePart("og") + fasciaBits() + treeBits(rnd(42));
+    s += `<svg x="560" y="76" width="84" height="84" viewBox="0 0 100 100" class="roofpolly">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
+    return s + `</svg>`;
   }
   /* ==== SCHULHAUS ENDE ==== */
   /* ---------- Schulhaus: mit dem Superhelden durch Flure und Treppenhaus ---------- */
-  let hero = { floor: "eg", x: ST.entry }, walking = null;
+  let hero = { floor: "eg", x: ST.entry }, walking = null, inside = false, outX = 1215;
   const reducedMotion = () => { try { return !!window.__FAST_WALK || matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
   const roomById = (id) => ROOMS.find(r => r.id === id);
   const roomAt = () => ROOMS.find(r => r.floor === hero.floor && Math.abs(r.x - hero.x) < 2);
   const stopsOf = (f) => ROOMS.filter(r => r.floor === f).map(r => r.x).concat(f === "eg" ? [ST.entry] : []).sort((a, b) => a - b);
   function kidAt(x, y) { const g = $("schKid"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(.78)`); }
+  // Außenansicht über dem Schnitt: drei Klappen und der Held draußen vor der Tür
+  const facadeHTML = () => `<div class="facade" id="schFac" role="button" aria-label="In die Schule gehen">${["kg", "eg", "og"].map(f => `<div class="flap f-${f}" style="--hy:${(FLAP_TOP[f] / 9.6).toFixed(2)}%">${facadeSVG(f)}</div>`).join("")}<svg viewBox="0 0 1400 960" class="school outk" aria-hidden="true"><g id="schKidOut"></g></svg></div>`;
+  const kidOutAt = (x) => { const g = $("schKidOut"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} 654) scale(.78)`); };
   function drawSchool() {
-    const wrap = $("schoolWrap"); wrap.innerHTML = schoolSVG();
+    const wrap = $("schoolWrap"); wrap.innerHTML = schoolSVG() + (inside ? "" : facadeHTML());
     $("schKid").innerHTML = kidSVG(S.fig == null ? 0 : S.fig);
     kidAt(hero.x, FLOORS[hero.floor]);
+    if (!inside) { $("schKidOut").innerHTML = kidSVG(S.fig == null ? 0 : S.fig); kidOutAt(outX); $("schFac").addEventListener("click", () => goIn()); }
     wrap.querySelectorAll(".door").forEach(d => d.addEventListener("click", () => goRoom(d.dataset.room)));
     schInfo();
   }
@@ -6462,17 +6567,48 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     requestAnimationFrame(step);
   }
   const busy = () => current !== "scrWorld" || !$("figPop").hidden;
+  // Reingehen: zur Tür laufen, Tür auf, Held geht hinein – dann klappen die Stockwerke auf
+  let entering = false;
+  function goIn(then) {
+    if (inside || entering || busy()) return;
+    const fac = $("schFac"); if (!fac) { inside = true; return then && then(); }
+    entering = true; tone([523, 659, 784], 0.07);
+    const finish = () => { if (!entering) return; entering = false; inside = true; outX = 1215; hero = { floor: "eg", x: ST.entry }; kidAt(ST.entry, FLOORS.eg);
+      const f = $("schFac"); if (f) { f.style.pointerEvents = "none"; f.removeAttribute("id"); setTimeout(() => f.remove(), 800); } schInfo();
+      const kid = $("schKid").querySelector(".kid"); if (kid) { kid.classList.add("hello"); setTimeout(() => kid.classList.remove("hello"), 1400); }
+      if (then) then(); else speak("Wir sind drin! Nemos Klasse ist im Erdgeschoss. Pollys Klasse ist oben. Lauf mit den Pfeilen oder tippe auf eine Tür."); };
+    if (reducedMotion()) return finish();
+    const kid = $("schKidOut").querySelector(".kid"), x0 = outX, t0 = performance.now(), dur = Math.max(1, Math.abs(x0 - ST.entry)) / 560 * 1000;
+    if (kid) kid.classList.add("walk"); fac.classList.add("dooropen");
+    const walk = (now) => { const u = Math.min(1, (now - t0) / dur); outX = x0 + (ST.entry - x0) * u; kidOutAt(outX);
+      if (u < 1) return requestAnimationFrame(walk);
+      if (kid) { kid.classList.remove("walk"); kid.classList.add("inside"); }
+      setTimeout(() => { const f = $("schFac"); if (f) f.classList.add("open"); }, 250);
+      setTimeout(finish, then ? 1050 : 1350); };
+    requestAnimationFrame(walk);
+  }
+  // Rausgehen (▶ am Eingang): die Klappen gehen wieder zu
+  function goOut() {
+    if (!inside || walking || busy()) return;
+    inside = false; outX = 1215; drawSchool(); const fac = $("schFac");
+    if (!reducedMotion()) { fac.classList.add("open", "dooropen"); void fac.getBoundingClientRect(); requestAnimationFrame(() => requestAnimationFrame(() => { fac.classList.remove("open"); setTimeout(() => fac.classList.remove("dooropen"), 900); })); }
+    else fac.classList.remove("dooropen");
+    speak("Jetzt bist du draußen vor der Schule.");
+  }
   // Zu einer Klasse gehen und hinein
   function goRoom(id) {
     if (busy()) return;
+    if (!inside) return goIn(() => goRoom(id));
     if (walking) { walking.skip = true; return; }
     const r = roomById(id); if (!r) return;
     move(planTo(r.floor, r.x), () => enterRoom(r));
   }
   function heroStep(dir) { // Pfeile: ◀ ▶ zur nächsten Tür, ▲ ▼ Treppe
-    if (busy() || walking) return;
+    if (busy() || walking || entering) return;
+    if (!inside) { tone([220], 0.04); return; }
     if (dir === "l" || dir === "r") {
       const st = stopsOf(hero.floor), nx = dir === "l" ? st.filter(x => x < hero.x - 1).pop() : st.find(x => x > hero.x + 1);
+      if (nx == null && dir === "r" && hero.floor === "eg") return goOut();
       if (nx == null) { tone([220], 0.04); return; }
       move({ pts: [[nx, FLOORS[hero.floor]]], floor: hero.floor, x: nx }, () => { const r = roomAt(); speak(r ? (r.world ? r.name : `Die ${r.name}`) : "Der Eingang"); });
       return;
@@ -6484,6 +6620,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   }
   // Tür auf: Polly und Nemo haben Inseln, die anderen Klassen sind noch leer
   function enterRoom(r) {
+    if (!inside) return goIn();
     r = r || roomAt(); if (!r || busy()) return;
     const svg = $("schoolWrap").querySelector("svg");
     if (!r.world) {
@@ -6502,13 +6639,15 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   // Wo steht der Held? (Anzeige und Knöpfe)
   function schInfo(arrived, msg) {
     const r = roomAt(), info = $("schInfo"), go = $("mvIn");
+    if (!inside) { info.textContent = "📍 Vor der Schule"; info.classList.remove("warn"); go.disabled = false; go.textContent = "🚪 Rein in die Schule!"; go.classList.add("live");
+      ["mvL", "mvR", "mvU", "mvD"].forEach(id => $(id).disabled = true); return; }
     const where = r ? `vor der ${r.world ? (r.world === "polly" ? "Klasse von Polly" : "Klasse von Nemo") : r.name}` : Math.abs(hero.x - ST.entry) < 2 ? "am Eingang" : "im Treppenhaus";
     info.textContent = msg || `📍 ${FLOOR_NAME[hero.floor]} · ${where}`;
     info.classList.toggle("warn", !!msg);
     go.disabled = !r; go.textContent = r ? `🚪 Rein in ${r.world ? (r.world === "polly" ? "Pollys" : "Nemos") + " Klasse" : "die " + r.name}!` : "🚪 Rein!";
     go.classList.toggle("live", !!(r && r.world));
     const st = stopsOf(hero.floor);
-    $("mvL").disabled = !st.some(x => x < hero.x - 1); $("mvR").disabled = !st.some(x => x > hero.x + 1);
+    $("mvL").disabled = !st.some(x => x < hero.x - 1); $("mvR").disabled = !st.some(x => x > hero.x + 1) && !(hero.floor === "eg" && Math.abs(hero.x - ST.entry) < 2);
     $("mvU").disabled = hero.floor === "og"; $("mvD").disabled = hero.floor === "kg";
   }
   function openFigPick(first) {
@@ -6519,7 +6658,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       b.addEventListener("click", () => {
         S.fig = k; save(); $("figPop").hidden = true; drawSchool(); tone([660, 880, 1100], 0.06);
         const kid = $("schKid").querySelector(".kid"); if (kid) { kid.classList.add("hello"); setTimeout(() => kid.classList.remove("hello"), 1600); }
-        speak("Super! Lauf mit den Pfeilen durch die Schule oder tippe auf eine Tür. Nemos Klasse ist im Erdgeschoss, Pollys Klasse oben.");
+        speak(inside ? "Super! Lauf mit den Pfeilen durch die Schule oder tippe auf eine Tür. Nemos Klasse ist im Erdgeschoss, Pollys Klasse oben." : "Super! Tippe auf Rein, dann gehen wir in die Schule.");
       });
       box.appendChild(b);
     });
@@ -6535,7 +6674,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     $("wtPolly").textContent = `⭐ ${sp}`; $("wtPolly").hidden = !sp;
     updateFoot(); $("resetBtn2").textContent = $("resetBtn").textContent; $("whoTag2").hidden = $("whoTag").hidden; $("whoTag2").textContent = $("whoTag").textContent;
     setCoins(false); show("scrWorld");
-    walking = null; if (S.fig == null) hero = { floor: "eg", x: ST.entry };
+    walking = null; entering = false; if (S.fig == null) { hero = { floor: "eg", x: ST.entry }; inside = false; }
     drawSchool();
     const back = roomAt();
     if (back && back.world && !reducedMotion()) { // aus der Klasse zurück in den Flur: herauszoomen
@@ -6545,7 +6684,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       requestAnimationFrame(() => requestAnimationFrame(() => svg.classList.remove("zoomout")));
     }
     if (S.fig == null && !window.__NO_FIGPICK) return openFigPick(true);
-    speak((who ? `Hallo ${who}! ` : "") + "Lauf mit deinem Superhelden durch die Schule! Nemos Klasse ist im Erdgeschoss, da übst du Deutsch. Pollys Klasse ist oben, da übst du Mathe.");
+    speak((who ? `Hallo ${who}! ` : "") + (inside ? "Lauf mit deinem Superhelden durch die Schule! Nemos Klasse ist im Erdgeschoss, da übst du Deutsch. Pollys Klasse ist oben, da übst du Mathe."
+      : "Da ist unsere Schule auf der Neuerburginsel. Tippe auf Rein, dann gehen wir hinein!"));
   }
   function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); renderHome(); }
 
