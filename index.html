@@ -5657,7 +5657,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     $("inGo").onclick = () => startLevel(li, d);
     $("inSay").onclick = () => speak(short);
     show("scrIntro");
-    $("inRule").hidden = false; $("inRule").onclick = () => openExplain({ lv, d, li, x: null });
+    const start = () => { if (current === "scrIntro") startLevel(li, d); };
+    $("inRule").hidden = false; $("inRule").onclick = () => openExplain({ lv, d, li, x: null, onDone: start });
+    // Inseln mit Tafel: beim ersten Besuch (pro Sitzung, Zahlenraum 20 bzw. 100) rechnet Polly gleich ein Beispiel vor
+    const tk0 = typeof li === "number" && lv.tafel ? `${CH.id}:${lv.id}:${d === "leicht" ? 20 : 100}` : null;
+    if (tk0 && !tafelSeen[tk0] && !window.__NO_TAFEL_AUTO) { tafelSeen[tk0] = 1;
+      setTimeout(() => { if (current === "scrIntro" && $("rulePop").hidden) openExplain({ lv, d, li, x: null, onDone: start, auto: true }); }, 450); }
   }
   const shortOf = (lv, d) => (lv.short ? lv.short(d) : lv.task ? lv.task(d) : "") || lv.intro(d);
   function startLevel(li, d) {
@@ -5964,7 +5969,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       v: "🐣 Die kleine Aufgabe hilft: 7 − 3 = 4 ➜ 47 − 3 = 44 · 70 − 30 = 40",
       say: "Minus mit Material. Die erste Zahl liegt da. Nimm so viele Teile weg, wie abgezogen werden. Reichen die Einer nicht, brich einen Zehner auf. Dann zählst du, was übrig bleibt: 57 minus 23 gleich 34." }
   };
-  let ruleSeen = {};
+  let ruleSeen = {}, tafelSeen = {};
   const ruleKey = (ch, lv) => (ch.rulesAs || ch.id) + ":" + lv.id;
   function ruleOf(ch, li) { const lv = typeof li === "number" ? ch.levels[li] : null, r = lv && RULES[ruleKey(ch, lv)]; return r ? { r, lv } : null; }
   const rPlain = (s) => s.replace(/[*|]/g, "");
@@ -6040,7 +6045,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     card.innerHTML = `<div class="rc-top"><span class="rc-chip expl">❓ So geht's</span><span class="rc-isl">${ls.icon || ""} ${ls.name || ""}</span><button class="tf-x" id="tfX" aria-label="Schließen">✕</button></div>
       <div class="tf-talk"><img class="tf-polly" src="${artURI("polly")}" alt=""><div class="tf-bub" id="tfBub" aria-live="polite"></div></div>
       <div class="tf-board" id="tfBoard" role="img" aria-label="Tafel"><div class="tf-eq">${ls.board}</div>${ls.field ? `<div class="tf-field" id="tfField"></div>` : ""}</div>
-      <div class="tf-ctl"><button class="iconbtn" id="tfBack" aria-label="Einen Schritt zurück">◀</button><div class="tf-dots" aria-hidden="true">${ls.steps.map(() => "<i></i>").join("")}</div><button class="iconbtn say" id="tfSay" aria-label="Nochmal vorlesen">🔊</button><button class="tf-again" id="tfAgain" hidden>🔁 Nochmal</button><button class="big-btn" id="tfGo">Weiter ▶</button></div>`;
+      <div class="tf-ctl"><button class="iconbtn" id="tfBack" aria-label="Einen Schritt zurück">◀</button><div class="tf-dots" aria-hidden="true">${ls.steps.map(() => "<i></i>").join("")}</div><button class="iconbtn say" id="tfSay" aria-label="Nochmal vorlesen">🔊</button><button class="tf-again" id="tfAgain" hidden>🔁 Nochmal</button>${ls.auto ? `<button class="tf-again" id="tfSkip">⏭ Kenn ich schon</button>` : ""}<button class="big-btn" id="tfGo">Weiter ▶</button></div>`;
     const sayOf = (i) => ls.steps[i].replace(/<[^>]+>/g, "");
     const go = (to, anim) => {
       k = Math.max(0, Math.min(n - 1, to));
@@ -6050,12 +6055,13 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       if (ls.field) { const fo = Object.assign({}, ls.field(k)); if (!anim) delete fo.pop; $("tfField").innerHTML = zfHTML(fo); }
       const b = $("tfBub"); b.innerHTML = `<span>${ls.steps[k]}</span>`; b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
       card.querySelectorAll(".tf-dots i").forEach((d, i) => { d.classList.toggle("on", i <= k); d.classList.toggle("cur", i === k); });
-      $("tfBack").disabled = k === 0; $("tfAgain").hidden = k < n - 1;
+      $("tfBack").disabled = k === 0; $("tfAgain").hidden = k < n - 1; if ($("tfSkip")) $("tfSkip").hidden = k === n - 1;
       $("tfGo").textContent = k < n - 1 ? "Weiter ▶" : "✅ Jetzt du!";
       speak(sayOf(k));
     };
     const close = () => { pop.hidden = true; card.classList.remove("tafel"); try { speechSynthesis.cancel(); } catch (e) {} };
-    const next = () => { if (k < n - 1) go(k + 1, true); else close(); };
+    const next = () => { if (k < n - 1) go(k + 1, true); else { close(); if (ls.onDone) ls.onDone(); } };
+    if ($("tfSkip")) $("tfSkip").onclick = close;
     $("tfGo").onclick = next; $("tfBoard").onclick = () => { if (k < n - 1) go(k + 1, true); };
     $("tfBack").onclick = () => go(k - 1, false); $("tfAgain").onclick = () => go(0, true);
     $("tfSay").onclick = () => speak(sayOf(k)); $("tfX").onclick = close;
@@ -6071,7 +6077,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     if (!o) return;
     // Inseln mit Tafel: Polly rechnet die aktuelle Aufgabe (oder ein Beispiel) an der Tafel vor
     if (o.lv && o.lv.tafel) { let ls = null; try { ls = o.lv.tafel(o.x, o.d); } catch (e) { ls = null; }
-      if (ls) return openTafel(Object.assign({ icon: o.lv.icon, name: o.lv.name, color: o.lv.color }, ls)); }
+      if (ls) return openTafel(Object.assign({ icon: o.lv.icon, name: o.lv.name, color: o.lv.color, onDone: o.onDone, auto: o.auto }, ls)); }
     const { lv, d } = o, card = $("ruleCard"); card.classList.remove("tafel");
     let xp = null; try { xp = o.x && lv.explain ? lv.explain(o.x, d) : null; } catch (e) { xp = null; }
     const ro = typeof o.li === "number" && !xp ? ruleOf(CH, o.li) : null, r = ro && ro.r;
@@ -6096,7 +6102,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const AMPEL = [["gruen", "Das kann ich sicher.", 3], ["gelb", "Das kann ich schon ein bisschen.", 2], ["rot", "Das übe ich noch.", 1]];
   // Nur im Arbeitsspeicher: höchstens 2 Ampel-Fragen pro Sitzung (die erste Insel, dann frühestens 2 Inseln später).
   let ampelSession = { asked: 0, since: 0 };
-  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; ruleSeen = {}; coinCarry = 0; }
+  function resetAmpel() { ampelSession = { asked: 0, since: 0 }; ruleSeen = {}; tafelSeen = {}; coinCarry = 0; }
   function askAmpel() {
     if (L.li === "bonus" || L.li === "expert" || L.practice || !ICH_KANN[ruleKey(CH, CH.levels[L.li])]) return false;
     return ampelSession.asked === 0 || (ampelSession.asked === 1 && ampelSession.since >= 2);
