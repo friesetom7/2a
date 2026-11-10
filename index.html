@@ -641,6 +641,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 .qroom { border: none; border-radius: 999px; padding: 6px 14px; color: #fff; font: inherit; font-size: 17px; font-weight: 900; text-shadow: 0 1px 0 rgba(0,0,0,.25); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 3px 0 var(--edge); }
 .qroom.nemo-r { background: linear-gradient(160deg, #5cc8ea, #1270a8 70%); --edge: #072a44; }
 .qroom.polly-r { background: linear-gradient(160deg, #c5f27a, #35b56b 60%, #0e7a55); --edge: #0a5a3e; }
+.qroom.out-r { background: linear-gradient(160deg, #ffd88a, #f4a259 60%, #c96a1b); --edge: #7a3d0c; }
 .qroom .pollyfig .pi { width: 1.2em !important; height: 1.2em !important; }
 .qroom .wt { font-size: 13px; background: rgba(255,255,255,.24); border-radius: 999px; padding: 2px 8px; }
 .schinfo { background: rgba(4, 30, 52, .4); color: #fff; border-radius: 999px; padding: 6px 18px; font-size: 19px; font-weight: 900; text-align: center; max-width: min(100%, 760px); }
@@ -725,7 +726,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .mrow > :first-child:not(.mcol) { flex: none; }
 @media (max-aspect-ratio: 1/1) { .mrow { flex-wrap: wrap; } }
 .eq { background: var(--sand); border-radius: 26px; padding: 14px 26px; box-shadow: 0 6px 0 var(--sand-edge), 0 12px 24px var(--shadow); display: flex; flex-direction: column; gap: 10px; align-items: center; max-width: 100%; box-sizing: border-box; }
-.eqline { font-size: clamp(34px, 6vw, 52px); font-weight: 900; display: flex; align-items: center; justify-content: center; gap: .26em; flex-wrap: wrap; font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.15; }
+.eqline { font-size: clamp(34px, 6vw, 52px); font-weight: 900; display: flex; align-items: center; justify-content: center; gap: .26em; flex-wrap: nowrap; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.15; }
 .eqline.small { font-size: clamp(22px, 3.8vw, 30px); color: var(--muted); }
 .eqline.step { font-size: clamp(28px, 4.8vw, 40px); }
 .eqline.eqhead { border-bottom: 3px dashed var(--sand-edge); padding-bottom: 8px; }
@@ -830,7 +831,8 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .zstrahl .zs-polly { transition: transform .55s cubic-bezier(.4, 1.5, .5, 1), opacity .25s; }
 .zstrahl .zs-hit { cursor: pointer; }
 .zstrahl .zs-star { font-size: 30px; }
-.dn-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; background: rgba(255,255,255,.88); border-radius: 22px; padding: 12px 16px; box-shadow: 0 6px 16px var(--shadow); }
+.dn-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: nowrap; max-width: 100%; box-sizing: border-box; background: rgba(255,255,255,.88); border-radius: 22px; padding: 12px 16px; box-shadow: 0 6px 16px var(--shadow); }
+.dn-row .dn-part { flex: 0 1 auto; min-width: 0; } .dn-row .dn-part svg.dn { max-width: 100%; height: auto; display: block; } .dn-row .dn-op { flex: none; }
 .dn { height: auto; display: block; max-width: 100%; }
 .dn-op { font-size: 40px; font-weight: 900; color: var(--ink); }
 .nbrs { display: flex; gap: clamp(8px, 2.6vw, 24px); justify-content: center; align-items: flex-start; flex-wrap: wrap; }
@@ -847,7 +849,7 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .sortslot { min-width: 84px; height: 66px; border-bottom: 5px solid var(--gold); font-size: clamp(30px, 5vw, 42px); font-weight: 900; color: #fff; text-shadow: 0 3px 0 var(--deep); display: grid; place-items: center; }
 .sortslots .lt { color: #fff; font-size: 26px; font-weight: 900; opacity: .85; }
 .sorthint { color: #fff; font-size: 21px; font-weight: 900; text-shadow: 0 2px 0 var(--deep); }
-.cmpcard { display: flex; align-items: center; gap: 22px; font-size: clamp(44px, 8vw, 66px); font-weight: 900; padding: 14px 32px; }
+.cmpcard { display: flex; align-items: center; gap: clamp(10px, 3vw, 22px); font-size: clamp(36px, 8vw, 66px); font-weight: 900; padding: 14px clamp(16px, 4vw, 32px); white-space: nowrap; max-width: 100%; box-sizing: border-box; }
 .cmpcard .markslot { min-width: 1em; }
 .opt.numopt { font-size: clamp(36px, 7vw, 56px); min-width: 150px; font-variant-numeric: tabular-nums; }
 
@@ -1009,7 +1011,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       <button class="padgo" id="mvIn">🚪 Rein!</button>
       <button class="padb" id="mvD" aria-label="Treppe runter">▼</button><button class="padb" id="mvR" aria-label="Nach rechts">▶</button>
     </div>
-    <div class="foot"><button class="qroom nemo-r" id="goNemo"><span aria-hidden="true">🦈</span> Nemos Klasse <span class="wt" id="wtNemo"></span></button><button class="qroom polly-r" id="goPolly"><span class="pollyfig" aria-hidden="true">🦜</span> Pollys Klasse <span class="wt" id="wtPolly"></span></button><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
+    <div class="foot"><button class="qroom nemo-r" id="goNemo"><span aria-hidden="true">🦈</span> Nemos Klasse <span class="wt" id="wtNemo"></span></button><button class="qroom polly-r" id="goPolly"><span class="pollyfig" aria-hidden="true">🦜</span> Pollys Klasse <span class="wt" id="wtPolly"></span></button><button class="qroom out-r" id="goOutBtn" hidden>🌳 Raus aus der Schule</button><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
   </section>
 
   <!-- HOME -->
@@ -1017,7 +1019,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 9.11. · Neuerburginsel</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 10.11. · Neuerburginsel</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -3120,11 +3122,26 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   }
   // Kästchen der Reihe nach füllen. layout(slot, ref) baut die Anzeige:
   // slot(a) = Kästchen mit der Lösung a, ref(k) = zeigt das Ergebnis von Kästchen k, sobald es gelöst ist.
+  // Rechenzeilen bleiben immer in einer Zeile: passt eine Zeile nicht in die Karte, wird sie kleiner geschrieben
+  function fitEq(card) {
+    if (!card || !card.isConnected || !card.offsetWidth) return;
+    const cs = getComputedStyle(card), avail = card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    card.querySelectorAll(".eqline").forEach(row => {
+      row.style.fontSize = "";
+      const w = row.scrollWidth;
+      if (w > avail + 1) row.style.fontSize = Math.max(14, Math.floor(parseFloat(getComputedStyle(row).fontSize) * avail / w * 0.97)) + "px";
+    });
+  }
+  const fitAllEq = () => document.querySelectorAll("#scrPlay .eq").forEach(fitEq);
+  addEventListener("resize", () => requestAnimationFrame(fitAllEq));
+  const eqObs = typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => requestAnimationFrame(fitAllEq)) : null;
   function padTask(box, o) {
     const slots = [], refs = [];
     const slot = (a) => { const s = el("span", "slotn"); slots.push({ el: s, a, v: "", tries: 0 }); return s; };
     const ref = (k) => { const r = el("span", "refn", "…"); refs.push({ el: r, k }); return r; };
-    box.appendChild(o.layout(slot, ref));
+    const card = o.layout(slot, ref); box.appendChild(card);
+    const fit = () => fitEq(card); requestAnimationFrame(fit);
+    if (eqObs) { eqObs.disconnect(); eqObs.observe(card); if (box.parentElement) eqObs.observe(box.parentElement); }
     let cur = 0;
     const mark = () => slots.forEach((s, i) => s.el.classList.toggle("act", i === cur));
     mark();
@@ -3138,9 +3155,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         if (v === s.a) {
           s.el.classList.remove("act"); s.el.classList.add("ok"); tone([660 + cur * 80], 0.07);
           refs.forEach(r => { if (r.k === cur) { r.el.textContent = s.a; r.el.classList.add("got"); } });
-          cur++;
+          cur++; fit();
           if (cur >= slots.length) {
-            if (o.onDone) o.onDone();
+            if (o.onDone) { o.onDone(); fit(); }
             award(s.el, o.factor || 1);
             hint(praise() + (o.okText ? " " + o.okText : ""), true);
             if (o.okSay) speak(o.okSay);
@@ -3150,14 +3167,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           s.tries++;
           let why = o.why ? o.why(cur, v, s.tries) : numWhy(s.a, v);
           if (s.tries >= 2) why += ` Die Lösung ist ${s.a}.`;
-          miss(s.el, why); s.v = ""; s.el.textContent = "";
+          miss(s.el, why); s.v = ""; s.el.textContent = ""; fit();
         }
         return;
       } else {
         if (s.v.length >= 3) return;
         s.v = (s.v === "0" ? "" : s.v) + k; tone([480 + (+k) * 20], 0.03);
       }
-      s.el.textContent = s.v;
+      s.el.textContent = s.v; fit();
     });
     L.speakNow = () => speak(o.say);
   }
@@ -6350,12 +6367,24 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <path d="M45 66 L55 66 L50 72 Z" fill="#e5737f"/><path d="M50 72 Q44 79 38 75 M50 72 Q56 79 62 75" stroke="#6b4226" stroke-width="2" fill="none"/>
     <circle cx="30" cy="68" r="2" fill="#8a5a2b"/><circle cx="70" cy="68" r="2" fill="#8a5a2b"/><circle cx="26" cy="60" r="1.8" fill="#8a5a2b"/><circle cx="74" cy="60" r="1.8" fill="#8a5a2b"/>`;
   const lynxSVG = (x, y, w) => `<svg x="${x}" y="${y}" width="${w}" height="${w}" viewBox="0 -8 100 108">${LYNX}</svg>`;
+  // eigene Maus für die Mausklasse: graublau, große rosa Ohren, Schnurrhaare, Streifenschal
+  const MOUSE = `<circle cx="20" cy="30" r="21" fill="#a9b4c2" stroke="#6c7a8c" stroke-width="2.5"/><circle cx="20" cy="30" r="13" fill="#f6b3c4"/>
+    <circle cx="80" cy="30" r="21" fill="#a9b4c2" stroke="#6c7a8c" stroke-width="2.5"/><circle cx="80" cy="30" r="13" fill="#f6b3c4"/>
+    <ellipse cx="50" cy="60" rx="31" ry="29" fill="#bcc6d3" stroke="#6c7a8c" stroke-width="2.5"/><ellipse cx="50" cy="73" rx="16" ry="11" fill="#e3e8ef"/>
+    <path d="M20 84 Q50 99 80 84 L77 97 Q50 108 23 97 Z" fill="#2a9d8f" stroke="#1f7a6f" stroke-width="1.5"/><path d="M31 90 l3 -7 M44 95 l2 -8 M57 95 l2 -8 M70 90 l2 -7" stroke="#ffd166" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="38" cy="55" rx="6" ry="8" fill="#1b1b1b"/><ellipse cx="62" cy="55" rx="6" ry="8" fill="#1b1b1b"/><circle cx="40" cy="52" r="2.3" fill="#fff"/><circle cx="64" cy="52" r="2.3" fill="#fff"/>
+    <circle cx="27" cy="69" r="5" fill="#f6b3c4" opacity=".85"/><circle cx="73" cy="69" r="5" fill="#f6b3c4" opacity=".85"/>
+    <ellipse cx="50" cy="67" rx="6" ry="4.5" fill="#ee6b8f"/><path d="M50 71 V74 M44 76 Q50 80 56 76" stroke="#4a5568" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <rect x="46.4" y="77" width="3.4" height="5" rx="1" fill="#fff" stroke="#9aa5b4" stroke-width=".8"/><rect x="50.2" y="77" width="3.4" height="5" rx="1" fill="#fff" stroke="#9aa5b4" stroke-width=".8"/>
+    <path d="M36 70 L13 65 M36 74 L13 77 M64 70 L87 65 M64 74 L87 77" stroke="#4a5568" stroke-width="1.6" stroke-linecap="round"/>`;
+  const mouseSVG = (x, y, w) => `<svg x="${x}" y="${y}" width="${w}" height="${w}" viewBox="0 -8 100 108">${MOUSE}</svg>`;
+  const critSVG = (r, x, y, w) => r.lynx ? lynxSVG(x, y, w) : mouseSVG(x, y, w);
   // Die acht Klassen. Nur Polly und Nemo haben schon Inseln, die anderen Räume sind angelegt und noch leer.
   const FLOORS = { og: 410, eg: 640, kg: 860 }, FLOOR_NAME = { og: "Obergeschoss", eg: "Erdgeschoss", kg: "Keller" };
   const ROOMS = [
-    { id: "polly", floor: "og", x: 160, name: "Pollys Klasse", world: "polly", door: "#ffd166", line: "#e0a400" },
+    { id: "polly", floor: "og", x: 740, name: "Pollys Klasse", world: "polly", door: "#ffd166", line: "#e0a400" },
     { id: "eule", floor: "og", x: 450, name: "Eulenklasse", art: "der", emo: "🦉", door: "#d4b08c", line: "#9c7550" },
-    { id: "maus", floor: "og", x: 740, name: "Mausklasse", art: "der", emo: "🐭", door: "#c3cad1", line: "#8a939c" },
+    { id: "maus", floor: "og", x: 160, name: "Mausklasse", art: "der", emo: "🐭", mouse: true, door: "#c3cad1", line: "#8a939c" },
     { id: "loewe", floor: "eg", x: 160, name: "Löwenklasse", art: "der", emo: "🦁", door: "#f6b26b", line: "#d9822b" },
     { id: "otter", floor: "eg", x: 450, name: "Otterklasse", art: "der", emo: "🦦", door: "#86cfc6", line: "#3c9d91" },
     { id: "nemo", floor: "eg", x: 740, name: "Nemos Klasse", world: "nemo", door: "#8ecae6", line: "#219ebc" },
@@ -6404,7 +6433,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         <rect x="${x - 26}" y="${t + 16}" width="52" height="44" rx="4" fill="#d9eef9" stroke="${r.line}" stroke-width="3"/><circle cx="${x + 27}" cy="${t + 82}" r="5" fill="#f1f1f1" stroke="#6b4e35" stroke-width="2"/>
         ${r.world ? "" : `<g transform="translate(${x - 4} ${t + 96})"><path d="M0 -6 L26 -14" stroke="#8d6346" stroke-width="2"/><rect x="-18" y="-6" width="44" height="26" rx="5" fill="#fff" stroke="#e0a400" stroke-width="2"/><text x="4" y="12" text-anchor="middle" class="soon">bald</text></g>`}
         <rect x="${x - 118}" y="${t - 52}" width="236" height="40" rx="20" fill="#fff" stroke="${r.line}" stroke-width="4"/>
-        ${r.world === "polly" ? `<svg x="${x - 114}" y="${t - 58}" width="46" height="46" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>` : r.lynx ? lynxSVG(x - 112, t - 52, 40) : `<text x="${x - 90}" y="${t - 21}" text-anchor="middle" class="emo" font-size="27">${r.world === "nemo" ? "🦈" : r.emo}</text>`}
+        ${r.world === "polly" ? `<svg x="${x - 114}" y="${t - 58}" width="46" height="46" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>` : r.lynx || r.mouse ? critSVG(r, x - 112, t - 52, 40) : `<text x="${x - 90}" y="${t - 21}" text-anchor="middle" class="emo" font-size="27">${r.world === "nemo" ? "🦈" : r.emo}</text>`}
         <text x="${x + (r.name.length >= 12 ? 24 : 18)}" y="${t - 24}" text-anchor="middle" class="signt"${r.name.length >= 12 ? ` textLength="${Math.min(174, r.name.length * 14.3)}" lengthAdjust="spacingAndGlyphs"` : ""}>${r.name}</text>`;
       // Bild an der Wand: was in der Klasse gelernt wird (bei den leeren Klassen: das Klassentier)
       const px = x + 62, py = t + 22;
@@ -6412,7 +6441,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         <svg x="${px + 62}" y="${py - 54}" width="60" height="60" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
       else if (r.world === "nemo") s += `<rect x="${px}" y="${py}" width="124" height="80" rx="5" fill="#fff" stroke="#219ebc" stroke-width="5"/><text x="${px + 62}" y="${py + 33}" text-anchor="middle" class="board" style="font-size:19px"><tspan class="ra-die">die</tspan> Katze</text><text x="${px + 62}" y="${py + 62}" text-anchor="middle" class="board" style="font-size:19px"><tspan class="ra-der">der</tspan> Hund</text>
         <text x="${px + 106}" y="${py - 2}" text-anchor="middle" class="emo" font-size="40">🦈</text>` + ["A", "B", "C"].map((c, i) => `<rect x="${px + 2 + i * 26}" y="${py - 30}" width="22" height="24" rx="4" fill="${["#e63946", "#ffb703", "#2a9d8f"][i]}"/><text x="${px + 13 + i * 26}" y="${py - 12}" text-anchor="middle" class="flagt">${c}</text>`).join("");
-      else s += `<rect x="${px + 14}" y="${py}" width="88" height="80" rx="6" fill="#fff" stroke="${r.line}" stroke-width="4"/>` + (r.lynx ? lynxSVG(px + 26, py + 6, 64) : `<text x="${px + 58}" y="${py + 58}" text-anchor="middle" class="emo" font-size="50">${r.emo}</text>`);
+      else s += `<rect x="${px + 14}" y="${py}" width="88" height="80" rx="6" fill="#fff" stroke="${r.line}" stroke-width="4"/>` + (r.lynx || r.mouse ? critSVG(r, px + 26, py + 6, 64) : `<text x="${px + 58}" y="${py + 58}" text-anchor="middle" class="emo" font-size="50">${r.emo}</text>`);
       s += `</g>`;
     });
     // Decken und Böden als Schnitt, Lisenen-Spitzen unter dem Obergeschoss, Pfosten vor dem Erdgeschoss
@@ -6459,7 +6488,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      Aus jedem Fenster schaut das Klassentier – die Stockwerke selbst sieht man erst, wenn die Klappen aufgehen. */
   const FLAP_TOP = { og: 200, eg: 432, kg: 650 };
   const peek = (r, x, y) => r.world === "polly" ? `<svg x="${x - 34}" y="${y - 60}" width="68" height="68" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>`
-    : r.lynx ? lynxSVG(x - 28, y - 54, 56) : `<text x="${x}" y="${y - 8}" text-anchor="middle" class="emo" font-size="44">${r.world === "nemo" ? "🦈" : r.emo}</text>`;
+    : r.lynx || r.mouse ? critSVG(r, x - 28, y - 54, 56) : `<text x="${x}" y="${y - 8}" text-anchor="middle" class="emo" font-size="44">${r.world === "nemo" ? "🦈" : r.emo}</text>`;
   function win(x, y, w, h, room) {
     let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#bfe2f2"/>` + (room ? peek(room, x + w / 2, y + h) : "");
     s += `<path d="M${x + 10} ${y + 34} l22 0 l-16 34 l-22 0 Z M${x + w - 40} ${y + 12} l14 0 l-10 22 l-14 0 Z" fill="rgba(255,255,255,.45)"/>`;
@@ -6471,7 +6500,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     let s = "";
     if (part === "og") {
       s += `<rect x="22" y="200" width="946" height="232" fill="#ebe6de"/><rect x="22" y="410" width="946" height="22" fill="#d8d1c6"/>`;
-      [[44, 236, 144, 122, "polly"], [208, 236, 144, 122], [400, 236, 120, 122, "eule"], [541, 236, 119, 122], [690, 236, 120, 122, "maus"], [831, 236, 104, 122]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
+      [[44, 236, 144, 122, "maus"], [208, 236, 144, 122], [400, 236, 120, 122, "eule"], [541, 236, 119, 122], [690, 236, 120, 122, "polly"], [831, 236, 104, 122]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
       [198, 380, 531, 670, 821].forEach(x => { s += `<polygon points="${x - 11},200 ${x + 11},200 ${x + 11},430 ${x},454 ${x - 11},430" fill="#ded7cc" stroke="#c6bdb0" stroke-width="2"/><path d="M${x + 4} 202 V430" stroke="#cbc3b7" stroke-width="5"/>`; });
       // Altbau oben
       s += `<rect x="952" y="196" width="354" height="236" fill="#f4f1ea"/><rect x="952" y="410" width="354" height="22" fill="#e2dccf"/>`;
@@ -6587,6 +6616,13 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       setTimeout(finish, then ? 1050 : 1350); };
     requestAnimationFrame(walk);
   }
+  // „Raus aus der Schule“: erst zum Eingang laufen, dann hinaus
+  function leaveSchool() {
+    if (!inside || entering || walking || busy()) return;
+    if (hero.floor === "eg" && Math.abs(hero.x - ST.entry) < 2) return goOut();
+    speak("Wir gehen raus.");
+    move(planTo("eg", ST.entry), () => goOut());
+  }
   // Rausgehen (▶ am Eingang): die Klappen gehen wieder zu
   function goOut() {
     if (!inside || walking || busy()) return;
@@ -6639,6 +6675,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   // Wo steht der Held? (Anzeige und Knöpfe)
   function schInfo(arrived, msg) {
     const r = roomAt(), info = $("schInfo"), go = $("mvIn");
+    $("goOutBtn").hidden = !inside;
     if (!inside) { info.textContent = "📍 Vor der Schule"; info.classList.remove("warn"); go.disabled = false; go.textContent = "🚪 Rein in die Schule!"; go.classList.add("live");
       ["mvL", "mvR", "mvU", "mvD"].forEach(id => $(id).disabled = true); return; }
     const where = r ? `vor der ${r.world ? (r.world === "polly" ? "Klasse von Polly" : "Klasse von Nemo") : r.name}` : Math.abs(hero.x - ST.entry) < 2 ? "am Eingang" : "im Treppenhaus";
@@ -6783,6 +6820,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   });
   $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
   $("goPolly").addEventListener("click", () => goRoom("polly"));
+  $("goOutBtn").addEventListener("click", () => leaveSchool());
   // Buchstaben auch mit der Tastatur (Smartboard, PC) – nur in Schreib-Aufgaben
   document.addEventListener("keydown", (e) => {
     if (current !== "scrPlay" || !L || !L.typeKey || !$("rulePop").hidden || e.metaKey || e.ctrlKey || e.altKey) return;
