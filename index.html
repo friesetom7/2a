@@ -236,6 +236,28 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .chips { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 880px; }
 .chip { background: var(--sand); font-size: clamp(26px, 4.6vw, 40px); font-weight: 800; padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); border: 4px solid transparent; }
 .chip.on { background: var(--gold); border-color: #fff3c4; box-shadow: 0 5px 0 var(--gold-edge); }
+/* Verben: rot-orange markieren */
+.chips.vbmark .chip.on { background: #ffd2b8; border-color: #fff; box-shadow: 0 5px 0 #e8956b; color: #9d2f00; }
+.vbm { color: #c2410c; background: #ffe8d6; border-radius: 8px; padding: 0 .15em; }
+.vb-card { gap: 6px; }
+.vb-card .vb-pic { font-size: 62px; line-height: 1.1; }
+.vb-s { font-size: clamp(28px, 5.2vw, 46px); font-weight: 900; text-align: center; line-height: 1.35; }
+.vb-gap { display: inline-block; min-width: 1.4em; padding: 0 .2em; border-bottom: 5px dashed #e85d04; color: #e85d04; text-align: center; line-height: 1.1; }
+.vb-gap.got { border-bottom-style: solid; border-color: #2bb673; color: #1f7a3f; }
+.vb-gap.end { min-width: .9em; padding: 0 .04em; text-align: left; }
+.vb-inf { font-size: clamp(19px, 3vw, 24px); color: #8a7a55; font-weight: 800; }
+.vb-q { font-size: clamp(20px, 3.2vw, 27px); font-weight: 800; color: #5b4a2a; }
+.vb-pron { display: inline-flex; align-items: center; gap: .15em; background: #def3f1; color: #1d6b6b; border-radius: 14px; padding: 0 .3em; }
+.vb-pe { font-size: .75em; }
+.vb-endbtn { min-width: 110px; }
+.wbub .vb-emo { font-size: 1.15em; line-height: 1.2; }
+.vb-tbl { display: flex; flex-direction: column; gap: 4px; padding: 14px 24px; width: min(440px, 100%); box-sizing: border-box; }
+.vb-th { font-size: clamp(24px, 4vw, 32px); font-weight: 900; text-align: center; margin-bottom: 6px; }
+.vb-tr { display: grid; grid-template-columns: 6.6em max-content; justify-content: center; align-items: baseline; gap: 18px; font-size: clamp(22px, 3.8vw, 32px); font-weight: 800; padding: 2px 12px; border-radius: 12px; color: #c4b796; }
+.vb-tr.done { color: #1b2a4a; } .vb-tr.now { color: #1b2a4a; background: #fff3c4; box-shadow: 0 0 0 3px #ffd166 inset; }
+.vb-tp { color: #1d6b6b; font-size: .8em; white-space: nowrap; }
+.vb-tr .vb-gap { min-width: 1.1em; } .vb-tr:not(.now):not(.done) .vb-gap { border-bottom-color: #e6dcc4; }
+.vb-mini { font-size: 18px; color: #6b5b3e; }
 .chip.miss { border-color: var(--bad); }
 .chip.fixed { background: #e3f6e8; border-color: var(--good); color: var(--good); }
 .rs-tip { color: var(--white); font-size: clamp(19px, 3.4vw, 26px); font-weight: 800; background: rgba(255,255,255,.16); padding: 6px 18px; border-radius: 18px; }
@@ -503,6 +525,9 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .stage:has(.abc) .hear { width: 80px; height: 80px; font-size: 38px; }
 .stage:has(.abc) .counter { font-size: 20px; }
 .stage:has(.abc) .big-btn { font-size: 24px; padding: 12px 30px; }
+.stage:has(.abc) .vb-card { flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 8px 22px; gap: 4px 14px; }
+.stage:has(.abc) .vb-card .vb-pic { font-size: 40px; }
+.stage:has(.abc) .vb-card .vb-s { font-size: clamp(26px, 4.4vw, 38px); }
 .ak.w2 { grid-column: span 2; font-size: 24px; }
 .ak.sh.on { background: var(--gold); box-shadow: 0 5px 0 var(--gold-edge), 0 8px 14px var(--shadow); }
 .ak.gap { visibility: hidden; }
@@ -1019,7 +1044,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 10.11. · Neuerburginsel</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 12.11. · Verb-Inseln</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1618,7 +1643,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function chipTask(stage, o) {
     const words = o.sentence.split(" ");
     if (o.countText) stage.appendChild(el("div", "counter", o.countText));
-    const chips = el("div", "chips"); const sel = new Set();
+    const chips = el("div", "chips" + (o.chipsCls ? " " + o.chipsCls : "")); const sel = new Set();
     words.forEach((w, i) => {
       const c = el("button", "chip", o.lower ? lowerWord(w) : w);
       c.addEventListener("click", () => {
@@ -1738,7 +1763,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           countText: d === "schwer" ? "🫣 Wie viele Nomen verstecken sich?" : `🫣 Finde ${targets.length} Nomen`,
           okText: "Alle versteckten Nomen gefunden!",
           extraText: (w, i) => i === 0 || /[.]$/.test(sent.split(" ")[i - 1] || "") ? `„${w}“ steht am Satzanfang, ist aber kein Nomen.` : `„${w}“ ist kein Nomen. Der ${w}? Die ${w}? Das passt nicht.`,
-          missText: (m) => `Es versteckt sich noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}. Suche weiter!`,
+          missText: (m) => `Es ${m.length === 1 ? "versteckt sich noch ein Nomen" : "verstecken sich noch " + m.length + " Nomen"}. Suche weiter!`,
           sayExtra: "Finde die Nomen."
         });
       }
@@ -1761,7 +1786,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
             sentence: sent, targets, lower: true, factor: 2,
             okText: "Satzanfang und Nomen groß!",
             extraText: (w) => `„${w}“ ist kein Nomen und steht nicht am Satzanfang. Also klein!`,
-            missText: (m) => m.includes(0) ? "Denk an den Satzanfang! Das erste Wort schreibt man groß." : `Es fehlt noch ${m.length === 1 ? "ein Wort" : m.length + " Wörter"}. Suche die Nomen!`,
+            missText: (m) => m.includes(0) ? "Denk an den Satzanfang! Das erste Wort schreibt man groß." : `Es ${m.length === 1 ? "fehlt noch ein Wort" : "fehlen noch " + m.length + " Wörter"}. Suche die Nomen!`,
             sayExtra: "Welche Wörter schreibt man groß?"
           });
           return;
@@ -1957,7 +1982,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           onSolved: (chips) => { solvedWords.forEach((w, i) => { chips.children[i].textContent = w; }); },
           speakSolved: solvedWords.join(" "),
           extraText: (w) => `Hier beginnt kein neuer Satz. Lies laut weiter!`,
-          missText: (m) => m.includes(0) ? "Auch das allererste Wort ist ein Satzanfang!" : `Es fehlt noch ${m.length === 1 ? "ein Satzanfang" : m.length + " Satzanfänge"}. Wo machst du beim Lesen eine Pause?`,
+          missText: (m) => m.includes(0) ? "Auch das allererste Wort ist ein Satzanfang!" : `Es ${m.length === 1 ? "fehlt noch ein Satzanfang" : "fehlen noch " + m.length + " Satzanfänge"}. Wo machst du beim Lesen eine Pause?`,
           sayExtra: ""
         });
         L.speakNow = () => speak(text.split(" ").join(", ") + ". Wo fängt ein neuer Satz an?");
@@ -1977,9 +2002,277 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           countText: d === "schwer" ? "🔍 Wie viele Nomen findest du?" : `🔍 Finde ${targets.length} ${targets.length === 1 ? "Nomen" : "Nomen"}`,
           okText: "Du bist ein echter Detektiv! 🔍",
           extraText: (w) => `„${w}“ ist kein Nomen. Es hat keinen Begleiter.`,
-          missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}. Suche weiter!`,
+          missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Nomen" : "fehlen noch " + m.length + " Nomen"}. Suche weiter!`,
           sayExtra: d === "schwer" ? "Finde alle Nomen." : "Finde " + targets.length + " Nomen."
         });
+      }
+    }
+  ];
+
+  /* ---------- Kapitel Verben (Tunwörter): erkennen · verändern sich · konjugieren ---------- */
+  // Verben mit Bild (Grundform) – zum Fischen
+  const VB_PICS = [["laufen", "🏃"], ["malen", "🎨"], ["singen", "🎤"], ["lachen", "😂"], ["schwimmen", "🏊"], ["schlafen", "😴"], ["trinken", "🥤"], ["lesen", "📖"], ["springen", "🦘"], ["kochen", "🍳"],
+    ["bauen", "🧱"], ["winken", "👋"], ["tanzen", "💃"], ["weinen", "😢"], ["fliegen", "✈️"], ["klettern", "🧗"], ["hüpfen", "🐇"], ["schreiben", "✍️"], ["essen", "🍽️"], ["spielen", "⚽"], ["rufen", "📣"], ["hören", "👂"], ["backen", "🎂"], ["turnen", "🤸"]];
+  const VB_NOT = ["Hund", "Ball", "Haus", "Baum", "Sonne", "Buch", "Katze", "Apfel", "Schule", "Tisch", "Blume", "Auto", "rot", "bunt", "müde", "nass", "dick", "süß", "kalt", "rund", "weich", "grün", "klein", "groß"];
+  // Sätze: *Verb* ist markiert (daraus werden die Ziele berechnet)
+  const VB_SATZ1 = ["Der Hund *bellt* laut.", "Mia *malt* ein Bild.", "Die Katze *schläft* auf dem Sofa.", "Tim *spielt* Fußball.", "Die Vögel *singen* im Baum.", "Ich *trinke* einen Saft.",
+    "Oma *backt* einen Kuchen.", "Wir *lesen* ein Buch.", "Der Frosch *springt* ins Wasser.", "Papa *kocht* Nudeln.", "Lena *rennt* nach Hause.", "Die Kinder *lachen* viel.", "Du *schreibst* einen Brief.",
+    "Der Fisch *schwimmt* im Teich.", "Ben *baut* eine Burg.", "Das Baby *weint* leise.", "Die Sonne *scheint* hell.", "Opa *liest* die Zeitung.", "Ihr *tanzt* im Kreis.", "Das Pferd *frisst* Heu.",
+    "Meine Schwester *hüpft* auf dem Trampolin.", "Der Wind *weht* stark."];
+  const VB_SATZ2 = ["Mia *lacht* und *tanzt* im Garten.", "Tim *läuft* zur Schule und *singt* ein Lied.", "Der Hund *bellt* und *springt* über den Zaun.", "Wir *malen,* *basteln* und *singen.*",
+    "Oma *kocht* Suppe. Opa *deckt* den Tisch.", "*Spielst* du mit mir? Wir *rennen* um die Wette.", "Die Katze *schleicht* leise und *fängt* eine Maus.", "Lena *schwimmt,* *taucht* und *spritzt.*",
+    "Am Morgen *frühstücken* wir und *putzen* die Zähne.", "Im Herbst *fallen* die Blätter. Der Wind *pfeift.*", "Ben *liest* ein Buch und Paul *hört* Musik.", "Die Vögel *zwitschern* und *fliegen* davon.",
+    "*Kommst* du heute? Wir *feiern* ein Fest.", "Papa *wäscht* das Auto und Mama *gießt* die Blumen.", "Das Baby *lacht,* *strampelt* und *gluckst.*", "Nach der Schule *essen* wir und *machen* Hausaufgaben."];
+  // Experten: Fantasie-Verben – erkennbar an Endung und Platz im Satz
+  const VB_FANT = ["Der Glumpf *schnurbelt* im Wald.", "Die Plitze *wuseln* und *hopsen.*", "Ich *fröpse* jeden Tag.", "Der Mampf *knurzelt* laut und *plinkt.*", "Wir *gnubbeln* im Garten.",
+    "Du *wibbelst* den Ball.", "Die Krake *quopft* und *schnalpt.*", "Ihr *trulpt* so schön!", "Der Zork *brummelt,* *pfupst* und *tanzt.*", "Mia *mupft* einen Kuchen."];
+  const vbSent = (s) => { const ws = s.split(" "), t = []; ws.forEach((w, i) => { if (w.charAt(0) === "*") t.push(i); }); return [ws.map(w => w.replace(/\*/g, "")).join(" "), t]; };
+
+  // Fürwörter mit Endung (regelmäßige Verben)
+  const VB_PRON = { ich: ["ich", "e", "🙋"], du: ["du", "st", "👉"], er: ["er", "t", "👦"], sie: ["sie", "t", "👧"], es: ["es", "t", "👶"], wir: ["wir", "en", "🙋👧"], ihr: ["ihr", "t", "👉👉"], sieM: ["sie", "en", "👧👦👧"] };
+  const VB_ROWS = [["ich", "ich"], ["du", "du"], ["er", "er / sie / es"], ["wir", "wir"], ["ihr", "ihr"], ["sieM", "sie"]];
+  // regelmäßige Verben: Grundform, Wortstamm, Bild, Rest des Satzes
+  const VB_REG = [["spielen", "spiel", "⚽", "Fußball"], ["malen", "mal", "🎨", "ein Bild"], ["singen", "sing", "🎤", "ein Lied"], ["lachen", "lach", "😂", "laut"], ["schwimmen", "schwimm", "🏊", "im See"],
+    ["schreiben", "schreib", "✍️", "einen Brief"], ["kochen", "koch", "🍳", "Suppe"], ["bauen", "bau", "🧱", "eine Burg"], ["trinken", "trink", "🥤", "Saft"], ["winken", "wink", "👋", "zum Abschied"],
+    ["hören", "hör", "🎧", "Musik"], ["kaufen", "kauf", "🛒", "Brot"], ["rufen", "ruf", "📣", "den Hund"], ["gehen", "geh", "🚶", "nach Hause"], ["turnen", "turn", "🤸", "in der Halle"],
+    ["fliegen", "flieg", "✈️", "nach Spanien"], ["hüpfen", "hüpf", "🐇", "auf einem Bein"], ["suchen", "such", "🔍", "den Schlüssel"], ["zählen", "zähl", "🔢", "bis zehn"], ["springen", "spring", "🦘", "ins Wasser"],
+    ["machen", "mach", "📒", "Hausaufgaben"], ["träumen", "träum", "💭", "vom Meer"], ["fragen", "frag", "❓", "die Lehrerin"], ["holen", "hol", "🥛", "Milch"], ["schauen", "schau", "👀", "einen Film"]];
+  const vbForm = (v, p) => v[1] + VB_PRON[p][1];
+  // Satzanfänge: wer tut etwas?
+  const VB_SUBJ = [["Ich", "ich"], ["Du", "du"], ["Tim", "er"], ["Mia", "sie"], ["Das Kind", "es"], ["Wir", "wir"], ["Ihr", "ihr"], ["Die Kinder", "sieM"], ["Opa", "er"], ["Lea", "sie"], ["Das Mädchen", "es"], ["Meine Freunde", "sieM"]];
+  // Verben, bei denen sich der Selbstlaut ändert: Grundform, du-Form, er-Form, Satz (er/sie), Bild, Satz (du), falsche du-Formen
+  const VB_STRONG = [
+    ["laufen", "läufst", "läuft", "Der Hund ▢ schnell.", "🐕", "Du ▢ zur Schule.", ["laufst", "läuft", "laufen"]],
+    ["fahren", "fährst", "fährt", "Papa ▢ mit dem Auto.", "🚗", "Du ▢ mit dem Rad.", ["fahrst", "fährt", "fahren"]],
+    ["schlafen", "schläfst", "schläft", "Die Katze ▢ im Korb.", "😴", "Du ▢ sehr lange.", ["schlafst", "schläft", "schlafen"]],
+    ["lesen", "liest", "liest", "Oma ▢ ein Buch.", "📖", "Du ▢ eine Geschichte.", ["lest", "liesst", "lesen"]],
+    ["sehen", "siehst", "sieht", "Mia ▢ einen Regenbogen.", "🌈", "Du ▢ einen Vogel.", ["sehst", "sieht", "sehen"]],
+    ["essen", "isst", "isst", "Ben ▢ einen Apfel.", "🍎", "Du ▢ eine Banane.", ["esst", "ist", "essen"]],
+    ["geben", "gibst", "gibt", "Lea ▢ mir die Hand.", "🤝", "Du ▢ mir den Ball.", ["gebst", "gibt", "geben"]],
+    ["nehmen", "nimmst", "nimmt", "Tom ▢ einen Keks.", "🍪", "Du ▢ ein Stück Kuchen.", ["nehmst", "nimmt", "nehmen"]],
+    ["tragen", "trägst", "trägt", "Mama ▢ die Tasche.", "👜", "Du ▢ einen Rucksack.", ["tragst", "trägt", "tragen"]],
+    ["waschen", "wäschst", "wäscht", "Opa ▢ das Auto.", "🧽", "Du ▢ deine Hände.", ["waschst", "wäscht", "waschen"]],
+    ["helfen", "hilfst", "hilft", "Paul ▢ seiner Oma.", "🤗", "Du ▢ deinem Freund.", ["helfst", "hilft", "helfen"]],
+    ["sprechen", "sprichst", "spricht", "Der Papagei ▢ viele Wörter.", "🦜", "Du ▢ sehr leise.", ["sprechst", "spricht", "sprechen"]],
+    ["werfen", "wirfst", "wirft", "Lisa ▢ den Ball.", "🏐", "Du ▢ einen Stein ins Wasser.", ["werfst", "wirft", "werfen"]],
+    ["fangen", "fängst", "fängt", "Der Torwart ▢ den Ball.", "🧤", "Du ▢ einen Schmetterling.", ["fangst", "fängt", "fangen"]]];
+  // Experten: wer genau? (zwei Leute, sie oder sie)
+  const VB_XSUBJ = [["Mia und Tim", "sieM", "👧👦"], ["Du und Paul", "ihr", "👉👦"], ["Lea und ich", "wir", "👧🙋"], ["Sie", "sie", "👧"], ["Sie", "sieM", "👧👦👧"], ["Mein Freund und ich", "wir", "👦🙋"], ["Du und deine Schwester", "ihr", "👉👧"],
+    ["Oma und Opa", "sieM", "👵👴"], ["Das Kind", "es", "🧒"], ["Ihr", "ihr", "👉👉"], ["Er", "er", "👦"], ["Papa und Mama", "sieM", "👨👩"]];
+
+  const vbGapHTML = (s, v, cls) => s.replace("▢", `<span class="vb-gap${v ? " got" : ""}${cls ? " " + cls : ""}">${v || "?"}</span>`);
+  const sayGap = (s, v) => s.replace("▢", v || "…");
+  // Satz-Karte mit Lücke; nach dem Lösen steht das Verb in der Lücke
+  function vbChoice(stage, o) {
+    const card = el("div", "card word-card vb-card", (o.pic ? `<div class="vb-pic">${o.pic}</div>` : "") + `<div class="vb-s">${vbGapHTML(o.sent)}</div>` + (o.inf ? `<div class="vb-inf">(${o.inf})</div>` : "") + (o.q ? `<div class="vb-q">${o.q}</div>` : ""));
+    stage.appendChild(card);
+    choiceTask(stage, {
+      opts: o.opts, factor: o.factor,
+      onRight: () => { const g = card.querySelector(".vb-gap"); if (g) { g.textContent = o.answer; g.classList.add("got"); } },
+      okText: o.okText, okSpeak: o.okSpeak
+    });
+    L.speakNow = () => speak(o.say);
+  }
+  const vbOpts = (right, wrongs, why) => [{ label: right, correct: true }].concat(wrongs.filter((w, i, a) => w !== right && a.indexOf(w) === i).map(w => ({ label: w, correct: false, wrongText: why(w) })));
+  const endWhy = (p) => `Schau, wer es tut: ${VB_PRON[p][0] === "sie" && p === "sieM" ? "sie (viele)" : VB_PRON[p][0]} → Endung -${VB_PRON[p][1]}.`;
+
+  const VERBEN = [
+    {
+      id: "erkennen", name: "Verben erkennen", icon: "🎯", color: "#e85d04",
+      task: (d) => d === "leicht" ? "Fange nur die Verben!" : d === "mittel" ? "Markiere das Verb!" : "Markiere alle Verben!",
+      intro: (d) => d === "leicht" ? "Verben sagen, was jemand tut: laufen, malen, singen. Tippe nur die Verben an!"
+        : d === "mittel" ? "In jedem Satz steckt ein Verb. Frag: Was tut jemand? Tippe das Verb an und dann auf Fertig."
+        : "In diesen Sätzen stecken zwei oder drei Verben. Ich verrate nicht, wie viele! Tippe alle an und dann auf Fertig.",
+      ex: (d) => d === "leicht" ? "laufen ✓ · Hund ✗ · rot ✗" : d === "mittel" ? 'Der Hund <b class="vbm">bellt</b> laut.' : 'Mia <b class="vbm">lacht</b> und <b class="vbm">tanzt</b>.',
+      say: (d) => d === "leicht" ? "Verben sagen, was jemand tut. Zum Beispiel laufen, malen, singen. Tippe nur die Verben an! Tipp: Kannst du sagen, ich kann laufen? Dann ist es ein Verb."
+        : d === "mittel" ? "In jedem Satz steckt ein Verb. Frag: Was tut jemand? Tippe das Verb an und dann auf Fertig."
+        : "In diesen Sätzen stecken zwei oder drei Verben. Ich verrate nicht, wie viele. Tippe alle Verben an und dann auf Fertig.",
+      build(d) {
+        if (d === "leicht") {
+          const vs = shuffle(VB_PICS.slice()), ns = shuffle(VB_NOT.slice()), rounds = []; let vi = 0, ni = 0;
+          for (let r = 0; r < 8; r++) { const n = 2 + (r % 2), w = []; for (let k = 0; k < n; k++) { const v = vs[vi++ % vs.length]; w.push({ w: v[0], emo: v[1], verb: true }); } while (w.length < 6) w.push({ w: ns[ni++ % ns.length], verb: false }); rounds.push(shuffle(w)); }
+          return rounds;
+        }
+        return d === "mittel" ? shuffle(VB_SATZ1.slice()).slice(0, 10).map(vbSent) : shuffle(VB_SATZ2.slice()).slice(0, 8).map(vbSent);
+      },
+      render(x, stage, d) {
+        if (d === "leicht") {
+          const pond = el("div", "pond"); let left = x.filter(w => w.verb).length;
+          x.forEach(item => {
+            const b = el("button", "wbub", item.w);
+            b.addEventListener("click", () => {
+              if (b.classList.contains("got") || L.locked) return;
+              speak(item.w);
+              if (item.verb) { b.classList.add("got"); b.innerHTML = `${item.w}<br><span class="vb-emo">${item.emo}</span>`; award(b, 1); left--; if (left === 0) { hint(praise() + " Alle Verben gefangen! 🎯", true); done(900); } }
+              else { sfxBad(); L.mistakes++; noteMiss(item.w); b.classList.remove("no"); void b.offsetWidth; b.classList.add("no"); hint(`„${item.w}“ ist kein Verb. Sag mal: Ich kann ${item.w}? Das klingt komisch, oder?`); }
+            });
+            pond.appendChild(b);
+          });
+          stage.appendChild(pond); L.speakNow = () => speak("Fange nur die Verben. Verben sagen, was jemand tut.");
+          return;
+        }
+        const [sent, targets] = x;
+        chipTask(stage, {
+          sentence: sent, targets, factor: 2, chipsCls: "vbmark",
+          countText: d === "schwer" ? "🎯 Wie viele Verben findest du?" : "🎯 Finde das Verb",
+          okText: targets.length > 1 ? "Alle Verben markiert! 🎯" : "Das ist das Verb! 🎯",
+          extraText: (w, i) => /^[A-ZÄÖÜ]/.test(w) && i > 0 && !/[.?!]$/.test(sent.split(" ")[i - 1]) ? `„${w}“ ist ein Nomen, kein Verb. Frag: Was tut jemand?` : `„${w}“ ist kein Verb. Frag: Was tut jemand?`,
+          missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Verb" : "fehlen noch " + m.length + " Verben"}. Frag: Was tut jemand?`,
+          sayExtra: d === "schwer" ? "Markiere alle Verben." : "Markiere das Verb."
+        });
+      },
+      explain: (x, d) => d === "leicht"
+        ? { html: `<p>Frag bei jedem Wort: <b>Kann ich das tun?</b></p><p>ich kann <b class="vbm">laufen</b> ✓ · ich kann Hund ✗ · ich kann rot ✗</p>`, say: "Frag bei jedem Wort: Kann ich das tun? Ich kann laufen, das geht. Ich kann Hund, das geht nicht." }
+        : { html: `<p>${x[0]}</p><p>Frag: <b>Was tut jemand?</b> Das Wort, das sagt, was jemand tut, ist ein Verb.${x[1].length > 1 ? " Hier sind es mehrere!" : ""}</p>`, say: x[0] + " Frag: Was tut jemand? Das Wort, das sagt, was jemand tut, ist ein Verb." },
+      expert: {
+        task: () => "Fantasie-Verben! Finde sie trotzdem!",
+        intro: () => XI + "Diese Verben gibt es gar nicht! Trotzdem findest du sie: Sie stehen nach dem, der etwas tut, und haben die Endungen -e, -st, -t oder -en.",
+        ex: () => 'Der Glumpf <b class="vbm">schnurbelt</b> im Wald.', say: () => "Experten-Aufgabe! Diese Verben gibt es gar nicht. Trotzdem findest du sie. Achte darauf, wer etwas tut, und auf die Endungen.",
+        build() { return shuffle(VB_FANT.slice()).slice(0, 6).map(vbSent); },
+        render(x, stage) { const [sent, targets] = x; chipTask(stage, { sentence: sent, targets, factor: 2, chipsCls: "vbmark", countText: "🎯 Wie viele Verben findest du?", okText: "Du erkennst sogar Fantasie-Verben!", extraText: (w) => `„${w}“ ist kein Verb. Was tut jemand?`, missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Verb" : "fehlen noch " + m.length + " Verben"}.`, sayExtra: "Finde die Fantasie-Verben." }); }
+      }
+    },
+    {
+      id: "veraendern", name: "Verben verändern sich", icon: "🔄", color: "#7b4fc9",
+      task: (d) => d === "leicht" ? "Wie heißt die Grundform?" : d === "mittel" ? "Welche Form passt?" : "Achtung: Der Selbstlaut ändert sich!",
+      intro: (d) => d === "leicht" ? "Im Satz hat sich das Verb verändert. Die Grundform endet mit -en: Mia malt → malen."
+        : d === "mittel" ? "Die Grundform steht in Klammern. Wie heißt das Verb im Satz? Schau genau, wer etwas tut!"
+        : "Bei manchen Verben ändert sich auch der Selbstlaut: laufen → er läuft, lesen → sie liest.",
+      ex: (d) => d === "leicht" ? "Mia <b>malt</b> → <b>malen</b>" : d === "mittel" ? "Tim <b>spielt</b> Fußball. (spielen)" : "laufen → er <b>läuft</b> · lesen → sie <b>liest</b>",
+      say: (d) => d === "leicht" ? "Im Satz hat sich das Verb verändert. Die Grundform endet mit e n. Mia malt. Die Grundform heißt malen."
+        : d === "mittel" ? "Die Grundform steht in Klammern. Wie heißt das Verb im Satz? Schau genau, wer etwas tut!"
+        : "Bei manchen Verben ändert sich auch der Selbstlaut. Laufen, er läuft. Lesen, sie liest.",
+      build(d) {
+        if (d === "leicht") {
+          const subs = shuffle(VB_SUBJ.filter(s => s[1] !== "wir" && s[1] !== "sieM"));
+          return shuffle(VB_REG.slice()).slice(0, 10).map((v, i) => ({ v, s: subs[i % subs.length] }));
+        }
+        if (d === "mittel") { const subs = shuffle(VB_SUBJ.slice()); return shuffle(VB_REG.slice()).slice(0, 12).map((v, i) => ({ v, s: subs[i % subs.length] })); }
+        return shuffle(VB_STRONG.slice()).slice(0, 12).map((v, i) => ({ st: v, back: i % 2 === 1 }));
+      },
+      render(x, stage, d) {
+        if (d === "leicht") {
+          const f = vbForm(x.v, x.s[1]), s = `${x.s[0]} ▢ ${x.v[3]}.`;
+          const wr = [f, x.v[1] + (x.s[1] === "du" ? "t" : "st")];
+          const card = el("div", "card word-card vb-card", `<div class="vb-pic">${x.v[2]}</div><div class="vb-s">${s.replace("▢", `<b class="vbm">${f}</b>`)}</div><div class="vb-q">Grundform von <b>${f}</b>?</div>`);
+          stage.appendChild(card);
+          choiceTask(stage, { opts: vbOpts(x.v[0], wr, (w) => w === f ? `„${f}“ steht im Satz. Die Grundform endet mit -en.` : `Die Grundform endet mit -en.`), okText: `${f} → ${x.v[0]}`, okSpeak: x.v[0] });
+          L.speakNow = () => speak(sayGap(s, f) + ` Wie heißt die Grundform von ${f}?`);
+          return;
+        }
+        if (d === "mittel") {
+          const p = x.s[1], f = vbForm(x.v, p), s = `${x.s[0]} ▢ ${x.v[3]}.`;
+          const others = shuffle(["e", "st", "t", "en"].filter(e => e !== VB_PRON[p][1])).slice(0, 2).map(e => x.v[1] + e);
+          vbChoice(stage, { pic: x.v[2], sent: s, inf: x.v[0], answer: f, opts: vbOpts(f, others, () => endWhy(p)), okText: sayGap(s, f), okSpeak: sayGap(s, f), say: sayGap(s, "…") + ` Grundform: ${x.v[0]}. Welche Form passt?` });
+          return;
+        }
+        const [inf, , er, sE, pic] = x.st;
+        if (x.back) {
+          const card = el("div", "card word-card vb-card", `<div class="vb-pic">${pic}</div><div class="vb-s">${sE.replace("▢", `<b class="vbm">${er}</b>`)}</div><div class="vb-q">Grundform von <b>${er}</b>?</div>`);
+          stage.appendChild(card);
+          choiceTask(stage, { opts: vbOpts(inf, [er.slice(0, -1) + "en", er], (w) => w === er ? `„${er}“ steht im Satz. Die Grundform endet mit -en.` : `Fast! In der Grundform ändert sich der Selbstlaut zurück.`), okText: `${er} → ${inf}`, okSpeak: inf });
+          L.speakNow = () => speak(sayGap(sE, er) + ` Wie heißt die Grundform von ${er}?`);
+          return;
+        }
+        vbChoice(stage, { pic, sent: sE, inf, answer: er, opts: vbOpts(er, [inf.slice(0, -2) + "t", inf], (w) => w === inf ? "Das ist die Grundform. Im Satz verändert sich das Verb!" : "Hör genau hin: Bei diesem Verb ändert sich der Selbstlaut!"), okText: sayGap(sE, er), okSpeak: sayGap(sE, er), say: sayGap(sE, "…") + ` Grundform: ${inf}. Welche Form passt?` });
+      },
+      explain: (x, d) => {
+        if (d === "experte") return { html: `<p>Sprich laut: <b>${x[0]}</b> – du …</p><p>Bei <b>${x[0]}</b> ändert sich der Selbstlaut. Und zu <b>du</b> gehört die Endung <b>-st</b>.</p>`, say: `Sprich laut: ${x[0]}, du … Bei ${x[0]} ändert sich der Selbstlaut. Und zu du gehört die Endung s t.` };
+        if (d === "leicht") { const f = vbForm(x.v, x.s[1]); return { html: `<p><b class="vbm">${f}</b> kommt von …?</p><p>Wortstamm <b>${x.v[1]}</b> + <b>en</b> = Grundform</p>`, say: `${f}. Nimm den Wortstamm ${x.v[1]} und hänge e n an. So bekommst du die Grundform.` }; }
+        if (d === "mittel") { const p = x.s[1]; return { html: `<p>Wer tut es? <b>${x.s[0]}</b> → wie <b>${p === "sieM" ? "sie (viele)" : VB_PRON[p][0]}</b></p><p>Zu ${p === "sieM" ? "sie (viele)" : VB_PRON[p][0]} gehört die Endung <b>-${VB_PRON[p][1]}</b>: ${x.v[1]} + ${VB_PRON[p][1]}</p>`, say: `Wer tut es? ${x.s[0]}. Dazu gehört die Endung ${VB_PRON[p][1].split("").join(" ")}.` }; }
+        const [inf, , er] = x.st;
+        return { html: `<p>Sprich laut: <b>${inf}</b> – er <b>${er}</b></p><p>Bei <b>${inf}</b> ändert sich im Satz der Selbstlaut.</p>`, say: `Sprich laut: ${inf}. Er ${er}. Bei ${inf} ändert sich im Satz der Selbstlaut.` };
+      },
+      expert: {
+        task: () => "Wie heißt die du-Form?",
+        intro: () => XI + "Schwierige Verben mit du: Der Selbstlaut ändert sich und die Endung ist -st. Achtung bei lesen und essen!",
+        ex: () => "lesen → du <b>liest</b> · essen → du <b>isst</b>", say: () => "Experten-Aufgabe! Schwierige Verben mit du. Der Selbstlaut ändert sich. Achtung bei lesen und essen!",
+        build() { return shuffle(VB_STRONG.slice()).slice(0, 8); },
+        render(v, stage) {
+          const [inf, du, , , pic, sD, wr] = v;
+          vbChoice(stage, { pic, sent: sD, inf, answer: du, opts: vbOpts(du, wr, (w) => w === inf ? "Das ist die Grundform." : "Schau genau: Selbstlaut und Endung!"), okText: sayGap(sD, du), okSpeak: sayGap(sD, du), say: sayGap(sD, "…") + ` Grundform: ${inf}.` });
+        }
+      }
+    },
+    {
+      id: "konjugieren", name: "Verben konjugieren", icon: "👥", color: "#2a8f8f",
+      task: (d) => d === "leicht" ? "Welche Endung passt?" : d === "mittel" ? "Fülle die Verb-Tabelle aus!" : "Schreibe das Verb richtig!",
+      intro: (d) => d === "leicht" ? "Schau auf das Fürwort: ich → -e, du → -st, er/sie/es → -t, wir → -en, ihr → -t, sie → -en."
+        : d === "mittel" ? "Ein Verb – sechs Formen! Fülle die Tabelle Zeile für Zeile aus."
+        : "Schreibe das ganze Verb mit der richtigen Endung. Die Grundform steht in Klammern.",
+      ex: (d) => d === "leicht" ? "ich spiel<b>e</b> · du spiel<b>st</b> · er spiel<b>t</b>" : d === "mittel" ? "ich mal<b>e</b> · du mal<b>st</b> · … · sie mal<b>en</b>" : "du (rufen) → ✏️ ruf<b>st</b>",
+      say: (d) => d === "leicht" ? "Schau auf das Fürwort. Ich, e. Du, s t. Er, sie, es, t. Wir, e n. Ihr, t. Sie, e n. Welche Endung passt?"
+        : d === "mittel" ? "Ein Verb, sechs Formen! Fülle die Tabelle Zeile für Zeile aus."
+        : "Schreibe das ganze Verb mit der richtigen Endung. Die Grundform steht in Klammern.",
+      build(d) {
+        const ps = Object.keys(VB_PRON);
+        if (d === "leicht") { const pp = shuffle(ps.concat(ps)); return shuffle(VB_REG.slice()).slice(0, 12).map((v, i) => ({ v, p: pp[i] })); }
+        if (d === "mittel") { const out = []; shuffle(VB_REG.slice()).slice(0, 3).forEach(v => VB_ROWS.forEach((r, k) => out.push({ v, row: k }))); return out; }
+        const pp = shuffle(["ich", "du", "er", "sie", "wir", "ihr", "sieM", "du"]);
+        return shuffle(VB_REG.filter(v => v[0].length <= 8)).slice(0, 8).map((v, i) => ({ v, p: pp[i] }));
+      },
+      render(x, stage, d) {
+        const ends = ["e", "st", "t", "en"], pron = (p) => `<span class="vb-pron"><span class="vb-pe">${VB_PRON[p][2]}</span>${VB_PRON[p][0]}</span>`;
+        const endButtons = (row, right, onRight, why) => {
+          const opts = el("div", "opts");
+          ends.forEach(e => {
+            const b = el("button", "opt vb-endbtn", "-" + e);
+            b.addEventListener("click", () => {
+              if (L.locked) return;
+              if (e === right) { b.classList.add("right"); onRight(b); }
+              else miss(b, why);
+            });
+            opts.appendChild(b);
+          });
+          stage.appendChild(opts);
+        };
+        if (d === "leicht") {
+          const e = VB_PRON[x.p][1], f = vbForm(x.v, x.p);
+          const card = el("div", "card word-card vb-card", `<div class="vb-pic">${x.v[2]}</div><div class="vb-s">${pron(x.p)} ${x.v[1]}<span class="vb-gap end">?</span></div><div class="vb-inf">(${x.v[0]})</div>`);
+          stage.appendChild(card);
+          endButtons(card, e, (b) => { const g = card.querySelector(".vb-gap"); g.textContent = e; g.classList.add("got"); award(b, 1); speak(`${VB_PRON[x.p][0]} ${f}`); hint(praise() + ` ${VB_PRON[x.p][0]} ${f}`, true); done(1200); }, endWhy(x.p));
+          L.speakNow = () => speak(`${VB_PRON[x.p][0]} … Grundform: ${x.v[0]}. Welche Endung passt?`);
+          return;
+        }
+        if (d === "mittel") {
+          const tbl = el("div", "card vb-tbl");
+          tbl.innerHTML = `<div class="vb-th">${x.v[2]} <b>${x.v[0]}</b></div>` + VB_ROWS.map((r, k) => {
+            const e = VB_PRON[r[0]][1];
+            return `<div class="vb-tr${k === x.row ? " now" : k < x.row ? " done" : ""}"><span class="vb-tp">${r[1]}</span><span class="vb-tf">${x.v[1]}<span class="vb-gap end${k < x.row ? " got" : ""}">${k < x.row ? e : k === x.row ? "?" : ""}</span></span></div>`;
+          }).join("");
+          stage.appendChild(tbl);
+          const r = VB_ROWS[x.row], e = VB_PRON[r[0]][1], f = x.v[1] + e;
+          endButtons(tbl, e, (b) => { const g = tbl.querySelectorAll(".vb-tr")[x.row].querySelector(".vb-gap"); g.textContent = e; g.classList.add("got"); award(b, 1); speak(`${r[1].replace(/ \/ /g, ", ")} ${f}`); hint(praise() + ` ${r[1]} ${f}`, true); done(1000); }, endWhy(r[0]));
+          L.speakNow = () => speak(`${x.v[0]}. ${r[1].replace(/ \/ /g, ", ")} … Welche Endung passt?`);
+          return;
+        }
+        const p = x.p, f = vbForm(x.v, p), P = VB_PRON[p];
+        const card = el("div", "card word-card vb-card", `<div class="vb-pic">${x.v[2]}</div><div class="vb-s">${pron(p)} <span class="vb-gap">✏️</span></div><div class="vb-inf">(${x.v[0]})</div>`);
+        stage.appendChild(card);
+        writeTask(stage, { target: f, mode: "memory",
+          onRight: (box) => { const g = card.querySelector(".vb-gap"); g.textContent = f; g.classList.add("got"); award(box, 2); speak(`${P[0]} ${f}`); hint(praise() + ` ${P[0]} ${f}`, true); done(1300); },
+          onWrong: (typed, box) => {
+            sfxBad(); L.mistakes++; noteMiss(f); shakeEl(box);
+            hint(typed.toLowerCase().indexOf(x.v[1]) === 0 ? `Schau auf die Endung: ${p === "sieM" ? "sie (viele)" : P[0]} → -${P[1]}.` : `Fang mit dem Wortstamm an: ${x.v[1]}…`);
+          } });
+        L.speakNow = () => speak(`${P[0]} … Grundform: ${x.v[0]}. Schreibe das Verb.`);
+      },
+      explain: (x, d) => {
+        if (d === "experte") { const p = x.s[1], like = p === "sieM" ? "sie (viele)" : VB_PRON[p][0]; return { html: `<p><b>${x.s[0]}</b> ${x.s[2] || ""} – das ist wie <b>${like}</b>.</p><p>Zu ${like} gehört die Endung <b>-${VB_PRON[p][1]}</b>.</p><p class="vb-mini">ich -e · du -st · er/sie/es -t · wir -en · ihr -t · sie -en</p>`, say: `${x.s[0]}. Das ist wie ${like}. Dazu gehört die Endung ${VB_PRON[p][1].split("").join(" ")}.` }; }
+        const p = d === "mittel" ? VB_ROWS[x.row][0] : x.p, P = VB_PRON[p], who = p === "sieM" ? "sie (viele)" : d === "mittel" && p === "er" ? "er / sie / es" : P[0];
+        return { html: `<p>Wortstamm: <b>${x.v[1]}</b> (von ${x.v[0]})</p><p>Zu <b>${who}</b> gehört die Endung <b>-${P[1]}</b>.</p><p class="vb-mini">ich -e · du -st · er/sie/es -t · wir -en · ihr -t · sie -en</p>`,
+          say: `Der Wortstamm heißt ${x.v[1]}. Zu ${who.replace(/ \/ /g, ", ")} gehört die Endung ${P[1].split("").join(" ")}.` };
+      },
+      expert: {
+        task: () => "Wer tut es? Welche Form passt?",
+        intro: () => XI + "Zwei Leute zusammen? Dann ist es wie wir, ihr oder sie! Und sie kann eine sein – oder viele.",
+        ex: () => "Mia und Tim <b>spielen</b> · Du und Paul <b>spielt</b>", say: () => "Experten-Aufgabe! Zwei Leute zusammen? Dann ist es wie wir, ihr oder sie. Und sie kann eine sein oder viele.",
+        build() { const vs = shuffle(VB_REG.slice()); return shuffle(VB_XSUBJ.slice()).slice(0, 8).map((s, i) => ({ v: vs[i], s })); },
+        render(x, stage) {
+          const p = x.s[1], f = vbForm(x.v, p), s = `${x.s[0]} ▢ ${x.v[3]}.`, like = p === "sieM" ? "sie (viele)" : VB_PRON[p][0];
+          const opts = vbOpts(f, ["e", "st", "t", "en"].map(e => x.v[1] + e), () => `Überleg: ${x.s[0]} – das ist wie „${like}“.`);
+          vbChoice(stage, { pic: x.s[2], sent: s, inf: x.v[0], answer: f, opts, okText: sayGap(s, f), okSpeak: sayGap(s, f), say: sayGap(s, "…") + ` Grundform: ${x.v[0]}.` + (x.s[0] === "Sie" ? (p === "sieM" ? " Sie, das sind viele." : " Sie, das ist eine.") : "") });
+        }
       }
     }
   ];
@@ -2889,7 +3182,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function rsDetect(stage, x, o) {
     const sent = x[0], targets = x[1], fixed = rsFixed(x);
     chipTask(stage, { sentence: sent, targets, factor: o.factor || 2, countText: targets.length > 1 ? `🔎 ${targets.length} Fehler verstecken sich` : "🔎 Ein Fehler versteckt sich",
-      okText: "Gefunden und verbessert!", extraText: (w) => `„${w}“ ist richtig geschrieben.`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Fehler" : m.length + " Fehler"}.`, sayExtra: "",
+      okText: "Gefunden und verbessert!", extraText: (w) => `„${w}“ ist richtig geschrieben.`, missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Fehler" : "fehlen noch " + m.length + " Fehler"}.`, sayExtra: "",
       onSolved: (chips) => { targets.forEach((i, k) => { const c = chips.children[i]; c.textContent = fixed.split(" ")[i]; c.classList.add("fixed"); }); }, speakSolved: fixed });
     L.speakNow = () => speak("Finde das falsch geschriebene Wort.");
   }
@@ -4371,7 +4664,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
                   ["mehrzahl", "schwer", 2], ["sortieren", "schwer", 2], ["satz", "mittel", 1], ["satz", "schwer", 1], ["detektiv", "schwer", 1]] },
-    { id: "adjektive", name: "Adjektive", sub: "Wiewörter", icon: "🎨", ready: false, levels: [] },
+    { id: "verben", name: "Verben", title: "Verb-Inseln", sub: "Tunwörter", icon: "🏃", ready: true, levels: VERBEN, award: "Verben-Profi", hunter: "Verben",
+      bonusPlan: [["erkennen", "mittel", 2], ["erkennen", "schwer", 2], ["veraendern", "leicht", 2], ["veraendern", "mittel", 2], ["veraendern", "schwer", 2], ["konjugieren", "leicht", 2], ["konjugieren", "schwer", 2]] },
     { id: "lernwoerter", name: "Lernwörter 1", title: "Känguru-Inseln", sub: "Lernwörter 1", icon: "🦘", group: "lern", hunter: "Lernwörter", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
       bonusPlan: [["schreiben", "diktat", 99]], bonusIntro: LW_DIKTAT, bonusShort: "Das große Lernwörter-Diktat: alle Wörter ohne Hilfe!", bonusEx: "🔊 → ✏️ → 🎁" },
     { id: "lw2", name: "Lernwörter 2", title: "Ampel-Inseln", sub: "Lernwörter 2", icon: "🚦", group: "lern", rulesAs: "lernwoerter", neu: true, hunter: "Lernwörter", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
@@ -4474,7 +4768,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         intro: () => XI + "Diese Wörter gibt es gar nicht! Trotzdem kannst du herausfinden, welche Nomen sind: Achte auf die Begleiter.",
         ex: () => "der <b>glumpf</b> frisst drei <b>plitze</b>.", say: () => "Experten-Aufgabe! Diese Wörter gibt es gar nicht. Trotzdem findest du die Nomen. Achte auf die Begleiter!",
         build() { return shuffle(NX_FANTASIE).slice(0, 6); },
-        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, countText: "🫣 Wie viele Nomen findest du?", okText: "Du erkennst sogar Fantasie-Nomen!", extraText: (w) => `„${w}“ ist kein Nomen. Kannst du der, die oder das davor sagen?`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}.`, sayExtra: "" }); }
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 2, countText: "🫣 Wie viele Nomen findest du?", okText: "Du erkennst sogar Fantasie-Nomen!", extraText: (w) => `„${w}“ ist kein Nomen. Kannst du der, die oder das davor sagen?`, missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Nomen" : "fehlen noch " + m.length + " Nomen"}.`, sayExtra: "" }); }
       },
       grossklein: {
         task: () => "Welche Wörter schreibt man groß?",
@@ -4518,7 +4812,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         task: () => "Finde alle Nomen im Text!", intro: () => XI + "Ein Text mit zwei Sätzen – alles klein. Achtung: Auch Gefühle wie Angst und Spaß sind Nomen. Und nicht jedes erste Wort ist ein Nomen!",
         ex: () => "am <b>abend</b> hat <b>lea</b> große <b>angst</b>.", say: () => "Experten-Aufgabe! Ein Text mit zwei Sätzen, alles klein. Auch Gefühle wie Angst und Spaß sind Nomen. Aber nicht jedes erste Wort ist ein Nomen!",
         build() { return shuffle(NX_DETECT).slice(0, 6); },
-        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 3, countText: "🔍 Wie viele Nomen findest du?", okText: "Meister-Detektiv! 🔍", extraText: (w) => `„${w}“ ist kein Nomen.`, missText: (m) => `Es fehlt noch ${m.length === 1 ? "ein Nomen" : m.length + " Nomen"}.`, sayExtra: "" }); }
+        render(item, stage) { const [sent, targets] = item; chipTask(stage, { sentence: sent, targets, lower: true, factor: 3, countText: "🔍 Wie viele Nomen findest du?", okText: "Meister-Detektiv! 🔍", extraText: (w) => `„${w}“ ist kein Nomen.`, missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Nomen" : "fehlen noch " + m.length + " Nomen"}.`, sayExtra: "" }); }
       }
     },
 
@@ -4747,7 +5041,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const hexRgb = (h) => { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
   const mixHex = (h, t, k) => "#" + hexRgb(h).map((v, i) => Math.round(v + (t[i] - v) * k).toString(16).padStart(2, "0")).join("");
   const FLAT = { "#17324a": 1, "#fff": 1, "#ffffff": 1 };
-  const TREASURE_IDS = { kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1, regenbogentukan: 1, recheneule: 1 };
+  const TREASURE_IDS = { sprungdelfin: 1, kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1, regenbogentukan: 1, recheneule: 1 };
   let art3d = 0;
   function shade3d(markup, glossy) {
     const uid = "s" + (++art3d), cols = {}; let defs = "", n = 0;
@@ -4796,6 +5090,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     kristallstern: `<circle cx="50" cy="50" r="46" fill="#bde0fe" opacity=".35"/><path d="M50 10 L61 38 L91 39 L67 57 L76 86 L50 69 L24 86 L33 57 L9 39 L39 38 Z" fill="#9bf6ff" ${OL}/><path d="M50 10 L61 38 L50 50 Z M9 39 L39 38 L50 50 Z M76 86 L50 69 L50 50 Z" fill="#fff" opacity=".5"/><path d="M50 10 L50 50 M91 39 L50 50 M76 86 L50 50 M24 86 L50 50 M9 39 L50 50" stroke="#fff" stroke-width="2" opacity=".9"/>${SPARK(86, 14, 7)}${SPARK(14, 16, 5)}${SPARK(88, 78, 5)}`,
     zauberpferdchen: `<circle cx="52" cy="52" r="46" fill="#ffc8dd" opacity=".35"/>${[["#ff595e", 40, 28], ["#ffca3a", 36, 38], ["#8ac926", 37, 48], ["#1982c4", 41, 58]].map(([c, x, y]) => `<path d="M${x} ${y} L${x - 12} ${y - 2} L${x - 3} ${y + 9} Z" fill="${c}" ${OL}/>`).join("")}<path d="M48 18 Q66 16 66 34 Q66 44 58 50 Q72 60 64 76 Q58 90 46 86 Q36 82 42 72 Q48 77 52 70 Q48 60 42 52 Q34 42 38 30 Q42 18 48 18 Z" fill="#cdb4db" ${OL}/><path d="M64 29 L82 26 L82 33 L64 37 Z" fill="#cdb4db" ${OL}/><path d="M44 19 L45 8 L50 14 L55 6 L58 14 L63 9 L62 21 Z" fill="#ffd60a" ${OL}/>${SHINE(54, 60, 6, 3)}${EYE(56, 29, 4.5)}${SPARK(82, 12, 6)}${SPARK(20, 80, 5)}${SPARK(84, 70, 4)}`,
     goldleuchtturm: `<path d="M50 20 L6 6 L6 30 Z M50 20 L94 6 L94 30 Z" fill="#fff3b0" opacity=".75"/><path d="M28 96 Q26 84 40 82 L60 82 Q74 84 72 96 Z" fill="#adb5bd" ${OL}/><path d="M38 84 L42 32 L58 32 L62 84 Z" fill="#fff" ${OL}/><path d="M39.3 70 L40.2 58 L59.8 58 L60.7 70 Z M40.8 48 L41.4 40 L58.6 40 L59.2 48 Z" fill="#ffc300"/><rect x="36" y="27" width="28" height="5" rx="1.5" fill="#17324a"/><rect x="42" y="15" width="16" height="12" rx="2" fill="#fff3b0" ${OL}/><circle cx="50" cy="21" r="3.5" fill="#ffd60a"/><path d="M40 15 L50 5 L60 15 Z" fill="#ffc300" ${OL}/><path d="M46 84 L46 76 Q50 72 54 76 L54 84 Z" fill="#8a5a2b" ${OL}/>${SPARK(84, 44, 6)}${SPARK(16, 50, 5)}`,
+    sprungdelfin: `<circle cx="50" cy="50" r="46" fill="#bde0fe" opacity=".35"/><path d="M6 88 Q20 80 34 88 T62 88 T94 88" fill="none" stroke="#4cc9f0" stroke-width="4" stroke-linecap="round"/><path d="M48 31 Q50 13 66 11 Q59 20 61 28 Z" fill="#3a86ff" ${OL}/><path d="M22 80 L6 74 Q10 85 21 88 Q17 96 28 98 Q28 89 28 83 Z" fill="#3a86ff" ${OL}/><path d="M16 72 Q24 36 60 26 Q79 21 92 31 Q86 37 75 37 Q57 41 43 57 Q32 70 28 84 Q19 82 16 72 Z" fill="#4cc9f0" ${OL}/><path d="M31 71 Q41 50 62 40 Q74 37 84 36 Q73 42 58 46 Q45 53 35 73 Z" fill="#caf0f8"/><path d="M53 45 Q51 59 40 63 Q52 61 60 49 Z" fill="#3a86ff" ${OL}/>${SHINE(48, 36, 9, 3.5)}${EYE(77, 29, 4.5)}<path d="M86 36 Q80 40 73 39" fill="none" stroke="#17324a" stroke-width="2.2" stroke-linecap="round"/><circle cx="71" cy="36" r="2.6" fill="#ff8fab" opacity=".7"/>${SPARK(86, 12, 6)}${SPARK(12, 40, 5)}${SPARK(70, 70, 4)}`,
     leseschildkroete: `<ellipse cx="30" cy="70" rx="10" ry="6" fill="#95d5b2" ${OL}/><ellipse cx="66" cy="72" rx="10" ry="6" fill="#95d5b2" ${OL}/><circle cx="84" cy="50" r="11" fill="#95d5b2" ${OL}/><circle cx="87" cy="46" r="5.5" fill="#fff" stroke="#17324a" stroke-width="2.5"/><circle cx="88" cy="46" r="2" fill="#17324a"/><path d="M81.5 46 L77 44" stroke="#17324a" stroke-width="2.5" stroke-linecap="round"/><path d="M14 54 L6 52 L14 60 Z" fill="#95d5b2" ${OL}/><path d="M16 60 Q16 26 48 26 Q80 26 80 60 Z" fill="#52b788" ${OL}/><path d="M36 60 L40 42 L56 42 L60 60 M40 42 L48 32 L56 42 M30 46 L40 42 M66 46 L56 42" fill="none" stroke="#2d6a4f" stroke-width="3" stroke-linejoin="round"/><rect x="33" y="18" width="30" height="8" rx="2" fill="#e63946" ${OL}/><rect x="29" y="10" width="34" height="8" rx="2" fill="#3a86ff" ${OL}/><rect x="35" y="2" width="26" height="8" rx="2" fill="#ffd60a" ${OL}/>${SPARK(88, 22, 6)}`,
     schreibkrake: `<circle cx="48" cy="50" r="46" fill="#e0c3fc" opacity=".35"/><path d="M33 56 Q22 70 26 84 Q28 92 34 87 Q31 76 40 61 Z" fill="#9d4edd" ${OL}/><path d="M42 60 Q38 76 42 90 Q46 95 49 89 Q45 78 50 62 Z" fill="#9d4edd" ${OL}/><path d="M53 61 Q60 74 56 88 Q56 95 62 90 Q66 76 59 59 Z" fill="#9d4edd" ${OL}/><path d="M28 52 Q14 60 10 74 Q8 82 15 79 Q18 66 33 58 Z" fill="#9d4edd" ${OL}/><path d="M60 56 Q70 66 76 74 Q79 78 74 80 Q67 70 56 62 Z" fill="#9d4edd" ${OL}/><path d="M48 3 L64 18 L32 18 Z" fill="#c77dff" ${OL}/><path d="M48 9 Q71 11 71 38 Q71 58 48 62 Q25 58 25 38 Q25 11 48 9 Z" fill="#c77dff" ${OL}/><circle cx="36" cy="24" r="3" fill="#f3d9ff"/><circle cx="60" cy="22" r="2.6" fill="#f3d9ff"/><circle cx="64" cy="33" r="2" fill="#f3d9ff"/><circle cx="31" cy="34" r="2" fill="#f3d9ff"/>${SHINE(40, 20, 7, 4)}${EYE(40, 40, 6)}${EYE(57, 40, 6)}<path d="M42 51 Q49 57 55 51" fill="none" stroke="#17324a" stroke-width="2.6" stroke-linecap="round"/><circle cx="34" cy="48" r="3" fill="#ff8fab" opacity=".7"/><circle cx="63" cy="48" r="3" fill="#ff8fab" opacity=".7"/><path d="M71 84 Q78 52 97 28 Q94 58 77 85 Z" fill="#ffd60a" ${OL}/><path d="M73 84 L94 36" stroke="#c99700" stroke-width="2" stroke-linecap="round"/><path d="M70 92 L72 83 L77 86 Z" fill="#17324a"/><circle cx="62" cy="95" r="2.4" fill="#3a0ca3"/><circle cx="55" cy="97" r="1.6" fill="#3a0ca3"/>${SPARK(88, 14, 6)}${SPARK(14, 18, 5)}`,
     goldfisch: `<path d="M24 50 L6 32 L10 50 L6 68 Z" fill="#ff8c1a" ${OL}/><path d="M42 31 Q54 14 68 31" fill="#ff8c1a" ${OL}/><ellipse cx="55" cy="50" rx="33" ry="21" fill="#ffb703" ${OL}/>${SHINE(50, 40, 12, 4)}<path d="M50 56 Q56 66 46 68" fill="#ff8c1a" ${OL}/>${EYE(74, 45)}<path d="M84 56 Q87 58 84 60" fill="none" ${OL}/>`,
@@ -4981,6 +5276,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   // Experten-Schätze: gibt es nur auf der Experten-Insel des Kapitels (nicht im Laden zu kaufen)
   const TREASURES = [
     { id: "kristallstern", n: "Kristall-Seestern", art: "der", pr: "Er", ch: "nomen", k: "deco", z: 76 },
+    { id: "sprungdelfin", n: "Sprung-Delfin", art: "der", pr: "Er", ch: "verben", k: "swim", z: 100 },
     { id: "zauberpferdchen", n: "Zauber-Seepferdchen", art: "das", pr: "Es", ch: "lernwoerter", k: "float", z: 88 },
     { id: "goldleuchtturm", n: "Goldener Leuchtturm", art: "der", pr: "Er", ch: "leuchtturm", k: "deco", z: 116 },
     { id: "leseschildkroete", n: "Bücher-Schildkröte", art: "die", pr: "Sie", ch: "lesen", k: "swim", z: 98 },
@@ -5444,7 +5740,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     updateFoot(); freiHello();
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
-    const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen"), rs = CHAPTERS.find(c => c.id === "rechtschreibung");
+    const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen"), rs = CHAPTERS.find(c => c.id === "rechtschreibung"), vb = CHAPTERS.find(c => c.id === "verben");
     // Hochformat: zwei Spalten, Nemos Riff unten. Querformat: Nemos Riff links, rechts zwei Reihen mit je drei Inseln.
     const pos = P ? { bay: [300, 1030], nomen: [455, 795], adj: [460, 135], lern: [135, 770], fog: [150, 165], lt: [455, 480], rs: [150, 440], w: 600, h: 1195, r: 84 }
                   : { bay: [218, 335], nomen: [860, 470], adj: [1170, 115], lern: [535, 465], fog: [540, 140], lt: [860, 175], rs: [1176, 470], w: 1340, h: 640, r: 90 };
@@ -5460,9 +5756,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         aqua: true, tap: (i) => swimTo(i, renderAqua) },
       { x: pos.nomen[0], y: pos.nomen[1], r: pos.r, icon: "🐟", label: "Nomen-Inseln", big: true, sub: chapSub(nom),
         deco: [[-0.5, -0.32, "🌴", 0.5], [0.52, -0.3, "🌴", 0.46]], aria: "Kapitel Nomen", ch: nom, tap: enter(nom) },
-      { x: pos.adj[0], y: pos.adj[1], r: pos.r * 0.85, icon: "🎨", label: "Adjektiv-Inseln", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
-        deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Kapitel Adjektive, kommt bald",
-        tap: (i) => { S.homeAt = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🎨", "Adjektiv-Inseln", "Wiewörter"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Nemo hier landen!")); })); } },
+      { x: pos.adj[0], y: pos.adj[1], r: pos.r * 0.9, icon: "🏃", grass: "#ffd8bf", label: "Verb-Inseln", big: true, sub: starTotal(vb) ? chapSub(vb) : "✨ Neu!", subGold: !starTotal(vb), next: !starTotal(vb),
+        deco: [[-0.52, -0.3, "🌴", 0.46], [0.54, -0.28, "🎤", 0.4]], aria: "Verb-Inseln: Verben erkennen, verändern und konjugieren", ch: vb, tap: enter(vb) },
       { x: pos.lern[0], y: pos.lern[1], r: pos.r, icon: "📝", grass: "#b5e48c", label: "Lernwörter-Inseln", big: true, sub: lernNew ? "✨ Neue Lernwörter!" : lernSub, subGold: !!lernNew,
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.52, -0.3, "🌴", 0.46]], aria: "Lernwörter-Inseln", chs: LC.map(c => c.id), tap: (i) => { S.homeAt = i; save(); swimTo(i, renderLernHome); } },
       { x: pos.lt[0], y: pos.lt[1], r: pos.r * 0.9, icon: "💡", draw: "lighthouse", grass: "#a7d8a0", label: "Leuchtturm-Insel", big: true, sub: chapSub(lt), aria: "Leuchtturm-Insel: der, die, das", ch: lt, tap: enter(lt) },
@@ -5472,8 +5767,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.54, -0.28, "🌴", 0.44]], aria: "Rechtschreib-Inseln: richtig schreiben", ch: rs, tap: enter(rs) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
-    const edges = P ? [[0, 3, dnL], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, "faint"]]
-                    : [[0, 3, dnL], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, "faint"]];
+    const edges = P ? [[0, 3, dnL], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, dn(vb)]]
+                    : [[0, 3, dnL], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, dn(vb)]];
     if (FREI) freiLock(nodes);
     drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
@@ -5859,6 +6154,15 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      der/die/das werden in den Begleiter-Farben gezeigt. Gemerkt wird nur im Arbeitsspeicher (nichts gespeichert). */
   const PI = pollyHTML("1em"), PIs = pollyHTML("1.3em");
   const RULES = {
+    "verben:erkennen": { k: "merk", t: "Was ist ein Verb?", s: "Verben sagen, <b>was jemand tut</b> oder was passiert. Verben schreibe ich <b>klein</b>.",
+      ex: [["🏃", "laufen"], ["🎨", "malen"], ["🎤", "singen"], ["😴", "schlafen"]], v: "🔎 Probe: Passt „ich kann …“ davor? ich kann <b>laufen</b> ✓ · ich kann Hund ✗",
+      say: "Was ist ein Verb? Verben sagen, was jemand tut oder was passiert. Verben schreibe ich klein. Zum Beispiel laufen, malen, singen, schlafen. Probe: Passt ich kann davor? Ich kann laufen, das passt." },
+    "verben:veraendern": { k: "merk", t: "Verben verändern sich", s: "Die <b>Grundform</b> endet meistens mit <b>-en</b>. Im Satz verändert sich das Verb – je nachdem, <b>wer</b> etwas tut.",
+      ex: [["🎨", "mal*en*", "Grundform"], ["🙋", "ich mal*e*"], ["👧", "Mia mal*t*"]], v: "Manchmal ändert sich auch der Selbstlaut: l*au*fen → er l*äu*ft · l*e*sen → sie l*ie*st",
+      say: "Verben verändern sich. Die Grundform endet meistens mit e n, zum Beispiel malen. Im Satz verändert sich das Verb, je nachdem, wer etwas tut. Ich male. Mia malt. Manchmal ändert sich auch der Selbstlaut: laufen, er läuft." },
+    "verben:konjugieren": { k: "merk", t: "Jedes Fürwort hat seine Endung", s: "An den <b>Wortstamm</b> hänge ich die passende Endung. Das Fürwort zeigt mir, welche.",
+      ex: [["🙋", "ich spiel*e*"], ["👉", "du spiel*st*"], ["👦", "er spiel*t*"], ["🙋👧", "wir spiel*en*"], ["👉👉", "ihr spiel*t*"], ["👧👦👧", "sie spiel*en*"]], v: "ich -e · du -st · er/sie/es -t · wir -en · ihr -t · sie -en",
+      say: "Jedes Fürwort hat seine Endung. Ich spiele. Du spielst. Er, sie, es spielt. Wir spielen. Ihr spielt. Sie spielen." },
     "nomen:fischen": { k: "merk", t: "Was ist ein Nomen?", s: "Nomen sind Namen für <b>Menschen, Tiere, Pflanzen und Dinge</b>. Vor ein Nomen passt <b>der</b>, <b>die</b> oder <b>das</b>.",
       ex: [["🧒", "das Kind"], ["🐶", "der Hund"], ["🌷", "die Blume"], ["⚽", "der Ball"]], v: "🔎 Probe: Passt der, die oder das davor? Dann ist es ein Nomen." },
     "nomen:versteckt": { k: "merk", t: "Nomen erkennen – auch kleingeschrieben", s: "Auch wenn alles kleingeschrieben ist: Mach die <b>Begleiter-Probe</b>. Passt der, die oder das davor, ist es ein Nomen.",
