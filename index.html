@@ -2023,6 +2023,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "Oma *kocht* Suppe. Opa *deckt* den Tisch.", "*Spielst* du mit mir? Wir *rennen* um die Wette.", "Die Katze *schleicht* leise und *fängt* eine Maus.", "Lena *schwimmt,* *taucht* und *spritzt.*",
     "Am Morgen *frühstücken* wir und *putzen* die Zähne.", "Im Herbst *fallen* die Blätter. Der Wind *pfeift.*", "Ben *liest* ein Buch und Paul *hört* Musik.", "Die Vögel *zwitschern* und *fliegen* davon.",
     "*Kommst* du heute? Wir *feiern* ein Fest.", "Papa *wäscht* das Auto und Mama *gießt* die Blumen.", "Das Baby *lacht,* *strampelt* und *gluckst.*", "Nach der Schule *essen* wir und *machen* Hausaufgaben."];
+  // „schwer“ beim Fangen: nur kleine Wörter daneben – die Großschreibung hilft nicht mehr
+  const VB_NOT_LOW = ["rot", "bunt", "müde", "nass", "dick", "süß", "kalt", "rund", "weich", "grün", "klein", "groß", "schön", "leise", "neu", "und", "mit", "auf", "unter", "sehr", "heute", "gern", "oft", "hier"];
+  // „mittel“: ein Verb, längere Sätze, das Verb steht nicht immer an zweiter Stelle
+  const VB_SATZ1M = ["Die Katze *schläft* auf dem Sofa.", "Die Vögel *singen* im Baum.", "Der Frosch *springt* ins Wasser.", "Lena *rennt* schnell nach Hause.", "Du *schreibst* einen langen Brief.",
+    "Der Fisch *schwimmt* im Teich.", "Meine Schwester *hüpft* auf dem Trampolin.", "Im Garten *spielt* Tim mit dem Ball.", "Heute *backt* Oma einen Kuchen.", "Am Abend *liest* Papa eine Geschichte.",
+    "Nach der Schule *malt* Mia ein Bild.", "Im Winter *fällt* viel Schnee.", "Morgen *fahren* wir ans Meer.", "Auf der Wiese *grasen* die Kühe.", "In der Pause *essen* die Kinder ihr Brot.", "Jeden Morgen *kräht* der Hahn laut."];
   // Experten: Fantasie-Verben – erkennbar an Endung und Platz im Satz
   const VB_FANT = ["Der Glumpf *schnurbelt* im Wald.", "Die Plitze *wuseln* und *hopsen.*", "Ich *fröpse* jeden Tag.", "Der Mampf *knurzelt* laut und *plinkt.*", "Wir *gnubbeln* im Garten.",
     "Du *wibbelst* den Ball.", "Die Krake *quopft* und *schnalpt.*", "Ihr *trulpt* so schön!", "Der Zork *brummelt,* *pfupst* und *tanzt.*", "Mia *mupft* einen Kuchen."];
@@ -2079,26 +2085,35 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const VERBEN = [
     {
       id: "erkennen", name: "Verben erkennen", icon: "🎯", color: "#e85d04",
-      task: (d) => d === "leicht" ? "Fange nur die Verben!" : d === "mittel" ? "Markiere das Verb!" : "Markiere alle Verben!",
-      intro: (d) => d === "leicht" ? "Verben sagen, was jemand tut: laufen, malen, singen. Tippe nur die Verben an!"
-        : d === "mittel" ? "In jedem Satz steckt ein Verb. Frag: Was tut jemand? Tippe das Verb an und dann auf Fertig."
-        : "In diesen Sätzen stecken zwei oder drei Verben. Ich verrate nicht, wie viele! Tippe alle an und dann auf Fertig.",
-      ex: (d) => d === "leicht" ? "laufen ✓ · Hund ✗ · rot ✗" : d === "mittel" ? 'Der Hund <b class="vbm">bellt</b> laut.' : 'Mia <b class="vbm">lacht</b> und <b class="vbm">tanzt</b>.',
-      say: (d) => d === "leicht" ? "Verben sagen, was jemand tut. Zum Beispiel laufen, malen, singen. Tippe nur die Verben an! Tipp: Kannst du sagen, ich kann laufen? Dann ist es ein Verb."
-        : d === "mittel" ? "In jedem Satz steckt ein Verb. Frag: Was tut jemand? Tippe das Verb an und dann auf Fertig."
-        : "In diesen Sätzen stecken zwei oder drei Verben. Ich verrate nicht, wie viele. Tippe alle Verben an und dann auf Fertig.",
+      // jede Stufe: erst Verben fangen, dann Verben im Satz markieren – schwerer wird der Inhalt
+      task: () => "Erst fangen, dann markieren!",
+      intro: (d) => d === "leicht" ? "Zuerst fängst du Verben: Sie sagen, was jemand tut. Danach markierst du das Verb im Satz."
+        : d === "mittel" ? "Jetzt haben sich die Verben verändert: malt, singst, läuft. Danach markierst du das Verb in längeren Sätzen."
+        : "Keine großen Buchstaben als Hilfe! Danach stecken in jedem Satz zwei oder drei Verben – ich verrate nicht, wie viele.",
+      ex: (d) => d === "leicht" ? 'laufen ✓ · Hund ✗ · Der Hund <b class="vbm">bellt</b>.' : d === "mittel" ? 'malt ✓ · Ball ✗ · Heute <b class="vbm">backt</b> Oma.' : 'singt ✓ · mit ✗ · Mia <b class="vbm">lacht</b> und <b class="vbm">tanzt</b>.',
+      say: (d) => d === "leicht" ? "Zuerst fängst du Verben. Verben sagen, was jemand tut. Tipp: Passt ich kann davor? Ich kann laufen. Dann ist es ein Verb. Danach markierst du das Verb im Satz."
+        : d === "mittel" ? "Jetzt haben sich die Verben verändert: malt, singst, läuft. Danach markierst du das Verb in längeren Sätzen. Frag: Was tut jemand?"
+        : "Keine großen Buchstaben als Hilfe! Danach stecken in jedem Satz zwei oder drei Verben. Ich verrate nicht, wie viele.",
       build(d) {
-        if (d === "leicht") {
-          const vs = shuffle(VB_PICS.slice()), ns = shuffle(VB_NOT.slice()), rounds = []; let vi = 0, ni = 0;
-          for (let r = 0; r < 8; r++) { const n = 2 + (r % 2), w = []; for (let k = 0; k < n; k++) { const v = vs[vi++ % vs.length]; w.push({ w: v[0], emo: v[1], verb: true }); } while (w.length < 6) w.push({ w: ns[ni++ % ns.length], verb: false }); rounds.push(shuffle(w)); }
-          return rounds;
+        const vs = shuffle(VB_PICS.slice()), regs = shuffle(VB_REG.slice()), rounds = [];
+        const nots = shuffle((d === "schwer" ? VB_NOT_LOW : VB_NOT).slice()); let vi = 0, ni = 0;
+        for (let r = 0; r < 4; r++) {
+          const n = 2 + (r % 2), w = [];
+          for (let k = 0; k < n; k++) {
+            if (d === "leicht") { const v = vs[vi++ % vs.length]; w.push({ w: v[0], emo: v[1], verb: true }); }
+            else { const v = regs[vi++ % regs.length], e = d === "mittel" ? ["e", "st", "t"][(r + k) % 3] : ["e", "st", "t", "en"][(r * 2 + k) % 4]; w.push({ w: v[1] + e, emo: v[2], verb: true }); }
+          }
+          while (w.length < 6) w.push({ w: nots[ni++ % nots.length], verb: false });
+          rounds.push({ k: "pond", w: shuffle(w) });
         }
-        return d === "mittel" ? shuffle(VB_SATZ1.slice()).slice(0, 10).map(vbSent) : shuffle(VB_SATZ2.slice()).slice(0, 8).map(vbSent);
+        const sents = d === "leicht" ? shuffle(VB_SATZ1.filter(s => s.split(" ").length <= 4)).slice(0, 5) : d === "mittel" ? shuffle(VB_SATZ1M.slice()).slice(0, 6) : shuffle(VB_SATZ2.slice()).slice(0, 6);
+        return rounds.concat(sents.map(s => ({ k: "satz", s: vbSent(s) })));
       },
       render(x, stage, d) {
-        if (d === "leicht") {
-          const pond = el("div", "pond"); let left = x.filter(w => w.verb).length;
-          x.forEach(item => {
+        if (x.k === "pond") {
+          $("taskText").textContent = "Fange nur die Verben!";
+          const pond = el("div", "pond"); let left = x.w.filter(w => w.verb).length;
+          x.w.forEach(item => {
             const b = el("button", "wbub", item.w);
             b.addEventListener("click", () => {
               if (b.classList.contains("got") || L.locked) return;
@@ -2111,19 +2126,21 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           stage.appendChild(pond); L.speakNow = () => speak("Fange nur die Verben. Verben sagen, was jemand tut.");
           return;
         }
-        const [sent, targets] = x;
+        const [sent, targets] = x.s, many = d === "schwer";
+        $("taskText").textContent = many ? "Markiere alle Verben!" : "Markiere das Verb!";
         chipTask(stage, {
           sentence: sent, targets, factor: 2, chipsCls: "vbmark",
-          countText: d === "schwer" ? "🎯 Wie viele Verben findest du?" : "🎯 Finde das Verb",
+          countText: many ? "🎯 Wie viele Verben findest du?" : "🎯 Finde das Verb",
           okText: targets.length > 1 ? "Alle Verben markiert! 🎯" : "Das ist das Verb! 🎯",
           extraText: (w, i) => /^[A-ZÄÖÜ]/.test(w) && i > 0 && !/[.?!]$/.test(sent.split(" ")[i - 1]) ? `„${w}“ ist ein Nomen, kein Verb. Frag: Was tut jemand?` : `„${w}“ ist kein Verb. Frag: Was tut jemand?`,
           missText: (m) => `Es ${m.length === 1 ? "fehlt noch ein Verb" : "fehlen noch " + m.length + " Verben"}. Frag: Was tut jemand?`,
-          sayExtra: d === "schwer" ? "Markiere alle Verben." : "Markiere das Verb."
+          sayExtra: many ? "Markiere alle Verben." : "Markiere das Verb."
         });
       },
-      explain: (x, d) => d === "leicht"
-        ? { html: `<p>Frag bei jedem Wort: <b>Kann ich das tun?</b></p><p>ich kann <b class="vbm">laufen</b> ✓ · ich kann Hund ✗ · ich kann rot ✗</p>`, say: "Frag bei jedem Wort: Kann ich das tun? Ich kann laufen, das geht. Ich kann Hund, das geht nicht." }
-        : { html: `<p>${x[0]}</p><p>Frag: <b>Was tut jemand?</b> Das Wort, das sagt, was jemand tut, ist ein Verb.${x[1].length > 1 ? " Hier sind es mehrere!" : ""}</p>`, say: x[0] + " Frag: Was tut jemand? Das Wort, das sagt, was jemand tut, ist ein Verb." },
+      explain: (x, d) => (x && x.k === "pond")
+        ? { html: `<p>Frag bei jedem Wort: <b>Kann ich das tun?</b></p><p>ich kann <b class="vbm">laufen</b> ✓ · ich kann Hund ✗ · ich kann rot ✗</p>${d !== "leicht" ? `<p>Verben können sich verändern: <b class="vbm">malt</b>, <b class="vbm">singst</b> – das kommt von malen und singen.</p>` : ""}`,
+            say: "Frag bei jedem Wort: Kann ich das tun? Ich kann laufen, das geht. Ich kann Hund, das geht nicht." + (d !== "leicht" ? " Verben können sich verändern. Malt kommt von malen." : "") }
+        : (() => { const s = x && x.k === "satz" ? x.s : x; return { html: `<p>${s[0]}</p><p>Frag: <b>Was tut jemand?</b> Das Wort, das sagt, was jemand tut, ist ein Verb.${s[1].length > 1 ? " Hier sind es mehrere!" : ""}</p>`, say: s[0] + " Frag: Was tut jemand? Das Wort, das sagt, was jemand tut, ist ein Verb." }; })(),
       expert: {
         task: () => "Fantasie-Verben! Finde sie trotzdem!",
         intro: () => XI + "Diese Verben gibt es gar nicht! Trotzdem findest du sie: Sie stehen nach dem, der etwas tut, und haben die Endungen -e, -st, -t oder -en.",
@@ -2134,54 +2151,64 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     },
     {
       id: "veraendern", name: "Verben verändern sich", icon: "🔄", color: "#7b4fc9",
-      task: (d) => d === "leicht" ? "Wie heißt die Grundform?" : d === "mittel" ? "Welche Form passt?" : "Achtung: Der Selbstlaut ändert sich!",
-      intro: (d) => d === "leicht" ? "Im Satz hat sich das Verb verändert. Die Grundform endet mit -en: Mia malt → malen."
-        : d === "mittel" ? "Die Grundform steht in Klammern. Wie heißt das Verb im Satz? Schau genau, wer etwas tut!"
-        : "Bei manchen Verben ändert sich auch der Selbstlaut: laufen → er läuft, lesen → sie liest.",
-      ex: (d) => d === "leicht" ? "Mia <b>malt</b> → <b>malen</b>" : d === "mittel" ? "Tim <b>spielt</b> Fußball. (spielen)" : "laufen → er <b>läuft</b> · lesen → sie <b>liest</b>",
-      say: (d) => d === "leicht" ? "Im Satz hat sich das Verb verändert. Die Grundform endet mit e n. Mia malt. Die Grundform heißt malen."
-        : d === "mittel" ? "Die Grundform steht in Klammern. Wie heißt das Verb im Satz? Schau genau, wer etwas tut!"
-        : "Bei manchen Verben ändert sich auch der Selbstlaut. Laufen, er läuft. Lesen, sie liest.",
+      // jede Stufe: Grundform finden + Verb einsetzen; unregelmäßige Verben nur auf „schwer“, dort wird die Form selbst geschrieben
+      task: () => "Grundform finden und Verb einsetzen!",
+      intro: (d) => d === "leicht" ? "Erst suchst du die Grundform: Mia malt → malen. Dann setzt du das Verb passend ein."
+        : d === "mittel" ? "Grundform finden und Verb einsetzen – jetzt auch mit wir, ihr und vielen Leuten. Schau genau, wer etwas tut!"
+        : "Jetzt schreibst du das Verb selbst! Achtung: Bei manchen Verben ändert sich der Selbstlaut: laufen → er läuft.",
+      ex: (d) => d === "leicht" ? "Mia <b>malt</b> → <b>malen</b> · Tim ▢ Fußball. (spielen) → <b>spielt</b>" : d === "mittel" ? "Wir ▢ ein Lied. (singen) → <b>singen</b>" : "Der Hund ▢ schnell. (laufen) → ✏️ <b>läuft</b>",
+      say: (d) => d === "leicht" ? "Erst suchst du die Grundform. Mia malt. Die Grundform heißt malen. Dann setzt du das Verb passend ein."
+        : d === "mittel" ? "Grundform finden und Verb einsetzen. Jetzt auch mit wir, ihr und vielen Leuten. Schau genau, wer etwas tut!"
+        : "Jetzt schreibst du das Verb selbst. Achtung: Bei manchen Verben ändert sich der Selbstlaut. Laufen. Der Hund läuft.",
       build(d) {
-        if (d === "leicht") {
-          const subs = shuffle(VB_SUBJ.filter(s => s[1] !== "wir" && s[1] !== "sieM"));
-          return shuffle(VB_REG.slice()).slice(0, 10).map((v, i) => ({ v, s: subs[i % subs.length] }));
-        }
-        if (d === "mittel") { const subs = shuffle(VB_SUBJ.slice()); return shuffle(VB_REG.slice()).slice(0, 12).map((v, i) => ({ v, s: subs[i % subs.length] })); }
-        return shuffle(VB_STRONG.slice()).slice(0, 12).map((v, i) => ({ st: v, back: i % 2 === 1 }));
+        const regs = shuffle(VB_REG.slice()), sing = shuffle(VB_SUBJ.filter(s => s[1] !== "wir" && s[1] !== "sieM")), all = shuffle(VB_SUBJ.slice()); let ri = 0;
+        const reg = () => regs[ri++ % regs.length];
+        if (d === "leicht") return [...Array(5)].map((_, i) => ({ k: "grund", v: reg(), s: sing[i % sing.length] })).concat([...Array(5)].map((_, i) => ({ k: "ein", v: reg(), s: sing[(i + 3) % sing.length] })));
+        if (d === "mittel") return [...Array(5)].map((_, i) => ({ k: "grund", v: reg(), s: sing[i % sing.length] })).concat([...Array(6)].map((_, i) => ({ k: "ein", v: reg(), s: all[i % all.length] })));
+        const st = shuffle(VB_STRONG.slice());
+        const grund = shuffle([{ k: "grund", v: reg(), s: sing[0] }, { k: "grund", v: reg(), s: sing[1] }, { k: "grundU", st: st[0] }, { k: "grundU", st: st[1] }]);
+        const schreib = shuffle([{ k: "schreib", v: reg(), s: all[0] }, { k: "schreib", v: reg(), s: all[1] }, { k: "schreib", v: reg(), s: all[2] }, { k: "schreibU", st: st[2] }, { k: "schreibU", st: st[3] }, { k: "schreibU", st: st[4] }]);
+        return grund.concat(schreib);
       },
       render(x, stage, d) {
-        if (d === "leicht") {
-          const f = vbForm(x.v, x.s[1]), s = `${x.s[0]} ▢ ${x.v[3]}.`;
-          const wr = [f, x.v[1] + (x.s[1] === "du" ? "t" : "st")];
-          const card = el("div", "card word-card vb-card", `<div class="vb-pic">${x.v[2]}</div><div class="vb-s">${s.replace("▢", `<b class="vbm">${f}</b>`)}</div><div class="vb-q">Grundform von <b>${f}</b>?</div>`);
-          stage.appendChild(card);
-          choiceTask(stage, { opts: vbOpts(x.v[0], wr, (w) => w === f ? `„${f}“ steht im Satz. Die Grundform endet mit -en.` : `Die Grundform endet mit -en.`), okText: `${f} → ${x.v[0]}`, okSpeak: x.v[0] });
+        if (x.k === "grund" || x.k === "grundU") {
+          $("taskText").textContent = "Wie heißt die Grundform?";
+          const U = x.k === "grundU", inf = U ? x.st[0] : x.v[0], f = U ? x.st[2] : vbForm(x.v, x.s[1]), s = U ? x.st[3] : `${x.s[0]} ▢ ${x.v[3]}.`, pic = U ? x.st[4] : x.v[2];
+          const wr = U ? [f.slice(0, -1) + "en", f] : [f, x.v[1] + (x.s[1] === "du" ? "t" : "st")];
+          stage.appendChild(el("div", "card word-card vb-card", `<div class="vb-pic">${pic}</div><div class="vb-s">${s.replace("▢", `<b class="vbm">${f}</b>`)}</div><div class="vb-q">Grundform von <b>${f}</b>?</div>`));
+          choiceTask(stage, { opts: vbOpts(inf, wr, (w) => w === f ? `„${f}“ steht im Satz. Die Grundform endet mit -en.` : U ? "Fast! In der Grundform ändert sich der Selbstlaut zurück." : "Die Grundform endet mit -en."), okText: `${f} → ${inf}`, okSpeak: inf });
           L.speakNow = () => speak(sayGap(s, f) + ` Wie heißt die Grundform von ${f}?`);
           return;
         }
-        if (d === "mittel") {
+        if (x.k === "ein") {
+          $("taskText").textContent = "Welche Form passt?";
           const p = x.s[1], f = vbForm(x.v, p), s = `${x.s[0]} ▢ ${x.v[3]}.`;
-          const others = shuffle(["e", "st", "t", "en"].filter(e => e !== VB_PRON[p][1])).slice(0, 2).map(e => x.v[1] + e);
+          const others = d === "leicht" ? shuffle(["e", "st", "t", "en"].filter(e => e !== VB_PRON[p][1])).slice(0, 2).map(e => x.v[1] + e) : ["e", "st", "t", "en"].map(e => x.v[1] + e);
           vbChoice(stage, { pic: x.v[2], sent: s, inf: x.v[0], answer: f, opts: vbOpts(f, others, () => endWhy(p)), okText: sayGap(s, f), okSpeak: sayGap(s, f), say: sayGap(s, "…") + ` Grundform: ${x.v[0]}. Welche Form passt?` });
           return;
         }
-        const [inf, , er, sE, pic] = x.st;
-        if (x.back) {
-          const card = el("div", "card word-card vb-card", `<div class="vb-pic">${pic}</div><div class="vb-s">${sE.replace("▢", `<b class="vbm">${er}</b>`)}</div><div class="vb-q">Grundform von <b>${er}</b>?</div>`);
-          stage.appendChild(card);
-          choiceTask(stage, { opts: vbOpts(inf, [er.slice(0, -1) + "en", er], (w) => w === er ? `„${er}“ steht im Satz. Die Grundform endet mit -en.` : `Fast! In der Grundform ändert sich der Selbstlaut zurück.`), okText: `${er} → ${inf}`, okSpeak: inf });
-          L.speakNow = () => speak(sayGap(sE, er) + ` Wie heißt die Grundform von ${er}?`);
-          return;
-        }
-        vbChoice(stage, { pic, sent: sE, inf, answer: er, opts: vbOpts(er, [inf.slice(0, -2) + "t", inf], (w) => w === inf ? "Das ist die Grundform. Im Satz verändert sich das Verb!" : "Hör genau hin: Bei diesem Verb ändert sich der Selbstlaut!"), okText: sayGap(sE, er), okSpeak: sayGap(sE, er), say: sayGap(sE, "…") + ` Grundform: ${inf}. Welche Form passt?` });
+        // schwer: das Verb in der richtigen Form selbst schreiben
+        $("taskText").textContent = "Schreibe das Verb in der richtigen Form!";
+        const U = x.k === "schreibU", inf = U ? x.st[0] : x.v[0], f = U ? x.st[2] : vbForm(x.v, x.s[1]), s = U ? x.st[3] : `${x.s[0]} ▢ ${x.v[3]}.`, pic = U ? x.st[4] : x.v[2];
+        const card = el("div", "card word-card vb-card", `<div class="vb-pic">${pic}</div><div class="vb-s">${vbGapHTML(s)}</div><div class="vb-inf">(${inf})</div>`);
+        card.querySelector(".vb-gap").textContent = "✏️"; stage.appendChild(card);
+        writeTask(stage, { target: f, mode: "memory",
+          onRight: (box) => { const g = card.querySelector(".vb-gap"); g.textContent = f; g.classList.add("got"); award(box, 2); speak(sayGap(s, f)); hint(praise() + " " + sayGap(s, f), true); done(1400); },
+          onWrong: (typed, box) => {
+            sfxBad(); L.mistakes++; noteMiss(f); shakeEl(box); const t = typed.toLowerCase();
+            hint(t === inf ? "Das ist die Grundform. Im Satz verändert sich das Verb!"
+              : U && t === inf.slice(0, -2) + "t" ? `Achtung: Bei ${inf} ändert sich der Selbstlaut! Sprich laut: ${inf} – ${s.split(" ▢")[0]} …`
+              : U ? `Sprich das Verb laut und hör genau hin: ${inf} → ?`
+              : t.indexOf(x.v[1]) === 0 ? endWhy(x.s[1]) : `Fang mit dem Wortstamm an: ${x.v[1]}…`);
+          } });
+        L.speakNow = () => speak(sayGap(s, "…") + ` Grundform: ${inf}. Schreibe das Verb.`);
       },
       explain: (x, d) => {
         if (d === "experte") return { html: `<p>Sprich laut: <b>${x[0]}</b> – du …</p><p>Bei <b>${x[0]}</b> ändert sich der Selbstlaut. Und zu <b>du</b> gehört die Endung <b>-st</b>.</p>`, say: `Sprich laut: ${x[0]}, du … Bei ${x[0]} ändert sich der Selbstlaut. Und zu du gehört die Endung s t.` };
-        if (d === "leicht") { const f = vbForm(x.v, x.s[1]); return { html: `<p><b class="vbm">${f}</b> kommt von …?</p><p>Wortstamm <b>${x.v[1]}</b> + <b>en</b> = Grundform</p>`, say: `${f}. Nimm den Wortstamm ${x.v[1]} und hänge e n an. So bekommst du die Grundform.` }; }
-        if (d === "mittel") { const p = x.s[1]; return { html: `<p>Wer tut es? <b>${x.s[0]}</b> → wie <b>${p === "sieM" ? "sie (viele)" : VB_PRON[p][0]}</b></p><p>Zu ${p === "sieM" ? "sie (viele)" : VB_PRON[p][0]} gehört die Endung <b>-${VB_PRON[p][1]}</b>: ${x.v[1]} + ${VB_PRON[p][1]}</p>`, say: `Wer tut es? ${x.s[0]}. Dazu gehört die Endung ${VB_PRON[p][1].split("").join(" ")}.` }; }
-        const [inf, , er] = x.st;
-        return { html: `<p>Sprich laut: <b>${inf}</b> – er <b>${er}</b></p><p>Bei <b>${inf}</b> ändert sich im Satz der Selbstlaut.</p>`, say: `Sprich laut: ${inf}. Er ${er}. Bei ${inf} ändert sich im Satz der Selbstlaut.` };
+        if (x.st) { const [inf, , er] = x.st; return { html: `<p>Sprich laut: <b>${inf}</b> – er <b>${er}</b></p><p>Bei <b>${inf}</b> ändert sich im Satz der Selbstlaut.</p>`, say: `Sprich laut: ${inf}. Er ${er}. Bei ${inf} ändert sich im Satz der Selbstlaut.` }; }
+        if (x.k === "grund") { const f = vbForm(x.v, x.s[1]); return { html: `<p><b class="vbm">${f}</b> kommt von …?</p><p>Wortstamm <b>${x.v[1]}</b> + <b>en</b> = Grundform</p>`, say: `${f}. Nimm den Wortstamm ${x.v[1]} und hänge e n an. So bekommst du die Grundform.` }; }
+        const p = x.s[1], who = p === "sieM" ? "sie (viele)" : VB_PRON[p][0];
+        return { html: `<p>Wer tut es? <b>${x.s[0]}</b> → wie <b>${who}</b></p><p>Zu ${who} gehört die Endung <b>-${VB_PRON[p][1]}</b>: ${x.v[1]} + ${VB_PRON[p][1]}</p>`, say: `Wer tut es? ${x.s[0]}. Das ist wie ${who}. Dazu gehört die Endung ${VB_PRON[p][1].split("").join(" ")}.` };
       },
       expert: {
         task: () => "Wie heißt die du-Form?",
