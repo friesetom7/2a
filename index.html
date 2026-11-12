@@ -237,6 +237,29 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .chip { background: var(--sand); font-size: clamp(26px, 4.6vw, 40px); font-weight: 800; padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); border: 4px solid transparent; }
 .chip.on { background: var(--gold); border-color: #fff3c4; box-shadow: 0 5px 0 var(--gold-edge); }
 /* Verben: rot-orange markieren */
+/* Eulenklasse: Abendhimmel */
+body.eule .sky { display: block; }
+body.eule .rays, body.eule #bubbles { display: none; }
+body.eule { --deep: #2b2a63; --sea: #4b4aa0; --shallow: #9d9be6; --shadow: rgba(20, 18, 60, 0.35);
+  background: #4b4aa0; background-image: linear-gradient(180deg, #b6b3f2 0%, #7f7cd6 30%, #4b4aa0 66%, #2b2a63 100%); background-attachment: fixed; }
+body.eule #scrPlay .stage { background: rgba(255, 252, 240, .2); }
+/* Millionen-Inseln */
+.nbrs.bign .nbh { font-size: clamp(22px, 3.6vw, 34px); min-width: 5.4em; padding: 0 .3em; }
+.nbrs.bign .nbh .slotn { font-size: 1em; }
+.stwcard { padding: 14px 18px; }
+table.stw { border-collapse: collapse; font-weight: 900; }
+table.stw th { font-size: clamp(16px, 2.4vw, 22px); color: #6b5b3e; padding: 4px 10px; border-bottom: 3px solid #c9b88f; }
+table.stw td { font-size: clamp(30px, 5vw, 46px); text-align: center; min-width: 1.6em; height: 1.5em; padding: 4px 8px; border-left: 2px dashed #e0d3b5; }
+table.stw td:first-child { border-left: 0; }
+table.stw td .slotn { font-size: .9em; min-width: 1em; }
+.pl { display: grid; grid-template-columns: repeat(3, 14px); gap: 4px; justify-content: center; min-height: 14px; }
+.pl i { width: 14px; height: 14px; border-radius: 50%; background: #3a86ff; box-shadow: inset 0 -2px 0 #1d4ed8; }
+table.stw.build td.plctl { border-left: 0; padding: 4px 2px; height: auto; }
+.plb { width: 36px; height: 36px; border-radius: 10px; background: var(--white); font-size: 22px; font-weight: 900; box-shadow: 0 3px 0 var(--sand-edge); margin: 2px; }
+.zwcard { font-size: clamp(22px, 3.6vw, 32px); font-weight: 800; max-width: 680px; line-height: 1.3; word-break: normal; overflow-wrap: anywhere; text-align: center; }
+.card.mq.bignum { font-size: clamp(34px, 6vw, 54px); font-weight: 900; }
+.opt.zwopt { font-size: clamp(17px, 2.6vw, 22px); line-height: 1.25; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.zstrahl.bigline .zs-lab { font-size: 30px; }
 .chips.vbmark .chip.on { background: #ffd2b8; border-color: #fff; box-shadow: 0 5px 0 #e8956b; color: #9d2f00; }
 .vbm { color: #c2410c; background: #ffe8d6; border-radius: 8px; padding: 0 .15em; }
 .vb-card { gap: 6px; }
@@ -617,8 +640,26 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 @keyframes flap { 0%, 100% { transform: translateY(-10px) rotate(-6deg); } 50% { transform: translateY(10px) rotate(5deg); } }
 /* Schulhaus mit Nemos Klasse (unten) und Pollys Klasse (oben) */
 .schoolwrap { position: relative; width: min(100%, calc((100vh - 330px) * 1400 / 960), 1100px); border-radius: 26px; overflow: hidden; box-shadow: 0 10px 30px var(--shadow); background: #e6f5ff; flex: none; }
+/* Bühne: draußen weiter weg (man sieht die Umgebung), drinnen nah am Haus */
+.schstage { position: relative; transform-origin: 50% 62%; transition: transform .9s cubic-bezier(.45,0,.3,1); }
+.schstage.out { transform: scale(.72); }
+.school.scene { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+.school.cut { position: relative; z-index: 1; }
+.school .flake { animation: flakeFall linear infinite; }
+@keyframes flakeFall { from { transform: translate(0, 0); } to { transform: translate(40px, 980px); } }
+.school .leaf { animation: leafFall linear infinite; transform-box: fill-box; }
+@keyframes leafFall { 0% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(-60px, 480px) rotate(200deg); } 100% { transform: translate(30px, 960px) rotate(400deg); } }
+.school .sunspin { animation: sunSpin 40s linear infinite; }
+@keyframes sunSpin { to { transform: rotate(360deg); } }
+.school .boat { animation: boatBob 4s ease-in-out infinite; }
+@keyframes boatBob { 0%, 100% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(14px, -6px) rotate(-2deg); } }
+.school .kite { animation: kiteSway 5s ease-in-out infinite; }
+@keyframes kiteSway { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(24px, -14px); } }
+.school .bfly { animation: bflyFly 7s ease-in-out infinite; }
+@keyframes bflyFly { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(40px, -30px); } 50% { transform: translate(70px, 10px); } 75% { transform: translate(30px, 30px); } }
+@media (prefers-reduced-motion: reduce) { .school .flake, .school .leaf, .school .sunspin, .school .boat, .school .kite, .school .bfly { animation: none; } }
 /* Außenansicht: Fassade in drei Klappen – beim Reingehen klappen die Stockwerke auf */
-.facade { position: absolute; inset: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.facade { position: absolute; inset: 0; z-index: 2; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .facade .flap { position: absolute; inset: 0; transform-origin: 50% var(--hy); pointer-events: none; will-change: transform;
   transition: transform .8s cubic-bezier(.45,0,.3,1) var(--d), opacity .2s linear var(--d); }
 .facade .flap svg { display: block; }
@@ -666,6 +707,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 .qroom { border: none; border-radius: 999px; padding: 6px 14px; color: #fff; font: inherit; font-size: 17px; font-weight: 900; text-shadow: 0 1px 0 rgba(0,0,0,.25); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 3px 0 var(--edge); }
 .qroom.nemo-r { background: linear-gradient(160deg, #5cc8ea, #1270a8 70%); --edge: #072a44; }
 .qroom.polly-r { background: linear-gradient(160deg, #c5f27a, #35b56b 60%, #0e7a55); --edge: #0a5a3e; }
+.qroom.eule-r { background: linear-gradient(160deg, #cdb4f5, #8e6cc0 60%, #5e418c); --edge: #3b2766; }
 .qroom.out-r { background: linear-gradient(160deg, #ffd88a, #f4a259 60%, #c96a1b); --edge: #7a3d0c; }
 .qroom .pollyfig .pi { width: 1.2em !important; height: 1.2em !important; }
 .qroom .wt { font-size: 13px; background: rgba(255,255,255,.24); border-radius: 999px; padding: 2px 8px; }
@@ -1036,7 +1078,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       <button class="padgo" id="mvIn">🚪 Rein!</button>
       <button class="padb" id="mvD" aria-label="Treppe runter">▼</button><button class="padb" id="mvR" aria-label="Nach rechts">▶</button>
     </div>
-    <div class="foot"><button class="qroom nemo-r" id="goNemo"><span aria-hidden="true">🦈</span> Nemos Klasse <span class="wt" id="wtNemo"></span></button><button class="qroom polly-r" id="goPolly"><span class="pollyfig" aria-hidden="true">🦜</span> Pollys Klasse <span class="wt" id="wtPolly"></span></button><button class="qroom out-r" id="goOutBtn" hidden>🌳 Raus aus der Schule</button><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
+    <div class="foot"><button class="qroom nemo-r" id="goNemo"><span aria-hidden="true">🦈</span> Nemos Klasse <span class="wt" id="wtNemo"></span></button><button class="qroom polly-r" id="goPolly"><span class="pollyfig" aria-hidden="true">🦜</span> Pollys Klasse <span class="wt" id="wtPolly"></span></button><button class="qroom eule-r" id="goEule"><span aria-hidden="true">🦉</span> Eulenklasse <span class="wt" id="wtEule"></span></button><button class="qroom out-r" id="goOutBtn" hidden>🌳 Raus aus der Schule</button><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
   </section>
 
   <!-- HOME -->
@@ -1044,7 +1086,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 12.11. · Verb-Inseln</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 12.11. · Eulenklasse</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1372,7 +1414,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     nemo: { id: "nemo", name: "Nemos Spielplatz", room: "Nemos Klasse", hero: "Nemo", emo: "🦈", goes: "schwimmt", go: "schwimmen", place: "Aquarium", inPlace: "in deinem Aquarium", forPlace: "für dein Aquarium",
       shopTitle: "🐠 Nemos Aquarium", chest: "Nemos Schatztruhe", start: "⚓", conf: ["🐟", "🐠", "⭐", "🫧", "🦈", "🐚", "✨"], buyConf: ["🫧", "✨", "⭐", "🐚"] },
     polly: { id: "polly", name: "Pollys Spielplatz", room: "Pollys Klasse", hero: "Polly", emo: "🦜", goes: "fliegt", go: "fliegen", place: "Dschungel", inPlace: "in deinem Dschungel", forPlace: "für deinen Dschungel",
-      shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] }
+      shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", art: "polly", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] },
+    eule: { id: "eule", name: "Eddies Spielplatz", room: "Eulenklasse", hero: "Eddie", emo: "🦉", goes: "fliegt", go: "fliegen", place: "Baum", inPlace: "in Eddies Baum", forPlace: "für Eddies Baum",
+      shopTitle: "🌳 Eddies Baum", chest: "Eddies Schatzkiste", start: "🌳", art: "eddie", klasse: "die Eulenklasse", conf: ["🪶", "⭐", "🌙", "✨", "🔢", "🍂"], buyConf: ["🪶", "✨", "⭐", "🌙"] }
   };
   let W = WORLDS.nemo;
   const isPolly = () => W.id === "polly";
@@ -1388,14 +1432,17 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       btn: (n, pr) => pr ? "🥜 Nochmal knacken" : `🥜 ${n === 1 ? "Nuss" : "Nüsse"} knacken`,
       allTitle: "Alle Nüsse geknackt!", part: (p, n) => `${p} von ${n} Nüssen sind geknackt.`, retry: "Knack die harten Nüsse und versuch es nochmal!" }
   };
+  SHELL.eule = SHELL.polly;
   const SH = () => SHELL[W.id];
+  const isBird = () => W.id !== "nemo";
+  const birdHTML = (sz) => `<span class="pi" style="width:${sz};height:${sz}">${artSVG(W.art || "polly")}</span>`;
   function setWorld(id) {
     W = WORLDS[id] || WORLDS.nemo;
-    document.body.classList.toggle("polly", isPolly());
-    document.querySelectorAll(".mascot").forEach(m => { m.innerHTML = isPolly() ? pollyHTML("1.05em") : W.emo; m.classList.toggle("polly-m", isPolly()); });
+    document.body.classList.toggle("polly", isPolly()); document.body.classList.toggle("eule", W.id === "eule");
+    document.querySelectorAll(".mascot").forEach(m => { m.innerHTML = isBird() ? birdHTML("1.05em") : W.emo; m.classList.toggle("polly-m", isBird()); });
     $("homeTitle").textContent = W.room; $("aquaTitle").textContent = W.shopTitle;
     $("mapHint").textContent = `Tippe auf eine Insel – ${W.hero} ${W.goes} hin!`;
-    $("certFoot").innerHTML = `${isPolly() ? pollyHTML("1.3em") : W.emo} ${W.hero} und die Klasse 2a gratulieren!`;
+    $("certFoot").innerHTML = `${isBird() ? birdHTML("1.3em") : W.emo} ${W.hero} und ${W.klasse || "die Klasse 2a"} gratulieren!`;
     $("resShellBtn").textContent = SH().btn(2, false);
   }
 
@@ -2006,6 +2053,254 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           sayExtra: d === "schwer" ? "Finde alle Nomen." : "Finde " + targets.length + " Nomen."
         });
       }
+    }
+  ];
+
+  /* ---------- Eddies Kapitel (Eulenklasse): Zahlen bis 1 Million ---------- */
+  const MZR = (d) => d === "leicht" ? [10000, 99999] : [100000, 999999];
+  const rnum = (d) => { const [a, b] = MZR(d); return rint(a, b); };
+  const STW = ["HT", "ZT", "T", "H", "Z", "E"], STN = ["Hunderttausender", "Zehntausender", "Tausender", "Hunderter", "Zehner", "Einer"];
+  const dig6 = (n) => String(n).padStart(6, "0").split("").map(Number);
+  // Zahl mit Nullen in der Mitte (für „schwer“)
+  const zeroNum = () => { const d = dig6(rint(100000, 999999)); const z = shuffle([1, 2, 3, 4, 5]).slice(0, rint(2, 3)); z.forEach(i => d[i] = 0); return +d.join(""); };
+  // Zahlwörter bis eine Million
+  function zahlwort(n) {
+    if (n === 0) return "null"; if (n === 1000000) return "eine Million";
+    const E = ["", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun"], T = ["", "zehn", "zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"];
+    const TEEN = ["zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"];
+    const u100 = (x, last) => x === 0 ? "" : x === 1 ? (last ? "eins" : "ein") : x < 10 ? E[x] : x < 20 ? TEEN[x - 10] : (x % 10 ? E[x % 10] + "und" : "") + T[Math.floor(x / 10)];
+    const u1000 = (x, last) => (x >= 100 ? E[Math.floor(x / 100)] + "hundert" : "") + u100(x % 100, last);
+    const t = Math.floor(n / 1000), r = n % 1000;
+    return (t ? u1000(t, false) + "tausend" : "") + u1000(r, true);
+  }
+  const zwHTML = (n) => zahlwort(n).replace(/tausend/g, "tausend<wbr>").replace(/hundert/g, "hundert<wbr>");
+  // ähnliche Zahlen als falsche Antworten: zwei Ziffern getauscht, eine Ziffer verändert, eine Null verrutscht
+  function nearNums(n, k) {
+    const s = String(n), out = new Set(), len = s.length;
+    for (let g = 0; out.size < k && g < 200; g++) {
+      const a = s.split(""), ty = g % 3;
+      if (ty === 0) { const i = rint(0, len - 2); [a[i], a[i + 1]] = [a[i + 1], a[i]]; }
+      else if (ty === 1) { const i = rint(1, len - 1); a[i] = String((+a[i] + (Math.random() < .5 ? 1 : 9)) % 10); }
+      else { const i = a.indexOf("0", 1); if (i < 0) continue; a.splice(i, 1); a.splice(rint(1, len - 1), 0, "0"); }
+      const v = +a.join(""); if (a[0] !== "0" && v !== n && String(v).length === len) out.add(v);
+    }
+    return [...out];
+  }
+  // Stellenwerttafel: Ziffern (oder Plättchen) in Spalten
+  const stwHTML = (n, o) => {
+    const d = dig6(n), lead = String(n).length < 6 ? 6 - String(n).length : 0;
+    return `<table class="stw"><tr>${STW.map(h => `<th>${h}</th>`).join("")}</tr><tr>${d.map((x, i) => `<td>${o && o.dots ? dotsHTML(i < lead ? 0 : x) : i < lead ? "" : x}</td>`).join("")}</tr></table>`;
+  };
+  const dotsHTML = (k) => `<span class="pl">${Array.from({ length: k }, () => "<i></i>").join("")}</span>`;
+  const mWhy = (want, v, tip) => {
+    const a = dig6(want), b = dig6(v), i = a.findIndex((x, j) => x !== b[j]);
+    if (String(v).length !== String(want).length) return "Zähle die Stellen: Wie viele Ziffern hat die Zahl?" + (tip ? " " + tip : "");
+    return (i >= 0 ? `Schau nochmal auf die ${STN[i]}.` : "Probier nochmal!") + (tip ? " " + tip : "");
+  };
+  const placeOf = (step) => step === 10 ? "Zehner" : step === 100 ? "Hunderter" : "Tausender";
+  // Nachbarzehner, -hunderter, -tausender: alles gleich, nur die Stufe ist anders
+  function nbLevel(id, step, icon, color) {
+    const P = placeOf(step), W = "Nachbar" + P.toLowerCase(), zeros = "0".repeat(String(step).length - 1);
+    const ex = step === 10 ? "45 360 · 45 367 · 45 370" : step === 100 ? "45 300 · 45 367 · 45 400" : "45 000 · 45 367 · 46 000";
+    return {
+      id, name: "Nachbar" + P.toLowerCase(), icon, color,
+      task: () => `Finde die Nachbar${P.toLowerCase()}!`,
+      intro: (d) => `Jede Zahl liegt zwischen zwei ${P}zahlen – das sind Zahlen, die auf ${zeros} enden.` + (d === "schwer" ? " Achtung: Manchmal ändert sich dabei eine Stelle weiter vorne!" : ""),
+      ex: () => ex.replace(/ · /g, " · ").replace(/^(\S+ \S+)/, "<b>$1</b>").replace(/(\S+ \S+)$/, "<b>$1</b>"),
+      say: (d) => `Jede Zahl liegt zwischen zwei ${P}zahlen. Das sind Zahlen, die auf ${zeros.split("").join(" ")} enden.` + (d === "schwer" ? " Achtung: Manchmal ändert sich dabei eine Stelle weiter vorne." : ""),
+      build(d) {
+        return gen(8, () => {
+          let n = rnum(d);
+          if (d === "schwer") { n = n - (Math.floor(n / step) % 10) * step + 9 * step; if (n > 999999) return null; }
+          if (n % step === 0) n += rint(1, step - 1);
+          const lo = n - n % step; return { n, lo, hi: lo + step, lab: String(n) };
+        });
+      },
+      render(x, stage) {
+        padTask(stage, { maxLen: 7, group: true,
+          layout: (slot) => houses([{ node: slot(x.lo), lab: `${P} davor` }, { html: fmtN(x.n), lab: "Zahl", mid: true }, { node: slot(x.hi), lab: `${P} danach` }], "bign"),
+          say: `Wie heißen die Nachbar${P.toLowerCase()} von ${x.n}?`,
+          why: (k, v) => v % step ? `Nachbar${P.toLowerCase()} enden auf ${zeros}.` : Math.abs(v - (k ? x.hi : x.lo)) === step ? `Fast! Schau genau auf die ${P}.` : mWhy(k ? x.hi : x.lo, v),
+          okText: `${fmtN(x.lo)} · ${fmtN(x.n)} · ${fmtN(x.hi)}`, okSay: `${x.n} liegt zwischen ${x.lo} und ${x.hi}.` });
+      },
+      explain: (x) => ({ html: `<p>${fmtN(x.n)}: Die ${P}stelle zeigt dir den Nachbarn davor.</p><p>Danach kommt die nächste ${P}zahl: <b>+ ${fmtN(step)}</b>.</p>`, say: `Schau auf die ${P}stelle. Den Rest machst du zu Null. Danach kommt die nächste ${P}zahl.` })
+    };
+  }
+  const MILLION = [
+    {
+      id: "nachbarzahlen", name: "Nachbarzahlen", icon: "🏘️", color: "#2a9d8f",
+      task: () => "Finde Vorgänger und Nachfolger!",
+      intro: (d) => "Der Vorgänger ist 1 weniger, der Nachfolger 1 mehr." + (d === "schwer" ? " Achtung: Hier ändern sich viele Stellen auf einmal!" : ""),
+      ex: (d) => d === "schwer" ? "299 999 · <b>300 000</b> · 300 001" : "45 369 · <b>45 370</b> · 45 371",
+      say: (d) => "Der Vorgänger ist 1 weniger, der Nachfolger 1 mehr." + (d === "schwer" ? " Achtung: Hier ändern sich viele Stellen auf einmal!" : ""),
+      build(d) {
+        return gen(8, (k) => {
+          let n = rnum(d);
+          if (d === "schwer") { const z = 10 ** rint(2, 5), base = z * rint(1, Math.floor(999999 / z)); n = k % 2 ? base : base - 1; }
+          return n >= 2 && n <= 999999 ? { n, lab: String(n) } : null;
+        });
+      },
+      render(x, stage) {
+        const n = x.n;
+        padTask(stage, { maxLen: 7, group: true,
+          layout: (slot) => houses([{ node: slot(n - 1), lab: "Vorgänger<br>(1 weniger)" }, { html: fmtN(n), lab: "Zahl", mid: true }, { node: slot(n + 1), lab: "Nachfolger<br>(1 mehr)" }], "bign"),
+          say: `Wie heißen Vorgänger und Nachfolger von ${n}?`,
+          why: (k, v) => (Math.abs(v - (k ? n + 1 : n - 1)) === 1 ? "Ganz knapp daneben! " : "") + (k ? "Der Nachfolger ist 1 mehr." : "Der Vorgänger ist 1 weniger.") + ((k ? (n + 1) % 10 === 0 : n % 10 === 0) ? " Schau genau, welche Stellen sich ändern!" : ""),
+          okText: `${fmtN(n - 1)} · ${fmtN(n)} · ${fmtN(n + 1)}`, okSay: `${n - 1}, ${n}, ${n + 1}.` });
+      },
+      explain: (x) => ({ html: `<p>Vorgänger: <b>${fmtN(x.n)} − 1</b></p><p>Nachfolger: <b>${fmtN(x.n)} + 1</b></p>${x.n % 10 === 0 || x.n % 10 === 9 ? "<p>Hier gibt es einen Übergang – mehrere Stellen ändern sich!</p>" : ""}`, say: `Der Vorgänger ist ${x.n} minus 1. Der Nachfolger ist ${x.n} plus 1.` })
+    },
+    nbLevel("nachbarzehner", 10, "🔟", "#f77f00"),
+    nbLevel("nachbarhunderter", 100, "💯", "#e63946"),
+    nbLevel("nachbartausender", 1000, "🏙️", "#3a86ff"),
+    {
+      id: "stellenwert", name: "Stellenwerttafel", icon: "📊", color: "#7b4fc9",
+      task: (d) => d === "leicht" ? "Welche Zahl steht in der Tafel?" : d === "mittel" ? "Trage die Zahl in die Tafel ein!" : "Achtung, Nullen! Tafel und Zahl",
+      intro: (d) => d === "leicht" ? "Lies die Stellenwerttafel von links nach rechts: HT, ZT, T, H, Z, E. Welche Zahl ist es?"
+        : d === "mittel" ? "Schreibe jede Ziffer in die richtige Spalte – von den Hunderttausendern bis zu den Einern." : "Leere Stellen sind Nullen! Die Null musst du mitschreiben.",
+      ex: () => "HT ZT T H Z E → 3 4 5 2 1 2 = <b>345 212</b>",
+      say: (d) => d === "leicht" ? "Lies die Stellenwerttafel von links nach rechts. Hunderttausender, Zehntausender, Tausender, Hunderter, Zehner, Einer." : d === "mittel" ? "Schreibe jede Ziffer in die richtige Spalte." : "Leere Stellen sind Nullen. Die Null musst du mitschreiben.",
+      build(d) { return gen(8, (k) => { const n = d === "schwer" ? zeroNum() : rnum(d); return { n, back: d === "mittel" || (d === "schwer" && k % 2 === 1), lab: String(n) }; }); },
+      render(x, stage) {
+        const n = x.n;
+        if (!x.back) {
+          stage.appendChild(el("div", "card stwcard", stwHTML(n)));
+          padTask(stage, { maxLen: 7, group: true, layout: eqLayout([{ t: [{ t: "Zahl:", c: "tag" }, { a: n }] }]), say: "Welche Zahl steht in der Stellenwerttafel?",
+            why: (k, v) => mWhy(n, v, String(n).length > String(v).length ? "Hast du an die Nullen gedacht?" : ""), okText: fmtN(n), okSay: String(n) });
+          return;
+        }
+        stage.appendChild(el("div", "card mq", `Trage <b>${fmtN(n)}</b> in die Tafel ein.`));
+        padTask(stage, { maxLen: 1,
+          layout: (slot) => { const t = el("div", "card stwcard"); const tb = el("table", "stw"); const h = el("tr"), r = el("tr"); STW.forEach(c => h.appendChild(el("th", "", c))); dig6(n).forEach(dg => { const td = el("td"); td.appendChild(slot(dg)); r.appendChild(td); }); tb.appendChild(h); tb.appendChild(r); t.appendChild(tb); return t; },
+          say: `Trage ${n} in die Stellenwerttafel ein.`, why: (k) => `Welche Ziffer gehört zu den ${STN[k]}? Schau auf die Zahl: ${fmtN(n)}.`, okText: fmtN(n), okSay: String(n) });
+        L.speakNow = () => speak(`Trage ${n} in die Stellenwerttafel ein.`);
+      },
+      explain: (x) => ({ html: stwHTML(x.n) + `<p>Jede Spalte hat eine Ziffer. Eine leere Stelle ist eine <b>0</b>.</p>`, say: "Jede Spalte hat eine Ziffer. Eine leere Stelle ist eine Null." })
+    },
+    {
+      id: "zahlwoerter", name: "Zahlwörter", icon: "🔤", color: "#e85d04",
+      task: (d) => d === "leicht" ? "Welche Zahl ist das?" : d === "mittel" ? "Welches Zahlwort passt?" : "Schreibe die Zahl!",
+      intro: (d) => d === "mittel" ? "Lies die Zahl und such das passende Zahlwort. Tipp: Erst kommt alles vor „tausend“, dann der Rest."
+        : "Lies das Zahlwort in zwei Teilen: alles vor „tausend“ – und alles danach." + (d === "schwer" ? " Fehlt ein Teil, steht dort eine 0!" : ""),
+      ex: () => "dreihundertfünfundvierzig<b>tausend</b>zweihundertzwölf = <b>345 212</b>",
+      say: (d) => "Lies das Zahlwort in zwei Teilen: alles vor tausend, und alles danach." + (d === "schwer" ? " Fehlt ein Teil, steht dort eine Null." : ""),
+      build(d) { return gen(8, () => { const n = d === "schwer" ? zeroNum() : rnum(d); return { n, lab: String(n) }; }); },
+      render(x, stage, d) {
+        const n = x.n;
+        if (d === "leicht") {
+          stage.appendChild(el("div", "card zwcard", zwHTML(n)));
+          choiceTask(stage, { opts: [{ label: fmtN(n), correct: true, cls: "numopt" }].concat(nearNums(n, 2).map(v => ({ label: fmtN(v), cls: "numopt", wrongText: mWhy(n, v) }))), okText: `${fmtN(n)}`, okSpeak: String(n) });
+          L.speakNow = () => speak(String(n)); return;
+        }
+        if (d === "mittel") {
+          stage.appendChild(el("div", "card mq bignum", fmtN(n)));
+          choiceTask(stage, { small: true, opts: [{ label: zwHTML(n), correct: true, cls: "zwopt" }].concat(nearNums(n, 2).map(v => ({ label: zwHTML(v), cls: "zwopt", wrongText: "Vergleiche Teil für Teil: erst bis „tausend“, dann den Rest." }))), okText: zwHTML(n), okSpeak: String(n) });
+          L.speakNow = () => speak("Welches Zahlwort passt zu " + n + "?"); return;
+        }
+        stage.appendChild(el("div", "card zwcard", zwHTML(n)));
+        padTask(stage, { maxLen: 7, group: true, layout: eqLayout([{ t: [{ t: "Zahl:", c: "tag" }, { a: n }] }]), say: String(n),
+          why: (k, v) => mWhy(n, v, String(v).length !== 6 ? "Die Zahl hat 6 Stellen – denk an die Nullen!" : ""), okText: fmtN(n), okSay: String(n) });
+      },
+      explain: (x) => { const t = Math.floor(x.n / 1000), r = x.n % 1000; return { html: `<p><b>${zahlwort(t)}tausend</b> → ${fmtN(t)} Tausender</p><p><b>${r ? zahlwort(r) : "(nichts)"}</b> → ${String(r).padStart(3, "0")}</p><p>zusammen: <b>${fmtN(x.n)}</b></p>`, say: `Erst kommt der Teil vor tausend: ${t}. Dann der Rest: ${r}.` }; }
+    },
+    {
+      id: "plaettchen", name: "Zahlen mit Plättchen", icon: "🔵", color: "#2bb673",
+      task: (d) => d === "leicht" ? "Welche Zahl ist gelegt?" : d === "mittel" ? "Lege die Zahl mit Plättchen!" : "Plättchen-Rätsel",
+      intro: (d) => d === "leicht" ? "Zähle die Plättchen in jeder Spalte. Jede Spalte ist eine Stelle der Zahl."
+        : d === "mittel" ? "Tippe auf ＋ und −, bis in jeder Spalte die richtige Anzahl Plättchen liegt. Dann auf Fertig."
+        : "Wie viele Plättchen brauchst du? Und was passiert, wenn ein Plättchen dazukommt oder weggeht?",
+      ex: (d) => d === "schwer" ? "Für 2 0 3 brauchst du 2 + 0 + 3 = <b>5</b> Plättchen." : "T: ●● H: ●●● Z: ● E: ●●●● → <b>2 314</b>",
+      say: (d) => d === "leicht" ? "Zähle die Plättchen in jeder Spalte. Jede Spalte ist eine Stelle der Zahl." : d === "mittel" ? "Tippe auf plus und minus, bis in jeder Spalte die richtige Anzahl Plättchen liegt." : "Wie viele Plättchen brauchst du? Und was passiert, wenn ein Plättchen dazukommt oder weggeht?",
+      build(d) {
+        if (d === "schwer") return gen(8, (k) => {
+          const n = zeroNum(), dg = dig6(n);
+          if (k % 2 === 0) return { k: "summe", n, a: dg.reduce((p, q) => p + q, 0), lab: "s" + n };
+          const i = rint(0, 5), add = dg[i] === 0 || (dg[i] < 9 && Math.random() < .5), v = n + (add ? 1 : -1) * 10 ** (5 - i);
+          return v > 0 && v <= 999999 ? { k: "aendern", n, i, add, a: v, lab: "a" + n + i } : null;
+        });
+        return gen(d === "mittel" ? 6 : 8, () => { const n = d === "leicht" ? rint(10000, 99999) : rint(100000, 999999); return dig6(n).every(v => v <= 6) || d === "leicht" ? { n, lab: String(n) } : null; });
+      },
+      render(x, stage, d) {
+        if (d === "leicht") {
+          stage.appendChild(el("div", "card stwcard", stwHTML(x.n, { dots: true })));
+          padTask(stage, { maxLen: 7, group: true, layout: eqLayout([{ t: [{ t: "Zahl:", c: "tag" }, { a: x.n }] }]), say: "Welche Zahl ist mit Plättchen gelegt?", why: (k, v) => mWhy(x.n, v, "Zähle die Plättchen Spalte für Spalte."), okText: fmtN(x.n), okSay: String(x.n) });
+          return;
+        }
+        if (d === "mittel") {
+          const want = dig6(x.n), have = [0, 0, 0, 0, 0, 0];
+          stage.appendChild(el("div", "card mq", `Lege <b>${fmtN(x.n)}</b>`));
+          const card = el("div", "card stwcard"), tb = el("table", "stw build"), h = el("tr"), r = el("tr"), c = el("tr");
+          STW.forEach(t => h.appendChild(el("th", "", t)));
+          const cells = STW.map((_, i) => { const td = el("td"); td.innerHTML = dotsHTML(0); r.appendChild(td); const ctl = el("td", "plctl"); const p = el("button", "plb", "＋"), m = el("button", "plb", "−");
+            p.addEventListener("click", () => { if (L.locked || have[i] >= 9) return; have[i]++; td.innerHTML = dotsHTML(have[i]); tone([500 + have[i] * 30], 0.03); });
+            m.addEventListener("click", () => { if (L.locked || !have[i]) return; have[i]--; td.innerHTML = dotsHTML(have[i]); tone([420], 0.03); });
+            ctl.appendChild(p); ctl.appendChild(m); c.appendChild(ctl); return td; });
+          tb.appendChild(h); tb.appendChild(r); tb.appendChild(c); card.appendChild(tb); stage.appendChild(card);
+          const go = el("button", "big-btn", "Fertig ✓");
+          go.addEventListener("click", () => {
+            if (L.locked) return;
+            const i = want.findIndex((v, j) => v !== have[j]);
+            if (i < 0) { award(go, 2); hint(praise() + " " + fmtN(x.n), true); speak(String(x.n)); done(1500); }
+            else miss(go, `Schau auf die ${STN[i]}: Da ${want[i] === 1 ? "gehört 1 Plättchen" : "gehören " + want[i] + " Plättchen"}${want[i] === 0 ? " – also keins" : ""}.`);
+          });
+          stage.appendChild(go); L.speakNow = () => speak(`Lege ${x.n} mit Plättchen.`); return;
+        }
+        if (x.k === "summe") {
+          stage.appendChild(el("div", "card mq", `Wie viele Plättchen brauchst du für <b>${fmtN(x.n)}</b>?`));
+          padTask(stage, { layout: eqLayout([{ t: [{ t: "Plättchen:", c: "tag" }, { a: x.a }] }]), say: `Wie viele Plättchen brauchst du für ${x.n}?`, why: () => `Zähle die Ziffern zusammen: ${dig6(x.n).join(" + ")}.`, okText: `${dig6(x.n).join(" + ")} = ${x.a}`, okSay: `Du brauchst ${x.a} Plättchen.` });
+          return;
+        }
+        stage.appendChild(el("div", "card stwcard", stwHTML(x.n, { dots: true })));
+        stage.appendChild(el("div", "card mq", `${x.add ? "Lege 1 Plättchen dazu" : "Nimm 1 Plättchen weg"}: Spalte <b>${STW[x.i]}</b>. Welche Zahl entsteht?`));
+        padTask(stage, { maxLen: 7, group: true, layout: eqLayout([{ t: [{ t: "neue Zahl:", c: "tag" }, { a: x.a }] }]), say: `${x.add ? "Lege 1 Plättchen dazu" : "Nimm 1 Plättchen weg"}, bei den ${STN[x.i]}n. Welche Zahl entsteht?`,
+          why: (k, v) => `Die Zahl wird um ${fmtN(10 ** (5 - x.i))} ${x.add ? "größer" : "kleiner"}. ` + mWhy(x.a, v), okText: `${fmtN(x.n)} ${x.add ? "+" : "−"} ${fmtN(10 ** (5 - x.i))} = ${fmtN(x.a)}`, okSay: String(x.a) });
+      },
+      explain: (x, d) => d === "schwer" && x.k === "summe" ? { html: `<p>Jede Ziffer sagt, wie viele Plättchen in der Spalte liegen:</p><p><b>${dig6(x.n).join(" + ")}</b></p>`, say: "Jede Ziffer sagt, wie viele Plättchen in der Spalte liegen. Zähle alle zusammen." }
+        : { html: `<p>Jede Spalte ist eine Stelle: HT, ZT, T, H, Z, E.</p><p>Die Anzahl der Plättchen ist die Ziffer.</p>`, say: "Jede Spalte ist eine Stelle. Die Anzahl der Plättchen ist die Ziffer." }
+    },
+    {
+      id: "zahlenstrahl", name: "Zahlenstrahl", icon: "📏", color: "#3a86ff",
+      task: () => "Wo sitzt Eddie? Welche Zahl ist es?",
+      intro: (d) => d === "leicht" ? "Der Zahlenstrahl geht von 0 bis 100 000. Ein Schritt ist 10 000." : d === "mittel" ? "Der Zahlenstrahl geht von 0 bis 1 000 000. Ein Schritt ist 50 000." : "Ein Ausschnitt vom Zahlenstrahl: Ein Schritt ist 1 000.",
+      ex: (d) => d === "leicht" ? "0 · 10 000 · 20 000 · …" : d === "mittel" ? "0 · 50 000 · 100 000 · …" : "340 000 · 341 000 · 342 000 · …",
+      say: (d) => d === "leicht" ? "Der Zahlenstrahl geht von 0 bis 100000. Ein Schritt ist 10000." : d === "mittel" ? "Der Zahlenstrahl geht von 0 bis eine Million. Ein Schritt ist 50000." : "Ein Ausschnitt vom Zahlenstrahl. Ein Schritt ist 1000.",
+      build(d) {
+        return gen(8, () => {
+          if (d === "leicht") { const v = 10000 * rint(1, 9); return v === 50000 ? null : { from: 0, to: 100000, step: 10000, v, lab: String(v) }; }
+          if (d === "mittel") { const v = 50000 * rint(1, 19); return v === 500000 ? null : { from: 0, to: 1000000, step: 50000, v, lab: String(v) }; }
+          const from = 10000 * rint(10, 98), v = from + 1000 * rint(1, 9); return v === from + 5000 ? null : { from, to: from + 10000, step: 1000, v, lab: String(v) };
+        });
+      },
+      render(x, stage) {
+        const half = (x.to - x.from) / 2, big = (v) => (v - x.from) % half === 0, mid = (v) => (v - x.from) % (x.step * 2) === 0 && x.step === 50000;
+        const nl = numLine({ from: x.from, to: x.to, step: x.step, big, mid, art: "eddie", polly: x.v, label: (v) => big(v) ? fmtN(v) : null });
+        nl.svg.classList.add("bigline"); stage.appendChild(nl.card);
+        padTask(stage, { maxLen: 7, group: true, layout: eqLayout([{ t: [{ t: "Eddie sitzt bei", c: "tag" }, { a: x.v }] }]), say: "Wo sitzt Eddie? Welche Zahl ist es?",
+          why: (k, v) => v % x.step ? `Ein Schritt ist ${fmtN(x.step)}. Zähle die Schritte von ${fmtN(x.from)} aus.` : `Zähle nochmal die Schritte: Ein Schritt ist ${fmtN(x.step)}.`, okText: fmtN(x.v), okSay: String(x.v) });
+      },
+      explain: (x) => ({ html: `<p>Start: <b>${fmtN(x.from)}</b> · Ein Schritt: <b>${fmtN(x.step)}</b></p><p>Zähle die Schritte bis zu Eddie und rechne mit.</p>`, say: `Starte bei ${x.from}. Ein Schritt ist ${x.step}. Zähle die Schritte bis zu Eddie.` })
+    },
+    {
+      id: "ordnen", name: "Zahlen ordnen", icon: "🪜", color: "#9b5de5",
+      task: (d) => d === "schwer" ? "Ordne von groß nach klein!" : "Ordne von klein nach groß!",
+      intro: (d) => "Vergleiche Stelle für Stelle von links: Erst die Hunderttausender, dann die Zehntausender, und so weiter." + (d === "leicht" ? " Mehr Stellen heißt: größere Zahl!" : ""),
+      ex: (d) => d === "schwer" ? "345 210 &gt; 345 201 &gt; 345 120" : "45 370 &lt; 45 703 &lt; 54 307",
+      say: () => "Vergleiche Stelle für Stelle von links. Erst die Hunderttausender, dann die Zehntausender, und so weiter.",
+      build(d) {
+        return gen(6, () => {
+          const nums = new Set();
+          if (d === "leicht") { while (nums.size < 4) nums.add(Math.random() < .25 ? rint(1000, 9999) : rint(10000, 99999)); }
+          else if (d === "mittel") { const a = rint(1, 9); while (nums.size < 5) nums.add(a * 100000 + rint(0, 99999)); }
+          else { const a = rint(100, 999); while (nums.size < 5) nums.add(a * 1000 + rint(0, 999)); }
+          const arr = [...nums]; return { nums: arr, lab: arr.join(",") };
+        });
+      },
+      render(x, stage, d) {
+        sortTask(stage, x.nums, { desc: d === "schwer", factor: 2, label: fmtN,
+          why: (v, want) => { const sv = String(v), sw = String(want); if (sv.length !== sw.length) return `${fmtN(v)} hat ${sv.length} Stellen, ${fmtN(want)} hat ${sw.length}.`; const a = dig6(v), b = dig6(want), i = a.findIndex((q, j) => q !== b[j]); return `${d === "schwer" ? "Es gibt noch eine größere" : "Es gibt noch eine kleinere"} Zahl. Schau auf die ${STN[i]}!`; } });
+        L.speakNow = () => speak(d === "schwer" ? "Ordne die Zahlen von groß nach klein." : "Ordne die Zahlen von klein nach groß.");
+      },
+      explain: () => ({ html: `<p>1. Zähle die Stellen: Mehr Stellen = größere Zahl.</p><p>2. Gleich viele Stellen? Vergleiche von links: HT, ZT, T, H, Z, E.</p>`, say: "Zähle zuerst die Stellen. Mehr Stellen heißt größere Zahl. Bei gleich vielen Stellen vergleichst du von links." })
     }
   ];
 
@@ -3410,6 +3705,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      und Plus-Minus-Inseln (Schritt für Schritt schwerer). Alle Aufgaben werden zufällig erzeugt.
      ====================================================================== */
   const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const fmtN = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
   const MI = "−"; // echtes Minuszeichen
   const opS = (op) => op === "+" ? "+" : MI;
   const opW = (op) => op === "+" ? "plus" : "minus";
@@ -3474,7 +3770,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         const v = +s.v;
         if (v === s.a) {
           s.el.classList.remove("act"); s.el.classList.add("ok"); tone([660 + cur * 80], 0.07);
-          refs.forEach(r => { if (r.k === cur) { r.el.textContent = s.a; r.el.classList.add("got"); } });
+          refs.forEach(r => { if (r.k === cur) { r.el.textContent = o.group ? fmtN(s.a) : s.a; r.el.classList.add("got"); } });
           cur++; fit();
           if (cur >= slots.length) {
             if (o.onDone) { o.onDone(); fit(); }
@@ -3486,15 +3782,15 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         } else {
           s.tries++;
           let why = o.why ? o.why(cur, v, s.tries) : numWhy(s.a, v);
-          if (s.tries >= 2) why += ` Die Lösung ist ${s.a}.`;
+          if (s.tries >= 2) why += ` Die Lösung ist ${o.group ? fmtN(s.a) : s.a}.`;
           miss(s.el, why); s.v = ""; s.el.textContent = ""; fit();
         }
         return;
       } else {
-        if (s.v.length >= 3) return;
+        if (s.v.length >= (o.maxLen || 3)) return;
         s.v = (s.v === "0" ? "" : s.v) + k; tone([480 + (+k) * 20], 0.03);
       }
-      s.el.textContent = s.v; fit();
+      s.el.textContent = o.group ? fmtN(s.v) : s.v; fit();
     });
     L.speakNow = () => speak(o.say);
   }
@@ -3592,14 +3888,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     sv("path", { d: `M${x1 + 50} ${y} l-22 -12 v24 Z`, class: "zs-arrow" }, svg);
     const fs = P ? 38 : 36;
     for (let v = o.from; v <= o.to; v += o.step) {
-      const big = v % 10 === 0, mid = v % 5 === 0, h = big ? 25 : mid ? 18 : 11;
+      const big = o.big ? o.big(v) : v % 10 === 0, mid = o.mid ? o.mid(v) : v % 5 === 0, h = big ? 25 : mid ? 18 : 11;
       sv("line", { x1: X(v), y1: y - h, x2: X(v), y2: y + h, class: "zs-tick" + (big ? " big" : "") }, svg);
       const lab = o.label ? o.label(v) : null;
       if (lab != null) { const t = sv("text", { x: X(v), y: y + 66, "text-anchor": "middle", class: "zs-lab" + (lab === "?" ? " q" : ""), "font-size": fs }, svg); t.textContent = lab; }
     }
     const pg = sv("g", { class: "zs-polly" }, svg);
     sv("path", { d: "M-10 -4 L10 -4 L0 10 Z", class: "zs-pin" }, pg);
-    sv("image", { href: artURI("polly"), x: -32, y: -72, width: 64, height: 64 }, pg);
+    sv("image", { href: artURI(o.art || "polly"), x: -32, y: -72, width: 64, height: 64 }, pg);
     const setPolly = (v) => { if (v == null) { pg.style.opacity = 0; return; } pg.style.opacity = 1; pg.style.transform = `translate(${X(v)}px, ${y - 34}px)`; };
     pg.style.transform = `translate(${X(o.from) - 30}px, ${y - 90}px)`;
     setPolly(o.polly);
@@ -3652,8 +3948,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     return row;
   }
   // Häuser für Zahlen-Nachbarn: cells = [{ node | html, lab, mid }]
-  function houses(cells) {
-    const row = el("div", "nbrs");
+  function houses(cells, cls) {
+    const row = el("div", "nbrs" + (cls ? " " + cls : ""));
     cells.forEach(c => {
       const h = el("div", "nb" + (c.mid ? " mid" : "")), box = el("div", "nbh");
       if (c.node) box.appendChild(c.node); else box.innerHTML = c.html == null ? "" : c.html;
@@ -3669,14 +3965,15 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     stage.appendChild(slotsRow);
     const chips = el("div", "chips"); let k = 0;
     shuffle(nums).forEach(v => {
-      const c = el("button", "chip numchip", String(v));
+      const c = el("button", "chip numchip", o.label ? o.label(v) : String(v));
       c.addEventListener("click", () => {
         if (L.locked || c.classList.contains("used")) return;
         if (v === order[k]) {
-          c.classList.add("used"); slotEls[k].textContent = v; k++; tone([520 + k * 70], 0.06);
-          if (k === order.length) { award(slotsRow, o.factor || 1); hint(praise() + " " + order.join(o.desc ? " &gt; " : " &lt; "), true); speak(order.join(", ")); done(1700); }
+          c.classList.add("used"); slotEls[k].textContent = o.label ? o.label(v) : v; k++; tone([520 + k * 70], 0.06);
+          if (k === order.length) { award(slotsRow, o.factor || 1); hint(praise() + " " + order.map(q => o.label ? o.label(q) : q).join(o.desc ? " &gt; " : " &lt; "), true); speak(order.join(", ")); done(1700); }
         } else {
           const want = order[k], [vz] = ZE(v), [wz] = ZE(want);
+          if (o.why) { miss(c, o.why(v, want)); return; }
           miss(c, (o.desc ? `Es gibt noch eine größere Zahl als ${v}.` : `Es gibt noch eine kleinere Zahl als ${v}.`) + (vz === wz ? " Die Zehner sind gleich – schau auf die Einer!" : " Vergleiche zuerst die Zehner."));
         }
       });
@@ -4716,7 +5013,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     // Förderinsel: Zahlen und Aufgaben mit Material legen (ohne Experten-Insel)
     { id: "werkstatt", world: "polly", name: "Werkstatt", title: "Pollys Werkstatt", sub: "Zahlen mit Material legen", icon: "🧰", ready: true, levels: WERKLEVELS, award: "Zahlen-Baumeister", hunter: "Werkstatt", noExpert: true,
       bonusPlan: [["bauen", "mittel", 2], ["tauschen", "mittel", 2], ["pluslegen", "schwer", 2], ["minuslegen", "schwer", 2]] },
-    { id: "einmaleins", world: "polly", name: "Einmaleins", sub: "Malnehmen", icon: "✖️", ready: false, levels: [] }
+    { id: "einmaleins", world: "polly", name: "Einmaleins", sub: "Malnehmen", icon: "✖️", ready: false, levels: [] },
+    // ---- Eulenklasse (Eddie) ----
+    { id: "million", world: "eule", name: "Zahlen bis 1 Million", title: "Millionen-Inseln", sub: "Zahlenraum bis 1 000 000", icon: "🔢", ready: true, levels: MILLION, award: "Millionen-Profi", hunter: "Millionen", noExpert: true,
+      bonusPlan: [["nachbarzahlen", "schwer", 2], ["nachbartausender", "mittel", 2], ["stellenwert", "schwer", 2], ["zahlwoerter", "leicht", 2], ["plaettchen", "schwer", 2], ["zahlenstrahl", "mittel", 2], ["ordnen", "mittel", 1]] }
   ];
   let CH = CHAPTERS[0];
 
@@ -5161,6 +5461,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const ORCHID = (x, y, s, c) => `${[0, 72, 144, 216, 288].map(a => `<ellipse cx="${x + Math.cos((a - 90) * Math.PI / 180) * 6 * s}" cy="${y + Math.sin((a - 90) * Math.PI / 180) * 6 * s}" rx="${5.2 * s}" ry="${3.8 * s}" transform="rotate(${a - 90} ${x + Math.cos((a - 90) * Math.PI / 180) * 6 * s} ${y + Math.sin((a - 90) * Math.PI / 180) * 6 * s})" fill="${c}" ${OL}/>`).join("")}<circle cx="${x}" cy="${y}" r="${3 * s}" fill="#ffd60a" ${OL}/>`;
   const PART = {
     // Polly: roter Papagei, schaut nach links (wie das Emoji, damit das Spiegeln auf der Karte passt)
+    eddie: `<path d="M24 34 L16 10 L36 25 Z" fill="#6f4fa0" ${OL}/><path d="M76 34 L84 10 L64 25 Z" fill="#6f4fa0" ${OL}/><path d="M17 58 Q8 77 21 91 Q26 74 27 61 Z" fill="#5e418c" ${OL}/><path d="M83 58 Q92 77 79 91 Q74 74 73 61 Z" fill="#5e418c" ${OL}/><ellipse cx="50" cy="59" rx="31" ry="35" fill="#8e6cc0" ${OL}/><ellipse cx="50" cy="71" rx="19" ry="21" fill="#f3e3c3"/><path d="M39 64 q4 4 8 0 M53 64 q4 4 8 0 M46 74 q4 4 8 0 M39 83 q4 4 8 0 M53 83 q4 4 8 0" fill="none" stroke="#c9a66b" stroke-width="2" stroke-linecap="round"/><circle cx="37" cy="40" r="12.5" fill="#fff" ${OL}/><circle cx="63" cy="40" r="12.5" fill="#fff" ${OL}/><circle cx="38.5" cy="41" r="6" fill="#17324a"/><circle cx="61.5" cy="41" r="6" fill="#17324a"/><circle cx="36.6" cy="39" r="2.1" fill="#fff"/><circle cx="59.6" cy="39" r="2.1" fill="#fff"/><circle cx="37" cy="40" r="15" fill="none" stroke="#f77f00" stroke-width="3"/><circle cx="63" cy="40" r="15" fill="none" stroke="#f77f00" stroke-width="3"/><path d="M52 39 Q50 36 48 39" fill="none" stroke="#f77f00" stroke-width="3"/><path d="M50 47 L44 53 L50 60 L56 53 Z" fill="#ffb703" ${OL}/><path d="M40 93 l-3 6 M46 94 l0 6 M54 94 l0 6 M60 93 l3 6" stroke="#f77f00" stroke-width="3.2" stroke-linecap="round"/>`,
     polly: `<path d="M60 66 L76 97 L85 93 L67 63 Z" fill="#e63946" ${OL}/><path d="M64 68 L86 92 L91 86 L70 64 Z" fill="#3a86ff" ${OL}/><ellipse cx="53" cy="60" rx="21" ry="25" fill="#e63946" ${OL}/><ellipse cx="47" cy="66" rx="11" ry="15" fill="#f25c5c"/><path d="M57 42 Q81 48 77 84 Q62 79 55 60 Z" fill="#e63946" ${OL}/><path d="M60 54 Q74 58 75 72 Q66 70 61 62 Z" fill="#ffd60a"/><path d="M63 66 Q74 70 76 82 Q68 79 64 72 Z" fill="#3a86ff"/><path d="M42 14 Q45 2 55 5 Q49 8 50 14 Z" fill="#e63946" ${OL}/><path d="M48 15 Q55 6 62 11 Q55 12 53 17 Z" fill="#d62828" ${OL}/><circle cx="44" cy="31" r="18" fill="#e63946" ${OL}/><ellipse cx="37" cy="34" rx="10" ry="9" fill="#fff4ec"/><path d="M30 33 q4 1 7 0 M31 37 q4 1 6 0" stroke="#e8a0a0" stroke-width="1.2" fill="none"/><circle cx="38.5" cy="29" r="5.6" fill="#fff" ${OL}/><circle cx="37.2" cy="29.4" r="2.9" fill="#17324a"/><circle cx="36.3" cy="28.3" r="1.1" fill="#fff"/><path d="M29 30 Q15 29 14 45 Q20 39 28 41 Z" fill="#fff1d6" ${OL}/><path d="M28 41 Q21 42 23 47 Q28 47 31 43 Z" fill="#343a40" ${OL}/><circle cx="46" cy="40" r="3.2" fill="#ff8fa3" opacity=".7"/><path d="M47 84 l-3 7 M50 85 l0 7 M57 84 l0 7 M60 84 l3 7" stroke="#6c757d" stroke-width="3" stroke-linecap="round"/>`,
     wellensittich: `<path d="M32 58 L4 66 L8 73 L34 64 Z" fill="#2a9d8f" ${OL}/><path d="M46 50 Q42 22 58 12 Q62 32 58 50 Z" fill="#55a630" ${OL}/><ellipse cx="52" cy="58" rx="22" ry="12" fill="#8ac926" ${OL}/><path d="M36 62 Q52 72 68 62 Q60 68 48 68 Q40 67 36 62 Z" fill="#b5e48c"/><circle cx="73" cy="47" r="12" fill="#ffd60a" ${OL}/><path d="M64 40 q3 -3 6 0 M62 46 q3 -3 6 0" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="83" cy="44" rx="3" ry="2.2" fill="#4361ee"/><path d="M83 47 Q91 50 86 57 Q83 53 81 53 Z" fill="#f4a261" ${OL}/>${EYE(77, 44, 2.8)}<path d="M44 56 Q36 28 52 18 Q64 36 62 58 Z" fill="#6a994e" ${OL}/><path d="M46 46 q4 -3 8 0 M45 38 q4 -3 8 0 M48 30 q3 -2 6 0" fill="none" stroke="#17324a" stroke-width="1.6" stroke-linecap="round"/>`,
     kolibri: `<ellipse cx="40" cy="30" rx="7" ry="23" transform="rotate(-38 40 30)" fill="#bde0fe" opacity=".9" ${OL}/><ellipse cx="52" cy="27" rx="6.5" ry="21" transform="rotate(-12 52 27)" fill="#a2d2ff" opacity=".9" ${OL}/><path d="M30 62 L8 74 L16 63 L6 55 L28 55 Z" fill="#1b998b" ${OL}/><ellipse cx="46" cy="57" rx="21" ry="11" transform="rotate(-18 46 57)" fill="#2ec4b6" ${OL}/><path d="M54 56 Q62 63 68 52 Q60 50 54 56 Z" fill="#e63946" ${OL}/><circle cx="65" cy="45" r="9" fill="#2ec4b6" ${OL}/><path d="M73 44 L97 38" stroke="#17324a" stroke-width="3" stroke-linecap="round"/>${EYE(67, 43, 2.6)}`,
@@ -5513,10 +5814,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     }
     cfg.under = sv("g", { "aria-hidden": "true" }, svg); // Ebene unter den Inseln (hinterer Leuchtturm-Strahl)
     cfg.nodes.forEach((n, i) => drawNode(svg, n, i, cfg));
-    const g = sv("g", { "aria-hidden": "true" }, svg), fly = isPolly(), hs = cfg.nemo || 62;
+    const g = sv("g", { "aria-hidden": "true" }, svg), fly = isBird(), hs = cfg.nemo || 62;
     sv("ellipse", { cx: 0, cy: hs * (fly ? 0.95 : 0.55), rx: hs * (fly ? 0.26 : 0.36), ry: hs * (fly ? 0.07 : 0.09), fill: fly ? "rgba(4,40,60,.2)" : "rgba(4,30,52,.25)" }, g);
     const inner = sv("g", { class: fly ? "fly-in" : "nemo-in" }, g);
-    if (fly) sv("image", { href: artURI("polly"), x: -hs * 0.68, y: -hs * 0.78, width: hs * 1.36, height: hs * 1.36 }, inner);
+    if (fly) sv("image", { href: artURI(W.art || "polly"), x: -hs * 0.68, y: -hs * 0.78, width: hs * 1.36, height: hs * 1.36 }, inner);
     else { const t = sv("text", { x: 0, y: 0, "text-anchor": "middle", "dominant-baseline": "central", "font-size": hs }, inner); t.textContent = W.emo; }
     MAP = { cfg, svg, edges, nemo: g, at: Math.min(cfg.at || 0, cfg.nodes.length - 1), busy: false, face: 1 };
     const p = restPos(MAP.at); placeNemo(p.x, p.y);
@@ -5762,6 +6063,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function renderHome() {
     lernView = false; $("homeTitle").textContent = W.room;
     if (isPolly()) return renderHomePolly();
+    if (W.id === "eule") return renderHomeEule();
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Nemo schwimmen?` : S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
     updateFoot(); freiHello();
@@ -5877,6 +6179,30 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     setCoins(false);
   }
 
+  // Eddies Karte (Eulenklasse): Eddies Baum, die Millionen-Inseln und eine Baustelle
+  function renderHomeEule() {
+    const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
+    $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Eddie fliegen?` : S.name ? `Hallo ${S.name}! Wohin soll Eddie fliegen?` : "Wohin soll Eddie fliegen?";
+    updateFoot(); freiHello();
+    show("scrHome");
+    const P = portrait(), mc = CHAPTERS.find(c => c.id === "million");
+    const pos = P ? { tree: [300, 1150], m: [300, 680], soon: [300, 250], w: 600, h: 1380, r0: 96 } : { tree: [230, 400], m: [660, 360], soon: [1090, 400], w: 1320, h: 640, r0: 96 };
+    const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
+    const enter = (ch) => (i) => { CH = ch; S.homeAtE = i; save(); swimTo(i, renderMap); };
+    const nodes = [
+      { x: pos.tree[0], y: pos.tree[1], r: pos.r0 * 0.9, icon: "🌳", grass: "#d9cdf2", label: "Eddies Baum", big: true, sub: `🪙 ${S.coins} Münzen`, aria: "Eddies Baum",
+        deco: [[0.55, -0.3, "🍂", 0.34]], tap: (i) => { S.homeAtE = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🦉", "Eddies Baum", "Hier wohnt Eddie"); c.appendChild(el("p", "note", "Hallo, ich bin Eddie, die Eule der Eulenklasse! Flieg mit mir zu den Millionen-Inseln. Dort warten ganz große Zahlen auf dich.")); })); } },
+      { x: pos.m[0], y: pos.m[1], r: pos.r0, icon: "🔢", grass: "#cdb4f5", label: "Zahlen bis 1 Million", big: true, sub: starTotal(mc) ? chapSub(mc) : "✨ Neu!", subGold: !starTotal(mc), next: !starTotal(mc),
+        deco: [[-0.55, -0.3, "🌲", 0.46], [0.56, -0.26, "⭐", 0.32]], aria: "Millionen-Inseln: Zahlenraum bis eine Million", ch: mc, tap: enter(mc) },
+      { x: pos.soon[0], y: pos.soon[1], r: pos.r0 * 0.82, icon: "🧮", label: "Rechnen bis 1 Million", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
+        deco: [[-0.5, -0.3, "🌲", 0.44]], aria: "Rechnen bis eine Million, kommt bald",
+        tap: (i) => { S.homeAtE = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🧮", "Rechnen bis 1 Million", "kommt bald"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Eddie hier landen!")); })); } }
+    ];
+    if (FREI) freiLock(nodes);
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, islandsDoneCount(mc) ? "done" : ""], [1, 2, "faint"]], at: S.homeAtE || 0, label: "Eulen-Inseln", seed: 11, nemo: 66, wrapBig: true, clouds: 3 });
+    setCoins(false);
+  }
+
   /* ---------- Kapitelkarte: Inselroute ---------- */
   function snake(N, P) {
     // Querformat mit vielen Inseln: zwei lange Reihen auf einer breiteren Karte. Hochformat: drei Spalten, bei vielen Reihen höher.
@@ -5898,11 +6224,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const P = portrait(), n = CH.levels.length, lay = snake(n + (CH.noExpert ? 2 : 3), P), k = P ? 1.15 : 1;
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
     const open = bonusOpen(CH), pc = perfectCount(CH);
-    const pol = isPolly(), nodes = [{ ...lay.pts[0], r: 44 * k, icon: W.start, label: "Start", grass: pol ? "#c6eba6" : "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
+    const pol = isBird(), eu = W.id === "eule", nodes = [{ ...lay.pts[0], r: 44 * k, icon: W.start, label: "Start", grass: eu ? "#d9cdf2" : pol ? "#c6eba6" : "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
     CH.levels.forEach((lv, li) => {
       const st = DK.reduce((a, d) => a + (S.stars[skey(CH, li, d)] || 0), 0);
       nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/${DK.length * 3}` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
-        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: pol ? [[0.56, -0.2, "🌴", 0.42], [-0.6, -0.22, "🌺", 0.28]] : [[0.56, -0.2, "🌴", 0.42]], grass: pol ? "#7fd36b" : undefined,
+        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: eu ? [[0.56, -0.2, "🌲", 0.42], [-0.6, -0.22, "⭐", 0.26]] : pol ? [[0.56, -0.2, "🌴", 0.42], [-0.6, -0.22, "🌺", 0.28]] : [[0.56, -0.2, "🌴", 0.42]], grass: eu ? "#b9a6e8" : pol ? "#7fd36b" : undefined,
         tap: (i) => { S.at = S.at || {}; S.at[CH.id] = i; save(); swimTo(i, () => islandSheet(li)); } });
     });
     nodes.push({ ...lay.pts[n + 1], r: 64 * k, icon: S.bonus[CH.id] ? "👑" : "🎁", grass: "#e9c46a", label: "Schatzinsel", fog: !open, fogIcon: "🔒",
@@ -6181,6 +6507,15 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      der/die/das werden in den Begleiter-Farben gezeigt. Gemerkt wird nur im Arbeitsspeicher (nichts gespeichert). */
   const PI = pollyHTML("1em"), PIs = pollyHTML("1.3em");
   const RULES = {
+    "million:nachbarzahlen": { k: "merk", t: "Vorgänger und Nachfolger", s: "Der <b>Vorgänger</b> ist 1 weniger, der <b>Nachfolger</b> 1 mehr.", ex: [["⬅️", "45 369"], ["🏠", "45 370"], ["➡️", "45 371"]], v: "Übergang: 299 999 + 1 = <b>300 000</b>", say: "Der Vorgänger ist 1 weniger, der Nachfolger 1 mehr." },
+    "million:nachbarzehner": { k: "merk", t: "Nachbarzehner", s: "Nachbarzehner enden auf <b>0</b>. Die Zahl liegt zwischen ihnen.", ex: [["⬅️", "45 360"], ["🏠", "45 367"], ["➡️", "45 370"]], say: "Nachbarzehner enden auf Null. Die Zahl liegt zwischen ihnen." },
+    "million:nachbarhunderter": { k: "merk", t: "Nachbarhunderter", s: "Nachbarhunderter enden auf <b>00</b>.", ex: [["⬅️", "45 300"], ["🏠", "45 367"], ["➡️", "45 400"]], say: "Nachbarhunderter enden auf zwei Nullen." },
+    "million:nachbartausender": { k: "merk", t: "Nachbartausender", s: "Nachbartausender enden auf <b>000</b>.", ex: [["⬅️", "45 000"], ["🏠", "45 367"], ["➡️", "46 000"]], say: "Nachbartausender enden auf drei Nullen." },
+    "million:stellenwert": { k: "merk", t: "Die Stellenwerttafel", s: "Jede Spalte ist eine Stelle. Eine leere Stelle ist eine <b>0</b>.", ex: [["HT", "Hundert­tausender"], ["ZT", "Zehn­tausender"], ["T", "Tausender"], ["H", "Hunderter"], ["Z", "Zehner"], ["E", "Einer"]], v: "4 0 5 0 0 9 = <b>405 009</b>", say: "Jede Spalte ist eine Stelle. Hunderttausender, Zehntausender, Tausender, Hunderter, Zehner, Einer. Eine leere Stelle ist eine Null." },
+    "million:zahlwoerter": { k: "merk", t: "Zahlwörter lesen", s: "Lies in zwei Teilen: alles <b>vor „tausend“</b> und alles <b>danach</b>.", ex: [["1️⃣", "dreihundertfünfundvierzig­tausend"], ["2️⃣", "zweihundertzwölf"]], v: "= <b>345 212</b>", say: "Lies in zwei Teilen. Alles vor tausend, und alles danach." },
+    "million:plaettchen": { k: "merk", t: "Zahlen mit Plättchen", s: "Die Anzahl der Plättchen in einer Spalte ist die <b>Ziffer</b>.", ex: [["🔵🔵", "2 Tausender"], ["🔵", "1 Hunderter"], ["", "0 Zehner"], ["🔵🔵🔵", "3 Einer"]], v: "= <b>2 103</b>", say: "Die Anzahl der Plättchen in einer Spalte ist die Ziffer." },
+    "million:zahlenstrahl": { k: "merk", t: "Der Zahlenstrahl", s: "Schau zuerst, <b>wie groß ein Schritt</b> ist. Dann zähle die Schritte.", ex: [["📏", "0 · 10 000 · 20 000"], ["👣", "1 Schritt = 10 000"]], say: "Schau zuerst, wie groß ein Schritt ist. Dann zähle die Schritte." },
+    "million:ordnen": { k: "merk", t: "Zahlen vergleichen", s: "Mehr Stellen = größere Zahl. Sonst vergleiche <b>von links</b> Stelle für Stelle.", ex: [["1️⃣", "45 370 &lt; 145 370"], ["2️⃣", "345 210 &gt; 345 201"]], say: "Mehr Stellen heißt größere Zahl. Sonst vergleiche von links Stelle für Stelle." },
     "verben:erkennen": { k: "merk", t: "Was ist ein Verb?", s: "Verben sagen, <b>was jemand tut</b> oder was passiert. Verben schreibe ich <b>klein</b>.",
       ex: [["🏃", "laufen"], ["🎨", "malen"], ["🎤", "singen"], ["😴", "schlafen"]], v: "🔎 Probe: Passt „ich kann …“ davor? ich kann <b>laufen</b> ✓ · ich kann Hund ✗",
       say: "Was ist ein Verb? Verben sagen, was jemand tut oder was passiert. Verben schreibe ich klein. Zum Beispiel laufen, malen, singen, schlafen. Probe: Passt ich kann davor? Ich kann laufen, das passt." },
@@ -6516,7 +6851,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     else text = stars === 3 ? "Du dachtest, du musst noch üben, aber es hat super geklappt!" + fact : "Gut eingeschätzt!" + fact + " Üben lohnt sich. Fang mit den Muscheln an.";
     if (scored && stars < 3 && self !== 1) text = text.replace(" Die übst du jetzt als Muscheln.", " Spiel die Insel ruhig nochmal.").replace(" Übe die Muscheln, dann wird es leichter.", " Spiel die Insel ruhig nochmal.");
     if (scored) text = text.replace(" Fang mit den Muscheln an.", " Spiel die Insel ruhig nochmal.");
-    if (isPolly()) text = text.replace(" Die übst du jetzt als Muscheln.", " Die knackst du jetzt als harte Nüsse.").replace("Übe die Muscheln", "Knack die harten Nüsse").replace("Fang mit den Muscheln an.", "Fang mit den harten Nüssen an.");
+    if (isBird()) text = text.replace(" Die übst du jetzt als Muscheln.", " Die knackst du jetzt als harte Nüsse.").replace("Übe die Muscheln", "Knack die harten Nüsse").replace("Fang mit den Muscheln an.", "Fang mit den harten Nüssen an.");
     const k = DK.indexOf(d), next = DK[k + 1];
     const tip = stars === 3 ? (next ? `Tipp: Probier als Nächstes die Stufe ${DIFFS[next].label}.` : "Tipp: Wag dich auf die Experten-Insel!") : "";
     return { text, tip };
@@ -6709,12 +7044,13 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <rect x="46.4" y="77" width="3.4" height="5" rx="1" fill="#fff" stroke="#9aa5b4" stroke-width=".8"/><rect x="50.2" y="77" width="3.4" height="5" rx="1" fill="#fff" stroke="#9aa5b4" stroke-width=".8"/>
     <path d="M36 70 L13 65 M36 74 L13 77 M64 70 L87 65 M64 74 L87 77" stroke="#4a5568" stroke-width="1.6" stroke-linecap="round"/>`;
   const mouseSVG = (x, y, w) => `<svg x="${x}" y="${y}" width="${w}" height="${w}" viewBox="0 -8 100 108">${MOUSE}</svg>`;
+  const birdArt = (r) => { const a = ART[r.world === "eule" ? "eddie" : "polly"]; return a ? shade3d(a) : ""; };
   const critSVG = (r, x, y, w) => r.lynx ? lynxSVG(x, y, w) : mouseSVG(x, y, w);
   // Die acht Klassen. Nur Polly und Nemo haben schon Inseln, die anderen Räume sind angelegt und noch leer.
   const FLOORS = { og: 410, eg: 640, kg: 860 }, FLOOR_NAME = { og: "Obergeschoss", eg: "Erdgeschoss", kg: "Keller" };
   const ROOMS = [
     { id: "polly", floor: "og", x: 740, name: "Pollys Klasse", world: "polly", door: "#ffd166", line: "#e0a400" },
-    { id: "eule", floor: "og", x: 450, name: "Eulenklasse", art: "der", emo: "🦉", door: "#d4b08c", line: "#9c7550" },
+    { id: "eule", floor: "og", x: 450, name: "Eulenklasse", art: "der", emo: "🦉", world: "eule", door: "#b9a6e8", line: "#6f4fa0" },
     { id: "maus", floor: "og", x: 160, name: "Mausklasse", art: "der", emo: "🐭", mouse: true, door: "#c3cad1", line: "#8a939c" },
     { id: "loewe", floor: "eg", x: 160, name: "Löwenklasse", art: "der", emo: "🦁", door: "#f6b26b", line: "#d9822b" },
     { id: "otter", floor: "eg", x: 450, name: "Otterklasse", art: "der", emo: "🦦", door: "#86cfc6", line: "#3c9d91" },
@@ -6727,9 +7063,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
   function schoolSVG() {
     const R = rnd(42);
-    let s = `<svg viewBox="0 0 1400 960" class="school" role="img" aria-label="Unser Schulhaus: Keller, Erdgeschoss und Obergeschoss mit acht Klassen">
+    let s = `<svg viewBox="0 0 1400 960" class="school cut" role="img" aria-label="Unser Schulhaus: Keller, Erdgeschoss und Obergeschoss mit acht Klassen">
     <defs>
-      <linearGradient id="skG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9dcf7"/><stop offset="1" stop-color="#e6f5ff"/></linearGradient>
+      <linearGradient id="skG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="660"><stop offset="0" stop-color="${SE().sky[0]}"/><stop offset="1" stop-color="${SE().sky[1]}"/></linearGradient>
       <linearGradient id="padG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f47a8"/><stop offset=".45" stop-color="#3c6fe0"/><stop offset="1" stop-color="#1c3f96"/></linearGradient>
       <linearGradient id="colG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd3d6"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#c3c8cc"/></linearGradient>
       <pattern id="soil" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#8b6b4f"/><circle cx="8" cy="10" r="3" fill="#7a5c43"/><circle cx="28" cy="26" r="4" fill="#9a7a5c"/><circle cx="16" cy="34" r="2" fill="#6f523b"/></pattern>
@@ -6764,12 +7100,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         <rect x="${x - 26}" y="${t + 16}" width="52" height="44" rx="4" fill="#d9eef9" stroke="${r.line}" stroke-width="3"/><circle cx="${x + 27}" cy="${t + 82}" r="5" fill="#f1f1f1" stroke="#6b4e35" stroke-width="2"/>
         ${r.world ? "" : `<g transform="translate(${x - 4} ${t + 96})"><path d="M0 -6 L26 -14" stroke="#8d6346" stroke-width="2"/><rect x="-18" y="-6" width="44" height="26" rx="5" fill="#fff" stroke="#e0a400" stroke-width="2"/><text x="4" y="12" text-anchor="middle" class="soon">bald</text></g>`}
         <rect x="${x - 118}" y="${t - 52}" width="236" height="40" rx="20" fill="#fff" stroke="${r.line}" stroke-width="4"/>
-        ${r.world === "polly" ? `<svg x="${x - 114}" y="${t - 58}" width="46" height="46" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>` : r.lynx || r.mouse ? critSVG(r, x - 112, t - 52, 40) : `<text x="${x - 90}" y="${t - 21}" text-anchor="middle" class="emo" font-size="27">${r.world === "nemo" ? "🦈" : r.emo}</text>`}
+        ${r.world === "polly" || r.world === "eule" ? `<svg x="${x - 114}" y="${t - 58}" width="46" height="46" viewBox="0 0 100 100">${birdArt(r)}</svg>` : r.lynx || r.mouse ? critSVG(r, x - 112, t - 52, 40) : `<text x="${x - 90}" y="${t - 21}" text-anchor="middle" class="emo" font-size="27">${r.world === "nemo" ? "🦈" : r.emo}</text>`}
         <text x="${x + (r.name.length >= 12 ? 24 : 18)}" y="${t - 24}" text-anchor="middle" class="signt"${r.name.length >= 12 ? ` textLength="${Math.min(174, r.name.length * 14.3)}" lengthAdjust="spacingAndGlyphs"` : ""}>${r.name}</text>`;
       // Bild an der Wand: was in der Klasse gelernt wird (bei den leeren Klassen: das Klassentier)
       const px = x + 62, py = t + 22;
       if (r.world === "polly") s += `<rect x="${px}" y="${py}" width="124" height="80" rx="5" fill="#2d6a4f" stroke="#8d6346" stroke-width="5"/><text x="${px + 62}" y="${py + 34}" text-anchor="middle" class="chalk" style="font-size:21px">8 + 2 = 10</text><text x="${px + 62}" y="${py + 63}" text-anchor="middle" class="chalk" style="font-size:21px">38 + 5 = 43</text>
         <svg x="${px + 62}" y="${py - 54}" width="60" height="60" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
+      else if (r.world === "eule") s += `<rect x="${px}" y="${py}" width="124" height="80" rx="5" fill="#2b2a63" stroke="#8d6346" stroke-width="5"/><text x="${px + 62}" y="${py + 34}" text-anchor="middle" class="chalk" style="font-size:20px">1 000 000</text><text x="${px + 62}" y="${py + 63}" text-anchor="middle" class="chalk" style="font-size:16px">HT ZT T H Z E</text>
+        <svg x="${px + 62}" y="${py - 54}" width="60" height="60" viewBox="0 0 100 100">${birdArt(r)}</svg>`;
       else if (r.world === "nemo") s += `<rect x="${px}" y="${py}" width="124" height="80" rx="5" fill="#fff" stroke="#219ebc" stroke-width="5"/><text x="${px + 62}" y="${py + 33}" text-anchor="middle" class="board" style="font-size:19px"><tspan class="ra-die">die</tspan> Katze</text><text x="${px + 62}" y="${py + 62}" text-anchor="middle" class="board" style="font-size:19px"><tspan class="ra-der">der</tspan> Hund</text>
         <text x="${px + 106}" y="${py - 2}" text-anchor="middle" class="emo" font-size="40">🦈</text>` + ["A", "B", "C"].map((c, i) => `<rect x="${px + 2 + i * 26}" y="${py - 30}" width="22" height="24" rx="4" fill="${["#e63946", "#ffb703", "#2a9d8f"][i]}"/><text x="${px + 13 + i * 26}" y="${py - 12}" text-anchor="middle" class="flagt">${c}</text>`).join("");
       else s += `<rect x="${px + 14}" y="${py}" width="88" height="80" rx="6" fill="#fff" stroke="${r.line}" stroke-width="4"/>` + (r.lynx || r.mouse ? critSVG(r, px + 26, py + 6, 64) : `<text x="${px + 58}" y="${py + 58}" text-anchor="middle" class="emo" font-size="50">${r.emo}</text>`);
@@ -6786,31 +7124,52 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     s += `<g id="schKid"></g></svg>`;
     return s;
   }
+  /* ---- Jahreszeiten: Himmel, Bäume, Wiese und Schnee richten sich nach dem Datum ---- */
+  const seasonNow = () => { const w = window.__SEASON; if (w) return w; const m = new Date().getMonth(); return m === 11 || m <= 1 ? "winter" : m <= 4 ? "fruehling" : m <= 7 ? "sommer" : "herbst"; };
+  const SEAS = {
+    winter: { sky: ["#bccddd", "#eef4f9"], leaf: null, back: ["#e9eff4", "#dbe4ec", "#eef3f7", "#e1e9f0", "#e9eff4", "#d9e2ea"], grass: "#f3f7fa", edge: "#c3d3e0" },
+    fruehling: { sky: ["#94d8f5", "#eaf8ff"], leaf: ["#8fd16f", "#a6dc85", "#f7b7d2", "#fbcfe8", "#7cc46a"], back: ["#a6dc85", "#f7b7d2", "#8fd16f", "#fbcfe8", "#95d47f", "#b9e29a"], grass: "#86cf6c", edge: "#5fa64f" },
+    sommer: { sky: ["#5ec3f0", "#dcf3ff"], leaf: ["#3f9d4a", "#56b05e", "#2f8a3e", "#6cc070", "#4aa356"], back: ["#56b05e", "#3f9d4a", "#6cc070", "#4aa356", "#2f8a3e", "#5cb860"], grass: "#6fbf5a", edge: "#4f9a42" },
+    herbst: { sky: ["#a9dcf7", "#e6f5ff"], leaf: ["#d9622b", "#e8893a", "#b5432a", "#f2a541", "#c0552d"], back: ["#e0a458", "#c97b4a", "#b8c46a", "#e39b4f", "#c97b4a", "#a7c06a"], grass: "#8cbf5e", edge: "#6a9a45" }
+  };
+  const SE = () => SEAS[seasonNow()] || SEAS.herbst;
+  const cloud = (x, y, k, c) => `<g opacity=".95" transform="translate(${x} ${y}) scale(${k})"><ellipse rx="58" ry="24" fill="${c || "#fff"}"/><ellipse cx="-32" cy="6" rx="34" ry="18" fill="${c || "#fff"}"/><ellipse cx="34" cy="8" rx="38" ry="18" fill="${c || "#fff"}"/><ellipse cx="6" cy="-16" rx="32" ry="20" fill="${c || "#fff"}"/></g>`;
+  // kleiner Baum für die Umgebung (Krone nach Jahreszeit)
+  function smallTree(x, y, k, R) {
+    const P = SE(); let s = `<g transform="translate(${x} ${y}) scale(${k})"><path d="M0 0 V-90 M0 -60 L-26 -96 M0 -72 L24 -104" stroke="#6b4226" stroke-width="12" stroke-linecap="round" fill="none"/>`;
+    if (!P.leaf) return s + `<path d="M-30 -99 L-22 -95 M18 -106 L28 -102 M-6 -92 L6 -92" stroke="#fff" stroke-width="7" stroke-linecap="round"/></g>`;
+    [[-30, -110, 34], [24, -118, 36], [0, -140, 40], [-4, -100, 30]].forEach(([cx, cy, r], i) => { s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${P.leaf[i % P.leaf.length]}"/>`; });
+    if (seasonNow() === "fruehling") for (let i = 0; i < 9; i++) s += `<circle cx="${(R() * 90 - 45).toFixed(0)}" cy="${(-150 + R() * 70).toFixed(0)}" r="5" fill="#fff0f6"/>`;
+    return s + `</g>`;
+  }
   // Wolken, Bäume hinter dem Haus, Klettergerüst im Hof
   function skyBits() {
     let s = "";
-    [[640, 70, .9], [820, 40, .7], [1350, 90, .6]].forEach(([x, y, k]) => { s += `<g opacity=".95" transform="translate(${x} ${y}) scale(${k})"><ellipse rx="58" ry="24" fill="#fff"/><ellipse cx="-32" cy="6" rx="34" ry="18" fill="#fff"/><ellipse cx="34" cy="8" rx="38" ry="18" fill="#fff"/><ellipse cx="6" cy="-16" rx="32" ry="20" fill="#fff"/></g>`; });
-    [[150, 150, 54, "#e0a458"], [300, 140, 64, "#c97b4a"], [450, 150, 50, "#b8c46a"], [590, 142, 60, "#e39b4f"], [740, 152, 46, "#c97b4a"], [860, 156, 42, "#a7c06a"]].forEach(([x, y, r, c]) => { s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".9"/>`; });
+    [[640, 70, .9], [820, 40, .7], [1350, 90, .6]].forEach(([x, y, k]) => { s += cloud(x, y, k); });
+    const B = SE().back;
+    [[150, 150, 54], [300, 140, 64], [450, 150, 50], [590, 142, 60], [740, 152, 46], [860, 156, 42]].forEach(([x, y, r], i) => { s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${B[i]}" opacity=".9"/>`; });
     s += `<g class="climb"><polygon points="1312,642 1400,642 1400,520 1372,470" fill="#3b2a20"/><circle cx="1370" cy="560" r="14" fill="#a9dcf7"/><circle cx="1352" cy="612" r="11" fill="#a9dcf7"/><path d="M1340 590 L1362 590 M1376 540 L1396 540" stroke="#e0a458" stroke-width="6" stroke-linecap="round"/><path d="M1372 476 L1400 540 M1380 500 L1336 640" stroke="#3a86ff" stroke-width="3"/></g>`;
     return s;
   }
-  // Schornstein, Giebel mit Rundfenster und Wandbild (Regenbogen und Sonne – eigene Zeichnung)
+  // Schornstein, Giebel mit Rundfenster (der Regenbogen ist jetzt über dem Eingang)
   const gableBits = () => `<rect x="1050" y="18" width="34" height="80" fill="#5b616a"/><rect x="1045" y="12" width="44" height="10" rx="2" fill="#464b52"/><path d="M1067 12 V-20 M1052 0 H1082" stroke="#6c737b" stroke-width="3"/>
       <polygon points="952,178 1125,48 1298,178" fill="#f4f1ea"/>
       <polygon points="930,186 1125,36 1320,186 1320,204 1125,54 930,204" fill="#4a5059"/>
       <circle cx="1125" cy="104" r="14" fill="#5b6b78" stroke="#fff" stroke-width="5"/><path d="M1111 104 H1139 M1125 90 V118" stroke="#fff" stroke-width="2.5"/>
-      <g class="mural"><path d="M1075 178 A50 50 0 0 1 1175 178" fill="none" stroke="#e63946" stroke-width="9"/><path d="M1085 178 A40 40 0 0 1 1165 178" fill="none" stroke="#ffb703" stroke-width="9"/><path d="M1095 178 A30 30 0 0 1 1155 178" fill="none" stroke="#2a9d8f" stroke-width="9"/><path d="M1105 178 A20 20 0 0 1 1145 178" fill="none" stroke="#3a86ff" stroke-width="9"/>
-        <g transform="translate(1222 150)">${Array.from({ length: 8 }, (_, i) => `<path d="M0 -24 L3 -16 L-3 -16 Z" fill="#ffb703" transform="rotate(${i * 45})"/>`).join("")}<circle r="14" fill="#f77f00"/></g></g>`;
+      ${seasonNow() === "winter" ? `<path d="M930 184 L1125 34 L1320 184" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/><rect x="1045" y="6" width="44" height="9" rx="4" fill="#fff"/>` : ""}`;
   // Blechblende des Neubaus mit Schriftzug
   function fasciaBits() {
     let s = `<rect x="14" y="150" width="954" height="50" fill="#8f989f"/><rect x="14" y="144" width="954" height="10" rx="2" fill="#78818a"/>`;
     for (let x = 30; x < 965; x += 28) s += `<path d="M${x} 154 V200" stroke="#838c93" stroke-width="2"/>`;
-    return s + `<text x="490" y="186" text-anchor="middle" class="schoolname">Unsere Schule</text>`;
+    s += `<text x="490" y="186" text-anchor="middle" class="schoolname">Unsere Schule</text>`;
+    return s + (seasonNow() === "winter" ? `<rect x="8" y="134" width="966" height="16" rx="8" fill="#fff"/><path d="M60 150 q8 14 16 0 M300 150 q8 18 16 0 M620 150 q8 12 16 0 M880 150 q8 16 16 0" fill="#fff"/>` : "");
   }
-  // Herbstbaum links oben
+  // großer Baum links oben – Blätter nach Jahreszeit (im Winter kahl mit Schnee)
   function treeBits(R) {
-    let s = `<g class="tree"><path d="M-10 -10 Q110 50 190 30 Q270 10 350 60 M110 40 Q140 110 230 130 M190 30 Q230 -10 300 -2 M50 20 Q30 90 70 140" fill="none" stroke="#6b4226" stroke-width="10" stroke-linecap="round"/>`;
-    for (let i = 0; i < 70; i++) { const x = R() * 400 - 10, y = R() * 160 - 10, c = ["#d9622b", "#e8893a", "#b5432a", "#f2a541", "#c0552d"][Math.floor(R() * 5)]; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="9" ry="5.5" fill="${c}" transform="rotate(${(R() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
+    const P = SE(), br = "M-10 -10 Q110 50 190 30 Q270 10 350 60 M110 40 Q140 110 230 130 M190 30 Q230 -10 300 -2 M50 20 Q30 90 70 140";
+    let s = `<g class="tree"><path d="${br}" fill="none" stroke="#6b4226" stroke-width="10" stroke-linecap="round"/>`;
+    if (!P.leaf) return s + `<path d="${br}" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="translate(0 -6)"/></g>`;
+    for (let i = 0; i < 70; i++) { const x = R() * 400 - 10, y = R() * 160 - 10, c = P.leaf[Math.floor(R() * P.leaf.length)]; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="9" ry="5.5" fill="${c}" transform="rotate(${(R() * 180).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
     return s + `</g>`;
   }
 
@@ -6818,7 +7177,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      Gleiche Koordinaten wie der Schnitt. Nur flache Farben (keine Verläufe mit IDs), damit mehrere Bilder nebeneinander gehen.
      Aus jedem Fenster schaut das Klassentier – die Stockwerke selbst sieht man erst, wenn die Klappen aufgehen. */
   const FLAP_TOP = { og: 200, eg: 432, kg: 650 };
-  const peek = (r, x, y) => r.world === "polly" ? `<svg x="${x - 34}" y="${y - 60}" width="68" height="68" viewBox="0 0 100 100">${ART.polly ? shade3d(ART.polly) : ""}</svg>`
+  const FDOOR = 1037;   // Haupteingang außen (etwas links; rechts daneben liegt die Haiklasse)
+  const peek = (r, x, y) => r.world === "polly" || r.world === "eule" ? `<svg x="${x - 34}" y="${y - 60}" width="68" height="68" viewBox="0 0 100 100">${birdArt(r)}</svg>`
     : r.lynx || r.mouse ? critSVG(r, x - 28, y - 54, 56) : `<text x="${x}" y="${y - 8}" text-anchor="middle" class="emo" font-size="44">${r.world === "nemo" ? "🦈" : r.emo}</text>`;
   function win(x, y, w, h, room) {
     let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#bfe2f2"/>` + (room ? peek(room, x + w / 2, y + h) : "");
@@ -6835,11 +7195,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       [198, 380, 531, 670, 821].forEach(x => { s += `<polygon points="${x - 11},200 ${x + 11},200 ${x + 11},430 ${x},454 ${x - 11},430" fill="#ded7cc" stroke="#c6bdb0" stroke-width="2"/><path d="M${x + 4} 202 V430" stroke="#cbc3b7" stroke-width="5"/>`; });
       // Altbau oben
       s += `<rect x="952" y="196" width="354" height="236" fill="#f4f1ea"/><rect x="952" y="410" width="354" height="22" fill="#e2dccf"/>`;
-      [[990, 236, 70, 140], [1090, 236, 70, 140], [1190, 236, 70, 140]].forEach(([x, y, w, h]) => { s += win(x, y, w, h); });
+      // Regenbogen und Sonne über dem Eingang (eigene Zeichnung)
+      [[150, "#e63946"], [131, "#f77f00"], [112, "#ffd166"], [93, "#2a9d8f"], [74, "#3a86ff"], [55, "#7b4fc9"]].forEach(([r, c]) => { s += `<path d="M${1122 - r} 404 A${r} ${r} 0 0 1 ${1122 + r} 404" fill="none" stroke="${c}" stroke-width="19"/>`; });
+      s += cloud(972, 398, .55) + cloud(1272, 398, .55);
+      s += `<g transform="translate(1258 252)">${Array.from({ length: 10 }, (_, i) => `<path d="M0 -40 L5 -28 L-5 -28 Z" fill="#ffb703" transform="rotate(${i * 36})"/>`).join("")}<circle r="25" fill="#f77f00"/><circle cx="-8" cy="-4" r="3" fill="#7a2e00"/><circle cx="8" cy="-4" r="3" fill="#7a2e00"/><path d="M-9 7 Q0 15 9 7" fill="none" stroke="#7a2e00" stroke-width="3" stroke-linecap="round"/></g>`;
       s += `<path d="M952 196 V432 M1306 196 V432" stroke="#ddd6c9" stroke-width="4"/>`;
     } else if (part === "eg") {
       s += `<rect x="22" y="432" width="946" height="220" fill="#b8b1a6"/><rect x="22" y="432" width="946" height="14" fill="#cbc3b6"/>`;
-      [[44, 486, 144, 128, "loewe"], [208, 486, 144, 128], [400, 486, 120, 128, "otter"], [541, 486, 119, 128], [690, 486, 120, 128, "nemo"], [831, 486, 80, 128]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
+      [[44, 486, 144, 128, "loewe"], [208, 486, 144, 128], [400, 486, 120, 128, "otter"], [541, 486, 119, 128], [690, 486, 120, 128], [831, 486, 80, 128]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
       // Sonnensegel, Pfosten mit Polstern, weiße Säule, Bank
       s += `<polygon points="22,452 560,446 610,474 22,494" fill="#2f5fd0"/><path d="M22 494 L610 474" stroke="#1f47a8" stroke-width="3"/>`;
       [380, 670].forEach(x => { s += `<rect x="${x - 5}" y="454" width="10" height="198" fill="#b3bcc3"/><rect x="${x - 12}" y="566" width="24" height="86" rx="6" fill="#2f5fd0"/><path d="M${x - 4} 574 V644" stroke="rgba(255,255,255,.4)" stroke-width="3"/>`; });
@@ -6847,20 +7210,22 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       s += `<rect x="440" y="622" width="170" height="10" rx="3" fill="#b07a4a"/><path d="M452 632 V652 M598 632 V652" stroke="#6b4e35" stroke-width="5"/>`;
       // Altbau unten mit Haupteingang
       s += `<rect x="952" y="432" width="354" height="220" fill="#f4f1ea"/><rect x="952" y="432" width="354" height="14" fill="#e2dccf"/><path d="M952 432 V652 M1306 432 V652" stroke="#ddd6c9" stroke-width="4"/>`;
-      [[985, 505, 62, 92], [1203, 505, 62, 92]].forEach(([x, y, w, h]) => { s += win(x, y, w, h); });
-      s += `<g class="fdoor"><rect x="1078" y="494" width="94" height="158" fill="#55606a"/><rect x="1084" y="500" width="82" height="152" fill="#24323e"/>
-        <g class="leaf l"><rect x="1084" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="1116" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
-        <g class="leaf r"><rect x="1125" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="1130" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
-        <path d="M1090 512 l14 0 l-10 24 l-14 0 Z" fill="rgba(255,255,255,.6)"/></g>
-        <polygon points="1058,478 1192,478 1180,494 1070,494" fill="#4a5059"/><rect x="1068" y="646" width="114" height="8" rx="2" fill="#9aa1a6"/>`;
+      const D = FDOOR;
+      s += `<g class="fdoor"><rect x="${D - 47}" y="494" width="94" height="158" fill="#55606a"/><rect x="${D - 41}" y="500" width="82" height="152" fill="#24323e"/>
+        <g class="leaf l"><rect x="${D - 41}" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="${D - 9}" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
+        <g class="leaf r"><rect x="${D}" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="${D + 5}" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
+        <path d="M${D - 35} 512 l14 0 l-10 24 l-14 0 Z" fill="rgba(255,255,255,.6)"/></g>
+        <polygon points="${D - 67},478 ${D + 67},478 ${D + 55},494 ${D - 55},494" fill="#4a5059"/><rect x="${D - 57}" y="646" width="114" height="8" rx="2" fill="#9aa1a6"/>`;
+      // rechts neben dem Eingang: die Haiklasse – auf dieser Seite ohne Fenster, nur ein Schild
+      s += `<circle cx="1206" cy="548" r="36" fill="#fff" stroke="#3a86ff" stroke-width="6"/><text x="1206" y="563" text-anchor="middle" class="emo" font-size="40">🦈</text>`;
     } else {
       // die Insel: Wiese, Sandstrand, Meer – mit Nemo im Wasser
       s += `<rect x="0" y="740" width="1400" height="220" fill="#3fa7d6"/>`;
       [800, 850, 900, 940].forEach((y, i) => { s += `<path d="M${-40 + i * 30} ${y} q35 -14 70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0 t70 0" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="4" stroke-linecap="round"/>`; });
       s += `<path d="M0 650 H1400 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#f2d49b"/>
         <path d="M0 752 Q130 778 260 788 Q470 806 700 806 Q930 806 1150 786 Q1290 774 1400 738 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#e3bd7c"/>
-        <rect x="0" y="650" width="1400" height="24" fill="#7cc46a"/><path d="M0 674 Q60 684 120 674 T240 674 T360 674 T480 674 T600 674 T720 674 T840 674 T960 674 T1080 674 T1200 674 T1320 674 T1440 674" fill="#7cc46a"/><path d="M0 651 H1400" stroke="#5fa64f" stroke-width="3"/>
-        <polygon points="1092,652 1158,652 1190,720 1060,720" fill="#d9d2c4"/>`;
+        <rect x="0" y="650" width="1400" height="24" fill="${SE().grass}"/><path d="M0 674 Q60 684 120 674 T240 674 T360 674 T480 674 T600 674 T720 674 T840 674 T960 674 T1080 674 T1200 674 T1320 674 T1440 674" fill="${SE().grass}"/><path d="M0 651 H1400" stroke="${SE().edge}" stroke-width="3"/>${seasonDeco()}
+        <polygon points="${FDOOR - 33},652 ${FDOOR + 33},652 ${FDOOR + 65},720 ${FDOOR - 65},720" fill="#d9d2c4"/>`;
       [[120, 712], [380, 740], [560, 716], [860, 744], [1250, 708], [1330, 742]].forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="${4 + i % 3}" fill="#c9a66b"/>`; });
       s += `<text x="1290" y="770" text-anchor="middle" class="emo" font-size="34">⭐</text><text x="210" y="760" text-anchor="middle" class="emo" font-size="30">🐚</text>
         <g class="nemofin"><text x="330" y="912" text-anchor="middle" class="emo" font-size="70">🦈</text><g fill="none" stroke="#fff" stroke-width="3" opacity=".85"><circle cx="400" cy="860" r="7"/><circle cx="414" cy="838" r="5"/></g></g>
@@ -6868,17 +7233,75 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     }
     return s;
   }
+  // Kleinigkeiten auf der Wiese vor der Schule
+  function seasonDeco() {
+    const se = seasonNow(); let s = "";
+    if (se === "fruehling") [[120, 668], [260, 672], [470, 666], [640, 672], [880, 668], [1250, 670]].forEach(([x, y], i) => { s += `<path d="M${x} ${y} V${y - 22}" stroke="#3f8f3a" stroke-width="3"/><path d="M${x - 7} ${y - 22} Q${x} ${y - 36} ${x + 7} ${y - 22} Q${x} ${y - 16} ${x - 7} ${y - 22}" fill="${["#ff6b9d", "#ffd166", "#c77dff"][i % 3]}"/>`; });
+    if (se === "sommer") s += `<g transform="translate(560 760)"><path d="M-40 0 H40 V-22 H30 V-34 H18 V-22 H-18 V-34 H-30 V-22 H-40 Z" fill="#e3bd7c" stroke="#c9a66b" stroke-width="3"/><path d="M0 -34 V-60" stroke="#6b4e35" stroke-width="3"/><path d="M0 -60 L22 -52 L0 -44 Z" fill="#e63946"/></g>`;
+    if (se === "herbst") { [[180, 664], [420, 668], [700, 662], [1180, 666], [1330, 662]].forEach(([x, y], i) => { s += `<ellipse cx="${x}" cy="${y}" rx="9" ry="5" fill="${["#d9622b", "#f2a541", "#b5432a"][i % 3]}" transform="rotate(${i * 40} ${x} ${y})"/>`; }); s += `<g transform="translate(1335 660)"><ellipse cx="0" cy="-14" rx="22" ry="17" fill="#f77f00"/><path d="M-8 -30 Q-10 -14 -8 2 M8 -30 Q10 -14 8 2" stroke="#d65a00" stroke-width="3" fill="none"/><path d="M0 -30 V-40" stroke="#3f6b2a" stroke-width="5"/></g>`; }
+    if (se === "winter") s += `<path d="M0 650 Q200 640 400 650 T800 650 T1200 650 T1400 648 V660 H0 Z" fill="#fff"/>`;
+    return s;
+  }
   const facadeSVG = (part) => `<svg viewBox="0 0 1400 960" class="school fac" aria-hidden="true">${facadePart(part)}</svg>`;
-  // ganze Außenansicht als ein Bild (Startbildschirm): Himmel, Insel, Schule von außen, Polly auf dem Dach
+  // die Umgebung rund um die Schule (liegt hinter dem Schulhaus und reicht weit über das Bild hinaus)
+  function sceneBits(gid) {
+    const se = seasonNow(), P = SE(), R = rnd(7);
+    let s = `<defs><linearGradient id="${gid}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="660"><stop offset="0" stop-color="${P.sky[0]}"/><stop offset="1" stop-color="${P.sky[1]}"/></linearGradient>
+      <clipPath id="${gid}c"><rect x="-700" y="-600" width="2800" height="1256"/></clipPath></defs>
+      <rect x="-700" y="-600" width="2800" height="1300" fill="url(#${gid})"/>`;
+    // Sonne bzw. Winterwolken
+    if (se !== "winter") s += `<g transform="translate(1560 -110)"><g class="sunspin">${Array.from({ length: 12 }, (_, i) => `<path d="M0 -92 L8 -70 L-8 -70 Z" fill="#ffd166" transform="rotate(${i * 30})"/>`).join("")}</g><circle r="${se === "sommer" ? 62 : 54}" fill="#ffb703"/></g>`;
+    [[-180, -130, 1, se === "winter" ? "#f4f7fa" : null], [260, -190, .8], [1100, -200, .9], [1660, 120, .7], [-240, 260, .7]].forEach(([x, y, k, c]) => { s += cloud(x, y, k, c); });
+    // Meer und Wellen
+    s += `<rect x="-700" y="736" width="2800" height="700" fill="#3fa7d6"/>`;
+    for (let i = 0; i < 9; i++) s += `<path d="M${-700 + (i % 3) * 40} ${790 + i * 50} ${Array.from({ length: 42 }, () => "q35 -14 70 0").join(" ")}" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="4" stroke-linecap="round"/>`;
+    // die Insel geht links und rechts weiter
+    s += `<path d="M-330 690 Q-322 650 -260 650 H1660 Q1724 650 1732 690 Q1724 734 1560 746 Q1480 750 1400 752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Q-150 750 -250 738 Q-336 724 -330 690 Z" fill="#f2d49b"/>
+      <path d="M-330 690 Q-336 724 -250 738 Q-150 750 0 768 Q110 792 250 804 Q460 820 700 822 Q930 824 1160 800 Q1290 792 1400 752 Q1480 750 1560 746 Q1724 734 1732 690 Q1720 720 1560 732 Q1470 738 1400 738 Q1290 774 1150 786 Q930 806 700 806 Q470 806 260 788 Q130 778 0 752 Q-150 736 -250 724 Q-320 712 -330 690 Z" fill="#e3bd7c"/>
+      <path d="M-300 676 Q-296 650 -260 650 H1660 Q1700 650 1704 676 Q1680 684 1640 678 Q1500 686 1400 676 L0 676 Q-150 684 -300 676 Z" fill="${P.grass}"/><path d="M-260 651 H1660" stroke="${P.edge}" stroke-width="3"/>`;
+    // Leuchtturm auf einem Felsen und ein Segelboot
+    s += `<g class="boat"><path d="M-200 900 H-90 L-108 924 H-184 Z" fill="#b5432a"/><path d="M-146 898 V820" stroke="#6b4e35" stroke-width="5"/><path d="M-144 822 L-96 892 H-144 Z" fill="#fff"/><path d="M-150 830 L-188 892 H-150 Z" fill="#ffd166"/></g>
+      <g transform="translate(1590 870)"><ellipse cx="0" cy="18" rx="70" ry="22" fill="#7a7f86"/><path d="M-18 10 L-12 -110 H12 L18 10 Z" fill="#fff"/><path d="M-16 -20 H16 M-14 -60 H14" stroke="#e63946" stroke-width="16"/><rect x="-16" y="-136" width="32" height="26" fill="#ffd166"/><path d="M-22 -136 L0 -158 L22 -136 Z" fill="#e63946"/></g>`;
+    // links: Spielplatz mit Schaukel und Sandkasten, Bäume
+    s += smallTree(-200, 652, 1.1, R) + smallTree(-40, 654, .9, R);
+    s += `<g><path d="M-170 652 L-140 540 L-110 652 M-30 652 L-60 540 L-90 652 M-140 540 H-60" stroke="#c0552d" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M-115 540 V610 M-85 540 V610" stroke="#6b6f75" stroke-width="3"/><rect x="-122" y="608" width="44" height="9" rx="3" fill="#3a86ff"/></g>
+      <rect x="-280" y="636" width="90" height="20" rx="5" fill="#c9a66b"/><rect x="-272" y="630" width="74" height="12" rx="4" fill="#f2d49b"/>`;
+    // rechts: Zaun, Fahrradständer, Fußballtor, Baum
+    s += smallTree(1640, 654, 1, R);
+    for (let x = 1420; x < 1600; x += 22) s += `<path d="M${x} 652 V612 L${x + 6} 604 L${x + 12} 612 V652" fill="#fff" stroke="#c9c2b5" stroke-width="2"/>`;
+    s += `<path d="M1410 624 H1606 M1410 642 H1606" stroke="#c9c2b5" stroke-width="5"/>`;
+    s += `<g transform="translate(1500 652)"><circle cx="-30" cy="-18" r="16" fill="none" stroke="#33415c" stroke-width="5"/><circle cx="14" cy="-18" r="16" fill="none" stroke="#33415c" stroke-width="5"/><path d="M-30 -18 L-12 -42 L8 -42 L14 -18 M-12 -42 L-8 -18 M8 -42 L4 -50" stroke="#e63946" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
+    // Wetter und Kleinigkeiten zur Jahreszeit
+    if (se === "winter") {
+      s += `<g transform="translate(-120 650)"><circle cy="-24" r="26" fill="#fff" stroke="#c3d3e0" stroke-width="3"/><circle cy="-66" r="19" fill="#fff" stroke="#c3d3e0" stroke-width="3"/><path d="M0 -66 L18 -62 L0 -58 Z" fill="#f77f00"/><circle cx="-6" cy="-72" r="2.5" fill="#33415c"/><circle cx="6" cy="-72" r="2.5" fill="#33415c"/><rect x="-14" y="-98" width="28" height="16" fill="#33415c"/><rect x="-20" y="-84" width="40" height="5" fill="#33415c"/><path d="M-16 -50 H16" stroke="#e63946" stroke-width="7"/></g>
+        <path d="M-300 650 Q-100 636 100 648 T500 648 T900 648 T1300 648 T1704 650 V662 H-300 Z" fill="#fff"/>`;
+      let f = `<g clip-path="url(#${gid}c)">`; for (let i = 0; i < 46; i++) f += `<circle class="flake" cx="${(-320 + R() * 2040).toFixed(0)}" cy="${(-320 + R() * 300).toFixed(0)}" r="${(3 + R() * 4).toFixed(1)}" fill="#fff" style="animation-duration:${(9 + R() * 8).toFixed(1)}s;animation-delay:-${(R() * 16).toFixed(1)}s"/>`;
+      s += f + `</g>`;
+    } else if (se === "herbst") {
+      s += `<g class="kite"><path d="M-230 -40 L-196 -90 L-162 -40 L-196 10 Z" fill="#e63946" stroke="#7a2e00" stroke-width="3"/><path d="M-196 -90 V10 M-230 -40 H-162" stroke="#7a2e00" stroke-width="2"/><path d="M-196 10 Q-210 60 -186 110 Q-170 160 -150 200" fill="none" stroke="#7a2e00" stroke-width="2"/><path d="M-200 50 l12 6 l-12 6 Z M-182 120 l12 6 l-12 6 Z" fill="#ffd166"/></g>`;
+      let f = `<g clip-path="url(#${gid}c)">`; for (let i = 0; i < 18; i++) f += `<ellipse class="leaf" cx="${(-300 + R() * 2000).toFixed(0)}" cy="${(-200 + R() * 300).toFixed(0)}" rx="9" ry="5" fill="${P.leaf[i % P.leaf.length]}" style="animation-duration:${(10 + R() * 8).toFixed(1)}s;animation-delay:-${(R() * 18).toFixed(1)}s"/>`;
+      s += f + `</g>`;
+    } else if (se === "fruehling") {
+      for (let i = 0; i < 4; i++) s += `<g class="bfly" style="animation-delay:-${i * 1.3}s"><g transform="translate(${[-220, 1480, -60, 1600][i]} ${[420, 380, 300, 520][i]})"><ellipse cx="-7" cy="0" rx="8" ry="11" fill="${["#ff6b9d", "#ffd166", "#c77dff", "#4cc9f0"][i]}"/><ellipse cx="7" cy="0" rx="8" ry="11" fill="${["#ff6b9d", "#ffd166", "#c77dff", "#4cc9f0"][i]}"/><rect x="-1.5" y="-9" width="3" height="18" rx="1.5" fill="#33415c"/></g></g>`;
+      [[-270, 652], [-150, 656], [1450, 656], [1560, 652], [1680, 656]].forEach(([x, y], i) => { s += `<path d="M${x} ${y} V${y - 24}" stroke="#3f8f3a" stroke-width="3"/><circle cx="${x}" cy="${y - 28}" r="8" fill="${["#ff6b9d", "#ffd166", "#c77dff"][i % 3]}"/>`; });
+    } else {
+      s += `<g transform="translate(-170 760)"><path d="M0 0 V-86" stroke="#6b4e35" stroke-width="5"/><path d="M-60 -78 Q0 -132 60 -78 Z" fill="#e63946"/><path d="M-20 -78 Q0 -122 20 -78" fill="#fff"/></g>`;
+      [[200, -60], [260, -90], [1240, -40]].forEach(([x, y]) => { s += `<path d="M${x - 16} ${y} q8 -10 16 0 q8 -10 16 0" fill="none" stroke="#33415c" stroke-width="3" stroke-linecap="round"/>`; });
+    }
+    return s;
+  }
+  // Umgebung als eigenes Bild hinter dem Schnitt (Schulhaus-Ansicht im Spiel)
+  const sceneSVG = (gid) => `<svg viewBox="0 0 1400 960" class="school scene" aria-hidden="true">${sceneBits(gid)}</svg>`;
+  // ganze Außenansicht als ein Bild (Startbildschirm): Insel mit Umgebung, Schule von außen, Polly auf dem Dach
   function outsideSVG() {
-    let s = `<svg viewBox="0 0 1400 960" class="school outside" role="img" aria-label="Die Schule auf der Neuerburginsel"><rect width="1400" height="760" fill="#bfe6fa"/><rect y="0" width="1400" height="300" fill="#a9dcf7"/>`;
-    s += skyBits() + gableBits() + facadePart("kg") + facadePart("eg") + facadePart("og") + fasciaBits() + treeBits(rnd(42));
+    let s = `<svg viewBox="-280 -232 1960 1340" class="school outside" role="img" aria-label="Die Schule auf der Neuerburginsel">`;
+    s += sceneBits("stSky") + skyBits() + gableBits() + facadePart("kg") + facadePart("eg") + facadePart("og") + fasciaBits() + treeBits(rnd(42));
     s += `<svg x="560" y="76" width="84" height="84" viewBox="0 0 100 100" class="roofpolly">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
     return s + `</svg>`;
   }
   /* ==== SCHULHAUS ENDE ==== */
   /* ---------- Schulhaus: mit dem Superhelden durch Flure und Treppenhaus ---------- */
-  let hero = { floor: "eg", x: ST.entry }, walking = null, inside = false, outX = 1215;
+  let hero = { floor: "eg", x: ST.entry }, walking = null, inside = false, outX = 1132;
   const reducedMotion = () => { try { return !!window.__FAST_WALK || matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
   const roomById = (id) => ROOMS.find(r => r.id === id);
   const roomAt = () => ROOMS.find(r => r.floor === hero.floor && Math.abs(r.x - hero.x) < 2);
@@ -6888,7 +7311,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const facadeHTML = () => `<div class="facade" id="schFac" role="button" aria-label="In die Schule gehen">${["kg", "eg", "og"].map(f => `<div class="flap f-${f}" style="--hy:${(FLAP_TOP[f] / 9.6).toFixed(2)}%">${facadeSVG(f)}</div>`).join("")}<svg viewBox="0 0 1400 960" class="school outk" aria-hidden="true"><g id="schKidOut"></g></svg></div>`;
   const kidOutAt = (x) => { const g = $("schKidOut"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} 654) scale(.78)`); };
   function drawSchool() {
-    const wrap = $("schoolWrap"); wrap.innerHTML = schoolSVG() + (inside ? "" : facadeHTML());
+    const wrap = $("schoolWrap"); wrap.innerHTML = `<div class="schstage${inside ? "" : " out"}" id="schStage">${sceneSVG("wsSky")}${schoolSVG()}${inside ? "" : facadeHTML()}</div>`;
     $("schKid").innerHTML = kidSVG(S.fig == null ? 0 : S.fig);
     kidAt(hero.x, FLOORS[hero.floor]);
     if (!inside) { $("schKidOut").innerHTML = kidSVG(S.fig == null ? 0 : S.fig); kidOutAt(outX); $("schFac").addEventListener("click", () => goIn()); }
@@ -6933,14 +7356,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     if (inside || entering || busy()) return;
     const fac = $("schFac"); if (!fac) { inside = true; return then && then(); }
     entering = true; tone([523, 659, 784], 0.07);
-    const finish = () => { if (!entering) return; entering = false; inside = true; outX = 1215; hero = { floor: "eg", x: ST.entry }; kidAt(ST.entry, FLOORS.eg);
+    const finish = () => { if (!entering) return; entering = false; inside = true; outX = 1132; hero = { floor: "eg", x: ST.entry }; kidAt(ST.entry, FLOORS.eg);
       const f = $("schFac"); if (f) { f.style.pointerEvents = "none"; f.removeAttribute("id"); setTimeout(() => f.remove(), 800); } schInfo();
       const kid = $("schKid").querySelector(".kid"); if (kid) { kid.classList.add("hello"); setTimeout(() => kid.classList.remove("hello"), 1400); }
       if (then) then(); else speak("Wir sind drin! Nemos Klasse ist im Erdgeschoss. Pollys Klasse ist oben. Lauf mit den Pfeilen oder tippe auf eine Tür."); };
     if (reducedMotion()) return finish();
-    const kid = $("schKidOut").querySelector(".kid"), x0 = outX, t0 = performance.now(), dur = Math.max(1, Math.abs(x0 - ST.entry)) / 560 * 1000;
-    if (kid) kid.classList.add("walk"); fac.classList.add("dooropen");
-    const walk = (now) => { const u = Math.min(1, (now - t0) / dur); outX = x0 + (ST.entry - x0) * u; kidOutAt(outX);
+    const kid = $("schKidOut").querySelector(".kid"), x0 = outX, t0 = performance.now(), dur = Math.max(1, Math.abs(x0 - FDOOR)) / 560 * 1000;
+    if (kid) kid.classList.add("walk"); fac.classList.add("dooropen"); const stg = $("schStage"); if (stg) stg.classList.remove("out");
+    const walk = (now) => { const u = Math.min(1, (now - t0) / dur); outX = x0 + (FDOOR - x0) * u; kidOutAt(outX);
       if (u < 1) return requestAnimationFrame(walk);
       if (kid) { kid.classList.remove("walk"); kid.classList.add("inside"); }
       setTimeout(() => { const f = $("schFac"); if (f) f.classList.add("open"); }, 250);
@@ -6957,8 +7380,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   // Rausgehen (▶ am Eingang): die Klappen gehen wieder zu
   function goOut() {
     if (!inside || walking || busy()) return;
-    inside = false; outX = 1215; drawSchool(); const fac = $("schFac");
-    if (!reducedMotion()) { fac.classList.add("open", "dooropen"); void fac.getBoundingClientRect(); requestAnimationFrame(() => requestAnimationFrame(() => { fac.classList.remove("open"); setTimeout(() => fac.classList.remove("dooropen"), 900); })); }
+    inside = false; outX = 1132; drawSchool(); const fac = $("schFac"), stg = $("schStage");
+    if (!reducedMotion()) { fac.classList.add("open", "dooropen"); stg.classList.remove("out"); void fac.getBoundingClientRect(); requestAnimationFrame(() => requestAnimationFrame(() => { fac.classList.remove("open"); stg.classList.add("out"); setTimeout(() => fac.classList.remove("dooropen"), 900); })); }
     else fac.classList.remove("dooropen");
     speak("Jetzt bist du draußen vor der Schule.");
   }
@@ -6989,7 +7412,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function enterRoom(r) {
     if (!inside) return goIn();
     r = r || roomAt(); if (!r || busy()) return;
-    const svg = $("schoolWrap").querySelector("svg");
+    const svg = $("schoolWrap").querySelector("svg.cut");
     if (!r.world) {
       const d = svg.querySelector(`.door[data-room="${r.id}"]`); if (d) { d.classList.remove("shake"); void d.getBoundingClientRect(); d.classList.add("shake"); }
       tone([330, 262], 0.06);
@@ -6997,7 +7420,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       speak(`Die ${r.name} ist noch leer. Bald gibt es hier etwas zu entdecken!`);
       return;
     }
-    tone(r.world === "polly" ? [660, 880, 990] : [520, 660, 780], 0.08);
+    tone(r.world === "nemo" ? [520, 660, 780] : [660, 880, 990], 0.08);
     if (reducedMotion() || !svg) return enterWorld(r.world);
     svg.style.transformOrigin = `${(r.x / 14).toFixed(1)}% ${((FLOORS[r.floor] - 75) / 9.6).toFixed(1)}%`;
     svg.classList.add("zoomin");
@@ -7009,10 +7432,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     $("goOutBtn").hidden = !inside;
     if (!inside) { info.textContent = "📍 Vor der Schule"; info.classList.remove("warn"); go.disabled = false; go.textContent = "🚪 Rein in die Schule!"; go.classList.add("live");
       ["mvL", "mvR", "mvU", "mvD"].forEach(id => $(id).disabled = true); return; }
-    const where = r ? `vor der ${r.world ? (r.world === "polly" ? "Klasse von Polly" : "Klasse von Nemo") : r.name}` : Math.abs(hero.x - ST.entry) < 2 ? "am Eingang" : "im Treppenhaus";
+    const where = r ? `vor der ${r.world ? "Klasse von " + WORLDS[r.world].hero : r.name}` : Math.abs(hero.x - ST.entry) < 2 ? "am Eingang" : "im Treppenhaus";
     info.textContent = msg || `📍 ${FLOOR_NAME[hero.floor]} · ${where}`;
     info.classList.toggle("warn", !!msg);
-    go.disabled = !r; go.textContent = r ? `🚪 Rein in ${r.world ? (r.world === "polly" ? "Pollys" : "Nemos") + " Klasse" : "die " + r.name}!` : "🚪 Rein!";
+    go.disabled = !r; go.textContent = r ? `🚪 Rein in ${r.world === "eule" ? "die Eulenklasse" : r.world ? (r.world === "polly" ? "Pollys" : "Nemos") + " Klasse" : "die " + r.name}!` : "🚪 Rein!";
     go.classList.toggle("live", !!(r && r.world));
     const st = stopsOf(hero.floor);
     $("mvL").disabled = !st.some(x => x < hero.x - 1); $("mvR").disabled = !st.some(x => x > hero.x + 1) && !(hero.floor === "eg" && Math.abs(hero.x - ST.entry) < 2);
@@ -7039,14 +7462,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     $("worldHello").textContent = who ? `Hallo ${who}! Wohin möchtest du?` : "Wohin möchtest du?";
     const st = (wid) => CHAPTERS.filter(c => worldOf(c) === wid && c.levels.length).reduce((a, c) => a + starTotal(c), 0), sn = st("nemo"), sp = st("polly");
     $("wtNemo").textContent = `⭐ ${sn}`; $("wtNemo").hidden = !sn;
-    $("wtPolly").textContent = `⭐ ${sp}`; $("wtPolly").hidden = !sp;
+    $("wtPolly").textContent = `⭐ ${sp}`; $("wtPolly").hidden = !sp; const se = st("eule"); $("wtEule").textContent = `⭐ ${se}`; $("wtEule").hidden = !se;
     updateFoot(); $("resetBtn2").textContent = $("resetBtn").textContent; $("whoTag2").hidden = $("whoTag").hidden; $("whoTag2").textContent = $("whoTag").textContent;
     setCoins(false); show("scrWorld");
     walking = null; entering = false; if (S.fig == null) { hero = { floor: "eg", x: ST.entry }; inside = false; }
     drawSchool();
     const back = roomAt();
     if (back && back.world && !reducedMotion()) { // aus der Klasse zurück in den Flur: herauszoomen
-      const svg = $("schoolWrap").querySelector("svg");
+      const svg = $("schoolWrap").querySelector("svg.cut");
       svg.style.transformOrigin = `${(back.x / 14).toFixed(1)}% ${((FLOORS[back.floor] - 75) / 9.6).toFixed(1)}%`;
       svg.classList.add("zoomout"); void svg.getBoundingClientRect();
       requestAnimationFrame(() => requestAnimationFrame(() => svg.classList.remove("zoomout")));
@@ -7151,6 +7574,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   });
   $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
   $("goPolly").addEventListener("click", () => goRoom("polly"));
+  $("goEule").addEventListener("click", () => goRoom("eule"));
   $("goOutBtn").addEventListener("click", () => leaveSchool());
   // Buchstaben auch mit der Tastatur (Smartboard, PC) – nur in Schreib-Aufgaben
   document.addEventListener("keydown", (e) => {
