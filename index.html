@@ -666,6 +666,7 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 .facade .flap { position: absolute; inset: 0; transform-origin: 50% var(--hy); pointer-events: none; will-change: transform;
   transition: transform .8s cubic-bezier(.45,0,.3,1) var(--d), opacity .2s linear var(--d); }
 .facade .flap svg { display: block; }
+.facade .f-kg svg, .facade .outk { overflow: visible; }   /* die Schach-Insel ragt unten über das Bild hinaus */
 .facade.open .flap { transform: perspective(1500px) rotateX(92deg); opacity: 0; transition: transform .85s cubic-bezier(.55,0,.35,1) var(--d), opacity .3s linear calc(var(--d) + .5s); }
 .facade .f-kg { --d: 0s; } .facade .f-eg { --d: .18s; } .facade .f-og { --d: .36s; }
 .facade.open .f-og { --d: 0s; } .facade.open .f-kg { --d: .36s; }
@@ -825,6 +826,47 @@ body.schach .taskrow .task { background: rgba(10, 60, 40, .4); }
 .chessring { animation: chring 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes chring { 0%, 100% { opacity: .15; transform: scale(.94); } 50% { opacity: .95; transform: scale(1.04); } }
 .school.outside .chessring { display: none; }
+/* Eddies Spiele: Nachtflug, Glühwürmchen, Rätsel */
+.nightsky { position: relative; width: min(820px, 100%); aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; margin: 0 auto;
+  background: radial-gradient(ellipse at 80% 12%, #3b4f8f 0, #1b2a4a 45%, #0d1630 100%); box-shadow: 0 8px 22px var(--shadow); }
+.nf-moon { position: absolute; right: 3%; top: 5%; width: 8%; aspect-ratio: 1; border-radius: 50%; background: #fff3b0; box-shadow: 0 0 24px #fff3b0; }
+.nf-moon::after { content: ""; position: absolute; inset: -6% -6% 10% 24%; border-radius: 50%; background: #2a3b6e; }
+.nf-trees { position: absolute; left: 0; right: 0; bottom: 0; height: 16%; background: repeating-linear-gradient(90deg, #0b3b2e 0 7%, #0e4a39 7% 9%); clip-path: polygon(0 100%, 0 40%, 4% 0, 8% 40%, 12% 10%, 16% 45%, 21% 5%, 26% 42%, 31% 12%, 36% 46%, 41% 0, 46% 40%, 51% 14%, 56% 44%, 61% 4%, 66% 40%, 71% 12%, 76% 46%, 81% 2%, 86% 40%, 91% 10%, 96% 44%, 100% 20%, 100% 100%); }
+.nf-star { position: absolute; transform: translate(-50%, -50%); width: clamp(48px, 9.5%, 78px); aspect-ratio: 1; border: none; cursor: pointer; background: none; padding: 0;
+  display: grid; place-items: center; font: inherit; font-weight: 900; font-size: clamp(16px, 2.6vw, 25px); color: #1b2a4a; -webkit-tap-highlight-color: transparent; }
+.nf-star::before { content: ""; position: absolute; inset: 0; background: #fff6c9; clip-path: polygon(50% 0, 62% 35%, 100% 38%, 70% 60%, 80% 100%, 50% 77%, 20% 100%, 30% 60%, 0 38%, 38% 35%); filter: drop-shadow(0 0 6px #fff3b0); transition: background .25s; animation: twinkle 2.4s ease-in-out infinite; }
+.nf-star span { position: relative; margin-top: 12%; }
+.nf-star.got::before { background: #ffc300; animation: none; filter: drop-shadow(0 0 14px #ffd60a); }
+.nf-star.no::before { background: #ff8fa3; }
+@keyframes twinkle { 50% { opacity: .78; } }
+.nf-eddie { position: absolute; left: 8%; top: 78%; width: clamp(46px, 9%, 80px); transform: translate(-10%, -95%); transition: left .55s cubic-bezier(.4,0,.3,1), top .55s cubic-bezier(.4,0,.3,1); pointer-events: none; z-index: 3; filter: drop-shadow(0 4px 6px rgba(0,0,0,.4)); }
+.nf-eddie.flap svg { animation: eFlap .55s ease-in-out; }
+@keyframes eFlap { 30% { transform: rotate(-10deg) scale(1.08); } 70% { transform: rotate(8deg); } }
+.nf-cnt { margin: 0 auto 8px; }
+.ff-top { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+.ff-eddie { width: clamp(60px, 9vw, 88px); transition: transform .5s cubic-bezier(.4,0,.3,1); position: relative; z-index: 4; }
+.ff-bubble, .rd-bubble { position: relative; background: #fff; border-radius: 20px; padding: 10px 18px; font-weight: 900; font-size: clamp(22px, 3.4vw, 34px); color: #17324a; box-shadow: 0 4px 0 #d9d2e9; }
+.ff-bubble::before, .rd-bubble::before { content: ""; position: absolute; left: -12px; top: 50%; margin-top: -10px; border: 10px solid transparent; border-right: 14px solid #fff; border-left: none; }
+.ff-meadow { position: relative; width: min(820px, 100%); aspect-ratio: 16 / 7; margin: 0 auto; border-radius: 22px; overflow: hidden;
+  background: linear-gradient(#1d2f5c, #23406a 60%, #1f5a3c 60%, #17452f); box-shadow: 0 8px 22px var(--shadow); }
+.ff-bug { position: absolute; border: none; background: none; padding: 0; cursor: pointer; width: clamp(56px, 11%, 86px); aspect-ratio: 1; display: grid; place-items: center; animation: ffFly 3.4s ease-in-out infinite alternate; -webkit-tap-highlight-color: transparent; }
+.ff-bug i { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, #fffbd1 0, #ffe066 45%, rgba(255,224,102,0) 72%); }
+.ff-bug span { position: relative; font: inherit; font-weight: 900; font-size: clamp(15px, 2.4vw, 23px); color: #3a2a00; }
+.ff-bug.no i { background: radial-gradient(circle, #ffd6dc 0, #ff8fa3 45%, rgba(255,143,163,0) 72%); }
+.ff-bug.caught { animation: none; transform: scale(1.25); }
+@keyframes ffFly { 0% { transform: translate(0, 0); } 33% { transform: translate(18px, -14px); } 66% { transform: translate(-10px, 10px); } 100% { transform: translate(14px, 16px); } }
+.ff-jar { position: absolute; right: 3%; bottom: 6%; font-size: clamp(30px, 5vw, 48px); filter: grayscale(.4); transition: filter .4s; }
+.ff-jar.glow { filter: drop-shadow(0 0 14px #ffe066); }
+.riddle { display: flex; align-items: center; justify-content: center; gap: 14px; max-width: 760px; margin: 0 auto 10px; }
+.rd-eddie { width: clamp(64px, 10vw, 96px); flex: none; animation: kIdle 2.4s ease-in-out infinite; }
+.rd-bubble { font-size: clamp(17px, 2.5vw, 23px); font-weight: 700; line-height: 1.4; text-align: left; }
+.owlmem .mcard:not(.open):not(.done) { background: linear-gradient(145deg, #8e6cc0, #5e418c); box-shadow: 0 5px 0 #3f2b63, 0 8px 16px var(--shadow); }
+@media (prefers-reduced-motion: reduce) { .ff-bug, .nf-star::before, .rd-eddie { animation: none; } }
+@media (max-width: 600px) { .nightsky { aspect-ratio: 1 / 1.05; } .ff-meadow { aspect-ratio: 1 / 1; } .nf-star { width: 17%; } .ff-bug { width: 20%; } }
+.maldots { display: flex; align-items: center; justify-content: center; }
+.malsvg { width: min(250px, 56vw); height: auto; max-height: 250px; display: block; margin: 0 auto; }
+.sachtext { max-width: 660px; margin: 0 auto 12px; font-size: 22px; line-height: 1.4; text-align: left; padding: 12px 18px; }
+@media (max-width: 600px) { .sachtext { font-size: 18px; } }
 .chwrap { display: grid; grid-template-columns: auto minmax(230px, 360px); grid-template-areas: "b q" "b a"; gap: 14px 30px; align-items: center; justify-content: center; width: 100%; }
 .chwrap > .chpic { grid-area: b; } .chwrap > .chq { grid-area: q; align-self: end; margin: 0; }
 .chwrap > .cha { grid-area: a; align-self: start; display: flex; flex-direction: column; align-items: center; gap: 12px; min-height: 64px; }
@@ -1168,7 +1210,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 16.11. · Schachschule</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 16.11. · Eddies Werkstatt</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1499,7 +1541,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", art: "polly", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] },
     eule: { id: "eule", name: "Eddies Spielplatz", room: "Eulenklasse", hero: "Eddie", emo: "🦉", goes: "fliegt", go: "fliegen", place: "Wald", inPlace: "in deinem Wald", forPlace: "für deinen Wald",
       shopTitle: "🌲 Eddies Wald", chest: "Eddies Schatzkiste", start: "🌲", art: "eddie", klasse: "die Eulenklasse", conf: ["🪶", "⭐", "🌙", "✨", "🔢", "🍂"], buyConf: ["🪶", "✨", "⭐", "🌙"] },
-    // Schachschule auf dem Schulhof: kein eigener Laden – die Münzen gelten bei Nemo, Polly und Eddie
+    // Schachschule auf der Schach-Insel: kein eigener Laden – die Münzen gelten bei Nemo, Polly und Eddie
     schach: { id: "schach", name: "Schachschule", room: "Schachschule", hero: "Hopsi", emo: "🐴", goes: "hüpft", go: "hüpfen", place: "Schachschule", inPlace: "in der Schachschule", forPlace: "für die Schachschule",
       shopTitle: "♟️ Schachschule", chest: "Hopsis Schatzkiste", start: "🏁", art: "hopsi", klasse: "die Schachschule", conf: ["⭐", "✨", "🏆", "🐴", "👑", "🎉"], buyConf: ["✨", "⭐"] }
   };
@@ -1708,7 +1750,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   let current = "scrStart";
   function show(id) {
     current = id; closeSheet();
-    if (id === "scrStart") { try { inside = false; hero = { floor: "eg", x: ST.entry }; const sp = $("startPic"); if (sp && !sp.firstChild) sp.innerHTML = outsideSVG(); } catch (e) {} }
+    if (id === "scrStart") { try { inside = false; hero = { floor: "eg", x: ST.entry }; outX = OUT_X; outY = GROUND; const sp = $("startPic"); if (sp && !sp.firstChild) sp.innerHTML = outsideSVG(); } catch (e) {} }
     // Ruhe-Modus: In Aufgaben, Auswertung und Urkunde steht der Hintergrund still – der Blick bleibt bei der Aufgabe.
     document.body.classList.toggle("calm", ["scrIntro", "scrPlay", "scrCheck", "scrResult", "scrCert"].indexOf(id) >= 0);
     SCREENS.forEach(s => $(s).hidden = s !== id);
@@ -2890,6 +2932,29 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { w: "Tasche", art: "die", pic: "👜", gap: ["Ta_e", "sch", "sh", "ch"], bad: ["Tache", "Tashe", "Taschä"], syl: ["Ta", "sche"], extra: ["s", "h"] },
     { w: "Tür", art: "die", pic: "🚪", gap: ["T_r", "ü", "u", "üh"], bad: ["Tühr", "Tüer", "Dür"], syl: ["Tür"], long: ["Türen", ["Tü", "ren"]], extra: ["u", "h"] }
   ];
+  // Lernwörter 3 (Arbeitsblatt: Lernwörter mit St / st und Sp / sp) – Bilder vom Arbeitsblatt. Verben haben keinen Begleiter (art: "").
+  const PIC_STERN = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,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" width="100" height="100"/></svg>';
+  const PIC_SPINNE = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,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" width="100" height="100"/></svg>';
+  const PIC_STUHL = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAMAAAAL34HQAAAAkFBMVEXq16PqzKLsz6TTs5Wyr6pvY1O7u3j//3/y0qcoGCj/AAB2dnaIeWP/f3///9oPDxIhISEfHyBdXS5hV0qCc1/bvpb//wBMRjxNRT2RbUgAAAAiIiLnyaAhISE+Pj4YGhz01Kjkxp2Zh26hjnQcHBwhISH/4LH///5rYFHoyaAZGxzoyqEiIiKolHj/qqrlx5781r1AAAAAMHRSTlMUZZgXBqcDAs8vAQPQAhxboP8F7rJQAX+ABwD+/mME/v7+/v8QS/4D/65Xz9z/A7IVkag7AAAC5UlEQVR42u3ca3eiMBAG4CCoaK29d3eHWxAwFcX+/3+3RNDTUtySKGHOduZLP7S2T2PMvIEcGKAsRixiEYtYxCIWblaoVT9ztNIs0Kos7ZM123matZv1x0q9CyrtjZVdwsp6YoUQXMIKIPyZrEitzLCip2KlUMlbZGa0nkdr3r3WiRlWlFgjHncuvjLEWvGXDY/9bmWS5bPOLpMsvrW3HV0mWTHfdHUZZfl8xLq5zLJ8btl+F5dRVlyCbOlCtEAk9Woqli6m5fQtOXSVYpGPETQfODafYwt+8NRaNfTL0g02FAOJ9R3r64xGkU7rBaL+/C/yYJwgSKen5bQuC+BfcdXYcrr61HN8/6V0cQzptNGimXThSBAf//CWCTgXV4cbrZi/w9Q54xrwTSzDFzC73TUkS7r27a5BWXLaT1tjtOF02ijftWHmuBxBOv28ao4EgHCHT6eNKsZBkP9GkE5bOvIDpVOKgf9/Om2b4IOn0+ZyMM6D4O4XgnTaqKX8WWvwdNrsNbENj49g+cOn00b4YnvByvHyYwQJ4oNrBGw+kS5MrEP4cmAvtx2YWOU3y1A431fbDjyjVYXCV+fgQsSSe6FbISZyO4RptOReaPIqDtshTG+inPYTuBFsw1Gxatecva9RseS0d+AWbLfAxJLTvlRNYbnwMI1W1YXg5hiHsLyJsgtN5qFAxqq6UIhttKou9Acdq74ih49VfhztE0vgGS3ZhWpWPmho/hKirbuKNRblbwh7ZCUqpzP4+vmwykeFvKQz1Ias5UpOtSGLnuQlHYVjb1fevp67YlN/7XzszdBmX/XYm2lWhpPVcV0lVq+se70jscF9vyzVo5rHyvplBZBqnLZOFaOEBkvnRHdILGIRi1jEIhaxiEUsYhGLWMQiFrGIRSxiEYtYxCIWsYhFLGKdrewqN+6ufK/69BybVJOV9nJnX/6/O8/b6Q6W4suVnpGU5ynol8rL6bFgxCIWsYhFLOP1Fy1tKiQCvN64AAAAAElFTkSuQmCC" width="100" height="100"/></svg>';
+  const PIC_SPIEGEL = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAMAAAAL34HQAAAAkFBMVEWapLAkIyGaXgfO3OyiXAEfHx4dHR11TA9YXGKfYAY+QUR0FQB/fwCgYQY8PkH//wD/AACqqgAAAADa6f0iIiL3+/6jYwcYFxeZZQCgYgUhISEhISEhISEmJiYhISEhISEaGhpGSU48PDxzeYIhISF8hI00NTeBiZOst8W5xdZjaG/K1+hcYWhRVVlVVVVtc3soYk9sAAAAMHRSTlP/+fT/FUso//9d/wQCjv8BAQMA//7//v8Ffs9Rsg+NMA//BP9s////////////A/+oXpEmAAAFi0lEQVR42u3ca3eiPBAA4NTbWru1+3JpWi6CCIpa9f//uxdtCKABksygfiBnP7Tunu5zJmEy5FJiPGUj8B8RtX7wEFbWwiBwx272JwjC54iW7y48xyo1x1u4/mNZoetZwua54aNYWZyshrZwowewwtixWpoTh/dmtaMuMPeuLLeKeqGl9oIB02H5lTFFqWXNp6fVhpDN6nSY/35SGmPhfVjlUGWCQ5LuTdNmzTT3aXKoyHQCps5alFHLzdA8W8ot+364WZZhi85ZvldCTcmNicvItATzwm5ZE6dAHVKxKZelhwLmTLpklVTLLFJmY7OHZFa4/O5YvsNDdWpDXWDmiQfMCbtiFao1kUBdYGRNdeJFdFTLoaTq3JNLnXgpsPJnkP6Y0qpzR/7kLs844rPyfEVXCqgLbEWV85c0y61R/aZ2SZeLzQoaVAquAJeVD3e6E6naXTvmciJUVpw/g6ZQ1T7a8ucxxmRNmMra20KV3Z4nLKrSjUQlN1BSo7Il8irNswQaiz2F9CSlEjP58HLRWA6bcvayKpFrz6YhB4vlirqwWSVw8W50cVgsOdAfFZWoG3/kw0Xk8/vWVlCJWFv5XE9kH8NKIm1X2Q1J1cNgBbfB0lMV4QoQWIubkaWpyv7BlEpWEq0s/+Yx1FYVD6MPZEVswNMZPFbnNqds0Ecg1jHvw42NobI3eS8eYZ0Ysoomr95BKj7oW183iNRzSA8tiUl61mYFTgBksT5M7MYsLq2yE7lnkciVNKndNOXJVzh2KlfetLDC32DNGwsElbrLZHVECGJNxBOPviqfrwMAK2I1fJEehEszCiqeIuLmzEWkslbDkoOaiif6BYDFR/weS2UO91JjnkiUy3SNpuJj3oGwfOHbIUiVJ1QfwAoE5TJQJfcoSrFq1mh0VKZ9grPGV1MPXMWnHwjLbUhbeiqeuFw4S5S2NFU8cUFYcS1LV4XCqo2WtqpTlr4KhTUWD3mACnPIJzaaiieIMXY6Ban48i5Clt9pLk12NfkIp2qQCmWqFhY2MBVGYcPLwKHyFkFdGTiEl4F1RTMgVhhFM3/FSHQVtfkhBtXyeR04xGINEV7I+Ovr2kRrKK+vNy/70D5MKcbL/s3SCNLQgi6NBC3vPprJdAJk+VfLbsBgIS273S5SwlhIi5R8SRepF2c4S7qiBXBAsLAWwItncYfB2qFtF4g2V4ADHmVzRbQVBQsWylaUcOMOFCycjTvhNqcOa4q6zSneFNZ/DJE2hWu20FUb+hZ6zYEDxWCd0A8c8OMZ+vVNXtFgHs/gh1nWe02XnXehNUFkscUIwNTYydEfI6o5KKWYSC3niMrKu1H9CF6nx8qOtYfwlFSugRyt0pFF1bo+r987ObJYOuC5UmOdigOeUQeskB+HncrnCXt/6Pg4bOmY7ky2mrDTedeHh8vxshK5o9aJpaVSPJjulw6mp627+Ha6vMvB9Cxent4xftXrBcp3MRY6lx6UL2OoXxGJy1dEZsnWvFqDO3+7TWblKyKx0T3LGFcv1CxXZFteUN2S1bJ6oWZs3INlhFfXj6i1PrDrR7vD+vLBA64fnd8dr+7/lS9rXd0IDLT+A92rbe4zXm27DH2Ji4DaPxx0bdJrQnmQq6awS6Z+fJFV7v5dvvFi2PVX8JXccBy/ZJIX1s5fxWPwdWEg61JAfX8OBn9YGww+v/lfPDBaxlv0/llp79Gb8eBoZe0ri9ZnFq/fln35nX30LKxS61k9q2f1rJ7Vs3pWz+pZPatn9aye1bN6Vs/qWT2rZ6GzXp+C9Z/xes0aPQHrzRhVWSPjGZZ0jb9GZan5PfvgGVgf/74GhWow+vfxFKxzNw4KFUIXIv0a1r/GiPXj+wijC7F+O2xGGb1m7cvAUSGxjA+WE0YfOD/vf/jJeZ5ej/vLAAAAAElFTkSuQmCC" width="100" height="100"/></svg>';
+  const PIC_STIEFEL = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAMAAAAL34HQAAAAkFBMVEUAAAD5yxUiIiIXGiL+1hSliRk+Pj4gICCtkRkhISF3ZRwhISEbGxshISH/4xNMQx/etRYeHh4iIiIhISFnWB3mvBYfHx83MiCQeRvQqxcjIyOdgxofHx8fICJHPx8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACoOLGsAAAAMHRSTlMA//7///8EY/9R/9ITkf///yMyr///cv///xn/UP//AAAAAAAAAAAAAAAAAAAAAACZ9G/7AAAB9ElEQVR42u3ci3KCMBAFUAIBEgEVfFTt4/8/s2gpztRWyDq72an3fsGZTcwDVpIEQRAEEU8xO6hV7cvZ8bWUqqvSgFSdUK3SwMjUy4eyvMRvMClDWWVSPD0rmxF5VrZw+UTcIpNnuaWdyNJFYOXWTMTmYIEFFlhggfUMe6LOE4TS85a60+k+lLXHWR5XDFwxsCeCBRZYYIEFFlhggQUWWGCBBRZYYIEFFlhggQUWWGD9wZJsWQxgbXynkXXuiW18q5DFTgthueymk5iLFsLapdlvTc4ctABWP4rp+GaYmRbC6uvlFisRWhCrh1mznkMrZFkX2SStlq7WTNqmrGOwZtCaNg5rktbUsVj3aZWPyLpHK+OyftDerwMZnTXS8m16rVmpgTXQdvlqdL0pYV1o5jBu67UeVg87frs2mljGrl8GV6uJda4X/dfIxzL2MJTrpIplzAf5YsnJsq8ZddKzVms3zPqTLpbdUu/hvKxhFBtlrCN1RWVlGfM1uSptrGHLrpWxhjnfkVnTzcOELA+PsqZbrQlx1BUiqDGdkPRBFmsIrL0AK3izlqnWv2OxTnkyi2mBoP59g3k5dY+yWDYf8vsY7Sylg6hzyitdILDKz4vXeIIgfMeGEMozLl8xo4hPnEO+kUSI3GeVhFJwJkEQBEEQ5CafOvNW8hRJCOoAAAAASUVORK5CYII=" width="100" height="100"/></svg>';
+  const PIC_SPIELEN = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,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" width="100" height="100"/></svg>';
+  const PIC_STIFT = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAMAAAAL34HQAAAAkFBMVEUEdvZjWEsjIyMdUN50dHSjjHSJd2TYuJYfHx8AVarlwp8zMCxGPzlMRT0AAAAiIiL85YkcTdceHiD/8pC5qmoeUeIAP78cTNcgICD406vxzaYXGRseHh49PT0AAP8aGhq2nIAbTNkgICAhISEhISEeHh6/sG3AsG0fICAZR88AVf8gICAgICBeVEgeHh4eUN5hx3aRAAAAMHRSTlME/xbbAv///4gD/////wD+//3/////BGNO////UgQBEP9LctKwLv///xMDLJL/b/+UppHWAAADqUlEQVR42u3a63baMAwAYPVCb9uc0ssWcAINKS0FWt7/7UZJgBgcIjmWlnNmnZ7+apuvkrBsA6hOBgRWYAVWYAVWYAVWYAVWYAVWN1jjJBl3jxXnUZTHXWPF0SbibrFKFcEFkiq8C0RVaBfIqrAuEFYhXSCketh8oV0gpXp7o7hASPX0+PhEcIGU6v6e4uJkJYaK5AI5FcUFgiqCC/jXq/edCu8CdpXBwrqAXVUtItoF3Co3F7CrnFzAuoqWz6e7gFO1m4NkF7CtV7PqHDx2zU66gC9Xxhysz9dYghXXzcFD1/vJbSHwVNAyB02XKCs+NQdrhuM5Oyu2LlQWV+NLEdhVFpfoAlGnOnKJLqf1qgOX6PA5pTJcqCMQiKgMl+DGpkllNJTYNrBZdezi3zRjVIcu/iMGTlUdOBIHMqyqyuI/vuJV+yIm7Id9FlVrFo+qLctFxX/txqVqx2JTtWLxqdqwGFUtWJwqdxarypnFq3JlMascWdwqNxa7yonFr3JhCagcWBIqOktERWbJqKgsIRWRJaWiscRUJFYipqKwqjfbzCoCa0rI1Qx/xmnHStXE+kYcS64o2cpxLC8qPGsaUa9lEiXAWkYR7RKrRa7wrHH9+4MMKiQr3a0OuAvStiok61K9Fk/TqOvk1ipsEc/Lx12VsJOX7+1VWFaxaOmfgxf7+3CeVVhWUUN9Nah1eVUhWYvygdeDYY3LrwrF2g4efbZW2V2eVchsFYNH99Yoq8u3Csealhua7xraXN5VONZyX8OBxeVfhWKVg6eo4bGLQYVgbQfPLLrbsgwX7SOS3lj7wXM2tLoYVJgi7jYP+tN0aZePBXtipeorqnMZkSglmq08OnINh9/frzRTrjCsaTUlG9fGdN37FbGpGllpZbe8dQ0Gd73PSPPlCpOt3Gyh9evx5eyH1nx9hWBdmrvlYoOq9UPEq2piHdawWFeNyCfnSpq12y3XRH4zVRwBlBPPYSzj8eaHpFm7wWOJ1wmXqbmI47riTXiKh2JVB081bnhNzdnKLcWLGYuHYy1EGwrJqly1lQ21UEIB6NZaLpRIoihFFGkofMt/STYUYfhMJ3INRT0npt1jpanqarYCK7AC6x+wRvPfPmI+8sq69fY/33pkjdRH9sdHZB9q5I01UtnFs5+4yJxdcJyr/nPfTzz3wVe2QGV9f5G5vtIPf22uspU31Spb/70OFtG56a0tv/LS8SuPLd/VBcLnPIL/YPiEHURgBVZgBRY9/gKavRRo4da4IAAAAABJRU5ErkJggg==" width="100" height="100"/></svg>';
+  const PIC_SPRINGEN = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,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" width="100" height="100"/></svg>';
+  const PIC_SPIELPLATZ = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,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" width="100" height="100"/></svg>';
+  const PIC_STEHEN = '<svg viewBox="0 0 100 100" aria-hidden="true"><image href="data:image/png;base64,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" width="100" height="100"/></svg>';
+  const LERN3 = [
+    { w: "Stern", art: "der", pic: PIC_STERN, gap: ["_ern", "St", "Scht", "Sd"], bad: ["Schtern", "Sdern", "Stärn"], syl: ["Stern"], long: ["Sterne", ["Ster", "ne"]], extra: ["c", "h"] },
+    { w: "Spinne", art: "die", pic: PIC_SPINNE, gap: ["_inne", "Sp", "Schp", "Sb"], gap2: ["Spi_e", "nn", "n", "hn"], bad: ["Schpinne", "Sbinne", "Spine"], syl: ["Spin", "ne"], extra: ["c", "h"] },
+    { w: "Stuhl", art: "der", pic: PIC_STUHL, gap: ["_uhl", "St", "Scht", "Sd"], bad: ["Schtuhl", "Sduhl", "Stul"], syl: ["Stuhl"], long: ["Stühle", ["Stüh", "le"]], extra: ["c", "d"] },
+    { w: "Spiegel", art: "der", pic: PIC_SPIEGEL, gap: ["_iegel", "Sp", "Schp", "Sb"], bad: ["Schpiegel", "Sbiegel", "Spigel"], syl: ["Spie", "gel"], extra: ["c", "h"] },
+    { w: "Stiefel", art: "der", pic: PIC_STIEFEL, gap: ["_iefel", "St", "Scht", "Sd"], bad: ["Schtiefel", "Sdiefel", "Stifel"], syl: ["Stie", "fel"], extra: ["c", "h"] },
+    { w: "spielen", art: "", pic: PIC_SPIELEN, gap: ["_ielen", "sp", "schp", "sb"], bad: ["schpielen", "sbielen", "spilen"], syl: ["spie", "len"], extra: ["c", "h"] },
+    { w: "Stift", art: "der", pic: PIC_STIFT, gap: ["_ift", "St", "Scht", "Sd"], bad: ["Schtift", "Sdift", "Stieft"], syl: ["Stift"], long: ["Stifte", ["Stif", "te"]], extra: ["c", "h"] },
+    { w: "springen", art: "", pic: PIC_SPRINGEN, gap: ["_ringen", "sp", "schp", "sb"], bad: ["schpringen", "sbringen", "sprinken"], syl: ["sprin", "gen"], extra: ["c", "h"] },
+    { w: "Spielplatz", art: "der", pic: PIC_SPIELPLATZ, gap: ["_ielplatz", "Sp", "Schp", "Sb"], gap2: ["Spielpla_", "tz", "z", "ts"], bad: ["Schpielplatz", "Sbielplatz", "Spielplaz"], syl: ["Spiel", "platz"], extra: ["c", "h"] },
+    { w: "stehen", art: "", pic: PIC_STEHEN, gap: ["_ehen", "st", "scht", "sd"], bad: ["schtehen", "sdehen", "steen"], syl: ["ste", "hen"], extra: ["c", "h"] }
+  ];
   const picHTML = (x) => x.pic.charAt(0) === "<" ? x.pic : x.pic;
   const gapHTML = (g) => g[0].replace("_", `<span class="g" id="gapSlot">?</span>`);
 
@@ -3283,7 +3348,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         : d === "mittel" ? "Hör gut zu und schreib das Wort. Nomen schreibt man groß. Tippe zuerst auf Groß."
         : d === "diktat" ? "Das große Lernwörter-Diktat. Du hörst jedes Lernwort und schreibst es ohne Hilfe."
         : "Hör gut zu und schreib den Begleiter und das Nomen, mit Lücke dazwischen. Kein Bild hilft dir.",
-      build(d) { return d === "diktat" ? shuffle(LWW()) : shuffle(LWW()).slice(0, d === "leicht" ? 6 : 8); },
+      build(d) { return d === "diktat" ? shuffle(LWW()) : shuffle(LWW().filter(z => d !== "schwer" || z.art)).slice(0, d === "leicht" ? 6 : 8); },   // Begleiter + Nomen: nur Nomen
       render(x, stage, d) {
         if (d === "leicht") return lwCopyCover(stage, x, 1);
         if (d === "mittel") return lwDictate(stage, x, { target: x.w, prefix: x.art, pic: picHTML(x), factor: 2 });
@@ -5050,6 +5115,426 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   }
   const STEPLEVELS = stepLevels();
 
+  /* ======================= Eddies Werkstatt: Einmaleins-Wiederholung (Eulenklasse) =======================
+     Einfache Aufgaben (Kernaufgaben, Punktefeld) bis zu komplexen (Rest, Zerlegen, große Zahlen, Sachaufgaben in zwei Schritten). */
+  const MAL = "·";
+  // Punktefeld: a Reihen mit je b Punkten (nach 5 eine kleine Lücke)
+  function malDots(a, b, o) {
+    o = o || {}; const S0 = 22, gx = (j) => 14 + j * S0 + (j >= 5 ? 8 : 0), gy = (i) => 14 + i * S0 + (i >= 5 ? 8 : 0);
+    const W0 = gx(b - 1) + 22, H0 = gy(a - 1) + 22; let s = "";
+    for (let i = 0; i < a; i++) for (let j = 0; j < b; j++) s += `<circle cx="${gx(j) + 4}" cy="${gy(i) + 4}" r="8.5" fill="${o.split != null && i >= o.split ? "#ffb703" : "#6f4fa0"}"/>`;
+    return el("div", "maldots", `<svg class="malsvg" viewBox="0 0 ${W0} ${H0}" role="img" aria-label="${a} Reihen mit je ${b} Punkten">${s}</svg>`);
+  }
+  const malWhy = (a, b, v) => v === a + b ? `Achtung: Das ist plus! Bei ${a} ${MAL} ${b} nimmst du ${a}-mal die ${b}.` : v === a * b + b || v === a * b - b ? `Fast! Du bist eine ${b} daneben. Zähl nochmal in ${b}er-Schritten.` : v === a * b + a || v === a * b - a ? `Fast! Du bist eine ${a} daneben.` : numalWhy(a * b, v, `Denk an die ${b}er-Reihe.`);
+  const easyF = () => [1, 2, 5, 10][rint(0, 3)];
+
+  /* ---------- Eddies Spiele zum Einmaleins: Nachtflug, Glühwürmchen-Jagd, Eulen-Memory, Zahlenrätsel ---------- */
+  const eddieSVG = (cls) => `<svg class="${cls || ""}" viewBox="0 0 100 100" aria-hidden="true">${PART.eddie}</svg>`;
+  const rowOf = (r) => Array.from({ length: 10 }, (_, i) => (i + 1) * r);
+  const rowsFor = (d) => d === "leicht" ? [2, 5, 10] : d === "mittel" ? [3, 4, 6] : [7, 8, 9];
+  // falsche Ergebnisse, die typische Fehler treffen (Nachbaraufgabe, plus statt mal …)
+  function malWrong(a, b, n) {
+    const r = a * b, c = [r + a, r - a, r + b, r - b, a + b, r + 1, r - 1, r + 10, r - 10].filter(v => v > 0 && v !== r);
+    return shuffle([...new Set(c)]).slice(0, n);
+  }
+  // Nachthimmel mit Sternen: Eddie fliegt nur zu den Zahlen der Reihe
+  function nightFlight(stage, x, o) {
+    const sky = el("div", "nightsky"), bird = el("div", "nf-eddie", eddieSVG()), cnt = el("div", "counter nf-cnt", "");
+    sky.appendChild(el("div", "nf-moon", "")); sky.appendChild(el("div", "nf-trees", ""));
+    const need = x.stars.filter(s => s.ok).length; let found = 0;
+    const left = () => { cnt.innerHTML = `${o.label} · noch <b>${need - found}</b> ⭐`; };
+    x.stars.forEach(s => {
+      const b = el("button", "nf-star", `<span>${s.v}</span>`); b.style.left = s.x + "%"; b.style.top = s.y + "%"; b.setAttribute("aria-label", "Stern " + s.v);
+      b.addEventListener("click", () => {
+        if (L.locked || b.classList.contains("got")) return;
+        if (!s.ok) { b.classList.add("no"); setTimeout(() => b.classList.remove("no"), 700); miss(b, o.why(s.v)); return; }
+        b.classList.add("got"); found++; tone([600 + found * 80], 0.07);
+        bird.style.left = s.x + "%"; bird.style.top = s.y + "%"; bird.classList.remove("flap"); void bird.offsetWidth; bird.classList.add("flap");
+        left();
+        if (found >= need) { L.locked = true; setTimeout(() => { award(b, o.factor || 1); hint(praise() + " " + o.okText, true); speak(o.okSay); done(1700); }, 450); }
+      });
+      sky.appendChild(b);
+    });
+    sky.appendChild(bird); left();
+    stage.appendChild(cnt); stage.appendChild(sky);
+    L.speakNow = () => speak(o.say);
+  }
+  function starField(good, bad) {
+    const all = shuffle(good.map(v => ({ v, ok: true })).concat(bad.map(v => ({ v, ok: false })))), n = all.length, cols = n > 12 ? 5 : 4, rows = Math.ceil(n / cols);
+    return all.map((s, i) => Object.assign(s, { x: 9 + (i % cols) * (68 / (cols - 1)) + rint(-3, 3), y: 16 + Math.floor(i / cols) * (64 / Math.max(1, rows - 1)) + rint(-4, 4) }));   // rechts oben bleibt Platz für den Mond
+  }
+  // Glühwürmchen schwirren umher – Eddie fängt das mit dem richtigen Ergebnis (und lässt es danach wieder fliegen)
+  function fireflies(stage, x, o) {
+    const top = el("div", "ff-top", `<div class="ff-eddie">${eddieSVG()}</div><div class="ff-bubble">${o.q}</div>`), mead = el("div", "ff-meadow"), jar = el("div", "ff-jar", "🫙");
+    const n = x.opts.length;
+    x.opts.forEach((v, i) => {
+      const b = el("button", "ff-bug", `<i></i><span>${o.fmt ? o.fmt(v) : v}</span>`);
+      b.style.left = (4 + i * (66 / Math.max(1, n - 1))) + "%"; b.style.top = ((i % 2 ? 50 : 12) + rint(0, 8)) + "%";
+      b.style.animationDuration = (o.speed || 3.2) + rint(0, 14) / 10 + "s"; b.style.animationDelay = -rint(0, 30) / 10 + "s";
+      b.addEventListener("click", () => {
+        if (L.locked) return;
+        if (v !== x.r) { b.classList.add("no"); setTimeout(() => b.classList.remove("no"), 700); miss(b, o.why(v)); return; }
+        L.locked = true; b.classList.add("caught");
+        const e = top.querySelector(".ff-eddie"), br = b.getBoundingClientRect(), er = e.getBoundingClientRect();
+        e.style.transform = `translate(${(br.left - er.left).toFixed(0)}px, ${(br.top - er.top - 20).toFixed(0)}px) scale(.9)`; e.classList.add("swoop");
+        top.querySelector(".ff-bubble").innerHTML = o.qDone;
+        setTimeout(() => { e.style.transform = ""; jar.classList.add("glow"); }, 520);
+        award(b, o.factor || 1); hint(praise() + " " + o.okText, true); speak(o.okSay); done(1500);
+      });
+      mead.appendChild(b);
+    });
+    mead.appendChild(jar);
+    stage.appendChild(top); stage.appendChild(mead);
+    L.speakNow = () => speak(o.say);
+  }
+  // Eulen-Memory: Aufgabe und Ergebnis finden
+  function owlMemory(stage, pairs, cols) {
+    const cards = [];
+    pairs.forEach((p, i) => { cards.push({ id: i, html: `<span class="mw">${p[0]}</span>`, say: p[2] }); cards.push({ id: i, html: `<span class="mw">${p[1]}</span>`, say: p[3] }); });
+    const deck = shuffle(cards), stat = el("div", "memstat", "Versuche: 0"), grid = el("div", "mem owlmem");
+    grid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`; grid.style.width = cols > 4 ? "min(820px, 100%)" : "min(640px, 100%)";
+    let open = [], found = 0, busy = false; L.moves = 0;
+    deck.forEach(c => {
+      const b = el("button", "mcard", "🦉");
+      b.addEventListener("click", () => {
+        if (busy || L.locked || b.classList.contains("open") || b.classList.contains("done")) return;
+        b.classList.add("open"); b.innerHTML = c.html; if (c.say) speak(c.say);
+        open.push({ b, c });
+        if (open.length < 2) return;
+        L.moves++; stat.textContent = "Versuche: " + L.moves; busy = true;
+        const [p, q] = open;
+        if (p.c.id === q.c.id) setTimeout(() => { p.b.classList.add("done"); q.b.classList.add("done"); tone([700 + found * 40], 0.06); open = []; busy = false; found++;
+          if (found === pairs.length) { L.locked = true; award(q.b, 1); hint(praise() + ` Alle Paare in ${L.moves} Versuchen!`, true); done(1400); } }, 500);
+        else setTimeout(() => { [p, q].forEach(o => { o.b.classList.remove("open"); o.b.textContent = "🦉"; }); open = []; busy = false; }, 1300);
+      });
+      grid.appendChild(b);
+    });
+    stage.appendChild(stat); stage.appendChild(grid);
+    L.speakNow = () => speak("Finde die Paare: Aufgabe und Ergebnis.");
+  }
+  // Eddie stellt ein Rätsel (Sprechblase), das Kind tippt die Lösung ein
+  function eddieRiddle(stage, x) {
+    stage.appendChild(el("div", "riddle", `<div class="rd-eddie">${eddieSVG()}</div><div class="rd-bubble">${x.text}</div>`));
+    const col = mathRow(stage, null);
+    padTask(col, { layout: eqLayout([{ t: [{ t: "Eddies Zahl:", c: "tag" }, { a: x.r }] }]), maxLen: 3, say: x.say || x.text.replace(/<[^>]+>/g, ""),
+      why: (k, v) => x.why ? x.why(v) : numWhy(x.r, v, x.tip), okText: x.ok, okSay: x.ok.replace(/·/g, "mal").replace(/:/g, "geteilt durch").replace(/=/g, "gleich"), factor: x.factor || 1 });
+  }
+  const gcd = (a, b) => b ? gcd(b, a % b) : a, lcm = (a, b) => a * b / gcd(a, b);
+  function riddleMake(d) {
+    const k = rint(0, 2), a = rint(2, 9), b = rint(2, 9);
+    if (d === "leicht") {
+      if (k === 0) return { text: `Ich nehme die <b>${b}</b> genau <b>${a}</b>-mal. Welche Zahl bekomme ich?`, r: a * b, tip: `${a} ${MAL} ${b}`, ok: `${a} · ${b} = ${a * b}`, how: `${a}-mal die ${b}: <b>${a} ${MAL} ${b} = ${a * b}</b>`, lab: `l0${a}${b}` };
+      if (k === 1) return { text: `Ich bin das <b>Doppelte</b> von <b>${a + 2}</b>. Wer bin ich?`, r: 2 * (a + 2), tip: `Das Doppelte heißt 2-mal: 2 ${MAL} ${a + 2}.`, ok: `2 · ${a + 2} = ${2 * (a + 2)}`, how: `Das Doppelte heißt 2-mal: <b>2 ${MAL} ${a + 2} = ${2 * (a + 2)}</b>`, lab: `l1${a}` };
+      return { text: `Ich bin die <b>Hälfte</b> von <b>${2 * (a + 1)}</b>. Wer bin ich?`, r: a + 1, tip: `Die Hälfte heißt geteilt durch 2: ${2 * (a + 1)} : 2.`, ok: `${2 * (a + 1)} : 2 = ${a + 1}`, how: `Die Hälfte heißt geteilt durch 2: <b>${2 * (a + 1)} : 2 = ${a + 1}</b>`, lab: `l2${a}` };
+    }
+    if (d === "mittel") {
+      if (k === 0) return { text: `Ich denke mir eine Zahl. Ich nehme sie <b>mal ${b}</b> und bekomme <b>${a * b}</b>. Welche Zahl ist es?`, r: a, tip: `Welche Zahl mal ${b} gibt ${a * b}? Rechne ${a * b} : ${b}.`, ok: `${a} · ${b} = ${a * b}`, how: `Rückwärts rechnen: <b>${a * b} : ${b} = ${a}</b>`, lab: `m0${a}${b}` };
+      if (k === 1) return { text: `Ich denke mir eine Zahl und teile sie <b>durch ${b}</b>. Heraus kommt <b>${a}</b>. Welche Zahl ist es?`, r: a * b, tip: `Rechne rückwärts: ${a} ${MAL} ${b}.`, ok: `${a * b} : ${b} = ${a}`, how: `Rückwärts rechnen: <b>${a} ${MAL} ${b} = ${a * b}</b>`, lab: `m1${a}${b}` };
+      const p = [[2, 3], [3, 4], [2, 5], [4, 5], [3, 5], [4, 6], [3, 8], [6, 8], [2, 7], [3, 7]][rint(0, 9)], L0 = lcm(p[0], p[1]), lim = rint(L0 + 1, 2 * L0);
+      return { text: `Ich bin in der <b>${p[0]}er-Reihe</b> und in der <b>${p[1]}er-Reihe</b>. Ich bin kleiner als <b>${lim}</b>. Wer bin ich?`, r: L0, tip: `Schreib die ${p[1]}er-Reihe auf: ${rowOf(p[1]).slice(0, 4).join(", ")} … Welche Zahl ist auch in der ${p[0]}er-Reihe?`,
+        why: (v) => v % p[0] || v % p[1] ? `${v} ist nicht in ${v % p[0] ? "der " + p[0] + "er-Reihe" : "der " + p[1] + "er-Reihe"}.` : v >= lim ? `${v} ist nicht kleiner als ${lim}.` : "Probier nochmal!",
+        ok: `${L0} = ${L0 / p[0]} · ${p[0]} = ${L0 / p[1]} · ${p[1]}`, how: `${p[0]}er-Reihe: ${rowOf(p[0]).filter(v => v <= 2 * L0).join(", ")}<br>${p[1]}er-Reihe: ${rowOf(p[1]).filter(v => v <= 2 * L0).join(", ")}<br>In beiden und kleiner als ${lim}: <b>${L0}</b>`, lab: `m2${p}${lim}` };
+    }
+    const c = rint(1, 9);
+    if (k === 0) return { text: `Ich denke mir eine Zahl. Ich nehme sie <b>mal ${b}</b> und zähle <b>${c}</b> dazu. Heraus kommt <b>${a * b + c}</b>. Welche Zahl ist es?`, r: a, tip: `Rechne rückwärts: erst ${a * b + c} ${MI} ${c}, dann geteilt durch ${b}.`, ok: `${a} · ${b} + ${c} = ${a * b + c}`, how: `Rückwärts: <b>${a * b + c} ${MI} ${c} = ${a * b}</b>, dann <b>${a * b} : ${b} = ${a}</b>`, factor: 2, lab: `s0${a}${b}${c}` };
+    if (k === 1) return { text: `Ich teile <b>${a * b}</b> durch eine Zahl und bekomme <b>${a}</b>. Durch welche Zahl habe ich geteilt?`, r: b, tip: `Welche Zahl mal ${a} gibt ${a * b}?`, ok: `${a * b} : ${b} = ${a}`, how: `${a} ${MAL} <b>${b}</b> = ${a * b}, also ${a * b} : <b>${b}</b> = ${a}`, factor: 2, lab: `s1${a}${b}` };
+    if (a * b - c < 1) return null;
+    return { text: `Nimm die <b>${b}</b> genau <b>${a}</b>-mal und nimm dann <b>${c}</b> weg. Welche Zahl bleibt?`, r: a * b - c, tip: `Erst ${a} ${MAL} ${b}, dann ${MI} ${c}.`, ok: `${a} · ${b} − ${c} = ${a * b - c}`, how: `<b>${a} ${MAL} ${b} = ${a * b}</b>, dann <b>${a * b} ${MI} ${c} = ${a * b - c}</b>`, factor: 2, lab: `s2${a}${b}${c}` };
+  }
+  function eddieGames() {
+    const XW = (t) => XI + t;
+    const nightLv = {
+      id: "nachtflug", name: "Eddies Nachtflug", icon: "🌙", color: "#1b2a4a",
+      task: () => "Flieg mit Eddie zu den richtigen Sternen!",
+      intro: (d) => `Eddie fliegt in der Nacht nur zu Sternen einer Einmaleins-Reihe. Tippe alle Sterne der Reihe an!${d === "leicht" ? " Erst die leichten Reihen: 2, 5 und 10." : d === "mittel" ? " Jetzt die 3er-, 4er- und 6er-Reihe." : " Jetzt die schweren Reihen: 7, 8 und 9."}`,
+      ex: () => "7er-Reihe: ⭐ 14 · ⭐ 35 · ⭐ 63",
+      say: () => "Eddie fliegt in der Nacht nur zu Sternen einer Einmaleins-Reihe. Tippe alle Sterne der Reihe an!",
+      build(d) { const R = shuffle(rowsFor(d).concat(rowsFor(d))).slice(0, 4); return R.map((r, i) => { const good = shuffle(rowOf(r).slice(1)).slice(0, d === "leicht" ? 4 : 5).sort((p, q) => p - q);
+        const bad = shuffle(Array.from({ length: 10 * r }, (_, v) => v + 1).filter(v => v % r && v > 3)).slice(0, d === "leicht" ? 6 : 7);
+        return { r, stars: starField(good, bad), lab: r + "_" + i }; }); },
+      render(x, stage) { nightFlight(stage, x, { label: `${x.r}er-Reihe`, say: `Tippe alle Sterne der ${x.r}er-Reihe an!`, why: (v) => `${v} ist nicht in der ${x.r}er-Reihe. ${v} : ${x.r} geht nicht auf.`, okText: `Die ${x.r}er-Reihe: ${rowOf(x.r).join(", ")}`, okSay: `Super geflogen! Das war die ${x.r}er-Reihe.` }); },
+      explain: (x) => ({ html: `<p>Die <b>${x.r}er-Reihe</b>:</p><p>${rowOf(x.r).join(", ")}</p><p>Nur diese Zahlen sind richtig. Bei allen anderen geht <b>: ${x.r}</b> nicht auf.</p>`, say: `Die ${x.r}er-Reihe: ${rowOf(x.r).join(", ")}.` }),
+      expert: {
+        task: () => "Sterne in zwei Reihen!", intro: () => XW("Jetzt fliegt Eddie nur zu Sternen, die in zwei Reihen gleichzeitig sind – zum Beispiel in der 3er- und in der 4er-Reihe."),
+        ex: () => "3er- und 4er-Reihe: ⭐ 12 · ⭐ 24", say: () => "Experten-Aufgabe! Eddie fliegt nur zu Sternen, die in zwei Reihen gleichzeitig sind.",
+        build() { const P = [[2, 3], [3, 4], [2, 5], [4, 6], [3, 6], [2, 7], [4, 8]]; return shuffle(P).slice(0, 4).map(p => { const L0 = lcm(p[0], p[1]), good = Array.from({ length: Math.floor(10 * Math.max(p[0], p[1]) / L0) }, (_, i) => (i + 1) * L0).filter(v => v <= 10 * p[0] || v <= 10 * p[1]).slice(0, 4);
+          const bad = shuffle(rowOf(p[0]).concat(rowOf(p[1])).filter(v => v % L0)).slice(0, 8); return { p, r: L0, stars: starField(good, [...new Set(bad)]), lab: p.join("+") }; }); },
+        render(x, stage) { nightFlight(stage, x, { label: `${x.p[0]}er- und ${x.p[1]}er-Reihe`, factor: 2, say: `Tippe alle Sterne an, die in der ${x.p[0]}er- und in der ${x.p[1]}er-Reihe sind!`,
+          why: (v) => v % x.p[0] ? `${v} ist nicht in der ${x.p[0]}er-Reihe.` : `${v} ist nicht in der ${x.p[1]}er-Reihe.`, okText: `In beiden Reihen: ${x.stars.filter(s => s.ok).map(s => s.v).sort((a, b) => a - b).join(", ")}`, okSay: "Klasse! Das war knifflig." }); },
+        explain: (x) => ({ html: `<p>${x.p[0]}er-Reihe: ${rowOf(x.p[0]).join(", ")}</p><p>${x.p[1]}er-Reihe: ${rowOf(x.p[1]).join(", ")}</p><p>In beiden Reihen sind: <b>${x.stars.filter(s => s.ok).map(s => s.v).sort((a, b) => a - b).join(", ")}</b></p>`, say: "Schreib beide Reihen auf und such die Zahlen, die in beiden vorkommen." })
+      }
+    };
+    const fireLv = {
+      id: "gluehwurm", name: "Glühwürmchen-Jagd", icon: "✨", color: "#2b9348",
+      task: () => "Welches Glühwürmchen fängt Eddie?",
+      intro: (d) => "Eddie fängt Glühwürmchen für seine Laterne – aber nur das mit dem richtigen Ergebnis! Danach lässt er es wieder fliegen." + (d === "schwer" ? " Jetzt mit mal und geteilt – und die Glühwürmchen sind schneller!" : ""),
+      ex: () => `6 ${MAL} 7 = ? → ✨ 42`,
+      say: () => "Eddie fängt Glühwürmchen für seine Laterne, aber nur das mit dem richtigen Ergebnis. Danach lässt er es wieder fliegen.",
+      build(d) { return gen(8, (k) => { const a = rint(2, 10), b = d === "leicht" ? easyF() : rint(d === "schwer" ? 3 : 2, 9), div = d === "schwer" && k % 2;
+        if (div) { const opts = shuffle([a].concat([a + 1, a - 1, a + 2, b, a * 2].filter(v => v > 0 && v !== a).filter((v, i, s) => s.indexOf(v) === i).slice(0, 4))); return { a: a * b, b, op: ":", r: a, opts, lab: `${a * b}:${b}` }; }
+        return { a, b, op: MAL, r: a * b, opts: shuffle([a * b].concat(malWrong(a, b, d === "leicht" ? 2 : d === "mittel" ? 3 : 4))), lab: `${a}x${b}` }; }); },
+      render(x, stage, d) { const w = x.op === MAL ? "mal" : "geteilt durch";
+        fireflies(stage, x, { q: `${x.a} ${x.op} ${x.b} = ?`, qDone: `${x.a} ${x.op} ${x.b} = <b>${x.r}</b> 🎉`, speed: d === "schwer" ? 2.4 : d === "mittel" ? 3 : 3.6, say: `${x.a} ${w} ${x.b}. Tippe das richtige Glühwürmchen an!`,
+          why: (v) => x.op === MAL ? malWhy(x.a, x.b, v) : `${v} ${MAL} ${x.b} = ${v * x.b}, nicht ${x.a}.`, okText: `${x.a} ${x.op} ${x.b} = ${x.r}`, okSay: `${x.a} ${w} ${x.b} gleich ${x.r}.` }); },
+      explain: (x) => x.op === MAL ? { html: `<p><b>${x.a} ${MAL} ${x.b}</b> heißt: ${x.a}-mal die ${x.b}.</p><p>${rowOf(x.b).slice(0, x.a).join(", ")} → <b>${x.r}</b></p>`, say: `Zähle in ${x.b}er-Schritten: ${rowOf(x.b).slice(0, x.a).join(", ")}.` }
+        : { html: `<p>Denk an die Malaufgabe: <b>? ${MAL} ${x.b} = ${x.a}</b></p><p>${x.r} ${MAL} ${x.b} = ${x.a}</p>`, say: `Welche Zahl mal ${x.b} gibt ${x.a}? ${x.r}.` },
+      expert: {
+        task: () => "Fang das große Ergebnis!", intro: () => XW("Große Zahlen: 6 · 70 oder 4200 : 7. Rechne das Einmaleins und denk an die Nullen!"),
+        ex: () => `6 ${MAL} 70 = ? → ✨ 420`, say: () => "Experten-Aufgabe! Große Zahlen. Rechne das Einmaleins und denk an die Nullen.",
+        build() { return gen(8, (k) => { const a = rint(2, 9), b = rint(2, 9), z = k % 2 ? 10 : 100, r = a * b * z;
+          const wrong = [r * 10, r / 10, (a * b + a) * z, (a * b - b) * z, (a + b) * z].filter((v, i, s) => v > 0 && v !== r && Number.isInteger(v) && s.indexOf(v) === i).slice(0, 4);
+          return { a, b: b * z, op: MAL, r, opts: shuffle([r].concat(wrong)), lab: `${a}x${b}x${z}` }; }); },
+        render(x, stage) { fireflies(stage, x, { q: `${x.a} ${MAL} ${fmtN(x.b)} = ?`, qDone: `${x.a} ${MAL} ${fmtN(x.b)} = <b>${fmtN(x.r)}</b> 🎉`, fmt: fmtN, speed: 2.6, factor: 2, say: `${x.a} mal ${x.b}`,
+          why: (v) => v * 10 === x.r || v === x.r * 10 ? "Die Ziffern stimmen – zähl die Nullen nochmal!" : `Rechne erst ${x.a} ${MAL} ${x.b / (x.b % 100 ? 10 : 100)}.`, okText: `${x.a} ${MAL} ${fmtN(x.b)} = ${fmtN(x.r)}`, okSay: `${x.a} mal ${x.b} gleich ${x.r}.` }); }
+      }
+    };
+    const memLv = {
+      id: "memory", name: "Eulen-Memory", icon: "🃏", color: "#9b5de5",
+      task: () => "Finde Aufgabe und Ergebnis!",
+      intro: (d) => d === "schwer" ? "Eulen-Memory mit geteilt: Finde die Aufgabe und ihr Ergebnis. Merk dir gut, wo die Karten liegen!" : "Eulen-Memory: Unter jeder Eule steckt eine Malaufgabe oder ein Ergebnis. Finde die Paare!",
+      ex: (d) => d === "schwer" ? "56 : 8 ↔ 7" : `6 ${MAL} 7 ↔ 42`,
+      say: () => "Eulen-Memory. Unter jeder Eule steckt eine Aufgabe oder ein Ergebnis. Finde die Paare!",
+      build(d) { const n = d === "leicht" ? 6 : 8, used = new Set(), pairs = [];
+        for (let g = 0; pairs.length < n && g < 500; g++) { const a = rint(2, 10), b = d === "leicht" ? easyF() : rint(3, 9), r = d === "schwer" ? a : a * b; if (b === 1 || used.has(r)) continue; used.add(r);
+          pairs.push(d === "schwer" ? [`${a * b} : ${b}`, String(a), `${a * b} geteilt durch ${b}`, String(a)] : [`${a} ${MAL} ${b}`, String(r), `${a} mal ${b}`, String(r)]); }
+        return [{ pairs, lab: "m" }]; },
+      score(L) { const p = L.items[0].pairs.length, m = L.moves || 0; const stars = m <= p * 1.6 ? 3 : m <= p * 2.4 ? 2 : 1; return { stars, perfect: stars === 3 }; },
+      render(x, stage, d) { owlMemory(stage, x.pairs, d === "leicht" ? 4 : 4); },
+      explain: () => ({ html: "<p>Deck eine Karte auf und <b>rechne sofort</b> im Kopf. Dann weißt du, welches Ergebnis du suchst.</p><p>Merk dir, wo die Karten liegen!</p>", say: "Deck eine Karte auf und rechne sofort im Kopf. Merk dir, wo die Karten liegen." })
+    };
+    const riddleLv = {
+      id: "raetsel", name: "Eddies Zahlenrätsel", icon: "🦉", color: "#6f4fa0",
+      task: () => "Löse Eddies Rätsel!",
+      intro: (d) => d === "leicht" ? "Eddie stellt dir Rätsel: Doppelte, Hälfte und Malnehmen." : d === "mittel" ? "Eddie denkt sich eine Zahl. Rechne rückwärts – oder such in den Einmaleins-Reihen!" : "Knifflige Rätsel mit zwei Schritten. Rechne rückwärts!",
+      ex: (d) => d === "leicht" ? "Das Doppelte von 7? → <b>14</b>" : d === "mittel" ? "? · 6 = 42 → <b>7</b>" : "? · 6 + 4 = 46 → <b>7</b>",
+      say: () => "Eddie stellt dir Rätsel. Hör gut zu und denk nach!",
+      build(d) { return gen(6, () => riddleMake(d)); },
+      render(x, stage) { eddieRiddle(stage, x); },
+      explain: (x) => ({ html: `<p>${x.how}</p>`, say: x.how.replace(/<[^>]+>/g, " ").replace(/·/g, "mal").replace(/:/g, "geteilt durch").replace(/=/g, "gleich") }),
+      expert: {
+        task: () => "Das schwerste Rätsel!", intro: () => XW("Eddies schwerste Rätsel: Eine Zahl, viele Hinweise. Lies jeden Hinweis genau!"),
+        ex: () => "gerade · in der 7er-Reihe · größer als 30 · kleiner als 50 → <b>42</b>", say: () => "Experten-Aufgabe! Eddies schwerste Rätsel. Lies jeden Hinweis genau.",
+        build() { return gen(6, () => { const r = rint(3, 9), lo = rint(2, 6) * r - rint(1, r - 1), hi = lo + r + rint(1, r - 1), cands = rowOf(r).filter(v => v > lo && v < hi), even = rint(0, 1);
+          const fit = cands.filter(v => (v % 2 === 0) === !!even); if (fit.length !== 1) return null; const v = fit[0];
+          return { r: v, text: `Ich bin in der <b>${r}er-Reihe</b>. Ich bin größer als <b>${lo}</b> und kleiner als <b>${hi}</b>. Ich bin eine <b>${even ? "gerade" : "ungerade"}</b> Zahl. Wer bin ich?`, factor: 2,
+            why: (x) => x % r ? `${x} ist nicht in der ${r}er-Reihe.` : x <= lo || x >= hi ? `${x} liegt nicht zwischen ${lo} und ${hi}.` : `${x} ist ${x % 2 ? "ungerade" : "gerade"}.`, ok: `${v} = ${v / r} · ${r}`, how: `${r}er-Reihe zwischen ${lo} und ${hi}: ${cands.join(", ")} – ${even ? "gerade" : "ungerade"} ist nur <b>${v}</b>.`, lab: `${r}_${lo}_${hi}_${even}` }; }); },
+        render(x, stage) { eddieRiddle(stage, x); },
+        explain: (x) => ({ html: `<p>${x.how}</p>`, say: x.how.replace(/<[^>]+>/g, " ") })
+      }
+    };
+    return { nightLv, fireLv, memLv, riddleLv };
+  }
+  function eddieWerkLevels() {
+    const XW = (t) => XI + t, EG = eddieGames();
+    const lv = [
+      {
+        id: "kern", name: "Mal-Hammer", icon: "🔨", color: "#6f4fa0",
+        task: () => "Rechne die Malaufgabe!",
+        intro: (d) => d === "leicht" ? "Die leichten Kernaufgaben: mal 1, mal 2, mal 5 und mal 10. Das Punktefeld hilft dir." : d === "mittel" ? "Jetzt das ganze Einmaleins. Das Punktefeld hilft dir noch." : "Das ganze Einmaleins – ohne Bild und auch mit den schweren Reihen 6, 7, 8 und 9.",
+        ex: () => `3 ${MAL} 5 = <b>15</b> · 7 ${MAL} 8 = <b>56</b>`,
+        say: (d) => d === "leicht" ? "Die leichten Kernaufgaben: mal 1, mal 2, mal 5 und mal 10. Das Punktefeld hilft dir." : d === "mittel" ? "Jetzt das ganze Einmaleins. Das Punktefeld hilft dir noch." : "Das ganze Einmaleins, ohne Bild, auch mit den schweren Reihen.",
+        build(d) { return gen(10, () => { const a = rint(d === "schwer" ? 3 : 1, 10), b = d === "leicht" ? easyF() : rint(d === "schwer" ? 6 : 2, d === "schwer" ? 9 : 10); if (d === "mittel" && a * b < 6) return null; return { a, b, r: a * b, lab: a + "x" + b }; }); },
+        render(x, stage, d) {
+          const col = mathRow(stage, d !== "schwer" ? malDots(x.a, x.b) : null);
+          padTask(col, { layout: eqLayout([{ t: [x.a, MAL, x.b, "=", { a: x.r }] }]), say: `${x.a} mal ${x.b}`, why: (k, v) => malWhy(x.a, x.b, v), okText: `${x.a} ${MAL} ${x.b} = ${x.r}`, okSay: `${x.a} mal ${x.b} gleich ${x.r}.` });
+        },
+        explain: (x) => ({ html: `<div class="dn-row">${malDots(x.a, x.b).innerHTML}</div><p><b>${x.a} ${MAL} ${x.b}</b> heißt: ${x.a}-mal die ${x.b}.</p><p>${Array(x.a).fill(x.b).join(" + ")} = <b>${x.r}</b></p>`, say: `${x.a} mal ${x.b} heißt: ${x.a} mal die ${x.b}. Das sind ${x.r}.` }),
+        expert: {
+          task: () => "Rechne mit drei Zahlen!", intro: () => XW("Drei Zahlen werden malgenommen: 2 · 3 · 4. Rechne erst die ersten zwei, dann mal die dritte."),
+          ex: () => `2 ${MAL} 3 ${MAL} 4 = 6 ${MAL} 4 = <b>24</b>`, say: () => "Experten-Aufgabe! Drei Zahlen werden malgenommen. Rechne erst die ersten zwei, dann mal die dritte.",
+          build() { return gen(8, () => { const a = rint(2, 5), b = rint(2, 5), c = rint(2, 9), m = a * b; if (m > 10 && c > 5) return null; return { a, b, c, m, r: m * c, lab: `${a}x${b}x${c}` }; }); },
+          render(x, stage) {
+            const col = mathRow(stage, null);
+            padTask(col, { layout: eqLayout([{ t: [x.a, MAL, x.b, MAL, x.c, "=", { t: "?", c: "qmark" }], c: "eqhead" }, { t: [{ t: "1.", c: "tag" }, x.a, MAL, x.b, "=", { a: x.m }], c: "step" }, { t: [{ t: "2.", c: "tag" }, { ref: 0 }, MAL, x.c, "=", { a: x.r }], c: "step" }]),
+              say: `${x.a} mal ${x.b} mal ${x.c}`, why: (k, v) => k === 0 ? malWhy(x.a, x.b, v) : malWhy(x.m, x.c, v), onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } },
+              okText: `${x.a} ${MAL} ${x.b} ${MAL} ${x.c} = ${x.r}`, okSay: `${x.a} mal ${x.b} mal ${x.c} gleich ${x.r}.`, factor: 2 });
+          },
+          explain: (x) => ({ html: `<p><b>1.</b> ${x.a} ${MAL} ${x.b} = ${x.m}</p><p><b>2.</b> ${x.m} ${MAL} ${x.c} = ${x.r}</p>`, say: `Erst ${x.a} mal ${x.b} gleich ${x.m}. Dann ${x.m} mal ${x.c} gleich ${x.r}.` })
+        }
+      },
+      {
+        id: "geteilt", name: "Geteilt-Zange", icon: "🗜️", color: "#2a9d8f",
+        task: (d) => d === "schwer" ? "Teile – bleibt ein Rest?" : "Rechne die Geteiltaufgabe!",
+        intro: (d) => d === "leicht" ? "Geteilt ist die Umkehrung von mal. 15 : 5 = 3, weil 3 · 5 = 15. Erst mit 2, 5 und 10." : d === "mittel" ? "Das ganze Einmaleins rückwärts: Welche Malaufgabe hilft dir?" : "Jetzt geht es nicht immer auf: 23 : 5 = 4, Rest 3. Denn 4 · 5 = 20, und bis 23 fehlen noch 3.",
+        ex: (d) => d === "schwer" ? "23 : 5 = <b>4</b> Rest <b>3</b>" : `15 : 5 = <b>3</b>, weil 3 ${MAL} 5 = 15`,
+        say: (d) => d === "leicht" ? "Geteilt ist die Umkehrung von mal. 15 geteilt durch 5 gleich 3, weil 3 mal 5 gleich 15." : d === "mittel" ? "Das ganze Einmaleins rückwärts. Welche Malaufgabe hilft dir?" : "Jetzt geht es nicht immer auf. 23 geteilt durch 5 gleich 4, Rest 3.",
+        build(d) { return gen(10, () => { const b = d === "leicht" ? [2, 5, 10][rint(0, 2)] : rint(d === "schwer" ? 3 : 2, 9), q = rint(d === "leicht" ? 1 : 2, d === "schwer" ? 9 : 10), rest = d === "schwer" ? rint(1, b - 1) : 0, a = q * b + rest; return { a, b, q, rest, lab: a + ":" + b }; }); },
+        render(x, stage, d) {
+          const col = mathRow(stage, d === "leicht" ? malDots(x.q, x.b) : null), R = x.rest > 0;
+          padTask(col, { layout: eqLayout([{ t: R ? [x.a, ":", x.b, "=", { a: x.q }, { t: "Rest", c: "tag" }, { a: x.rest }] : [x.a, ":", x.b, "=", { a: x.q }] }]),
+            say: `${x.a} geteilt durch ${x.b}`,
+            why: (k, v) => k === 0 ? (R && v * x.b > x.a ? `Zu viel! ${v} ${MAL} ${x.b} = ${v * x.b}, das ist mehr als ${x.a}.` : R && v < x.q ? `Da passt noch eine ${x.b} hinein! Wie oft passt die ${x.b} in die ${x.a}?` : `Welche Zahl mal ${x.b} gibt ${R ? "fast " : ""}${x.a}?`)
+              : `${x.q} ${MAL} ${x.b} = ${x.q * x.b}. Wie viel fehlt noch bis ${x.a}?`,
+            okText: R ? `${x.a} : ${x.b} = ${x.q} Rest ${x.rest}` : `${x.a} : ${x.b} = ${x.q}`, okSay: R ? `${x.a} geteilt durch ${x.b} gleich ${x.q}, Rest ${x.rest}.` : `${x.a} geteilt durch ${x.b} gleich ${x.q}.` });
+        },
+        explain: (x) => x.rest ? { html: `<p>Wie oft passt die <b>${x.b}</b> in die ${x.a}?</p><p>${x.q} ${MAL} ${x.b} = ${x.q * x.b} – passt. ${x.q + 1} ${MAL} ${x.b} = ${(x.q + 1) * x.b} – zu viel.</p><p>Von ${x.q * x.b} bis ${x.a} fehlen noch <b>${x.rest}</b>. Das ist der Rest.</p>`, say: `${x.q} mal ${x.b} gleich ${x.q * x.b}. Bis ${x.a} fehlen noch ${x.rest}. Das ist der Rest.` }
+          : { html: `<p>Denk an die Malaufgabe: <b>? ${MAL} ${x.b} = ${x.a}</b></p><p>${x.q} ${MAL} ${x.b} = ${x.a}, also ${x.a} : ${x.b} = <b>${x.q}</b>.</p>`, say: `Welche Zahl mal ${x.b} gibt ${x.a}? ${x.q} mal ${x.b} gleich ${x.a}.` },
+        expert: {
+          task: () => "Welche Zahl fehlt?", intro: () => XW("Hier fehlt die Zahl, durch die geteilt wird: 42 : ? = 6. Denk an die Malaufgabe!"),
+          ex: () => "42 : <b>7</b> = 6 · <b>72</b> : 9 = 8", say: () => "Experten-Aufgabe! Hier fehlt eine Zahl in der Geteiltaufgabe. Denk an die Malaufgabe.",
+          build() { return gen(8, (k) => { const b = rint(3, 9), q = rint(3, 9); return { a: b * q, b, q, form: k % 2 ? "b" : "a", lab: `${b * q}:${b}${k % 2}` }; }); },
+          render(x, stage) {
+            const col = mathRow(stage, null), ans = x.form === "b" ? x.b : x.a;
+            padTask(col, { layout: eqLayout([{ t: x.form === "b" ? [x.a, ":", { a: x.b }, "=", x.q] : [{ a: x.a }, ":", x.b, "=", x.q] }]), say: x.form === "b" ? `${x.a} geteilt durch wie viel gleich ${x.q}?` : `Wie viel geteilt durch ${x.b} gleich ${x.q}?`,
+              why: (k, v) => numalWhy(ans, v, x.form === "b" ? `Welche Zahl mal ${x.q} gibt ${x.a}?` : `Rechne die Umkehraufgabe: ${x.q} ${MAL} ${x.b}.`), okText: `${x.a} : ${x.b} = ${x.q}`, okSay: `${x.a} geteilt durch ${x.b} gleich ${x.q}.`, factor: 2 });
+          },
+          explain: (x) => ({ html: `<p>${x.form === "b" ? `${x.a} : <b>?</b> = ${x.q}` : `<b>?</b> : ${x.b} = ${x.q}`}</p><p>Die Malaufgabe hilft: <b>${x.q} ${MAL} ${x.b} = ${x.a}</b></p>`, say: `Die Malaufgabe hilft: ${x.q} mal ${x.b} gleich ${x.a}.` })
+        }
+      },
+      {
+        id: "luecke", name: "Platzhalter-Schraube", icon: "🔩", color: "#e76f51",
+        task: () => "Welche Zahl fehlt?",
+        intro: (d) => d === "leicht" ? "Eine Zahl fehlt: ? · 5 = 30. Zähl in 5er-Schritten bis 30." : d === "mittel" ? "Eine Zahl fehlt – vorne oder hinten. Welche Malaufgabe passt?" : "Mal und geteilt gemischt. Schau genau auf das Zeichen!",
+        ex: (d) => d === "schwer" ? `<b>6</b> ${MAL} 7 = 42 · <b>56</b> : 8 = 7` : `<b>6</b> ${MAL} 5 = 30 · 4 ${MAL} <b>9</b> = 36`,
+        say: (d) => d === "leicht" ? "Eine Zahl fehlt. Zähl in Schritten, bis du beim Ergebnis bist." : d === "mittel" ? "Eine Zahl fehlt, vorne oder hinten. Welche Malaufgabe passt?" : "Mal und geteilt gemischt. Schau genau auf das Zeichen!",
+        build(d) { return gen(10, (k) => { const a = rint(2, 9), b = d === "leicht" ? [2, 5, 10][rint(0, 2)] : rint(3, 9), r = a * b, op = d === "schwer" && k % 2 ? ":" : MAL; return { a, b, r, op, form: d === "leicht" ? "a" : rint(0, 1) ? "a" : "b", lab: `${a}${op}${b}` }; }); },
+        render(x, stage) {
+          const col = mathRow(stage, null), M = x.op === MAL;
+          // Mal: a · b = r (a oder b fehlt) · Geteilt: r : b = a (r oder b fehlt)
+          const t = M ? (x.form === "a" ? [{ a: x.a }, MAL, x.b, "=", x.r] : [x.a, MAL, { a: x.b }, "=", x.r]) : (x.form === "a" ? [{ a: x.r }, ":", x.b, "=", x.a] : [x.r, ":", { a: x.b }, "=", x.a]);
+          const ans = M ? (x.form === "a" ? x.a : x.b) : (x.form === "a" ? x.r : x.b);
+          padTask(col, { layout: eqLayout([{ t }]), say: M ? (x.form === "a" ? `Wie viel mal ${x.b} gleich ${x.r}?` : `${x.a} mal wie viel gleich ${x.r}?`) : (x.form === "a" ? `Wie viel geteilt durch ${x.b} gleich ${x.a}?` : `${x.r} geteilt durch wie viel gleich ${x.a}?`),
+            why: (k, v) => numalWhy(ans, v, M ? `Zähl in ${x.form === "a" ? x.b : x.a}er-Schritten bis ${x.r}.` : x.form === "a" ? `Rechne die Umkehraufgabe: ${x.a} ${MAL} ${x.b}.` : `Welche Zahl mal ${x.a} gibt ${x.r}?`),
+            okText: M ? `${x.a} ${MAL} ${x.b} = ${x.r}` : `${x.r} : ${x.b} = ${x.a}`, okSay: M ? `${x.a} mal ${x.b} gleich ${x.r}.` : `${x.r} geteilt durch ${x.b} gleich ${x.a}.` });
+        },
+        explain: (x) => x.op === MAL ? { html: `<p>Zähl in <b>${x.form === "a" ? x.b : x.a}er-Schritten</b> bis ${x.r}:</p><p>${Array.from({ length: x.form === "a" ? x.a : x.b }, (_, i) => (i + 1) * (x.form === "a" ? x.b : x.a)).join(", ")}</p><p>Das sind <b>${x.form === "a" ? x.a : x.b}</b> Schritte.</p>`, say: `Zähl in ${x.form === "a" ? x.b : x.a}er-Schritten bis ${x.r}. Das sind ${x.form === "a" ? x.a : x.b} Schritte.` }
+          : { html: `<p>Geteilt und mal gehören zusammen:</p><p><b>${x.a} ${MAL} ${x.b} = ${x.r}</b>, also ${x.r} : ${x.b} = ${x.a}.</p>`, say: `${x.a} mal ${x.b} gleich ${x.r}. Also ${x.r} geteilt durch ${x.b} gleich ${x.a}.` },
+        expert: {
+          task: () => "Welche Zahl passt am besten?", intro: () => XW("Finde die größte Zahl, die passt: 7 · ? < 40. Probiere: 7 · 5 = 35 passt, 7 · 6 = 42 ist zu groß."),
+          ex: () => `7 ${MAL} <b>5</b> &lt; 40 · 6 ${MAL} <b>8</b> &lt; 50`, say: () => "Experten-Aufgabe! Finde die größte Zahl, die passt.",
+          build() { return gen(8, () => { const a = rint(3, 9), lim = rint(a * 2 + 1, a * 9 + a - 1); if (lim % a === 0) return null; const r = Math.floor(lim / a); if (r < 2 || r > 9) return null; return { a, lim, r, lab: a + "<" + lim }; }); },
+          render(x, stage) {
+            const col = mathRow(stage, null);
+            padTask(col, { layout: eqLayout([{ t: [x.a, MAL, { a: x.r }, "<", x.lim] }, { t: [{ t: "Die größte Zahl, die passt.", c: "tag" }] }]), say: `${x.a} mal wie viel ist kleiner als ${x.lim}? Finde die größte Zahl.`,
+              why: (k, v) => v * x.a >= x.lim ? `${x.a} ${MAL} ${v} = ${v * x.a}. Das ist nicht kleiner als ${x.lim}.` : `${x.a} ${MAL} ${v} = ${v * x.a} passt – aber geht noch eine größere Zahl?`, okText: `${x.a} ${MAL} ${x.r} = ${x.a * x.r} < ${x.lim}`, okSay: `${x.a} mal ${x.r} gleich ${x.a * x.r}. Das ist kleiner als ${x.lim}.`, factor: 2 });
+          },
+          explain: (x) => ({ html: `<p>Probiere die ${x.a}er-Reihe bis ${x.lim}:</p><p>${x.a} ${MAL} ${x.r} = <b>${x.a * x.r}</b> – passt.</p><p>${x.a} ${MAL} ${x.r + 1} = ${x.a * (x.r + 1)} – zu groß.</p>`, say: `${x.a} mal ${x.r} gleich ${x.a * x.r}, das passt. ${x.a} mal ${x.r + 1} ist zu groß.` })
+        }
+      },
+      {
+        id: "kniff", name: "Trick-Kiste", icon: "🧠", color: "#3a86ff",
+        task: (d) => d === "leicht" ? "Tauschaufgabe: Was fehlt?" : d === "mittel" ? "Rechne mit der Nachbaraufgabe!" : "Zerlege und rechne!",
+        intro: (d) => d === "leicht" ? "Bei mal darfst du die Zahlen tauschen: 3 · 8 = 8 · 3. Das Ergebnis bleibt gleich." : d === "mittel" ? "Nachbaraufgaben helfen: 6 · 7 ist 6 · 5 und noch 2-mal die 7. Oder 9 · 7 ist 10 · 7 und eine 7 weniger." : "Schwere Aufgaben zerlegst du in zwei leichte: 7 · 8 = 5 · 8 + 2 · 8.",
+        ex: (d) => d === "leicht" ? `3 ${MAL} 8 = 8 ${MAL} <b>3</b> = <b>24</b>` : d === "mittel" ? `10 ${MAL} 7 = 70 · 9 ${MAL} 7 = 70 − 7 = <b>63</b>` : `7 ${MAL} 8 = 5 ${MAL} 8 + 2 ${MAL} 8 = 40 + 16 = <b>56</b>`,
+        say: (d) => d === "leicht" ? "Bei mal darfst du die Zahlen tauschen. Das Ergebnis bleibt gleich." : d === "mittel" ? "Nachbaraufgaben helfen. 9 mal 7 ist 10 mal 7 und eine 7 weniger." : "Schwere Aufgaben zerlegst du in zwei leichte. 7 mal 8 gleich 5 mal 8 plus 2 mal 8.",
+        build(d) { return gen(8, () => {
+          if (d === "leicht") { const a = rint(2, 9), b = rint(2, 9); if (a === b) return null; return { kind: "tausch", a, b, r: a * b, lab: a + "t" + b }; }
+          if (d === "mittel") { const b = rint(3, 9), up = rint(0, 1), a = up ? 9 : [6, 4, 11][rint(0, 1)]; const base = up ? 10 : 5; return { kind: "nachbar", a, b, base, r: a * b, m: base * b, lab: a + "n" + b }; }
+          const a = rint(6, 9), b = rint(3, 9); return { kind: "zerl", a, b, m1: 5 * b, m2: (a - 5) * b, r: a * b, lab: a + "z" + b }; }); },
+        render(x, stage) {
+          const col = mathRow(stage, x.kind === "zerl" ? malDots(x.a, x.b, { split: 5 }) : null);
+          if (x.kind === "tausch") return padTask(col, { layout: eqLayout([{ t: [x.a, MAL, x.b, "=", x.b, MAL, { a: x.a }] }, { t: [x.b, MAL, x.a, "=", { a: x.r }] }]), say: `${x.a} mal ${x.b} ist gleich ${x.b} mal wie viel?`,
+            why: (k, v) => k === 0 ? `Tausche die Zahlen: Aus ${x.a} ${MAL} ${x.b} wird ${x.b} ${MAL} ${x.a}.` : malWhy(x.b, x.a, v), okText: `${x.a} ${MAL} ${x.b} = ${x.b} ${MAL} ${x.a} = ${x.r}`, okSay: `${x.a} mal ${x.b} gleich ${x.b} mal ${x.a} gleich ${x.r}.` });
+          if (x.kind === "nachbar") { const up = x.base > x.a, d = Math.abs(x.base - x.a), o = up ? MI : "+";
+            return padTask(col, { layout: eqLayout([{ t: [x.a, MAL, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" }, { t: [{ t: "1.", c: "tag" }, x.base, MAL, x.b, "=", { a: x.m }], c: "step" }, { t: [{ t: "2.", c: "tag" }, { ref: 0 }, o, d === 1 ? x.b : `${d} ${MAL} ${x.b}`, "=", { a: x.r }], c: "step" }]),
+              say: `${x.a} mal ${x.b}. Rechne erst ${x.base} mal ${x.b}.`, why: (k, v) => k === 0 ? malWhy(x.base, x.b, v) : numalWhy(x.r, v, up ? `${x.a} ist ${d} weniger als ${x.base}. Nimm ${d === 1 ? "eine " + x.b : d + "-mal die " + x.b} weg.` : `${x.a} ist ${d} mehr als ${x.base}. Leg ${d === 1 ? "eine " + x.b : d + "-mal die " + x.b} dazu.`),
+              onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } }, okText: `${x.a} ${MAL} ${x.b} = ${x.r}`, okSay: `${x.a} mal ${x.b} gleich ${x.r}.` }); }
+          padTask(col, { layout: eqLayout([{ t: [x.a, MAL, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" }, { t: [{ t: "1.", c: "tag" }, 5, MAL, x.b, "=", { a: x.m1 }], c: "step" }, { t: [{ t: "2.", c: "tag" }, x.a - 5, MAL, x.b, "=", { a: x.m2 }], c: "step" }, { t: [{ t: "3.", c: "tag" }, { ref: 0 }, "+", { ref: 1 }, "=", { a: x.r }], c: "step" }]),
+            say: `${x.a} mal ${x.b}. Zerlege: 5 mal ${x.b} und ${x.a - 5} mal ${x.b}.`, why: (k, v) => k === 0 ? malWhy(5, x.b, v) : k === 1 ? malWhy(x.a - 5, x.b, v) : numalWhy(x.r, v, `Zähle beide zusammen: ${x.m1} + ${x.m2}.`),
+            onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } }, okText: `${x.a} ${MAL} ${x.b} = ${x.m1} + ${x.m2} = ${x.r}`, okSay: `${x.a} mal ${x.b} gleich ${x.r}.` });
+        },
+        explain: (x) => x.kind === "tausch" ? { html: `<p>Bei mal darfst du <b>tauschen</b>:</p><p>${x.a} ${MAL} ${x.b} = ${x.b} ${MAL} ${x.a} = <b>${x.r}</b></p><p>Nimm die Aufgabe, die du besser kannst!</p>`, say: `Bei mal darfst du tauschen. ${x.a} mal ${x.b} gleich ${x.b} mal ${x.a} gleich ${x.r}.` }
+          : x.kind === "nachbar" ? { html: `<p>Die Nachbaraufgabe <b>${x.base} ${MAL} ${x.b} = ${x.m}</b> kennst du.</p><p>${x.a} ${MAL} ${x.b} ist ${x.base > x.a ? "eine " + x.b + " weniger" : (x.a - x.base) + "-mal die " + x.b + " mehr"}: <b>${x.r}</b></p>`, say: `${x.base} mal ${x.b} gleich ${x.m}. Dann ${x.base > x.a ? "eine " + x.b + " weniger" : (x.a - x.base) + " mal die " + x.b + " mehr"}. Das sind ${x.r}.` }
+          : { html: `<div class="dn-row">${malDots(x.a, x.b, { split: 5 }).innerHTML}</div><p>Lila: 5 ${MAL} ${x.b} = ${x.m1} · Gelb: ${x.a - 5} ${MAL} ${x.b} = ${x.m2}</p><p>Zusammen: ${x.m1} + ${x.m2} = <b>${x.r}</b></p>`, say: `5 mal ${x.b} gleich ${x.m1}. ${x.a - 5} mal ${x.b} gleich ${x.m2}. Zusammen ${x.r}.` },
+        expert: {
+          task: () => "Zerlege die große Zahl!", intro: () => XW("Auch Aufgaben über das Einmaleins hinaus kannst du zerlegen: 6 · 14 = 6 · 10 + 6 · 4 = 60 + 24 = 84."),
+          ex: () => `6 ${MAL} 14 = 60 + 24 = <b>84</b>`, say: () => "Experten-Aufgabe! Zerlege die große Zahl in Zehner und Einer. 6 mal 14 gleich 6 mal 10 plus 6 mal 4.",
+          build() { return gen(8, () => { const a = rint(3, 9), b = rint(12, 19); return { a, b, z: 10 * a, e: a * (b - 10), r: a * b, lab: a + "x" + b }; }); },
+          render(x, stage) {
+            const col = mathRow(stage, null);
+            padTask(col, { layout: eqLayout([{ t: [x.a, MAL, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" }, { t: [{ t: "1.", c: "tag" }, x.a, MAL, 10, "=", { a: x.z }], c: "step" }, { t: [{ t: "2.", c: "tag" }, x.a, MAL, x.b - 10, "=", { a: x.e }], c: "step" }, { t: [{ t: "3.", c: "tag" }, { ref: 0 }, "+", { ref: 1 }, "=", { a: x.r }], c: "step" }]),
+              say: `${x.a} mal ${x.b}. Zerlege die ${x.b} in 10 und ${x.b - 10}.`, why: (k, v) => k === 0 ? malWhy(x.a, 10, v) : k === 1 ? malWhy(x.a, x.b - 10, v) : numalWhy(x.r, v, `Zähle beide zusammen: ${x.z} + ${x.e}.`),
+              onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } }, okText: `${x.a} ${MAL} ${x.b} = ${x.z} + ${x.e} = ${x.r}`, okSay: `${x.a} mal ${x.b} gleich ${x.r}.`, factor: 2 });
+          },
+          explain: (x) => ({ html: `<p>Zerlege die ${x.b} in <b>10</b> und <b>${x.b - 10}</b>.</p><p>${x.a} ${MAL} 10 = ${x.z} · ${x.a} ${MAL} ${x.b - 10} = ${x.e}</p><p>${x.z} + ${x.e} = <b>${x.r}</b></p>`, say: `${x.a} mal 10 gleich ${x.z}. ${x.a} mal ${x.b - 10} gleich ${x.e}. Zusammen ${x.r}.` })
+        }
+      },
+      {
+        id: "gross", name: "Zehner-Fräse", icon: "⚙️", color: "#f4a261",
+        task: () => "Rechne mit großen Zahlen!",
+        intro: (d) => d === "leicht" ? "Mit Zehnern rechnest du wie im Einmaleins: 3 · 4 = 12, also 3 · 40 = 120. Die Null kommt einfach dazu." : d === "mittel" ? "Mal und geteilt mit Zehnern: 7 · 80 = 560 und 560 : 8 = 70." : "Zehner mal Zehner und Hunderter: 60 · 70 = 4200, 4200 : 7 = 600.",
+        ex: (d) => d === "leicht" ? `3 ${MAL} 4 = 12 → 3 ${MAL} 40 = <b>120</b>` : d === "mittel" ? `7 ${MAL} 80 = <b>560</b> · 560 : 8 = <b>70</b>` : `60 ${MAL} 70 = <b>4200</b> · 4200 : 7 = <b>600</b>`,
+        say: (d) => d === "leicht" ? "Mit Zehnern rechnest du wie im Einmaleins. 3 mal 4 gleich 12, also 3 mal 40 gleich 120." : d === "mittel" ? "Mal und geteilt mit Zehnern. 7 mal 80 gleich 560." : "Zehner mal Zehner und Hunderter. 60 mal 70 gleich 4200.",
+        build(d) { return gen(8, (k) => { const a = rint(2, 9), b = rint(2, 9);
+          if (d === "leicht") return { kind: "help", a, b, A: a, B: 10 * b, r: 10 * a * b, lab: `${a}x${b}0` };
+          if (d === "mittel") { const t = k % 3; return t === 2 ? { kind: "div", a, b, A: 10 * a * b, B: b, r: 10 * a, lab: `${a * b}0:${b}` } : t ? { kind: "mul", a, b, A: 10 * a, B: b, r: 10 * a * b, lab: `${a}0x${b}` } : { kind: "mul", a, b, A: a, B: 100 * b, r: 100 * a * b, lab: `${a}x${b}00` }; }
+          const t = k % 3; return t === 2 ? { kind: "div", a, b, A: 100 * a * b, B: b, r: 100 * a, lab: `${a * b}00:${b}` } : t ? { kind: "mul", a, b, A: 10 * a, B: 10 * b, r: 100 * a * b, lab: `${a}0x${b}0` } : { kind: "div", a, b, A: 100 * a * b, B: 10 * b, r: 10 * a, lab: `${a * b}00:${b}0` }; }); },
+        render(x, stage) {
+          const col = mathRow(stage, null), D = x.kind === "div", o = D ? ":" : MAL, w = D ? "geteilt durch" : "mal";
+          const lines = x.kind === "help" ? [{ t: [{ t: "Hilfe:", c: "tag" }, x.a, MAL, x.b, "=", { a: x.a * x.b }], c: "step" }, { t: [x.A, MAL, x.B, "=", { a: x.r }] }] : [{ t: [fmtN(x.A), o, fmtN(x.B), "=", { a: x.r }] }];
+          padTask(col, { layout: eqLayout(lines), group: true, maxLen: 5, say: `${x.A} ${w} ${x.B}`,
+            why: (k, v) => x.kind === "help" && k === 0 ? malWhy(x.a, x.b, v) : (v * 10 === x.r || v === x.r * 10 || v * 100 === x.r || v === x.r * 100) ? `Die Ziffern stimmen! Zähl die Nullen nochmal genau.` : `Rechne zuerst ${D ? `${x.a * x.b} : ${x.b}` : `${x.a} ${MAL} ${x.b}`} = ${D ? x.a : x.a * x.b}. Dann denk an die Nullen.`,
+            okText: `${fmtN(x.A)} ${o} ${fmtN(x.B)} = ${fmtN(x.r)}`, okSay: `${x.A} ${w} ${x.B} gleich ${x.r}.` });
+        },
+        explain: (x) => { const D = x.kind === "div"; return { html: `<p>Rechne erst die Einmaleins-Aufgabe: <b>${D ? `${x.a * x.b} : ${x.b} = ${x.a}` : `${x.a} ${MAL} ${x.b} = ${x.a * x.b}`}</b></p><p>Dann die Nullen: <b>${fmtN(x.A)} ${D ? ":" : MAL} ${fmtN(x.B)} = ${fmtN(x.r)}</b></p>`, say: `Rechne erst ${D ? `${x.a * x.b} geteilt durch ${x.b}` : `${x.a} mal ${x.b}`}. Dann denk an die Nullen. Das Ergebnis ist ${x.r}.` }; },
+        expert: {
+          task: () => "Rechne mit Hundertern und Tausendern!", intro: () => XW("Ganz große Zahlen: 700 · 80 = 56 000 und 36 000 : 90 = 400. Rechne das Einmaleins und zähle die Nullen."),
+          ex: () => `700 ${MAL} 80 = <b>56 000</b>`, say: () => "Experten-Aufgabe! Ganz große Zahlen. Rechne das Einmaleins und zähle die Nullen.",
+          build() { return gen(8, (k) => { const a = rint(2, 9), b = rint(2, 9); return k % 2 ? { kind: "div", a, b, A: 1000 * a * b, B: 10 * b, r: 100 * a, lab: `${a * b}000:${b}0` } : { kind: "mul", a, b, A: 100 * a, B: 10 * b, r: 1000 * a * b, lab: `${a}00x${b}0` }; }); },
+          render(x, stage) {
+            const col = mathRow(stage, null), D = x.kind === "div", o = D ? ":" : MAL;
+            padTask(col, { layout: eqLayout([{ t: [fmtN(x.A), o, fmtN(x.B), "=", { a: x.r }] }]), group: true, maxLen: 6, say: `${x.A} ${D ? "geteilt durch" : "mal"} ${x.B}`,
+              why: (k, v) => (v * 10 === x.r || v === x.r * 10 || v * 100 === x.r || v === x.r * 100) ? "Die Ziffern stimmen! Zähl die Nullen nochmal genau." : `Rechne zuerst ${D ? `${x.a * x.b} : ${x.b}` : `${x.a} ${MAL} ${x.b}`}. Dann denk an die Nullen.`,
+              okText: `${fmtN(x.A)} ${o} ${fmtN(x.B)} = ${fmtN(x.r)}`, okSay: `${x.A} ${D ? "geteilt durch" : "mal"} ${x.B} gleich ${x.r}.`, factor: 2 });
+          }
+        }
+      },
+      {
+        id: "sach", name: "Sach-Werkbank", icon: "📦", color: "#8d6346",
+        task: () => "Lies genau und rechne!",
+        intro: (d) => d === "leicht" ? "Rechengeschichten aus Eddies Werkstatt. Lies genau: Wie viele sind es zusammen?" : d === "mittel" ? "Jetzt wird auch geteilt. Lies genau: Wird zusammengezählt oder verteilt?" : "Diese Geschichten haben zwei Schritte. Rechne erst den ersten, dann den zweiten.",
+        ex: (d) => d === "schwer" ? `3 ${MAL} 8 = 24 · 24 − 5 = <b>19</b>` : d === "mittel" ? "24 Nägel, 4 Kisten → 24 : 4 = <b>6</b>" : `4 Kisten mit je 6 Nägeln → 4 ${MAL} 6 = <b>24</b>`,
+        say: (d) => d === "leicht" ? "Rechengeschichten aus Eddies Werkstatt. Lies genau." : d === "mittel" ? "Jetzt wird auch geteilt. Lies genau." : "Diese Geschichten haben zwei Schritte.",
+        build(d) {
+          const T = [["Kisten", "Nägel", "Kiste"], ["Dosen", "Schrauben", "Dose"], ["Schachteln", "Stifte", "Schachtel"], ["Tüten", "Nüsse", "Tüte"], ["Regale", "Bretter", "Regal"], ["Körbe", "Äpfel", "Korb"]];
+          return gen(6, () => { const t = T[rint(0, T.length - 1)], a = rint(3, 9), b = rint(3, 9), kind = d === "leicht" ? "mul" : d === "mittel" ? (rint(0, 1) ? "div" : "mul") : ["mm", "md", "rest"][rint(0, 2)];
+            const x = { t, a, b, kind, lab: kind + t[0] + a + "x" + b };
+            if (kind === "mul") { x.text = `Eddie hat ${a} ${t[0]}. In jeder ${t[2]} sind ${b} ${t[1]}. Wie viele ${t[1]} sind es zusammen?`; x.r = a * b; x.calc = `${a} ${MAL} ${b} = ${a * b}`; }
+            if (kind === "div") { x.text = `Eddie hat ${a * b} ${t[1]}. Er verteilt sie gerecht auf ${a} ${t[0]}. Wie viele ${t[1]} kommen in jede ${t[2]}?`; x.r = b; x.calc = `${a * b} : ${a} = ${b}`; }
+            if (kind === "mm") { const c = rint(2, a * b - 2); x.text = `Eddie hat ${a} ${t[0]} mit je ${b} ${t[1]}. Er braucht ${c} ${t[1]} für ein Vogelhaus. Wie viele ${t[1]} bleiben übrig?`; x.m = a * b; x.r = a * b - c; x.c = c; x.op = MI; x.s1 = `${a} ${MAL} ${b}`; }
+            if (kind === "md") { const c = rint(2, 9); x.text = `Eddie hat ${a} ${t[0]} mit je ${b} ${t[1]}. Dazu bekommt er noch ${c} ${t[1]}. Wie viele ${t[1]} hat er jetzt?`; x.m = a * b; x.r = a * b + c; x.c = c; x.op = "+"; x.s1 = `${a} ${MAL} ${b}`; }
+            if (kind === "rest") { const rr = rint(1, b - 1), n = a * b + rr; x.text = `Eddie hat ${n} ${t[1]}. In jede ${t[2]} passen ${b} ${t[1]}. Wie viele ${t[0]} kann er ganz füllen? Wie viele ${t[1]} bleiben übrig?`; x.n = n; x.q = a; x.rr = rr; x.lab += "r" + rr; }
+            x.text = x.text.replace(/jede (Korb|Regal)/, "jeden $1").replace(/jeder (Korb|Regal)/, "jedem $1");
+            return x; });
+        },
+        render(x, stage) {
+          stage.appendChild(el("div", "card mq sachtext", `📦 ${x.text}`));
+          const col = mathRow(stage, null), say = x.text;
+          if (x.kind === "mul" || x.kind === "div") return padTask(col, { layout: eqLayout([{ t: [{ t: "Antwort:", c: "tag" }, { a: x.r }, x.t[1]] }]), say,
+            why: (k, v) => x.kind === "mul" ? (v === x.a + x.b ? `Hier wird nicht plus gerechnet: ${x.a}-mal ${x.b} ${x.t[1]}.` : malWhy(x.a, x.b, v)) : (v === x.a * x.b * x.a || v === x.a * x.b - x.a ? "Hier wird verteilt – also geteilt!" : `Verteile ${x.a * x.b} ${x.t[1]} auf ${x.a} ${x.t[0]}: ${x.a * x.b} : ${x.a}.`),
+            okText: x.calc, okSay: x.calc.replace(MAL, "mal").replace(":", "geteilt durch").replace("=", "gleich") + " " + x.t[1] + "." });
+          if (x.kind === "rest") return padTask(col, { layout: eqLayout([{ t: [x.n, ":", x.b, "=", { a: x.q }, { t: "Rest", c: "tag" }, { a: x.rr }] }, { t: [{ t: "Antwort:", c: "tag" }, { ref: 0 }, x.t[0], "voll,", { ref: 1 }, "übrig"] }]), say,
+            why: (k, v) => k === 0 ? (v * x.b > x.n ? `${v} ${MAL} ${x.b} = ${v * x.b} – so viele ${x.t[1]} hat Eddie gar nicht.` : `Da passt noch mehr hinein! Wie oft passt die ${x.b} in die ${x.n}?`) : `${x.q} ${MAL} ${x.b} = ${x.q * x.b}. Wie viele fehlen noch bis ${x.n}?`,
+            okText: `${x.n} : ${x.b} = ${x.q} Rest ${x.rr}`, okSay: `${x.n} geteilt durch ${x.b} gleich ${x.q}, Rest ${x.rr}.`, factor: 2 });
+          padTask(col, { layout: eqLayout([{ t: [{ t: "1.", c: "tag" }, x.a, MAL, x.b, "=", { a: x.m }], c: "step" }, { t: [{ t: "2.", c: "tag" }, { ref: 0 }, x.op, x.c, "=", { a: x.r }], c: "step" }, { t: [{ t: "Antwort:", c: "tag" }, { ref: 1 }, x.t[1]] }]), say,
+            why: (k, v) => k === 0 ? malWhy(x.a, x.b, v) : numalWhy(x.r, v, x.op === "+" ? `Er bekommt noch ${x.c} dazu: ${x.m} + ${x.c}.` : `Er braucht ${x.c}, die sind dann weg: ${x.m} ${MI} ${x.c}.`),
+            okText: `${x.s1} = ${x.m} · ${x.m} ${x.op} ${x.c} = ${x.r}`, okSay: `Eddie hat jetzt ${x.r} ${x.t[1]}.`, factor: 2 });
+        },
+        explain: (x) => x.kind === "mul" ? { html: `<p>${x.a} ${x.t[0]}, in jeder ${x.b} ${x.t[1]}: Das ist <b>${x.a}-mal die ${x.b}</b>.</p><p>${x.calc}</p>`, say: `${x.a} mal ${x.b} gleich ${x.r}.` }
+          : x.kind === "div" ? { html: `<p>${x.a * x.b} ${x.t[1]} werden <b>gerecht verteilt</b> – das ist <b>geteilt</b>.</p><p>${x.calc}, denn ${x.b} ${MAL} ${x.a} = ${x.a * x.b}.</p>`, say: `Gerecht verteilen heißt teilen. ${x.a * x.b} geteilt durch ${x.a} gleich ${x.b}.` }
+          : x.kind === "rest" ? { html: `<p>Wie oft passt die <b>${x.b}</b> in die ${x.n}?</p><p>${x.q} ${MAL} ${x.b} = ${x.q * x.b}. Bis ${x.n} fehlen noch <b>${x.rr}</b>.</p><p>${x.q} ${x.t[0]} sind voll, ${x.rr} ${x.t[1]} bleiben übrig.</p>`, say: `${x.q} mal ${x.b} gleich ${x.q * x.b}. ${x.rr} bleiben übrig.` }
+          : { html: `<p><b>1.</b> Wie viele sind es am Anfang? ${x.s1} = ${x.m}</p><p><b>2.</b> ${x.op === "+" ? "Es kommen noch" : "Es gehen weg:"} ${x.c}. ${x.m} ${x.op} ${x.c} = <b>${x.r}</b></p>`, say: `Erst ${x.a} mal ${x.b} gleich ${x.m}. Dann ${x.m} ${x.op === "+" ? "plus" : "minus"} ${x.c} gleich ${x.r}.` },
+        expert: {
+          task: () => "Zwei Schritte – rechne genau!", intro: () => XW("Schwere Rechengeschichten: Erst malnehmen, dann teilen."),
+          ex: () => `4 ${MAL} 9 = 36 · 36 : 6 = <b>6</b>`, say: () => "Experten-Aufgabe! Schwere Rechengeschichten. Erst malnehmen, dann teilen.",
+          build() { return gen(6, () => { const a = rint(2, 9), b = rint(2, 9), m = a * b, ds = [2, 3, 4, 5, 6, 7, 8, 9].filter(z => m % z === 0 && m / z <= 10 && z !== a && z !== b); if (!ds.length) return null; const c = ds[rint(0, ds.length - 1)];
+            return { a, b, m, c, r: m / c, text: `Eddie hat ${a} Packungen mit je ${b} Schrauben. Er verteilt alle Schrauben gerecht an ${c} Freunde. Wie viele Schrauben bekommt jeder?`, lab: `${a}x${b}:${c}` }; }); },
+          render(x, stage) {
+            stage.appendChild(el("div", "card mq sachtext", `📦 ${x.text}`));
+            const col = mathRow(stage, null);
+            padTask(col, { layout: eqLayout([{ t: [{ t: "1.", c: "tag" }, x.a, MAL, x.b, "=", { a: x.m }], c: "step" }, { t: [{ t: "2.", c: "tag" }, { ref: 0 }, ":", x.c, "=", { a: x.r }], c: "step" }]), say: x.text,
+              why: (k, v) => k === 0 ? malWhy(x.a, x.b, v) : `Verteile ${x.m} Schrauben auf ${x.c} Freunde: ${x.m} : ${x.c}.`, okText: `${x.a} ${MAL} ${x.b} = ${x.m} · ${x.m} : ${x.c} = ${x.r}`, okSay: `Jeder bekommt ${x.r} Schrauben.`, factor: 2 });
+          },
+          explain: (x) => ({ html: `<p><b>1.</b> Alle Schrauben: ${x.a} ${MAL} ${x.b} = ${x.m}</p><p><b>2.</b> Gerecht verteilt: ${x.m} : ${x.c} = <b>${x.r}</b></p>`, say: `Erst ${x.a} mal ${x.b} gleich ${x.m}. Dann ${x.m} geteilt durch ${x.c} gleich ${x.r}.` })
+        }
+      }
+    ];
+    // abwechselnd Rechnen und Eddies Spiele
+    const by = (id) => lv.find(l => l.id === id);
+    return [by("kern"), EG.nightLv, by("geteilt"), EG.fireLv, by("luecke"), EG.memLv, by("kniff"), EG.riddleLv, by("gross"), by("sach")];
+  }
+  const EDDIEWERK = eddieWerkLevels();
+
   /* ======================================================================
      Pollys Werkstatt (Förderinsel): Zahlen mit Zehnerstangen und Einerwürfeln legen.
      Das Legebrett ist eine Stellenwerttafel: links die Zehner, rechts die Einer.
@@ -6196,6 +6681,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       bonusPlan: [["schreiben", "diktat", 99]], bonusIntro: LW_DIKTAT, bonusShort: "Das große Lernwörter-Diktat: alle Wörter ohne Hilfe!", bonusEx: "🔊 → ✏️ → 🎁" },
     { id: "lw2", name: "Lernwörter 2", title: "Ampel-Inseln", sub: "Lernwörter 2", icon: "🚦", group: "lern", rulesAs: "lernwoerter", neu: true, hunter: "Lernwörter", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
       bonusPlan: [["schreiben", "diktat", 99]], bonusIntro: LW_DIKTAT, bonusShort: "Das große Lernwörter-Diktat: alle Wörter ohne Hilfe!", bonusEx: "🔊 → ✏️ → 🎁" },
+    { id: "lw3", name: "Lernwörter 3", title: "Stern-Inseln", sub: "Lernwörter 3: St und Sp", icon: "⭐", group: "lern", rulesAs: "lernwoerter", neu: true, hunter: "Lernwörter", ready: true, levels: LERNLEVELS, award: "Lernwörter-Profi",
+      bonusPlan: [["schreiben", "diktat", 99]], bonusIntro: LW_DIKTAT, bonusShort: "Das große Lernwörter-Diktat: alle Wörter ohne Hilfe!", bonusEx: "🔊 → ✏️ → 🎁" },
     { id: "leuchtturm", name: "Leuchtturm", title: "Leuchtturm-Insel", sub: "der, die, das", icon: "💡", ready: true, levels: LTLEVELS, award: "Artikel-Profi",
       bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] },
     { id: "lesen", name: "Lesen", title: "Lese-Lagune", sub: "Lesen üben", icon: "📖", ready: true, levels: LESELEVELS, award: "Lese-Profi",
@@ -6221,7 +6708,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     // ---- Eulenklasse (Eddie) ----
     { id: "million", world: "eule", name: "Zahlen bis 1 Million", title: "Millionen-Inseln", sub: "Zahlenraum bis 1 000 000", icon: "🔢", ready: true, levels: MILLION, award: "Millionen-Profi", hunter: "Millionen",
       bonusPlan: [["nachbarzahlen", "schwer", 2], ["nachbartausender", "mittel", 2], ["stellenwert", "schwer", 2], ["zahlwoerter", "leicht", 2], ["plaettchen", "schwer", 2], ["zahlenstrahl", "mittel", 2], ["ordnen", "mittel", 1]] },
-    // ---- Schachschule (auf dem Schulhof, mit dem Schachpferd Hopsi) ----
+    { id: "eddiewerk", world: "eule", name: "Eddies Werkstatt", title: "Eddies Werkstatt", sub: "Einmaleins-Wiederholung", icon: "🛠️", ready: true, levels: EDDIEWERK, award: "Einmaleins-Profi", hunter: "Einmaleins",
+      bonusPlan: [["kern", "schwer", 2], ["geteilt", "mittel", 2], ["geteilt", "schwer", 1], ["luecke", "schwer", 2], ["kniff", "schwer", 1], ["gross", "mittel", 2], ["sach", "schwer", 1]] },
+    // ---- Schachschule (auf der kleinen Schach-Insel vor der Schule, mit dem Schachpferd Hopsi) ----
     { id: "schachbrett", world: "schach", name: "Brett und Figuren", title: "Brett-Inseln", sub: "Das Schachbrett kennenlernen", icon: "🏁", ready: true, levels: SCHACH_A, award: "Schachbrett-Profi", hunter: "Schachbrett", noExpert: true,
       bonusPlan: [["brett", "schwer", 2], ["felder", "mittel", 2], ["felder", "schwer", 1], ["figuren", "schwer", 2], ["aufstellung", "mittel", 1], ["aufstellung", "schwer", 2]] },
     { id: "schachzuege", world: "schach", name: "So ziehen die Figuren", title: "Zug-Inseln", sub: "Turm, Läufer, Dame, König, Springer, Bauer", icon: "🐴", ready: true, levels: SCHACH_B, award: "Figuren-Profi", hunter: "Figuren", noExpert: true,
@@ -6359,7 +6848,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       salat: {
         task: () => "Setze die Mehrzahl zusammen!", intro: () => XI + "Jetzt sind es viele! Setze die Mehrzahl des Lernworts zusammen. Achtung: Falsche Buchstaben sind dabei.",
         ex: () => LWD().ex.xsalat, say: () => "Experten-Aufgabe! Setze die Mehrzahl des Lernworts zusammen.",
-        build() { return shuffle(LWW()).slice(0, 8); },
+        build() { return shuffle(LWW().filter(z => LWD().pl[z.w])).slice(0, 8); },
         render(x, stage) { const pl = LWD().pl[x.w]; stage.appendChild(el("div", "pic", picHTML(x) + picHTML(x))); stage.appendChild(el("div", "counter", `${x.art} ${x.w} → die …`)); tileTask(stage, { w: pl, art: "die", extra: x.extra.concat(["n", "e"]).slice(0, 3) }, { extra: true, factor: 1, missText: "Wie heißt es, wenn es viele sind?" }); L.speakNow = () => speak(`${x.art} ${x.w}. Und wenn es viele sind?`); }
       },
       luecke: {
@@ -6371,7 +6860,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       blitz: {
         task: () => "Schreib das Wort aus dem Kopf!", intro: () => XI + "Das Wort blitzt nur ganz kurz auf – und es ist die Mehrzahl! Setze es dann aus dem Kopf zusammen.",
         ex: () => LWD().ex.xblitz, say: () => "Experten-Aufgabe! Das Wort blitzt nur ganz kurz auf, und es ist die Mehrzahl. Setze es aus dem Kopf zusammen.",
-        build() { return shuffle(LWW()).slice(0, 7); },
+        build() { return shuffle(LWW().filter(z => LWD().pl[z.w])).slice(0, 7); },
         render(x, stage) {
           const pl = LWD().pl[x.w];
           const showWord = () => { stage.innerHTML = ""; stage.appendChild(el("div", "counter", "👀 Schau genau!")); stage.appendChild(el("div", "flash", "die " + pl)); const bar = el("div", "timebar", "<i></i>"); stage.appendChild(bar);
@@ -6399,7 +6888,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       schreiben: {
         task: () => "Schreib die Mehrzahl!", intro: () => XI + "Jetzt sind es viele! Schreib die Mehrzahl des Lernworts – ganz ohne Hilfe.",
         ex: () => LWD().ex.xsalat, say: () => "Experten-Aufgabe! Schreib die Mehrzahl des Lernworts, ganz ohne Hilfe.",
-        build() { return shuffle(LWW()).slice(0, 8); },
+        build() { return shuffle(LWW().filter(z => LWD().pl[z.w])).slice(0, 8); },
         render(x, stage) {
           const pl = LWD().pl[x.w];
           lwDictate(stage, x, { target: pl, prefix: "die", pic: picHTML(x) + picHTML(x), top: el("div", "counter", `${x.art} ${x.w} → die …`), say: `${x.art} ${x.w}. Und wenn es viele sind?`, full: pl, factor: 1, x: null });
@@ -6481,6 +6970,16 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const LW2_DEF = [["Ampel", "Sie zeigt Rot, Gelb und Grün."], ["Auto", "Es hat einen Motor und fährt auf der Straße."], ["Bank", "Darauf kann man im Park sitzen."], ["Farbe", "Damit malt man ein Bild bunt."],
     ["Freund", "Mit ihm spielst du am liebsten."], ["Herr", "So sagt man höflich zu einem Mann."], ["Katze", "Sie miaut und fängt Mäuse."], ["Rad", "Darauf fährst du und trittst in die Pedale."],
     ["Tasche", "Darin trägt man seine Sachen."], ["Tür", "Man macht sie auf und zu."]];
+
+  const LERN3_PL = { Stern: "Sterne", Spinne: "Spinnen", Stuhl: "Stühle", Spiegel: "Spiegel", Stiefel: "Stiefel", Stift: "Stifte", Spielplatz: "Spielplätze" };
+  const LW3_COMP = [["Sternschnuppe", "_ernschnuppe", "St", ["Scht", "Sd", "Schd"]], ["Spinnennetz", "_innennetz", "Sp", ["Schp", "Sb", "Schb"]], ["Stuhlbein", "_uhlbein", "St", ["Scht", "Sd", "Schd"]],
+    ["Spiegelbild", "_iegelbild", "Sp", ["Schp", "Sb", "Schb"]], ["Gummistiefel", "Gummi_iefel", "st", ["scht", "sd", "schd"]], ["Bleistift", "Blei_ift", "st", ["scht", "sd", "schd"]],
+    ["Kinderspielplatz", "Kinder_ielplatz", "sp", ["schp", "sb", "schb"]], ["Springseil", "_ringseil", "Sp", ["Schp", "Sb", "Schb"]], ["Spielzeug", "_ielzeug", "Sp", ["Schp", "Sb", "Schb"]], ["Stehlampe", "_ehlampe", "St", ["Scht", "Sd", "Schd"]]];
+  const LW3_SYLX = [[["Stern", "schnup", "pe"], "Stern"], [["Spin", "nen", "netz"], "Spinne"], [["Stuhl", "bein"], "Stuhl"], [["Spie", "gel", "bild"], "Spiegel"], [["Gum", "mi", "stie", "fel"], "Stiefel"],
+    [["Blei", "stift"], "Stift"], [["Spiel", "platz", "rut", "sche"], "Spielplatz"], [["Spring", "seil"], "springen"], [["Spiel", "zeug"], "spielen"], [["Steh", "lam", "pe"], "stehen"]];
+  const LW3_DEF = [["Stern", "Er leuchtet nachts am Himmel."], ["Spinne", "Sie hat acht Beine und baut ein Netz."], ["Stuhl", "Darauf sitzt du am Tisch."], ["Spiegel", "Darin siehst du dich selbst."],
+    ["Stiefel", "Ein hoher Schuh für Regen und Schnee."], ["spielen", "Das machst du in der Pause am liebsten."], ["Stift", "Damit schreibst und malst du."], ["springen", "Das kann ein Frosch besonders gut."],
+    ["Spielplatz", "Dort gibt es Rutsche und Schaukel."], ["stehen", "Das Gegenteil von sitzen."]];
   // Lernwörter-Einheiten: Jede Einheit ist ein eigenes Kapitel (eine eigene Insel) mit denselben sechs Spielen.
   // Neue Einheit: Wortliste + Daten oben anlegen, hier eintragen und in CHAPTERS ein Kapitel mit group: "lern" ergänzen.
   const LW_UNITS = {
@@ -6489,7 +6988,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         xsalat: "🚕 → 🚕🚕 die Taxis", xluecke: "Stra<b>ß</b>enbahn · Ta<b>x</b>ifahrer", xblitz: "⚡ die Kängurus → ✏️", xhoeren: "🔊 „Taxifahrer“", xsilben: "Kän | gu | ru | ba | by", xmemory: "Taxi ↔ Damit fährt man gegen Geld." } },
     lw2: { w: LERN2, pl: LERN2_PL, comp: LW2_COMP, sylx: LW2_SYLX, def: LW2_DEF, short: true,
       ex: { salat: "u · A · o · t → Auto", luecke: 'Ka<b>tz</b>e · T<b>ü</b>r', luecke2: "Ka▢e → ✏️ tz", word: "Katze", art: "die", hoeren: "🔊 „Auto“ → 🚗", silben: "Kat | ze 👏👏 · Rad → Rä | der", memory: "Auto ↔ 🚗", memory2: "Ka▢e ↔ tz",
-        xsalat: "🚗 → 🚗🚗 die Autos", xluecke: "Ka<b>tz</b>enfutter · Haust<b>ü</b>r", xblitz: "⚡ die Räder → ✏️", xhoeren: "🔊 „Autobahn“", xsilben: "Kat | zen | fut | ter", xmemory: "Ampel ↔ Sie zeigt Rot, Gelb und Grün." } }
+        xsalat: "🚗 → 🚗🚗 die Autos", xluecke: "Ka<b>tz</b>enfutter · Haust<b>ü</b>r", xblitz: "⚡ die Räder → ✏️", xhoeren: "🔊 „Autobahn“", xsilben: "Kat | zen | fut | ter", xmemory: "Ampel ↔ Sie zeigt Rot, Gelb und Grün." } },
+    lw3: { w: LERN3, pl: LERN3_PL, comp: LW3_COMP, sylx: LW3_SYLX, def: LW3_DEF, short: true, deco: ["⭐", "🕷️"],
+      ex: { salat: "e · S · n · t · r → Stern", luecke: '<b>St</b>ern · <b>Sp</b>inne', luecke2: "▢ern → ✏️ St", word: "Stern", art: "der", hoeren: "🔊 „Stern“ → ⭐", silben: "Spie | gel 👏👏 · Stift → Stif | te", memory: "Stern ↔ ⭐", memory2: "▢inne ↔ Sp",
+        xsalat: "⭐ → ⭐⭐ die Sterne", xluecke: "<b>St</b>ernschnuppe · Blei<b>st</b>ift", xblitz: "⚡ die Stühle → ✏️", xhoeren: "🔊 „Spinnennetz“", xsilben: "Stern | schnup | pe", xmemory: "Stuhl ↔ Darauf sitzt du am Tisch." } }
   };
   const LWD = () => LW_UNITS[CH && LW_UNITS[CH.id] ? CH.id : "lernwoerter"], LWW = () => LWD().w;
   const lwShort = (d, t) => d !== "leicht" && LWD().short ? " " + t : "";
@@ -6580,7 +7082,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const hexRgb = (h) => { h = h.replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
   const mixHex = (h, t, k) => "#" + hexRgb(h).map((v, i) => Math.round(v + (t[i] - v) * k).toString(16).padStart(2, "0")).join("");
   const FLAT = { "#17324a": 1, "#fff": 1, "#ffffff": 1 };
-  const TREASURE_IDS = { sternenhirsch: 1, sprungdelfin: 1, kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1, regenbogentukan: 1, recheneule: 1 };
+  const TREASURE_IDS = { goldkiste: 1, sternenhirsch: 1, sprungdelfin: 1, kristallstern: 1, zauberpferdchen: 1, goldleuchtturm: 1, leseschildkroete: 1, schreibkrake: 1, regenbogentukan: 1, recheneule: 1 };
   let art3d = 0;
   function shade3d(markup, glossy) {
     const uid = "s" + (++art3d), cols = {}; let defs = "", n = 0;
@@ -6760,6 +7262,13 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   // Goldener Eddie: Eddie in Gold auf einem Sockel · Sternen-Hirsch: Experten-Schatz der Millionen-Inseln
   EART.goldeddie = `<rect x="22" y="84" width="56" height="13" rx="3" fill="#8a5a2b" ${OL}/><rect x="30" y="76" width="40" height="10" rx="2" fill="#ffc300" ${OL}/><g transform="translate(17 0) scale(.66)">${PART.eddie.replace(/#6f4fa0/g, "#e0a400").replace(/#5e418c/g, "#c9971f").replace(/#8e6cc0/g, "#ffd60a").replace(/#f3e3c3/g, "#fff3b0").replace(/#c9a66b/g, "#e0a400")}</g>${SPARK(84, 30, 7)}${SPARK(14, 22, 5)}${SPARK(82, 70, 4)}`;
   EART.sternenhirsch = `<circle cx="50" cy="52" r="46" fill="#cdb4f5" opacity=".45"/><g transform="translate(3 5) scale(.94)">${EART.hirsch.replace(/#99582a/g, "#ffc300").replace(/#7f4f24/g, "#e0a400").replace(/#6f4518/g, "#c9971f").replace(/#e6ccb2/g, "#fff3b0")}</g>${SPARK(57, 11, 5)}${SPARK(93, 7, 5)}${SPARK(14, 30, 6)}${SPARK(40, 84, 4)}<circle cx="61" cy="2" r="2.4" fill="#fff"/><circle cx="89" cy="2" r="2.4" fill="#fff"/>`;
+  // Goldene Werkzeugkiste: Experten-Schatz von Eddies Werkstatt
+  EART.goldkiste = `<circle cx="50" cy="56" r="44" fill="#ffe8a3" opacity=".5"/>
+    <g transform="rotate(-24 32 30)"><rect x="28" y="8" width="8" height="36" rx="3" fill="#c08552" ${OL}/><rect x="17" y="4" width="30" height="12" rx="3" fill="#ffd60a" ${OL}/></g>
+    <g transform="rotate(28 70 28)"><rect x="66" y="10" width="8" height="32" rx="3" fill="#ffd60a" ${OL}/><path d="M62 4 h16 v10 h-5 v-5 h-6 v5 h-5 Z" fill="#ffd60a" ${OL}/></g>
+    <path d="M36 38 V31 Q36 26 41 26 H59 Q64 26 64 31 V38" fill="none" stroke="#c9971f" stroke-width="6" stroke-linecap="round"/>
+    <rect x="13" y="36" width="74" height="52" rx="8" fill="#ffc300" ${OL}/><rect x="13" y="51" width="74" height="7" fill="#e0a400"/><rect x="43" y="47" width="14" height="15" rx="3" fill="#fff3b0" ${OL}/>
+    <text x="50" y="81" text-anchor="middle" font-size="15" font-weight="900" fill="#8a5a2b">1×1</text>${SPARK(88, 30, 6)}${SPARK(10, 44, 5)}${SPARK(84, 90, 4)}`;
   Object.assign(ART, EART);
   ART.hopsi = `<path d="M21 92 Q21 80 30 80 H70 Q79 80 79 92 Z" fill="#e63946" ${OL}/><path d="M32 86 H68" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/>
     <path d="M70 80 Q70 64 58 54 Q54 50 58 46 Q67 53 75 51 L83 45 Q86 40 82 36 L64 19 L65 6 L54 14 Q28 18 26 54 Q25 68 28 80 Z" fill="#fff3d6" ${OL}/>
@@ -6914,7 +7423,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { id: "schreibkrake", n: "Schreib-Tintenfisch", art: "der", pr: "Er", ch: "rechtschreibung", k: "float", z: 92 },
     { id: "regenbogentukan", n: "Regenbogen-Tukan", art: "der", pr: "Er", ch: "zahlen", k: "deco", z: 108, w: "polly" },
     { id: "recheneule", n: "Goldene Rechen-Eule", art: "die", pr: "Sie", ch: "rechnen", k: "deco", z: 96, w: "polly" },
-    { id: "sternenhirsch", n: "Sternen-Hirsch", art: "der", pr: "Er", ch: "million", k: "deco", z: 132, w: "eule" }
+    { id: "sternenhirsch", n: "Sternen-Hirsch", art: "der", pr: "Er", ch: "million", k: "deco", z: 132, w: "eule" },
+    { id: "goldkiste", n: "Goldene Werkzeugkiste", art: "die", pr: "Sie", ch: "eddiewerk", k: "deco", z: 104, w: "eule" }
   ];
   const treasureOf = (ch) => TREASURES.find(t => t.ch === (ch.treasureAs || ch.rulesAs || ch.id));
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
@@ -7465,7 +7975,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       const U = LW_UNITS[ch.id], em = U.w.filter(x => x.pic.charAt(0) !== "<"), isNew = !!ch.neu && !starTotal(ch);
       return { ...L0.p[k], r: L0.r, icon: ch.icon, label: ch.title, big: true, grass: ["#b5e48c", "#ffd6a5", "#a7d8a0", "#9ad1d4"][k % 4],
         sub: isNew ? "✨ Neu!" : chapSub(ch), subGold: isNew, next: isNew,
-        deco: [[-0.52, -0.3, em[1].pic, 0.4], [0.54, -0.28, em[2].pic, 0.4]], aria: `${ch.title}, ${ch.sub}: ${U.w.map(x => x.w).join(", ")}`, ch,
+        deco: [[-0.52, -0.3, U.deco ? U.deco[0] : em[1].pic, 0.4], [0.54, -0.28, U.deco ? U.deco[1] : em[2].pic, 0.4]], aria: `${ch.title}, ${ch.sub}: ${U.w.map(x => x.w).join(", ")}`, ch,
         tap: (i) => { CH = ch; S.lernAt = i; save(); swimTo(i, renderMap); } };
     });
     nodes.push({ ...L0.p[n - 1], r: L0.r * 0.85, icon: "📝", label: "Neue Lernwörter", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧", aria: "Neue Lernwörter, kommen bald",
@@ -7518,7 +8028,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     setCoins(false);
   }
 
-  // Karte der Schachschule: vom Schulhof zu den drei Schach-Kapiteln
+  // Karte der Schachschule: von der Schule zu den drei Schach-Kapiteln
   function renderHomeSchach() {
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Hopsi hüpfen?` : S.name ? `Hallo ${S.name}! Wohin soll Hopsi hüpfen?` : "Wohin soll Hopsi hüpfen?";
@@ -7530,7 +8040,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const enter = (ch) => (i) => { CH = ch; S.homeAtS = i; save(); swimTo(i, renderMap); };
     const isl = (ch, xy, icon, grass, label, aria, deco, first) => ({ x: xy[0], y: xy[1], r: pos.r0, icon, grass, label, big: true, sub: starTotal(ch) ? chapSub(ch) : first ? "✨ Hier geht's los!" : chapSub(ch), subGold: first && !starTotal(ch), next: first && !starTotal(ch), deco, aria, ch, tap: enter(ch) });
     const nodes = [
-      { x: pos.hof[0], y: pos.hof[1], r: pos.r0 * 0.8, icon: "🏫", grass: "#d9d2c4", label: "Schulhof", big: true, sub: FREI ? "" : "Zurück zur Schule", aria: "Schulhof: zurück zur Schule",
+      { x: pos.hof[0], y: pos.hof[1], r: pos.r0 * 0.8, icon: "🏫", grass: "#9bd27f", label: "Schule", big: true, sub: FREI ? "" : "Zurück zur Schule", aria: "Zurück zur Schule",
         deco: [[-0.55, -0.26, "🌳", 0.44]], tap: (i) => { S.homeAtS = i; if (FREI) swimTo(i); else swimTo(i, renderWorlds); } },
       isl(A, pos.a, "🏁", "#f6e7c8", "Brett und Figuren", "Brett-Inseln: das Schachbrett und die Figuren kennenlernen", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "⭐", 0.26]], true),
       isl(B, pos.b, "🐴", "#cfeec0", "So ziehen die Figuren", "Zug-Inseln: so ziehen Turm, Läufer, Dame, König, Springer und Bauer", [[-0.55, -0.28, "🌳", 0.44], [0.58, -0.2, "⭐", 0.26]]),
@@ -7542,14 +8052,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     setCoins(false);
   }
 
-  // Eddies Karte (Eulenklasse): Eddies Wald mit dem Laden, die Millionen-Inseln und eine Baustelle
+  // Eddies Karte (Eulenklasse): Eddies Wald mit dem Laden, die Millionen-Inseln, Eddies Werkstatt (Einmaleins) und eine Baustelle
   function renderHomeEule() {
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Eddie fliegen?` : S.name ? `Hallo ${S.name}! Wohin soll Eddie fliegen?` : "Wohin soll Eddie fliegen?";
     updateFoot(); freiHello();
     show("scrHome");
-    const P = portrait(), mc = CHAPTERS.find(c => c.id === "million");
-    const pos = P ? { tree: [300, 1150], m: [300, 680], soon: [300, 250], w: 600, h: 1380, r0: 96 } : { tree: [230, 400], m: [660, 360], soon: [1090, 400], w: 1320, h: 640, r0: 96 };
+    const P = portrait(), mc = CHAPTERS.find(c => c.id === "million"), wc = CHAPTERS.find(c => c.id === "eddiewerk");
+    const pos = P ? { tree: [300, 1610], m: [180, 1180], wk: [420, 760], soon: [260, 300], w: 600, h: 1830, r0: 96 } : { tree: [190, 420], m: [520, 320], wk: [850, 420], soon: [1160, 320], w: 1320, h: 660, r0: 96 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtE = i; save(); swimTo(i, renderMap); };
     const E = invOf({ w: "eule" }), canBuy = SHOP_E.some(w => !owned(w) && S.coins >= w.p);
@@ -7559,12 +8069,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         items: E.slice(-10).map(a => a.id), next: canBuy, aria: "Eddies Wald mit dem Laden", aqua: true, tap: (i) => { S.homeAtE = i; swimTo(i, renderAqua); } },
       { x: pos.m[0], y: pos.m[1], r: pos.r0, icon: "🔢", grass: "#cdb4f5", label: "Zahlen bis 1 Million", big: true, sub: starTotal(mc) ? chapSub(mc) : "✨ Neu!", subGold: !starTotal(mc), next: !starTotal(mc),
         deco: [[-0.55, -0.3, "🌲", 0.46], [0.56, -0.26, "⭐", 0.32]], aria: "Millionen-Inseln: Zahlenraum bis eine Million", ch: mc, tap: enter(mc) },
+      { x: pos.wk[0], y: pos.wk[1], r: pos.r0, icon: "🛠️", grass: "#e9c46a", label: "Eddies Werkstatt", big: true, sub: starTotal(wc) ? chapSub(wc) : "✨ Neu: Einmaleins!", subGold: !starTotal(wc), next: !starTotal(wc) && !!starTotal(mc),
+        deco: [[-0.55, -0.3, "🔨", 0.4], [0.56, -0.26, "✖️", 0.32]], aria: "Eddies Werkstatt: Einmaleins-Wiederholung", ch: wc, tap: enter(wc) },
       { x: pos.soon[0], y: pos.soon[1], r: pos.r0 * 0.82, icon: "🧮", label: "Rechnen bis 1 Million", big: true, sub: "🚧 Bald geht's los!", fog: true, fogIcon: "🚧",
         deco: [[-0.5, -0.3, "🌲", 0.44]], aria: "Rechnen bis eine Million, kommt bald",
         tap: (i) => { S.homeAtE = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "🧮", "Rechnen bis 1 Million", "kommt bald"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Eddie hier landen!")); })); } }
     ];
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, islandsDoneCount(mc) ? "done" : ""], [1, 2, "faint"]], at: S.homeAtE || 0, label: "Eulen-Inseln", seed: 11, nemo: 66, wrapBig: true, clouds: 3 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, islandsDoneCount(mc) ? "done" : ""], [1, 2, islandsDoneCount(wc) ? "done" : ""], [2, 3, "faint"]], at: S.homeAtE || 0, label: "Eulen-Inseln", seed: 11, nemo: 66, wrapBig: true, clouds: 3 });
     setCoins(false);
   }
 
@@ -7862,6 +8374,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "minus10:blitz": "Ich rechne minus über den Zehner im Kopf.",
     "rechnen:zweistellig": "Ich rechne mit zwei zweistelligen Zahlen.",
     "rechnen:profi": "Ich rechne zweistellig auch über den Zehner.",
+    "eddiewerk:kern": "Ich kann das Einmaleins.",
+    "eddiewerk:geteilt": "Ich teile mit dem Einmaleins – auch mit Rest.",
+    "eddiewerk:luecke": "Ich finde fehlende Zahlen in Mal- und Geteiltaufgaben.",
+    "eddiewerk:kniff": "Ich nutze Tauschaufgaben, Nachbaraufgaben und Zerlegen.",
+    "eddiewerk:gross": "Ich rechne mal und geteilt mit Zehnern und Hundertern.",
+    "eddiewerk:sach": "Ich löse Rechengeschichten mit mal und geteilt.",
     "schrittweise:zerlegen": "Ich zerlege eine Zahl in Einer und Zehner.",
     "schrittweise:plus": "Ich rechne plus in zwei Schritten: erst die Einer, dann die Zehner.",
     "schrittweise:minus": "Ich rechne minus in zwei Schritten: erst die Einer, dann die Zehner.",
@@ -8050,6 +8568,18 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       say: "Erst die Zehner, dann die Einer. 34 plus 25: Zerlege 25 in 20 und 5. Erst 34 plus 20 gleich 54, dann 54 plus 5 gleich 59." },
     "schrittweise:zerlegen": { k: "merk", t: "Einer und Zehner", s: "Jede zweistellige Zahl kannst du zerlegen: in ihre <b>Einer</b> und ihre <b>Zehner</b>.",
       ex: [["🧩", "25", "die Zahl"], ["1️⃣", "*5*", "Einer"], ["🔟", "*20*", "2 Zehner"]], v: "25 = 5 + 20", say: "Jede zweistellige Zahl kannst du zerlegen: in ihre Einer und ihre Zehner. 25 ist 5 plus 20." },
+    "eddiewerk:kern": { k: "merk", t: "Malnehmen", s: "<b>3 · 5</b> heißt: 3-mal die 5. Das ist 5 + 5 + 5 = 15.",
+      ex: [["🔵", "3 · 5 = *15*", "3-mal die 5"], ["🔁", "5 · 3 = *15*", "tauschen geht"]], say: "Malnehmen. 3 mal 5 heißt: 3 mal die 5. Das ist 5 plus 5 plus 5 gleich 15." },
+    "eddiewerk:geteilt": { k: "merk", t: "Geteilt", s: "Geteilt ist die <b>Umkehrung</b> von mal. Geht es nicht auf, bleibt ein <b>Rest</b>.",
+      ex: [["➗", "15 : 5 = *3*", "weil 3 · 5 = 15"], ["🧩", "23 : 5 = *4 Rest 3*", "4 · 5 = 20, noch 3"]], say: "Geteilt ist die Umkehrung von mal. 15 geteilt durch 5 gleich 3, weil 3 mal 5 gleich 15. Geht es nicht auf, bleibt ein Rest." },
+    "eddiewerk:luecke": { k: "tipp", t: "Fehlende Zahl", s: "Denk an die passende <b>Malaufgabe</b> oder zähle in Schritten bis zum Ergebnis.",
+      ex: [["❓", "? · 5 = 30", "5, 10, 15 … 30"], ["✅", "*6* · 5 = 30", "6 Schritte"]], say: "Denk an die passende Malaufgabe, oder zähle in Schritten bis zum Ergebnis." },
+    "eddiewerk:kniff": { k: "tipp", t: "Rechentricks", s: "<b>Tauschen</b>, eine <b>Nachbaraufgabe</b> nehmen oder <b>zerlegen</b>: Aus einer schweren Aufgabe werden leichte.",
+      ex: [["🔁", "3 · 8 = 8 · 3", "tauschen"], ["🔟", "9 · 7 = 70 − 7", "Nachbar"], ["✂️", "7 · 8 = 40 + 16", "zerlegen"]], say: "Tauschen, eine Nachbaraufgabe nehmen oder zerlegen. So werden aus schweren Aufgaben leichte." },
+    "eddiewerk:gross": { k: "merk", t: "Mit Zehnern rechnen", s: "Rechne die <b>Einmaleins-Aufgabe</b> und denk dann an die <b>Nullen</b>.",
+      ex: [["1️⃣", "3 · 4 = 12", "Einmaleins"], ["🔟", "3 · 40 = *120*", "eine Null dazu"]], say: "Rechne die Einmaleins-Aufgabe und denk dann an die Nullen. 3 mal 4 gleich 12, also 3 mal 40 gleich 120." },
+    "eddiewerk:sach": { k: "tipp", t: "Rechengeschichten", s: "<b>Je</b> und <b>in jeder</b> heißt oft <b>mal</b>. <b>Gerecht verteilen</b> heißt <b>geteilt</b>.",
+      ex: [["📦", "4 Kisten, je 6", "4 · 6 = 24"], ["🤝", "24 auf 4 verteilen", "24 : 4 = 6"]], say: "Je und in jeder heißt oft mal. Gerecht verteilen heißt geteilt." },
     "schrittweise:plus": { k: "merk", t: "Plus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Einer</b> dazu. <b>2.</b> Dann die <b>Zehner</b> dazu.",
       ex: [["1️⃣", "34 + *5* = 39", "erst Einer"], ["2️⃣", "39 + *20* = 59", "dann Zehner"]], v: "🧩 25 = 5 + 20", say: "Plus in zwei Schritten. 34 plus 25: Erst die Einer: 34 plus 5 gleich 39. Dann die Zehner: 39 plus 20 gleich 59." },
     "schrittweise:minus": { k: "merk", t: "Minus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Einer</b> weg. <b>2.</b> Dann die <b>Zehner</b> weg.",
@@ -8393,7 +8923,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   /* ==== SCHULHAUS START ====
      Das Schulhaus der Klasse 2a als Zeichentrick (nach einem Foto der Schule).
      Unten unter dem Vordach: Nemos Klasse (Deutsch). Oben im Neubau: Pollys Klasse (Mathe) – hinauf über die Außentreppe am Altbau.
-     Jedes Kind sucht sich eine Figur aus und läuft damit über den Schulhof in den Raum. Im Raum geht es wie gewohnt über die Inseln. */
+     Jedes Kind sucht sich eine Figur aus und läuft damit durch das Schulhaus in den Raum. Im Raum geht es wie gewohnt über die Inseln. */
   const KIDS = [ // kleine Superheldinnen und Superhelden: Haut, Haare, Frisur, Anzug, Umhang, Maske, Abzeichen
     { skin: "#f6d3b3", hair: "#6b3e1f", style: "short", suit: "#3a86ff", cape: "#ffb703", mask: "#ffb703", logo: "star" },
     { skin: "#f1c9a5", hair: "#e3b04b", style: "pony", suit: "#9b5de5", cape: "#2ec4b6", mask: "#2ec4b6", logo: "bolt" },
@@ -8606,7 +9136,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
      Gleiche Koordinaten wie der Schnitt. Nur flache Farben (keine Verläufe mit IDs), damit mehrere Bilder nebeneinander gehen.
      Aus jedem Fenster schaut das Klassentier – die Stockwerke selbst sieht man erst, wenn die Klappen aufgehen. */
   const FLAP_TOP = { og: 200, eg: 432, kg: 650 };
-  const FDOOR = 1037;   // Haupteingang außen (etwas links; rechts daneben liegt die Haiklasse)
+  const FDOOR = 869;   // Haupteingang außen: im Neubau ganz rechts, wo früher das schmale Fenster ohne Klassentier war
   const peek = (r, x, y) => r.world === "polly" || r.world === "eule" ? `<svg x="${x - 34}" y="${y - 60}" width="68" height="68" viewBox="0 0 100 100">${birdArt(r)}</svg>`
     : r.lynx || r.mouse ? critSVG(r, x - 28, y - 54, 56) : `<text x="${x}" y="${y - 8}" text-anchor="middle" class="emo" font-size="44">${r.world === "nemo" ? "🦈" : r.emo}</text>`;
   function win(x, y, w, h, room) {
@@ -8631,21 +9161,21 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       s += `<path d="M952 196 V432 M1306 196 V432" stroke="#ddd6c9" stroke-width="4"/>`;
     } else if (part === "eg") {
       s += `<rect x="22" y="432" width="946" height="220" fill="#b8b1a6"/><rect x="22" y="432" width="946" height="14" fill="#cbc3b6"/>`;
-      [[44, 486, 144, 128, "loewe"], [208, 486, 144, 128], [400, 486, 120, 128, "otter"], [541, 486, 119, 128], [690, 486, 120, 128], [831, 486, 80, 128]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
+      [[44, 486, 144, 128, "loewe"], [208, 486, 144, 128], [400, 486, 120, 128, "otter"], [541, 486, 119, 128], [690, 486, 120, 128]].forEach(([x, y, w, h, id]) => { s += win(x, y, w, h, id && room(id)); });
       // Sonnensegel, Pfosten mit Polstern, weiße Säule, Bank
       s += `<polygon points="22,452 560,446 610,474 22,494" fill="#2f5fd0"/><path d="M22 494 L610 474" stroke="#1f47a8" stroke-width="3"/>`;
       [380, 670].forEach(x => { s += `<rect x="${x - 5}" y="454" width="10" height="198" fill="#b3bcc3"/><rect x="${x - 12}" y="566" width="24" height="86" rx="6" fill="#2f5fd0"/><path d="M${x - 4} 574 V644" stroke="rgba(255,255,255,.4)" stroke-width="3"/>`; });
       s += `<rect x="928" y="454" width="22" height="198" fill="#eef0f2"/><path d="M934 456 V650" stroke="#cfd3d6" stroke-width="4"/>`;
       s += `<rect x="440" y="622" width="170" height="10" rx="3" fill="#b07a4a"/><path d="M452 632 V652 M598 632 V652" stroke="#6b4e35" stroke-width="5"/>`;
-      // Altbau unten mit Haupteingang
+      // Altbau unten; der Haupteingang liegt links daneben im Neubau
       s += `<rect x="952" y="432" width="354" height="220" fill="#f4f1ea"/><rect x="952" y="432" width="354" height="14" fill="#e2dccf"/><path d="M952 432 V652 M1306 432 V652" stroke="#ddd6c9" stroke-width="4"/>`;
       const D = FDOOR;
       s += `<g class="fdoor"><rect x="${D - 47}" y="494" width="94" height="158" fill="#55606a"/><rect x="${D - 41}" y="500" width="82" height="152" fill="#24323e"/>
         <g class="leaf l"><rect x="${D - 41}" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="${D - 9}" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
         <g class="leaf r"><rect x="${D}" y="500" width="41" height="152" fill="#cde9f7" stroke="#55606a" stroke-width="3"/><rect x="${D + 5}" y="568" width="4" height="34" rx="2" fill="#55606a"/></g>
         <path d="M${D - 35} 512 l14 0 l-10 24 l-14 0 Z" fill="rgba(255,255,255,.6)"/></g>
-        <polygon points="${D - 67},478 ${D + 67},478 ${D + 55},494 ${D - 55},494" fill="#4a5059"/><rect x="${D - 57}" y="646" width="114" height="8" rx="2" fill="#9aa1a6"/>`;
-      // rechts neben dem Eingang: die Haiklasse – auf dieser Seite ohne Fenster, nur ein Schild
+        <polygon points="${D - 57},478 ${D + 57},478 ${D + 50},494 ${D - 50},494" fill="#4a5059"/><rect x="${D - 52}" y="646" width="104" height="8" rx="2" fill="#9aa1a6"/>`;
+      // am Altbau: das Schild der Haiklasse (Nemos Klasse)
       s += `<circle cx="1206" cy="548" r="36" fill="#fff" stroke="#3a86ff" stroke-width="6"/><text x="1206" y="563" text-anchor="middle" class="emo" font-size="40">🦈</text>`;
     } else {
       // die Insel: Wiese, Sandstrand, Meer – mit Nemo im Wasser
@@ -8654,32 +9184,32 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       s += `<path d="M0 650 H1400 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#f2d49b"/>
         <path d="M0 752 Q130 778 260 788 Q470 806 700 806 Q930 806 1150 786 Q1290 774 1400 738 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#e3bd7c"/>
         <rect x="0" y="650" width="1400" height="24" fill="${SE().grass}"/><path d="M0 674 Q60 684 120 674 T240 674 T360 674 T480 674 T600 674 T720 674 T840 674 T960 674 T1080 674 T1200 674 T1320 674 T1440 674" fill="${SE().grass}"/><path d="M0 651 H1400" stroke="${SE().edge}" stroke-width="3"/>${seasonDeco()}
-        ${yardBits()}`;
-      [[120, 712], [380, 740], [540, 716], [300, 776]].forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="${4 + i % 3}" fill="#c9a66b"/>`; });
-      s += `<text x="470" y="792" text-anchor="middle" class="emo" font-size="34">⭐</text><text x="210" y="760" text-anchor="middle" class="emo" font-size="30">🐚</text>
+        <polygon points="${FDOOR - 33},652 ${FDOOR + 33},652 ${FDOOR + 65},720 ${FDOOR - 65},720" fill="#d9d2c4"/>`;
+      [[120, 712], [380, 740], [560, 716], [1010, 744], [1250, 708], [1330, 742]].forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="${4 + i % 3}" fill="#c9a66b"/>`; });
+      s += `<text x="1290" y="770" text-anchor="middle" class="emo" font-size="34">⭐</text><text x="210" y="760" text-anchor="middle" class="emo" font-size="30">🐚</text>
         <g class="nemofin"><text x="330" y="912" text-anchor="middle" class="emo" font-size="70">🦈</text><g fill="none" stroke="#fff" stroke-width="3" opacity=".85"><circle cx="400" cy="860" r="7"/><circle cx="414" cy="838" r="5"/></g></g>
-        <text x="1060" y="930" text-anchor="middle" class="emo" font-size="40">🐠</text><text x="760" y="900" text-anchor="middle" class="emo" font-size="30">🐟</text>`;
+        <text x="640" y="936" text-anchor="middle" class="emo" font-size="40">🐠</text><text x="780" y="880" text-anchor="middle" class="emo" font-size="30">🐟</text>${isleBits()}`;
     }
     return s;
   }
-  // Schulhof vor dem Eingang: Pflaster, Hüpfkästchen und das große Hof-Schachbrett (zum Antippen: dort ist die Schachschule)
-  const CHESS_X = 968;   // hier steht der Held, wenn er am Schachbrett ist
-  function yardBits() {
-    let s = `<polygon points="${FDOOR - 33},652 ${FDOOR + 33},652 ${FDOOR + 46},680 ${FDOOR - 46},680" fill="#d9d2c4"/>
-      <path d="M606 676 H1346 Q1380 680 1384 706 Q1386 746 1330 764 Q1250 782 1160 788 Q900 804 640 794 Q572 786 566 744 Q566 700 606 676 Z" fill="#d9d2c4" stroke="#c2b9a8" stroke-width="3"/>
-      <path d="M588 706 H1382 M570 742 H1372 M600 774 H1220" stroke="#c9c0b0" stroke-width="2.5"/>`;
-    for (let x = 680; x < 1340; x += 104) s += `<path d="M${x} 678 L${x - 18} ${x > 1180 ? 762 : 794}" stroke="#c9c0b0" stroke-width="2.5"/>`;
-    // Hüpfkästchen mit Kreide
-    s += `<g transform="translate(1204 700) skewX(-14)" fill="none" stroke="#fff" stroke-width="3.5" opacity=".9"><rect x="0" y="0" width="32" height="26"/><rect x="32" y="0" width="32" height="26"/><rect x="64" y="-13" width="32" height="26"/><rect x="64" y="13" width="32" height="26"/><rect x="96" y="0" width="32" height="26"/><path d="M128 0 a26 26 0 0 1 0 26"/></g>`;
+  // Kleine Schach-Insel im Meer vor der Schule: ein Schachbrett zum Antippen – dort ist die Schachschule.
+  // Sie gehört zur untersten Klappe und ragt unten über das Bild hinaus (deshalb dort overflow: visible).
+  const ISLE = [1085, 950], CHESS_AT = [ISLE[0] - 152, ISLE[1] + 16];   // CHESS_AT: hier landet der Held auf der Schach-Insel
+  function isleBits() {
+    const cx = ISLE[0], cy = ISLE[1], P = SE();
+    let s = `<ellipse cx="${cx}" cy="${cy + 20}" rx="238" ry="74" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="5"/>
+      <ellipse cx="${cx}" cy="${cy + 15}" rx="218" ry="68" fill="#e3bd7c"/><ellipse cx="${cx}" cy="${cy + 4}" rx="218" ry="66" fill="#f2d49b"/>
+      <ellipse cx="${cx}" cy="${cy - 5}" rx="184" ry="50" fill="${P.grass}" stroke="${P.edge}" stroke-width="3"/>`;
+    [[-196, 26], [176, 44], [-60, 60], [70, 58]].forEach(([x, y], i) => { s += `<circle cx="${cx + x}" cy="${cy + y}" r="${4 + i % 2}" fill="#c9a66b"/>`; });
     // Schachbrett (schräg von oben gesehen)
-    const T = 694, H = 84, xl = (u) => 716 - 30 * u, xr = (u) => 916 + 30 * u, px = (i, j) => (xl(i / 8) + (xr(i / 8) - xl(i / 8)) * j / 8).toFixed(1), py = (i) => (T + H * i / 8).toFixed(1);
+    const T = cy - 48, H = 76, xl = (u) => cx - 96 - 26 * u, xr = (u) => cx + 96 + 26 * u, px = (i, j) => (xl(i / 8) + (xr(i / 8) - xl(i / 8)) * j / 8).toFixed(1), py = (i) => (T + H * i / 8).toFixed(1);
     let b = `<polygon points="${xl(0) - 7},${T - 6} ${xr(0) + 7},${T - 6} ${xr(1) + 9},${T + H + 8} ${xl(1) - 9},${T + H + 8}" fill="#6b4226"/>`;
     for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) b += `<polygon points="${px(i, j)},${py(i)} ${px(i, j + 1)},${py(i)} ${px(i + 1, j + 1)},${py(i + 1)} ${px(i + 1, j)},${py(i + 1)}" fill="${(i + j) % 2 ? "#8a5a2b" : "#f6e7c8"}"/>`;
     const pc = (code, x, y, sz) => `<svg x="${x - sz / 2}" y="${y - sz * 0.92}" width="${sz}" height="${sz}" viewBox="0 0 100 100" class="chp ${code[0] === "w" ? "cw" : "cb2"}">${CH_SHAPE[code[1]]}${CH_BASE}</svg>`;
-    s += `<g class="chesshot" role="button" tabindex="0" aria-label="Zur Schachschule auf dem Schulhof"><rect x="570" y="652" width="400" height="156" fill="transparent"/>
-      <ellipse class="chessring" cx="816" cy="738" rx="158" ry="62" fill="none" stroke="#ffd60a" stroke-width="7"/>${b}
-      ${pc("bT", 748, 716, 58)}${pc("bK", 846, 714, 66)}${pc("wS", 790, 760, 74)}${pc("wB", 884, 772, 62)}
-      <path d="M640 792 V706" stroke="#6b4226" stroke-width="8" stroke-linecap="round"/><rect x="580" y="664" width="120" height="48" rx="9" fill="#fff8e7" stroke="#6b4226" stroke-width="5"/><text x="640" y="699" text-anchor="middle" font-size="30" font-weight="900" fill="#17324a">Schach</text></g>`;
+    s += `<g class="chesshot" role="button" tabindex="0" aria-label="Zur Schachschule auf der Schach-Insel"><rect x="${cx - 240}" y="${cy - 118}" width="480" height="212" fill="transparent"/>
+      <ellipse class="chessring" cx="${cx}" cy="${cy + 6}" rx="232" ry="82" fill="none" stroke="#ffd60a" stroke-width="7"/>${b}
+      ${pc("bT", cx - 62, T + 24, 54)}${pc("bK", cx + 34, T + 22, 62)}${pc("wS", cx - 20, T + 64, 70)}${pc("wB", cx + 70, T + 74, 58)}
+      <path d="M${cx + 172} ${cy + 6} V${cy - 62}" stroke="#6b4226" stroke-width="8" stroke-linecap="round"/><rect x="${cx + 114}" y="${cy - 108}" width="116" height="46" rx="9" fill="#fff8e7" stroke="#6b4226" stroke-width="5"/><text x="${cx + 172}" y="${cy - 75}" text-anchor="middle" font-size="29" font-weight="900" fill="#17324a">Schach</text></g>`;
     return s;
   }
   // Kleinigkeiten auf der Wiese vor der Schule
@@ -8750,7 +9280,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   }
   /* ==== SCHULHAUS ENDE ==== */
   /* ---------- Schulhaus: mit dem Superhelden durch Flure und Treppenhaus ---------- */
-  let hero = { floor: "eg", x: ST.entry }, walking = null, inside = false, outX = 1132;
+  const GROUND = 654, OUT_X = FDOOR + 96;   // draußen: Höhe der Wiese und der Platz neben der Tür
+  let hero = { floor: "eg", x: ST.entry }, walking = null, inside = false, outX = OUT_X, outY = GROUND;
   const reducedMotion = () => { try { return !!window.__FAST_WALK || matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
   const roomById = (id) => ROOMS.find(r => r.id === id);
   const roomAt = () => ROOMS.find(r => r.floor === hero.floor && Math.abs(r.x - hero.x) < 2);
@@ -8758,31 +9289,42 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function kidAt(x, y) { const g = $("schKid"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(.78)`); }
   // Außenansicht über dem Schnitt: drei Klappen und der Held draußen vor der Tür
   const facadeHTML = () => `<div class="facade" id="schFac" role="button" aria-label="In die Schule gehen">${["kg", "eg", "og"].map(f => `<div class="flap f-${f}" style="--hy:${(FLAP_TOP[f] / 9.6).toFixed(2)}%">${facadeSVG(f)}</div>`).join("")}<svg viewBox="0 0 1400 960" class="school outk" aria-hidden="true"><g id="schKidOut"></g></svg></div>`;
-  const kidOutAt = (x) => { const g = $("schKidOut"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} 654) scale(.78)`); };
+  const kidOutAt = (x, y = GROUND) => { const g = $("schKidOut"); if (g) g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(.78)`); };
   function drawSchool() {
     const wrap = $("schoolWrap"); wrap.innerHTML = `<div class="schstage${inside ? "" : " out"}" id="schStage">${sceneSVG("wsSky")}${schoolSVG()}${inside ? "" : facadeHTML()}</div>`;
     $("schKid").innerHTML = kidSVG(S.fig == null ? 0 : S.fig);
     kidAt(hero.x, FLOORS[hero.floor]);
-    if (!inside) { $("schKidOut").innerHTML = kidSVG(S.fig == null ? 0 : S.fig); kidOutAt(outX); $("schFac").addEventListener("click", () => goIn()); }
+    if (!inside) { $("schKidOut").innerHTML = kidSVG(S.fig == null ? 0 : S.fig); kidOutAt(outX, outY); $("schFac").addEventListener("click", () => goIn()); }
     wrap.querySelectorAll(".door").forEach(d => d.addEventListener("click", () => goRoom(d.dataset.room)));
     const hot = wrap.querySelector(".facade .chesshot");
     if (hot) { hot.addEventListener("click", (e) => { e.stopPropagation(); goChess(); }); hot.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); goChess(); } }); }
     schInfo();
   }
-  // Zum Schachbrett auf dem Schulhof laufen – dort ist die Schachschule
+  // Der Superheld fliegt draußen in einem Bogen an einen anderen Platz (zur Schach-Insel und zurück)
+  function flyKid(to, then) {
+    const g = $("schKidOut"), kid = g && g.querySelector(".kid"), x0 = outX, y0 = outY;
+    if (reducedMotion() || !kid) { outX = to[0]; outY = to[1]; kidOutAt(outX, outY); return then(); }
+    kid.classList.remove("walk", "hello"); kid.classList.add("fly");
+    const t0 = performance.now(), dur = Math.max(520, Math.hypot(to[0] - x0, to[1] - y0) / 440 * 1000);
+    const step = (now) => { const u = Math.min(1, (now - t0) / dur), e = u * u * (3 - 2 * u);
+      outX = x0 + (to[0] - x0) * e; outY = y0 + (to[1] - y0) * e; kidOutAt(outX, outY - Math.sin(Math.PI * u) * 80);
+      if (u < 1) return requestAnimationFrame(step);
+      kid.classList.remove("fly"); then(); };
+    requestAnimationFrame(step);
+  }
+  // Zur kleinen Schach-Insel fliegen – dort ist die Schachschule
   function goChess() {
     if (busy() || entering) return;
     if (walking) { walking.skip = true; return; }
     if (inside) { const out = () => { goOut(); setTimeout(goChess, reducedMotion() ? 0 : 1000); }; if (hero.floor === "eg" && Math.abs(hero.x - ST.entry) < 2) out(); else move(planTo("eg", ST.entry), out); return; }
-    tone([523, 659, 784, 1047], 0.07); speak("Auf zum Schachbrett!");
-    const g = $("schKidOut"), kid = g && g.querySelector(".kid"), x0 = outX;
-    if (reducedMotion() || !kid) { outX = CHESS_X; return enterWorld("schach"); }
-    entering = true; kid.classList.add("walk"); const t0 = performance.now(), dur = Math.max(200, Math.abs(x0 - CHESS_X) / 560 * 1000);
-    const walk = (now) => { const u = Math.min(1, (now - t0) / dur); outX = x0 + (CHESS_X - x0) * u; kidOutAt(outX);
-      if (u < 1) return requestAnimationFrame(walk);
-      kid.classList.remove("walk"); kid.classList.add("hello"); entering = false;
-      setTimeout(() => { if (current === "scrWorld") enterWorld("schach"); }, 420); };
-    requestAnimationFrame(walk);
+    tone([523, 659, 784, 1047], 0.07); speak("Auf zur Schach-Insel!");
+    entering = true;
+    flyKid(CHESS_AT, () => {
+      entering = false;
+      if (reducedMotion()) return enterWorld("schach");
+      const kid = $("schKidOut") && $("schKidOut").querySelector(".kid"); if (kid) kid.classList.add("hello");
+      setTimeout(() => { if (current === "scrWorld") enterWorld("schach"); }, 420);
+    });
   }
   // Wegpunkte von der Figur zu einem Ziel (Stockwerk, x) – über das Treppenhaus
   function planTo(floor, x) {
@@ -8821,11 +9363,16 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function goIn(then) {
     if (inside || entering || busy()) return;
     const fac = $("schFac"); if (!fac) { inside = true; return then && then(); }
+    if (outY !== GROUND) { entering = true; return flyKid([OUT_X, GROUND], () => { entering = false; goIn(then); }); }   // von der Schach-Insel zurück vor die Schule
     entering = true; tone([523, 659, 784], 0.07);
-    const finish = () => { if (!entering) return; entering = false; inside = true; outX = 1132; hero = { floor: "eg", x: ST.entry }; kidAt(ST.entry, FLOORS.eg);
+    // drinnen steht der Held zuerst hinter der Tür und läuft dann zum Eingang am Treppenhaus
+    hero = { floor: "eg", x: FDOOR }; kidAt(FDOOR, FLOORS.eg);
+    const finish = () => { if (!entering) return; entering = false; inside = true; outX = OUT_X; outY = GROUND;
       const f = $("schFac"); if (f) { f.style.pointerEvents = "none"; f.removeAttribute("id"); setTimeout(() => f.remove(), 800); } schInfo();
-      const kid = $("schKid").querySelector(".kid"); if (kid) { kid.classList.add("hello"); setTimeout(() => kid.classList.remove("hello"), 1400); }
-      if (then) then(); else speak("Wir sind drin! Nemos Klasse ist im Erdgeschoss. Pollys Klasse ist oben. Lauf mit den Pfeilen oder tippe auf eine Tür."); };
+      if (then) return then();
+      move({ pts: [[ST.entry, FLOORS.eg]], floor: "eg", x: ST.entry }, () => {
+        const kid = $("schKid").querySelector(".kid"); if (kid) { kid.classList.add("hello"); setTimeout(() => kid.classList.remove("hello"), 1400); }
+        speak("Wir sind drin! Nemos Klasse ist im Erdgeschoss. Pollys Klasse ist oben. Lauf mit den Pfeilen oder tippe auf eine Tür."); }); };
     if (reducedMotion()) return finish();
     const kid = $("schKidOut").querySelector(".kid"), x0 = outX, t0 = performance.now(), dur = Math.max(1, Math.abs(x0 - FDOOR)) / 560 * 1000;
     if (kid) kid.classList.add("walk"); fac.classList.add("dooropen"); const stg = $("schStage"); if (stg) stg.classList.remove("out");
@@ -8846,7 +9393,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   // Rausgehen (▶ am Eingang): die Klappen gehen wieder zu
   function goOut() {
     if (!inside || walking || busy()) return;
-    inside = false; outX = 1132; drawSchool(); const fac = $("schFac"), stg = $("schStage");
+    inside = false; outX = OUT_X; outY = GROUND; drawSchool(); const fac = $("schFac"), stg = $("schStage");
     if (!reducedMotion()) { fac.classList.add("open", "dooropen"); stg.classList.remove("out"); void fac.getBoundingClientRect(); requestAnimationFrame(() => requestAnimationFrame(() => { fac.classList.remove("open"); stg.classList.add("out"); setTimeout(() => fac.classList.remove("dooropen"), 900); })); }
     else fac.classList.remove("dooropen");
     speak("Jetzt bist du draußen vor der Schule.");
@@ -8932,7 +9479,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const ss = st("schach"); $("wtSchach").textContent = `⭐ ${ss}`; $("wtSchach").hidden = !ss;
     updateFoot(); $("resetBtn2").textContent = $("resetBtn").textContent; $("whoTag2").hidden = $("whoTag").hidden; $("whoTag2").textContent = $("whoTag").textContent;
     setCoins(false); show("scrWorld");
-    walking = null; entering = false; if (S.fig == null) { hero = { floor: "eg", x: ST.entry }; inside = false; }
+    walking = null; entering = false; if (S.fig == null) { hero = { floor: "eg", x: ST.entry }; inside = false; outX = OUT_X; outY = GROUND; }
     drawSchool();
     const back = roomAt();
     if (back && back.world && !reducedMotion()) { // aus der Klasse zurück in den Flur: herauszoomen
@@ -8955,7 +9502,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
     lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
     rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über den Zehner", "der Insel Plus über den Zehner"], minus10: ["Minus über den Zehner", "der Insel Minus über den Zehner"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"], schrittweise: ["Schritte-Inseln", "den Schritte-Inseln"],
-    schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"] };
+    eddiewerk: ["Eddies Werkstatt", "Eddies Werkstatt"], schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"] };
   function freiParse() {
     if (SCHOOL) return null;
     const m = location.hash.match(/(?:^#|&)f=([A-Za-z0-9_-]+)/); if (!m) return null;
