@@ -812,6 +812,77 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .eqline .stepnum { color: #c2410c; }
 .eqline .qmark { color: #b8860b; min-width: 1.1em; text-align: center; }
 .eqline .qmark.ok { color: var(--good); }
+/* ---------- Schachschule ---------- */
+body.schach .sky { display: block; }
+body.schach .rays, body.schach #bubbles { display: none; }
+body.schach { --deep: #174d33; --sea: #3a9d68; --shallow: #a6e3ad; --shadow: rgba(10, 50, 30, 0.33);
+  background: #3a9d68; background-image: linear-gradient(180deg, #c8f0c0 0%, #7fd28a 30%, #3fa663 66%, #1f6f47 100%); background-attachment: fixed; }
+body.schach #scrPlay .stage { background: rgba(255, 252, 240, .2); }
+body.schach .taskrow .task { background: rgba(10, 60, 40, .4); }
+.qroom.schach-r { background: linear-gradient(160deg, #b9ecae, #3a9d68 60%, #1f6f47); --edge: #134a30; }
+.facade .flap .chesshot { pointer-events: auto; cursor: pointer; }
+.chesshot:focus { outline: none; } .chesshot:focus-visible .chessring { stroke: #fff; }
+.chessring { animation: chring 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes chring { 0%, 100% { opacity: .15; transform: scale(.94); } 50% { opacity: .95; transform: scale(1.04); } }
+.school.outside .chessring { display: none; }
+.chwrap { display: grid; grid-template-columns: auto minmax(230px, 360px); grid-template-areas: "b q" "b a"; gap: 14px 30px; align-items: center; justify-content: center; width: 100%; }
+.chwrap > .chpic { grid-area: b; } .chwrap > .chq { grid-area: q; align-self: end; margin: 0; }
+.chwrap > .cha { grid-area: a; align-self: start; display: flex; flex-direction: column; align-items: center; gap: 12px; min-height: 64px; }
+.chwrap > .chq[hidden] { display: none; }
+.chq small { display: block; font-size: .62em; font-weight: 800; opacity: .75; margin-top: 4px; }
+.cha .opts { width: 100%; gap: 12px; } .cha .opt { min-width: 110px; font-size: clamp(22px, 3.4vw, 30px); padding: 12px 16px; flex: 1 1 40%; }
+@media (max-aspect-ratio: 1/1) { .chwrap { grid-template-columns: minmax(0, 1fr); grid-template-areas: "q" "b" "a"; justify-items: center; gap: 12px; } .chwrap > .chq { align-self: center; } .chwrap > .cha { min-height: 0; } }
+.cb { --bs: min(46vw, 58vh, 520px); display: grid; grid-template-columns: auto var(--bs); gap: 4px 6px; user-select: none; -webkit-user-select: none; }
+@media (max-aspect-ratio: 1/1) { .cb { --bs: min(82vw, 46vh, 520px); } }
+.cb.nocoord { grid-template-columns: var(--bs); }
+.cb-nums { display: grid; grid-template-rows: repeat(8, 1fr); align-items: center; justify-items: center; height: var(--bs); min-width: 1em; }
+.cb-let { grid-column: 2; display: grid; grid-template-columns: repeat(8, 1fr); justify-items: center; }
+.cb-nums span, .cb-let span { color: #fff; font-weight: 900; font-size: clamp(14px, 2.3vh, 21px); text-shadow: 0 2px 0 var(--deep); line-height: 1; border-radius: 8px; padding: 2px 5px; }
+.cb-nums span.on, .cb-let span.on { background: var(--gold); color: #17324a; text-shadow: none; }
+.cb-grid { width: var(--bs); height: var(--bs); display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); border: 5px solid #6b4226; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 0 #4f2c12, 0 14px 24px var(--shadow); box-sizing: content-box; background: #6b4226; }
+.cq { position: relative; padding: 0; margin: 0; border: 0; border-radius: 0; min-width: 0; min-height: 0; display: block; overflow: visible; -webkit-tap-highlight-color: transparent; }
+.cq.l { background-color: #f6e7c8; } .cq.d { background-color: #b98a5e; }
+.cq:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+.chp { overflow: visible; }
+.cq .chp { position: absolute; left: 7%; top: 5%; width: 86%; height: 88%; pointer-events: none; z-index: 2; }
+.chp path, .chp circle { stroke-linejoin: round; stroke-linecap: round; stroke-width: 3.6; }
+.chp.cw path, .chp.cw circle { fill: #fffdf6; stroke: #2b2d42; }
+.chp.cb2 path, .chp.cb2 circle { fill: #3d4263; stroke: #14172a; }
+.chp .ln { fill: none !important; } .chp.cw .ln { stroke: #2b2d42; stroke-width: 3; } .chp.cb2 .ln { stroke: #b9bfe0; stroke-width: 3; }
+.chp.cw .ey { fill: #2b2d42; stroke: none; } .chp.cb2 .ey { fill: #fff; stroke: none; }
+.chp.pop { animation: chpop .3s ease-out; } .chp.gone { opacity: 0; transition: opacity .3s; }
+@keyframes chpop { from { transform: scale(.3); opacity: 0; } to { transform: none; opacity: 1; } }
+.cq .cm { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 3; font-style: normal; }
+.cq.m-star .cm::before { content: "⭐"; font-size: calc(var(--bs) / 8 * .6); line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
+.cq.m-dot .cm::before { content: ""; width: 32%; height: 32%; border-radius: 50%; background: rgba(23, 50, 74, .36); }
+.cq.m-q .cm::before { content: "?"; font-weight: 900; color: #c2410c; font-size: calc(var(--bs) / 8 * .7); line-height: 1; }
+.cq.m-hl { box-shadow: inset 0 0 0 calc(var(--bs) / 8 * .1) #ffd60a; background-image: linear-gradient(rgba(255, 214, 10, .4), rgba(255, 214, 10, .4)); }
+.cq.m-sel { box-shadow: inset 0 0 0 calc(var(--bs) / 8 * .09) #3a86ff; background-image: linear-gradient(rgba(58, 134, 255, .3), rgba(58, 134, 255, .3)); }
+.cq.m-from, .cq.m-to { background-image: linear-gradient(rgba(255, 214, 10, .42), rgba(255, 214, 10, .42)); }
+.cq.m-chk { background-image: radial-gradient(circle, rgba(230, 57, 70, .95) 0%, rgba(230, 57, 70, .78) 45%, rgba(230, 57, 70, 0) 72%); }
+.cq.m-ok { background-image: linear-gradient(rgba(60, 190, 110, .66), rgba(60, 190, 110, .66)); }
+.cq.m-ok.m-star .cm::before { content: "✅"; }
+.cq.m-no { background-image: linear-gradient(rgba(230, 57, 70, .62), rgba(230, 57, 70, .62)); }
+.cb.static .cq { cursor: default; }
+.cb.small { --bs: min(248px, 58vw); gap: 2px 4px; margin: 0 auto 6px; width: max-content; } .cb.small .cb-grid { border-width: 3px; border-radius: 8px; box-shadow: 0 4px 0 #4f2c12; }
+.cb.small .cb-nums span, .cb.small .cb-let span { font-size: 12px; color: #6b4226; text-shadow: none; padding: 1px 3px; }
+.cb.small .cb-nums span.on, .cb.small .cb-let span.on { color: #17324a; }
+.chbig { display: flex; gap: 18px; justify-content: center; }
+.chbig-p { width: min(34vw, 30vh, 230px); aspect-ratio: 1; border-radius: 22px; display: grid; place-items: center; border: 5px solid #6b4226; box-shadow: 0 8px 0 #4f2c12, 0 14px 24px var(--shadow); }
+.chbig.two .chbig-p { width: min(30vw, 24vh, 190px); }
+.chbig-p.l { background: #f6e7c8; } .chbig-p.d { background: #b98a5e; }
+.chbig-p .chp { width: 84%; height: 84%; }
+.chrow6 { display: flex; flex-wrap: wrap; gap: 6px 8px; justify-content: center; } .chrow6 span { display: flex; flex-direction: column; align-items: center; background: #ecd9b0; border-radius: 12px; padding: 4px 8px; min-width: 58px; }
+.chrow6 .chp { width: 46px; height: 46px; } .chrow6 b { font-size: 14px; } .chrow6.val b { font-size: 22px; } .chrow6.one .chp { width: 96px; height: 96px; }
+.chcnt { min-height: 1.3em; }
+.rc-pic .chp { width: 1.5em; height: 1.5em; vertical-align: middle; }
+/* Rechenstrich (Rechnen in Schritten) */
+.rs-box { background: #fffaf0; border-radius: 18px; padding: 8px 10px 4px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); }
+.rstrich { display: block; width: min(380px, 80vw); height: auto; }
+.rstrich .rs-n { font: 900 24px Inter, system-ui, sans-serif; fill: #17324a; } .rstrich .rs-l { font: 900 21px Inter, system-ui, sans-serif; }
+.rstrich .q { opacity: .45; }
+.tf-field.tf-pic { background: none; padding: 0; } .tf-field .rs-box { box-shadow: none; } .tf-field .rstrich { width: min(330px, 74vw); }
+.xp-now .rs-box { display: inline-block; box-shadow: none; border: 2px solid var(--sand-edge); } .xp-now .rstrich { width: min(320px, 70vw); }
 .slotn { display: inline-grid; place-items: center; min-width: 1.5em; height: 1.2em; padding: 0 .12em; border-radius: 14px; border: 4px dashed var(--sand-edge); background: #fff; color: var(--ink); box-sizing: border-box; font-variant-numeric: tabular-nums; }
 .slotn.act { border: 4px solid var(--gold); box-shadow: 0 0 0 5px rgba(255,215,94,.5); }
 .slotn.ok { border: 4px solid var(--good); background: #e3f6e8; color: #145c2c; box-shadow: none; }
@@ -1089,7 +1160,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       <button class="padgo" id="mvIn">🚪 Rein!</button>
       <button class="padb" id="mvD" aria-label="Treppe runter">▼</button><button class="padb" id="mvR" aria-label="Nach rechts">▶</button>
     </div>
-    <div class="foot"><button class="qroom nemo-r" id="goNemo"><span aria-hidden="true">🦈</span> Nemos Klasse <span class="wt" id="wtNemo"></span></button><button class="qroom polly-r" id="goPolly"><span class="pollyfig" aria-hidden="true">🦜</span> Pollys Klasse <span class="wt" id="wtPolly"></span></button><button class="qroom eule-r" id="goEule"><span aria-hidden="true">🦉</span> Eulenklasse <span class="wt" id="wtEule"></span></button><button class="qroom out-r" id="goOutBtn" hidden>🌳 Raus aus der Schule</button><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
+    <div class="foot"><button class="qroom nemo-r" id="goNemo"><span aria-hidden="true">🦈</span> Nemos Klasse <span class="wt" id="wtNemo"></span></button><button class="qroom polly-r" id="goPolly"><span class="pollyfig" aria-hidden="true">🦜</span> Pollys Klasse <span class="wt" id="wtPolly"></span></button><button class="qroom eule-r" id="goEule"><span aria-hidden="true">🦉</span> Eulenklasse <span class="wt" id="wtEule"></span></button><button class="qroom schach-r" id="goSchach"><span aria-hidden="true">♟️</span> Schachschule <span class="wt" id="wtSchach"></span></button><button class="qroom out-r" id="goOutBtn" hidden>🌳 Raus aus der Schule</button><button class="voice" id="figBtn">🦸 Superheld wechseln</button><span class="who" id="whoTag2" hidden></span><button class="reset" id="resetBtn2">Neues Kind / neu starten</button></div>
   </section>
 
   <!-- HOME -->
@@ -1097,7 +1168,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 12.11. · Eddies Wald</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 16.11. · Schachschule</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1427,7 +1498,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     polly: { id: "polly", name: "Pollys Spielplatz", room: "Pollys Klasse", hero: "Polly", emo: "🦜", goes: "fliegt", go: "fliegen", place: "Dschungel", inPlace: "in deinem Dschungel", forPlace: "für deinen Dschungel",
       shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", art: "polly", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] },
     eule: { id: "eule", name: "Eddies Spielplatz", room: "Eulenklasse", hero: "Eddie", emo: "🦉", goes: "fliegt", go: "fliegen", place: "Wald", inPlace: "in deinem Wald", forPlace: "für deinen Wald",
-      shopTitle: "🌲 Eddies Wald", chest: "Eddies Schatzkiste", start: "🌲", art: "eddie", klasse: "die Eulenklasse", conf: ["🪶", "⭐", "🌙", "✨", "🔢", "🍂"], buyConf: ["🪶", "✨", "⭐", "🌙"] }
+      shopTitle: "🌲 Eddies Wald", chest: "Eddies Schatzkiste", start: "🌲", art: "eddie", klasse: "die Eulenklasse", conf: ["🪶", "⭐", "🌙", "✨", "🔢", "🍂"], buyConf: ["🪶", "✨", "⭐", "🌙"] },
+    // Schachschule auf dem Schulhof: kein eigener Laden – die Münzen gelten bei Nemo, Polly und Eddie
+    schach: { id: "schach", name: "Schachschule", room: "Schachschule", hero: "Hopsi", emo: "🐴", goes: "hüpft", go: "hüpfen", place: "Schachschule", inPlace: "in der Schachschule", forPlace: "für die Schachschule",
+      shopTitle: "♟️ Schachschule", chest: "Hopsis Schatzkiste", start: "🏁", art: "hopsi", klasse: "die Schachschule", conf: ["⭐", "✨", "🏆", "🐴", "👑", "🎉"], buyConf: ["✨", "⭐"] }
   };
   let W = WORLDS.nemo;
   const isPolly = () => W.id === "polly";
@@ -1443,13 +1517,13 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       btn: (n, pr) => pr ? "🥜 Nochmal knacken" : `🥜 ${n === 1 ? "Nuss" : "Nüsse"} knacken`,
       allTitle: "Alle Nüsse geknackt!", part: (p, n) => `${p} von ${n} Nüssen sind geknackt.`, retry: "Knack die harten Nüsse und versuch es nochmal!" }
   };
-  SHELL.eule = SHELL.polly;
+  SHELL.eule = SHELL.polly; SHELL.schach = SHELL.polly;
   const SH = () => SHELL[W.id];
   const isBird = () => W.id !== "nemo";
   const birdHTML = (sz) => `<span class="pi" style="width:${sz};height:${sz}">${artSVG(W.art || "polly")}</span>`;
   function setWorld(id) {
     W = WORLDS[id] || WORLDS.nemo;
-    document.body.classList.toggle("polly", isPolly()); document.body.classList.toggle("eule", W.id === "eule");
+    document.body.classList.toggle("polly", isPolly()); document.body.classList.toggle("eule", W.id === "eule"); document.body.classList.toggle("schach", W.id === "schach");
     document.querySelectorAll(".mascot").forEach(m => { m.innerHTML = isBird() ? birdHTML("1.05em") : W.emo; m.classList.toggle("polly-m", isBird()); });
     $("homeTitle").textContent = W.room; $("aquaTitle").textContent = W.shopTitle;
     $("mapHint").textContent = `Tippe auf eine Insel – ${W.hero} ${W.goes} hin!`;
@@ -3954,9 +4028,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       else if (k === "ok") {
         if (s.v === "") { hint("Tippe zuerst eine Zahl ein."); return; }
         const v = +s.v;
+        // anyOrder: Die ersten zwei Kästchen dürfen vertauscht sein (25 = 5 + 20 oder 25 = 20 + 5)
+        if (o.anyOrder && cur === 0 && v !== s.a && slots[1] && v === slots[1].a) { slots[1].a = s.a; s.a = v; }
         if (v === s.a) {
           s.el.classList.remove("act"); s.el.classList.add("ok"); tone([660 + cur * 80], 0.07);
           refs.forEach(r => { if (r.k === cur) { r.el.textContent = o.group ? fmtN(s.a) : s.a; r.el.classList.add("got"); } });
+          if (o.onSlot) o.onSlot(cur);
           cur++; fit();
           if (cur >= slots.length) {
             if (o.onDone) { o.onDone(); fit(); }
@@ -3967,7 +4044,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
           } else mark();
         } else {
           s.tries++;
-          let why = o.why ? o.why(cur, v, s.tries) : numWhy(s.a, v);
+          let why = o.why ? o.why(cur, v, s.tries, s.a) : numWhy(s.a, v);
           if (s.tries >= 2) why += ` Die Lösung ist ${o.group ? fmtN(s.a) : s.a}.`;
           miss(s.el, why); s.v = ""; s.el.textContent = ""; fit();
         }
@@ -4810,6 +4887,169 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   }
   const PLUS10 = ueberLevels("+"), MINUS10 = ueberLevels("−");
 
+  /* ======================= Rechnen in Schritten: erst die Einer, dann die Zehner =======================
+     Zwei zweistellige Zahlen, bei den Einern gibt es nie einen Zehnerübergang:
+     34 + 25 → 34 + 5 = 39, 39 + 20 = 59 · 58 − 23 → 58 − 3 = 55, 55 − 20 = 35
+     (e = Einer der zweiten Zahl, z = ihre Zehner, m = Zwischenergebnis nach den Einern, r = Ergebnis) */
+  function stepZE(op, d) {
+    const big = d !== "leicht", e2 = rint(1, 8), z2 = rint(1, big ? 6 : 2);
+    if (op === "+") {
+      const e1 = rint(1, 9 - e2), z1 = rint(1, big ? 8 : 5), a = 10 * z1 + e1, b = 10 * z2 + e2;
+      if (a + b > 99) return null;
+      return { a, op, b, e: e2, z: 10 * z2, m: a + e2, r: a + b, lab: `${a}+${b}` };
+    }
+    const e1 = rint(e2, 9), z1 = rint(z2 + (big ? 0 : 1), big ? 9 : 6), a = 10 * z1 + e1, b = 10 * z2 + e2;
+    if (a - b < 1) return null;
+    return { a, op, b, e: e2, z: 10 * z2, m: a - e2, r: a - b, lab: `${a}-${b}` };
+  }
+  // Rechenstrich: von a in zwei Sprüngen zum Ergebnis – kleiner Sprung für die Einer, großer Sprung für die Zehner.
+  // s = was schon dasteht: { e, m, z, r } (Sprung-Zahlen und Landeplätze); sonst steht dort ein Fragezeichen.
+  function rsHTML(x, s) {
+    s = s || { e: 1, m: 1, z: 1, r: 1 };
+    const P = x.op === "+", W0 = 340, H0 = 138, y = 92, xa = P ? 36 : W0 - 36, xm = P ? 118 : W0 - 118, xr = P ? W0 - 36 : 36, sg = P ? "+" : "−";
+    const arc = (x1, x2, h, c, t, on) => {
+      const cx = (x1 + x2) / 2, cy = y - 2 * h, dx = x2 - cx, dy = (y - 5) - cy, n = Math.hypot(dx, dy), ux = dx / n, uy = dy / n, tx = x2 - ux * 2, ty = y - 5 - uy * 2;
+      return `<g class="rs-j"><path d="M${x1} ${y - 5} Q${cx} ${cy} ${x2} ${y - 5}" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
+        <path d="M${tx.toFixed(1)} ${ty.toFixed(1)} L${(tx - ux * 12 - uy * 6).toFixed(1)} ${(ty - uy * 12 + ux * 6).toFixed(1)} L${(tx - ux * 12 + uy * 6).toFixed(1)} ${(ty - uy * 12 - ux * 6).toFixed(1)} Z" fill="${c}"/>
+        <text x="${cx}" y="${y - h - 12}" text-anchor="middle" class="rs-l${on ? "" : " q"}" fill="${c}">${on ? sg + " " + t : sg + " ?"}</text></g>`;
+    };
+    const tick = (xx, t, on) => `<path d="M${xx} ${y - 9} V${y + 9}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><text x="${xx}" y="${y + 34}" text-anchor="middle" class="rs-n${on ? "" : " q"}">${on ? t : "?"}</text>`;
+    return `<svg class="rstrich" viewBox="0 0 ${W0} ${H0}" role="img" aria-label="Rechenstrich"><path d="M10 ${y} H${W0 - 10}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/>
+      ${arc(xa, xm, 20, "#1d63d8", x.e, s.e)}${arc(xm, xr, 34, "#138a4b", x.z, s.z)}${tick(xa, x.a, true)}${tick(xm, x.m, s.m)}${tick(xr, x.r, s.r)}</svg>`;
+  }
+  function stepLevels() {
+    const o1 = (x) => opS(x.op), w1 = (x) => opW(x.op), dazu = (x) => x.op === "+" ? "dazu" : "weg";
+    const wayHTML = (x) => `Zerlege die ${x.b} in <b>${x.e}</b> und <b>${x.z}</b>. Erst die Einer: <b>${x.a} ${o1(x)} ${x.e} = ${x.m}</b>. Dann die Zehner: <b>${x.m} ${o1(x)} ${x.z} = ${x.r}</b>.`;
+    const waySay = (x) => `Zerlege die ${x.b} in ${x.e} und ${x.z}. Erst die Einer: ${x.a} ${w1(x)} ${x.e} gleich ${x.m}. Dann die Zehner: ${x.m} ${w1(x)} ${x.z} gleich ${x.r}.`;
+    const explainWay = (x) => x.chain ? { html: x.chain.map(c => `<p><b>${c.a} ${o1(c)} ${c.b}</b>: ${wayHTML(c)}</p>`).join(""), say: x.chain.map(c => `${c.a} ${w1(c)} ${c.b}. ${waySay(c)}`).join(" ") }
+      : { html: `<div class="rs-box">${rsHTML(x)}</div><p><b>${x.a} ${o1(x)} ${x.b}</b>: ${wayHTML(x)}</p>`, say: `${x.a} ${w1(x)} ${x.b}. ${waySay(x)}` };
+    // Tafel: Polly rechnet die Aufgabe (oder ein Beispiel) Schritt für Schritt vor
+    const demo = (op, d) => op === "+" ? (d === "leicht" ? { a: 34, op, b: 25, e: 5, z: 20, m: 39, r: 59 } : { a: 43, op, b: 36, e: 6, z: 30, m: 49, r: 79 })
+      : (d === "leicht" ? { a: 58, op, b: 23, e: 3, z: 20, m: 55, r: 35 } : { a: 87, op, b: 42, e: 2, z: 40, m: 85, r: 45 });
+    const tafelWay = (op0) => (x0, d) => {
+      let x = x0 || demo(op0 || "+", d), tail = " Jetzt du!";
+      if (x.chain) { x = x.chain[0]; tail = " Die zweite Aufgabe rechnest du genauso!"; }
+      if (x.e == null) return null;
+      const { a, b, e, z, m, r } = x, o = o1(x), P = x.op === "+";
+      const board = `<div class="tf-row r1">${tks(0, a, o)}${tkSplit(b, 0, e, 1, z, 2)}${tks(0, "=")}${tkQ("?", 5, r)}</div>
+        <div class="tf-row">${tk("1.", 3, "tf-tag")}${tks(3, a, o, [e, "c1"], "=", [m, "cz"])}</div>
+        <div class="tf-row">${tk("2.", 4, "tf-tag")}${tks(4, [m, "cz"], o, [z, "c2"], "=", r)}</div>`;
+      const steps = [`Wir rechnen <b>${a} ${o} ${b}</b>.`, `Die ${b} hat <b class="c1">${e}</b> Einer.`, `Und ${z / 10} Zehner – das sind <b class="c2">${z}</b>.`,
+        `Schritt 1: erst die Einer ${P ? "dazu" : "weg"}: <b>${a} ${o} ${e} = ${m}</b>.`, `Schritt 2: dann die Zehner ${P ? "dazu" : "weg"}: <b>${m} ${o} ${z} = ${r}</b>.`, `Also: <b>${a} ${o} ${b} = ${r}</b>.${tail}`];
+      return { board, steps, pic: (k) => `<div class="rs-box">${rsHTML(x, { e: k >= 3, m: k >= 3, z: k >= 4, r: k >= 4 })}</div>` };
+    };
+    // Aufgabe in zwei Schritten: leicht = die Sprung-Zahlen stehen schon da, sonst zerlegt das Kind selbst
+    function twoSteps(stage, x, d, pic) {
+      const g = d === "leicht", o = o1(x), st = { e: g, m: false, z: g, r: false };
+      const box = pic ? el("div", "rs-box", rsHTML(x, st)) : null, col = mathRow(stage, box);
+      const lines = [{ t: [x.a, o, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" },
+        { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.e), c: "stepnum" } : { a: x.e }, "=", { a: x.m }], c: "step" },
+        { t: [{ t: "2.", c: "tag" }, { ref: g ? 0 : 1 }, o, g ? { t: String(x.z), c: "stepnum" } : { a: x.z }, "=", { a: x.r }], c: "step" }];
+      const kind = g ? ["m", "r"] : ["e", "m", "z", "r"];
+      padTask(col, { layout: eqLayout(lines), say: `${x.a} ${w1(x)} ${x.b}. Rechne in zwei Schritten: erst die Einer, dann die Zehner.`,
+        why: (k, v) => { const w = kind[k];
+          if (w === "e") return v === x.z || v === x.b ? `Erst kommen nur die Einer dran. Wie viele Einer hat die ${x.b}?` : numWhy(x.e, v, `Wie viele Einer hat die ${x.b}?`);
+          if (w === "m") return numWhy(x.m, v, `Rechne nur mit den Einern: ${x.a} ${o} ${x.e}. Die Zehner bleiben gleich.`);
+          if (w === "z") return v === x.z / 10 ? `Fast! ${v} Zehner sind ${x.z}.` : numWhy(x.z, v, `Jetzt die Zehner von ${x.b}: ${x.z / 10} Zehner sind wie viel?`);
+          return numWhy(x.r, v, `Jetzt die Zehner ${dazu(x)}: ${x.m} ${o} ${x.z}. Die Einer bleiben gleich.`); },
+        onSlot: (k) => { st[kind[k]] = true; if (box) box.innerHTML = rsHTML(x, st); },
+        onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } },
+        okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${w1(x)} ${x.b} gleich ${x.r}.` });
+    }
+    const missing = (ops) => ({   // Experten: eine Zahl fehlt
+      task: () => "Welche Zahl fehlt?",
+      intro: () => XI + "Hier fehlt eine Zahl: 34 + ? = 59. Schau erst auf die Einer, dann auf die Zehner – oder rechne rückwärts!",
+      ex: () => ops.length > 1 ? "34 + <b>25</b> = 59 · <b>58</b> − 23 = 35" : ops[0] === "+" ? "34 + <b>25</b> = 59 · <b>43</b> + 36 = 79" : "58 − <b>23</b> = 35 · <b>87</b> − 42 = 45",
+      say: () => "Experten-Aufgabe! Hier fehlt eine Zahl. Schau erst auf die Einer, dann auf die Zehner. Oder rechne rückwärts.",
+      build() { return gen(8, (k) => { const x = stepZE(ops[k % ops.length], "schwer"); if (!x) return null; x.form = k % 2 ? "pa" : "pb"; x.lab += x.form; return x; }); },
+      render(x, stage) {
+        const col = mathRow(stage, null), o = o1(x), P = x.op === "+", ans = x.form === "pa" ? x.b : x.a;
+        padTask(col, { layout: eqLayout([{ t: x.form === "pa" ? [x.a, o, { a: x.b }, "=", x.r] : [{ a: x.a }, o, x.b, "=", x.r] }]), say: x.form === "pa" ? `${x.a} ${w1(x)} wie viel gleich ${x.r}?` : `Wie viel ${w1(x)} ${x.b} gleich ${x.r}?`,
+          why: (k, v) => numWhy(ans, v, x.form === "pa" ? `Schau auf die Einer: von ${x.a % 10} zu ${x.r % 10}. Dann auf die Zehner: von ${Math.floor(x.a / 10)} zu ${Math.floor(x.r / 10)}.` : `Rechne rückwärts: ${x.r} ${P ? MI : "+"} ${x.b}.`),
+          okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${w1(x)} ${x.b} gleich ${x.r}.`, factor: 2 });
+      },
+      tafel: null,
+      explain: (x) => x.form === "pa"
+        ? { html: `<p>${x.a} ${o1(x)} <b>?</b> = ${x.r}</p><p>Schau auf die <b>Einer</b>: von ${x.a % 10} zu ${x.r % 10}. Wie viele sind das?</p><p>Schau auf die <b>Zehner</b>: von ${Math.floor(x.a / 10)} zu ${Math.floor(x.r / 10)}. Wie viele Zehner sind das?</p>`, say: "Schau erst auf die Einer, dann auf die Zehner. Wie viel ist jeweils dazugekommen oder weggekommen?" }
+        : { html: `<p><b>?</b> ${o1(x)} ${x.b} = ${x.r}</p><p>Rechne <b>rückwärts</b>: ${x.r} ${x.op === "+" ? MI : "+"} ${x.b}.</p><p>Erst die Einer, dann die Zehner.</p>`, say: `Rechne rückwärts: ${x.r} ${x.op === "+" ? "minus" : "plus"} ${x.b}. Erst die Einer, dann die Zehner.` }
+    });
+    const stepLevel = (id, name, icon, color, ops) => {
+      const one = ops.length === 1, P = ops[0] === "+", exP = "34 + 5 = 39 · 39 + 20 = <b>59</b>", exM = "58 − 3 = 55 · 55 − 20 = <b>35</b>";
+      const what = one ? (P ? "Erst die Einer dazu, dann die Zehner dazu." : "Erst die Einer weg, dann die Zehner weg.") : "Schau genau: Plus oder Minus? Erst die Einer, dann die Zehner.";
+      return {
+        id, name, icon, color,
+        task: () => one ? "Rechne in zwei Schritten!" : "Plus oder Minus? Rechne in zwei Schritten!",
+        intro: (d) => what + (d === "leicht" ? " Die Zahlen für die Schritte stehen schon da. Der Rechenstrich zeigt dir die Sprünge." : d === "mittel" ? " Jetzt zerlegst du die zweite Zahl selbst." : " Große Zahlen, ohne Bild."),
+        ex: () => one ? (P ? exP : exM) : exP + "<br>" + exM,
+        say: (d) => what + (d === "leicht" ? " Die Zahlen für die Schritte stehen schon da. Der Rechenstrich zeigt dir die Sprünge." : d === "mittel" ? " Jetzt zerlegst du die zweite Zahl selbst." : " Große Zahlen, ohne Bild."),
+        build(d) { return gen(6, (k) => stepZE(ops[k % ops.length], d)); },
+        render(x, stage, d) { twoSteps(stage, x, d, d !== "schwer"); },
+        tafel: tafelWay(ops[0]), tafelAuto: one, explain: explainWay, expert: missing(ops)
+      };
+    };
+    return [
+      {
+        id: "zerlegen", name: "Zerlege-Zweig", icon: "🧩", color: "#f77f00",
+        task: (d) => d === "leicht" ? "Zerlege die Zahl in Einer und Zehner!" : "Zerlege die zweite Zahl!",
+        intro: (d) => d === "leicht" ? "Jede zweistellige Zahl hat Einer und Zehner: 25 hat 5 Einer und 2 Zehner. 2 Zehner sind 20."
+          : d === "mittel" ? "Bei 34 + 25 zerlegst du die zweite Zahl: erst 5 dazu, dann 20 dazu." : "Jetzt bei Plus und Minus: Zerlege die zweite Zahl in Einer und Zehner.",
+        ex: (d) => d === "leicht" ? "25 = <b>5</b> + <b>20</b>" : d === "mittel" ? "34 + 25 → erst + <b>5</b>, dann + <b>20</b>" : "58 − 23 → erst − <b>3</b>, dann − <b>20</b>",
+        say: (d) => d === "leicht" ? "Jede zweistellige Zahl hat Einer und Zehner. 25 hat 5 Einer und 2 Zehner. 2 Zehner sind 20."
+          : d === "mittel" ? "Bei 34 plus 25 zerlegst du die zweite Zahl. Erst 5 dazu, dann 20 dazu." : "Jetzt bei Plus und Minus. Zerlege die zweite Zahl in Einer und Zehner.",
+        build(d) { return gen(8, (k) => { const x = stepZE(d === "schwer" && k % 2 ? "−" : "+", d === "leicht" ? "mittel" : d); if (x && d === "leicht") x.lab = "b" + x.b; return x; }); },
+        render(x, stage, d) {
+          const o = o1(x), g = d === "leicht", col = mathRow(stage, g ? dienes([{ z: x.z / 10, e: x.e, c: "o" }], []) : null);
+          const lines = g ? [{ t: [{ t: String(x.b), c: "stepnum" }, "=", { a: x.e }, "+", { a: x.z }] }]
+            : [{ t: [x.a, o, { t: String(x.b), c: "stepnum" }], c: "eqhead" }, { t: [{ t: "erst", c: "tag" }, o, { a: x.e }], c: "step" }, { t: [{ t: "dann", c: "tag" }, o, { a: x.z }], c: "step" }];
+          padTask(col, { layout: eqLayout(lines), say: g ? `Zerlege die ${x.b}. Wie viele Einer? Und wie viel sind die Zehner?` : `${x.a} ${w1(x)} ${x.b}. Zerlege die ${x.b}: erst die Einer, dann die Zehner.`,
+            anyOrder: g,
+            why: (k, v, tr, want) => want === x.e ? (v === x.z || v === x.z / 10 ? `Zuerst kommen die Einer. Das ist die hintere Ziffer von ${x.b}.` : numWhy(x.e, v, `Wie viele Einer hat die ${x.b}? Schau auf die hintere Ziffer.`))
+              : (v === x.z / 10 ? `Fast! ${v} Zehner sind ${x.z}.` : numWhy(x.z, v, `${x.b} hat ${x.z / 10} Zehner. Wie viel ist das?`)),
+            okText: `${x.b} = ${x.e} + ${x.z}`, okSay: `${x.b} gleich ${x.e} plus ${x.z}.` });
+        },
+        explain: (x) => ({ html: `<div class="dn-row">${dnSVG({ z: x.z / 10, e: x.e, c: "o" })}</div><p><b>${x.b}</b> hat <b>${x.e}</b> Einer und <b>${x.z / 10}</b> Zehner. ${x.z / 10} Zehner sind <b>${x.z}</b>.</p><p>${x.b} = ${x.e} + ${x.z}</p>`,
+          say: `${x.b} hat ${x.e} Einer und ${x.z / 10} Zehner. ${x.z / 10} Zehner sind ${x.z}.` })
+      },
+      stepLevel("plus", "Plus-Treppe", "➕", "#2a9d8f", ["+"]),
+      stepLevel("minus", "Minus-Treppe", "➖", "#e63946", ["−"]),
+      stepLevel("gemischt", "Wechsel-Weg", "🔀", "#9b5de5", ["+", "−"]),
+      {
+        id: "kopf", name: "Kopf-Gipfel", icon: "🏔️", color: "#3a86ff",
+        task: () => "Rechne im Kopf – in zwei Schritten!",
+        intro: (d) => (d === "leicht" ? "Plus oder Minus? Rechne die Aufgabe. Der Rechenstrich hilft dir: erst der kleine Sprung für die Einer, dann der große für die Zehner."
+          : d === "mittel" ? "Jetzt ohne Bild. Denk dir die zwei Sprünge: erst die Einer, dann die Zehner." : "Jetzt mit großen Zahlen – und ohne Bild. Schau genau auf das Zeichen!"),
+        ex: () => "34 + 25 = <b>59</b> · 58 − 23 = <b>35</b>",
+        say: (d) => (d === "leicht" ? "Plus oder Minus? Rechne die Aufgabe. Der Rechenstrich hilft dir. Erst der kleine Sprung für die Einer, dann der große für die Zehner."
+          : d === "mittel" ? "Jetzt ohne Bild. Denk dir die zwei Sprünge: erst die Einer, dann die Zehner." : "Jetzt mit großen Zahlen, und ohne Bild. Schau genau auf das Zeichen!"),
+        build(d) { return gen(8, (k) => stepZE(k % 2 ? "−" : "+", d === "schwer" ? "schwer" : "leicht")); },
+        render(x, stage, d) {
+          const o = o1(x), col = mathRow(stage, d === "leicht" ? el("div", "rs-box", rsHTML(x, { e: 1, z: 1 })) : null);
+          padTask(col, { layout: eqLayout([{ t: [x.a, o, x.b, "=", { a: x.r }] }]), say: `${x.a} ${w1(x)} ${x.b}`,
+            why: (k, v, tr) => numWhy(x.r, v, tr >= 2 ? `Rechne in zwei Schritten: ${x.a} ${o} ${x.e} = ${x.m}, dann ${x.m} ${o} ${x.z} = ${x.r}.` : `Rechne in zwei Schritten: erst ${x.a} ${o} ${x.e}, dann ${o} ${x.z}.`),
+            okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${w1(x)} ${x.b} gleich ${x.r}.` });
+        },
+        tafel: tafelWay("+"), tafelAuto: false, explain: explainWay,
+        expert: {
+          task: () => "Rechenkette!", intro: () => XI + "Zwei Aufgaben hintereinander: 34 + 25 = 59, dann 59 − 36 = 23. Rechne jede in zwei Schritten!",
+          ex: () => "34 + 25 = <b>59</b> · 59 − 36 = <b>23</b>",
+          say: () => "Experten-Aufgabe! Zwei Aufgaben hintereinander. Rechne jede in zwei Schritten: erst die Einer, dann die Zehner.",
+          build() { return gen(8, () => {
+            const x1 = stepZE("+", "schwer"); if (!x1) return null; const m = x1.r, e = m % 10; if (e < 1 || m < 23) return null;
+            const e2 = rint(1, e), z2 = rint(1, Math.floor(m / 10) - 1), b2 = 10 * z2 + e2, r = m - b2; if (r < 1) return null;
+            const x2 = { a: m, op: "−", b: b2, e: e2, z: 10 * z2, m: m - e2, r };
+            return { a: x1.a, b: x1.b, mid: m, b2, r, chain: [x1, x2], lab: `${x1.a}+${x1.b}-${b2}` }; }); },
+          render(x, stage) {
+            const col = mathRow(stage, null);
+            padTask(col, { layout: eqLayout([{ t: [x.a, "+", x.b, "=", { a: x.mid }] }, { t: [{ ref: 0 }, MI, x.b2, "=", { a: x.r }] }]), say: `${x.a} plus ${x.b}, dann minus ${x.b2}`,
+              why: (k, v) => { const c = x.chain[k]; return numWhy(c.r, v, `Rechne in zwei Schritten: erst ${c.a} ${o1(c)} ${c.e}, dann ${o1(c)} ${c.z}.`); },
+              okText: `${x.a} + ${x.b} ${MI} ${x.b2} = ${x.r}`, okSay: `${x.a} plus ${x.b} minus ${x.b2} gleich ${x.r}.`, factor: 2 });
+          }
+        }
+      }
+    ];
+  }
+  const STEPLEVELS = stepLevels();
+
   /* ======================================================================
      Pollys Werkstatt (Förderinsel): Zahlen mit Zehnerstangen und Einerwürfeln legen.
      Das Legebrett ist eine Stellenwerttafel: links die Zehner, rechts die Einer.
@@ -5170,6 +5410,782 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   ];
 
   const LW_DIKTAT = "Das große Lernwörter-Diktat: Du hörst jedes Lernwort und schreibst es ohne Hilfe. Ein Wort mit Fehler schreibst du richtig ab – und es kommt noch einmal. Schaffst du alle, öffnet sich die Schatztruhe!";
+
+  /* ======================= Schachschule: Regeln =======================
+     Felder heißen wie auf dem Brett: "e4" (Linie a–h, Reihe 1–8). Weiß spielt von unten nach oben.
+     Figur = Farbe (w = Weiß, b = Schwarz) + Buchstabe der deutschen Notation: K König, D Dame, T Turm, L Läufer, S Springer, B Bauer.
+     Stellung = { feld: figur }, zum Beispiel { e1: "wK", e8: "bK", a1: "wT" }. */
+  const SF = "abcdefgh";
+  const sqOf = (f, r) => SF[f] + (r + 1), sqF = (s) => SF.indexOf(s[0]), sqR = (s) => +s[1] - 1;
+  const onB = (f, r) => f >= 0 && f < 8 && r >= 0 && r < 8;
+  const sqDark = (s) => (sqF(s) + sqR(s)) % 2 === 0;
+  const ALLSQ = []; for (let r = 0; r < 8; r++) for (let f = 0; f < 8; f++) ALLSQ.push(sqOf(f, r));
+  const CH_STRAIGHT = [[1, 0], [-1, 0], [0, 1], [0, -1]], CH_DIAG = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+  const CH_JUMPS = [[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]];
+  const chOther = (c) => c === "w" ? "b" : "w";
+  // Felder, auf die die Figur auf s ziehen kann (Schlagen eingeschlossen, ohne Rücksicht auf Schach).
+  // o.attack: stattdessen alle Felder, die die Figur angreift oder deckt (Bauern: nur die zwei schrägen Felder)
+  function chReach(pos, s, o) {
+    const p = pos[s]; if (!p) return [];
+    const c = p[0], t = p[1], f0 = sqF(s), r0 = sqR(s), out = [], att = o && o.attack;
+    const go = (dirs, max) => dirs.forEach(([df, dr]) => {
+      for (let k = 1; k <= max; k++) {
+        const f = f0 + df * k, r = r0 + dr * k; if (!onB(f, r)) break;
+        const q = pos[sqOf(f, r)];
+        if (!q) out.push(sqOf(f, r)); else { if (q[0] !== c || att) out.push(sqOf(f, r)); break; }
+      }
+    });
+    if (t === "T") go(CH_STRAIGHT, 7); else if (t === "L") go(CH_DIAG, 7); else if (t === "D") go(CH_STRAIGHT.concat(CH_DIAG), 7);
+    else if (t === "K") go(CH_STRAIGHT.concat(CH_DIAG), 1); else if (t === "S") go(CH_JUMPS, 1);
+    else {
+      const dir = c === "w" ? 1 : -1, start = c === "w" ? 1 : 6;
+      if (!att && onB(f0, r0 + dir) && !pos[sqOf(f0, r0 + dir)]) { out.push(sqOf(f0, r0 + dir)); if (r0 === start && !pos[sqOf(f0, r0 + 2 * dir)]) out.push(sqOf(f0, r0 + 2 * dir)); }
+      [-1, 1].forEach(df => { const f = f0 + df, r = r0 + dir; if (!onB(f, r)) return; const q = pos[sqOf(f, r)]; if (att || (q && q[0] !== c)) out.push(sqOf(f, r)); });
+    }
+    return out;
+  }
+  const chFind = (pos, code) => ALLSQ.filter(s => pos[s] === code);
+  const chPieces = (pos, c) => ALLSQ.filter(s => pos[s] && pos[s][0] === c);
+  // Welche Figuren der Farbe "by" greifen das Feld s an?
+  const chAttackers = (pos, s, by) => ALLSQ.filter(q => pos[q] && pos[q][0] === by && chReach(pos, q, { attack: 1 }).indexOf(s) >= 0);
+  const chAttacked = (pos, s, by) => chAttackers(pos, s, by).length > 0;
+  const chInCheck = (pos, c) => { const k = chFind(pos, c + "K")[0]; return !!k && chAttacked(pos, k, chOther(c)); };
+  // Zug ausführen (neue Stellung). Ein Bauer auf der letzten Reihe wird zur Dame.
+  function chMove(pos, from, to) {
+    const n = Object.assign({}, pos); n[to] = n[from]; delete n[from];
+    if (n[to][1] === "B" && (to[1] === "8" || to[1] === "1")) n[to] = n[to][0] + "D";
+    return n;
+  }
+  // alle erlaubten Züge einer Farbe: Der eigene König darf danach nicht im Schach stehen (Könige werden nie geschlagen)
+  function chLegal(pos, c) {
+    const out = [];
+    chPieces(pos, c).forEach(s => chReach(pos, s).forEach(t => { if (pos[t] && pos[t][1] === "K") return; if (!chInCheck(chMove(pos, s, t), c)) out.push([s, t]); }));
+    return out;
+  }
+  const chMate = (pos, c) => chInCheck(pos, c) && !chLegal(pos, c).length;
+  const chPatt = (pos, c) => !chInCheck(pos, c) && !chLegal(pos, c).length;
+  // Stellung spiegeln: links ↔ rechts
+  const chMirror = (pos) => { const n = {}; Object.keys(pos).forEach(s => { n[sqOf(7 - sqF(s), sqR(s))] = pos[s]; }); return n; };
+  const chMirrorSq = (s) => sqOf(7 - sqF(s), sqR(s));
+  // kurze Schreibweise für feste Stellungen: "wKg1 wTa1 bKg8 bBf7"
+  const chParse = (str) => { const p = {}; str.trim().split(/\s+/).forEach(w => { p[w.slice(2)] = w.slice(0, 2); }); return p; };
+  const chStr = (pos) => Object.keys(pos).sort().map(s => pos[s] + s).join(" ");
+  const CH_START = (() => { const p = {}; "TSLDKLST".split("").forEach((t, f) => { p[sqOf(f, 0)] = "w" + t; p[sqOf(f, 7)] = "b" + t; p[sqOf(f, 1)] = "wB"; p[sqOf(f, 6)] = "bB"; }); return p; })();
+  /* ---------- Schachfiguren: eigene, einfache Zeichnungen (weiß = hell mit dunklem Rand, schwarz = dunkel) ---------- */
+  const CH_SHAPE = {
+    B: `<circle cx="50" cy="38" r="12"/><path d="M39 52 H61 L58.5 56 Q64 67 68 80 H32 Q36 67 41.5 56 Z"/>`,
+    T: `<path d="M27 16 H39 V25 H44 V16 H56 V25 H61 V16 H73 V36 L66 43 V68 L72 80 H28 L34 68 V43 L27 36 Z"/><path class="ln" d="M34 43 H66"/>`,
+    L: `<circle cx="50" cy="12" r="6"/><path d="M50 18 Q70 38 62 54 Q60 58 56 60 H44 Q40 58 38 54 Q30 38 50 18 Z"/><path class="ln" d="M55 30 L46 46"/><path d="M40 60 H60 L58 66 Q62 74 70 80 H30 Q38 74 42 66 Z"/>`,
+    D: `<path d="M17 38 L30 64 H70 L83 38 L72 52 L66 28 L58 50 L50 24 L42 50 L34 28 L28 52 Z"/><circle cx="17" cy="35" r="5"/><circle cx="34" cy="25" r="5"/><circle cx="50" cy="20" r="5"/><circle cx="66" cy="25" r="5"/><circle cx="83" cy="35" r="5"/><path d="M30 64 H70 L67 70 Q69 76 73 80 H27 Q31 76 33 70 Z"/><path class="ln" d="M33 70 H67"/>`,
+    K: `<path d="M46 5 H54 V12 H61 V20 H54 V30 H46 V20 H39 V12 H46 Z"/><path d="M26 46 Q25 32 38 32 Q46 32 50 41 Q54 32 62 32 Q75 32 74 46 Q73 56 68 64 H32 Q27 56 26 46 Z"/><path d="M32 64 H68 L66 70 Q68 76 73 80 H27 Q32 76 34 70 Z"/><path class="ln" d="M34 70 H66"/>`,
+    S: `<path d="M30 80 Q30 64 42 54 Q46 50 42 46 Q33 53 25 51 L17 45 Q15 40 19 36 L36 20 L35 7 L46 15 Q72 19 74 54 Q75 68 72 80 Z"/><circle class="ey" cx="34" cy="31" r="3.2"/><path class="ln" d="M53 20 Q65 32 66 54"/>`
+  };
+  const CH_BASE = `<path d="M21 91 Q21 80 30 80 H70 Q79 80 79 91 Z"/>`;
+  const chPiece = (code) => `<svg viewBox="0 0 100 100" class="chp ${code[0] === "w" ? "cw" : "cb2"}" aria-hidden="true">${CH_SHAPE[code[1]]}${CH_BASE}</svg>`;
+  const PN = { K: "König", D: "Dame", T: "Turm", L: "Läufer", S: "Springer", B: "Bauer" };
+  const PVAL = { B: 1, S: 3, L: 3, T: 5, D: 9 };
+  const pNom = (code, col) => { const t = code[1], fem = t === "D"; return `${fem ? "die" : "der"} ${col ? (code[0] === "w" ? "weiße " : "schwarze ") : ""}${PN[t]}`; };
+  const pAkk = (code, col) => { const t = code[1], fem = t === "D"; return `${fem ? "die" : "den"} ${col ? (code[0] === "w" ? (fem ? "weiße " : "weißen ") : (fem ? "schwarze " : "schwarzen ")) : ""}${t === "B" ? "Bauern" : PN[t]}`; };
+  const capF = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  /* ---------- Schachbrett anzeigen ----------
+     o.pos Stellung · o.marks { feld: "star hl …" } · o.coords: false = ohne Buchstaben und Zahlen · o.small · o.static (nur Bild)
+     o.hlFile / o.hlRank: Buchstabe bzw. Zahl am Rand hervorheben */
+  function chHTML(o) {
+    const pos = o.pos || {}, marks = o.marks || {}, tag = o.static ? "span" : "button";
+    let g = "";
+    for (let r = 7; r >= 0; r--) for (let f = 0; f < 8; f++) {
+      const s = sqOf(f, r), p = pos[s], m = marks[s];
+      g += `<${tag}${o.static ? "" : ' type="button"'} class="cq ${sqDark(s) ? "d" : "l"}${m ? " " + m.split(" ").map(x => "m-" + x).join(" ") : ""}" data-s="${s}"${o.static ? "" : ` aria-label="Feld ${s}${p ? ", " + (p[0] === "w" ? "weiß: " : "schwarz: ") + PN[p[1]] : ""}"`}>${p ? chPiece(p) : ""}<i class="cm"></i></${tag}>`;
+    }
+    const nums = o.coords === false ? "" : `<div class="cb-nums" aria-hidden="true">${[8, 7, 6, 5, 4, 3, 2, 1].map(n => `<span${o.hlRank === n ? ' class="on"' : ""}>${n}</span>`).join("")}</div>`;
+    const lets = o.coords === false ? "" : `<div class="cb-let" aria-hidden="true">${SF.split("").map(c => `<span${o.hlFile === c ? ' class="on"' : ""}>${c}</span>`).join("")}</div>`;
+    return `<div class="cb${o.small ? " small" : ""}${o.coords === false ? " nocoord" : ""}${o.static ? " static" : ""}"${o.static ? ' role="img" aria-label="Schachbrett"' : ""}>${nums}<div class="cb-grid">${g}</div>${lets}</div>`;
+  }
+  const chPic = (pos, marks, o) => chHTML(Object.assign({ pos, marks, small: true, static: true }, o || {}));
+  // Brett zum Antippen. B.mark(feld, "ok"), B.move(von, nach, danach), B.put(feld, figur)
+  function chBoard(o) {
+    const host = el("div", "cb-host", chHTML(o)), root = host.firstChild, B = { el: host, pos: Object.assign({}, o.pos || {}) };
+    B.cell = (s) => root.querySelector(`.cq[data-s="${s}"]`);
+    B.mark = (s, m, on) => { const c = B.cell(s); if (c) m.split(" ").forEach(x => c.classList.toggle("m-" + x, on !== false)); };
+    B.clear = (m) => root.querySelectorAll(".m-" + m).forEach(c => c.classList.remove("m-" + m));
+    B.put = (s, code) => { const c = B.cell(s), old = c.querySelector(".chp"); if (old) old.remove(); if (code) { B.pos[s] = code; c.insertAdjacentHTML("afterbegin", chPiece(code)); const n = c.querySelector(".chp"); n.classList.add("pop"); } else delete B.pos[s]; };
+    B.move = (from, to, then) => {   // Figur gleitet zum Zielfeld; eine geschlagene Figur verschwindet
+      const a = B.cell(from), b = B.cell(to), pc = a.querySelector(".chp"), old = b.querySelector(".chp"), code0 = B.pos[from];
+      B.pos = chMove(B.pos, from, to);
+      if (!pc) { if (then) then(); return; }
+      const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      b.insertBefore(pc, b.firstChild);
+      const fin = () => { pc.style.transition = ""; pc.style.transform = ""; pc.style.zIndex = ""; if (old) old.remove(); if (B.pos[to] !== code0) B.put(to, B.pos[to]); if (then) then(); };
+      if (old) old.classList.add("gone");
+      if (reducedMotion()) return fin();
+      pc.style.transition = "none"; pc.style.zIndex = "5"; pc.style.transform = `translate(${(ra.left - rb.left).toFixed(1)}px, ${(ra.top - rb.top).toFixed(1)}px)`;
+      void pc.getBoundingClientRect(); pc.style.transition = "transform .36s ease"; pc.style.transform = "translate(0, 0)";
+      setTimeout(fin, 390);
+    };
+    root.addEventListener("click", (e) => { const c = e.target.closest(".cq"); if (c && o.onTap) o.onTap(c.dataset.s, c, B); });
+    return B;
+  }
+  // Bild links (Brett oder große Figur), rechts die Frage und die Antworten – im Hochformat: Frage, Bild, Antworten untereinander
+  function chLayout(stage, node, prompt) {
+    const wrap = el("div", "chwrap"), q = el("div", "card mq chq", prompt || ""), a = el("div", "cha");
+    if (!prompt) q.hidden = true;
+    wrap.appendChild(q); wrap.appendChild(node); node.classList.add("chpic"); wrap.appendChild(a); stage.appendChild(wrap);
+    return { wrap, q, a };
+  }
+  const chPlain = (h) => String(h || "").replace(/<[^>]+>/g, "");
+  /* Felder antippen. o.targets = richtige Felder · o.all = alle finden (sonst reicht eines) · o.only = nur diese Felder zählen (z. B. Sterne)
+     o.why(feld) = Erklärung bei einem falschen Feld · o.onDone(B, feld, weiter) = z. B. erst die Figur ziehen lassen */
+  function chTap(stage, o) {
+    const found = new Set(), need = o.all ? o.targets.length : 1;
+    let cnt = null;
+    const left = () => { const n = need - found.size; return o.cnt ? o.cnt(n) : `Noch ${n}`; };
+    const B = chBoard({ pos: o.pos, marks: o.marks, coords: o.coords, hlFile: o.hlFile, hlRank: o.hlRank, onTap: (s, c) => {
+      if (L.locked || found.has(s)) return;
+      if (o.only && o.only.indexOf(s) < 0) { hint(o.onlyText || "Tippe auf einen Stern!"); return; }
+      if (o.targets.indexOf(s) >= 0) {
+        found.add(s); B.mark(s, "ok"); tone([620 + found.size * 70], 0.07);
+        if (found.size >= need) {
+          L.locked = true; if (cnt) cnt.textContent = "";
+          const fin = () => { award(c, o.factor || 1); hint(praise() + (o.okText ? " " + (typeof o.okText === "function" ? o.okText(s) : o.okText) : ""), true); if (o.okSay) speak(typeof o.okSay === "function" ? o.okSay(s) : o.okSay); done(o.delay || 1500); };
+          if (o.onDone) o.onDone(B, s, fin); else fin();
+        } else if (cnt) cnt.textContent = left();
+      } else { B.mark(s, "no"); setTimeout(() => B.mark(s, "no", false), 800); miss(c, o.why ? o.why(s) : "Probier nochmal!"); }
+    } });
+    const lay = chLayout(stage, B.el, o.prompt);
+    if (o.all && need > 1) { cnt = el("div", "counter chcnt", left()); lay.a.appendChild(cnt); }
+    L.speakNow = () => speak(o.say || chPlain(o.prompt));
+    return B;
+  }
+  /* Figur ziehen: erst die eigene Figur antippen, dann das Zielfeld. o.side = Farbe am Zug · o.from = nur diese Figur zieht
+     o.ok(von, nach, stellung) → true oder ein Erklärtext · o.after(B, von, nach) nach dem Zug */
+  function chMoveTask(stage, o) {
+    let sel = null;
+    const dots = (s) => { B.clear("dot"); B.clear("sel"); if (s) { B.mark(s, "sel"); chLegal(B.pos, o.side).filter(m => m[0] === s).forEach(m => B.mark(m[1], "dot")); } };
+    const B = chBoard({ pos: o.pos, marks: o.marks, onTap: (s, c) => {
+      if (L.locked) return;
+      const p = B.pos[s];
+      if (p && p[0] === o.side) {
+        if (o.from && s !== o.from) { hint(`Hier zieht nur ${pNom(B.pos[o.from])}.`); return; }
+        sel = s; dots(s); tone([520], 0.04);
+        if (!chLegal(B.pos, o.side).some(m => m[0] === s)) hint(`${capF(pNom(p))} hat hier keinen erlaubten Zug.`);
+        return;
+      }
+      if (!sel) { hint(`Tippe zuerst eine ${o.side === "w" ? "weiße" : "schwarze"} Figur an.`); return; }
+      const code = B.pos[sel];
+      if (chReach(B.pos, sel).indexOf(s) < 0) { miss(c, `So kann ${pNom(code)} nicht ziehen. ${CH_RULE[code[1]]}`); return; }
+      if (!chLegal(B.pos, o.side).some(m => m[0] === sel && m[1] === s)) { miss(c, B.pos[s] && B.pos[s][1] === "K" ? "Der König wird nie geschlagen!" : "Das geht nicht: Danach stünde dein König im Schach."); return; }
+      const res = o.ok(sel, s, B.pos);
+      if (res !== true) { miss(c, res); return; }
+      L.locked = true; const from = sel; dots(null);
+      B.move(from, s, () => { B.mark(from, "from"); B.mark(s, "to"); if (o.after) o.after(B, from, s); award(c, o.factor || 1); hint(praise() + (o.okText ? " " + o.okText : ""), true); if (o.okSay) speak(o.okSay); done(o.delay || 1900); });
+    } });
+    const lay = chLayout(stage, B.el, o.prompt);
+    if (o.from) { sel = o.from; dots(sel); }
+    L.speakNow = () => speak(o.say || chPlain(o.prompt));
+    return B;
+  }
+  // Frage mit Antwort-Knöpfen neben dem Brett (oder neben einer großen Figur)
+  function chAsk(stage, node, prompt, o) {
+    const lay = chLayout(stage, node, prompt);
+    choiceTask(lay.a, Object.assign({ small: true }, o));
+    L.speakNow = () => speak(o.say || chPlain(prompt));
+    return lay;
+  }
+  const chBig = (codes) => el("div", "chbig" + (codes.length > 1 ? " two" : ""), codes.map(c => `<span class="chbig-p ${c[0] === "w" ? "d" : "l"}">${chPiece(c)}</span>`).join(""));
+  const chPickOne = (a) => a[rint(0, a.length - 1)];
+  const chDist = (a, b) => Math.max(Math.abs(sqF(a) - sqF(b)), Math.abs(sqR(a) - sqR(b)));
+  const chFileSq = (f) => [0, 1, 2, 3, 4, 5, 6, 7].map(r => sqOf(f, r)), chRankSq = (r) => [0, 1, 2, 3, 4, 5, 6, 7].map(f => sqOf(f, r));
+  const chDiagSq = (s) => ALLSQ.filter(q => q !== s && Math.abs(sqF(q) - sqF(s)) === Math.abs(sqR(q) - sqR(s)));
+  const CH_RULE = {
+    T: "Der Turm zieht nur geradeaus: nach vorn, zurück, nach links oder nach rechts – so weit er will.",
+    L: "Der Läufer zieht nur schräg – so weit er will. Er bleibt immer auf seiner Feldfarbe.",
+    D: "Die Dame zieht geradeaus oder schräg – so weit sie will.",
+    K: "Der König zieht in jede Richtung – aber immer nur ein Feld.",
+    S: "Der Springer springt im L: zwei Felder geradeaus und dann eins zur Seite.",
+    B: "Der Bauer zieht nur geradeaus nach vorn – immer ein Feld. Nur von seinem Startfeld darf er auch zwei Felder gehen."
+  };
+  const CH_LOOK = {
+    K: "Der König trägt ein Kreuz auf dem Kopf.", D: "Die Dame hat eine Krone mit vielen Zacken.", T: "Der Turm sieht aus wie ein Burgturm.",
+    L: "Der Läufer hat einen spitzen Hut mit einer Kerbe.", S: "Der Springer sieht aus wie ein Pferd.", B: "Der Bauer ist die kleinste Figur – sein Kopf ist eine runde Kugel."
+  };
+  const CH_POS = {
+    treppe: ["wTb3 wKc7 wDg7 bKh5", "bKa1 wKe3 wTg2 wDh3", "bKa3 wTb8 wKe2 wTg6", "wKc8 wTd4 wDg1 bKh7", "bKa7 wDb5 wKe4 wTe6", "wTb5 bKe1 wTg2 wKh3", "bKa4 wTb8 wTc2 wKd3", "wKd1 bKd8 wTg7 wTh5", "bKb1 wDe2 wKe6 wTg3", "wTc4 wTg2 wKh3 bKh5"],
+    grund: ["wKa2 bBa7 bBb7 bKb8 bBc7 wTg2", "wTa6 wKd3 bBf7 bBg7 bKg8 bBh7", "wTa1 bBb7 bBc7 bKc8 bBd7 wKg1", "wTb6 bBe7 bBf7 bKf8 bBg7 wKh3", "wTa4 bBb7 wKc1 bBc7 bKc8 bBd7", "bBb7 bBc7 bKc8 bBd7 wDe1 wKh2", "bBb7 bBc7 bKc8 bBd7 wTf4 wKg3", "bBa7 bBb7 bKb8 bBc7 wKe1 wTh5", "wKd2 bBe7 bBf7 bKf8 bBg7 wTh5", "wKa3 bBe7 bBf7 bKf8 bBg7 wTh2"],
+    dameK: ["bKa8 wKb6 wDe1", "wDc1 wKf4 bKh4", "wDa3 wKf1 bKh1", "wDc1 wKf6 bKh5", "wDe2 bKg1 wKh3", "wDa1 wKf2 bKh2", "bKa8 wDb2 wKc6", "wDf3 wKf8 bKh7", "wKb6 bKb8 wDe3", "wDa1 wKf6 bKh6"],
+    dameH: ["wKa5 bBb2 wLb4 bKd1 wDf4", "bKa5 wDb8 wLc4 bBc5 wKe4", "bBa4 wSf5 wDg2 wKh4 bKh7", "wLa5 bKa6 wDd4 bSe4 wKe5", "bBc5 wDe5 bKg8 wKh1 wSh5", "bKb1 bBb3 wSd3 wDg7 wKh1", "wDa2 bBc3 bKd4 wTe5 wKg1", "wKd8 bBe7 wDg8 bKh4 wLh5", "bKa6 wTb5 bBc4 wDd2 wKd7", "wKb2 wDb3 bSg6 wTg7 bKh8"],
+    turmK: ["wTd6 wKf7 bKh8", "wTf3 wKf6 bKh6", "wTe8 wKf2 bKh1", "wTe5 wKf7 bKh8", "wTb8 bKh1 wKh3", "wKf2 wTg4 bKh1"],
+    mix: ["bBc3 wDc6 bSd1 wLd5 wKf1 bBf4 bKf8 wLh5", "wKb2 bBd5 wLe5 wSe7 bBf7 wDf8 bTg7 bKh7", "bKa8 wDd4 wLe3 wKf2 wLf6 bBg6 bBg7 bTh4", "wBb2 bBb5 wLc5 wKd1 bLd5 wDd6 bKe8 bBh5", "bSa3 bKa6 wLa7 bBd2 bBe6 wDf2 wKg2 wBg6", "bBb2 wSb5 bKb8 bLc1 wSc8 bBd6 wTe8 wKh1", "bSa3 wLc3 bBd3 wBd7 wKe3 bKg8 wDh6 bBh7", "bKa8 wTb7 wKc2 bBd5 bBe7 bSf8 wBg5 wDh6", "bBa6 bTa7 wBe5 bBe6 bKe8 wKf2 wDg7 wTh1", "bBb2 bTb5 wKc2 bBd5 wTd7 bKf8 wBg5 wDh4", "bBd5 wTe7 wDf1 wKg1 wLg2 bBg3 bTh5 bKh8", "bBa6 bBc2 bLd8 wSe2 wKe3 wSf6 wDg1 bKh8", "wLa5 wSc8 wKf1 bBf4 bSf5 bBf7 bKf8 wDh7", "bBa4 bKa7 wTb3 wKd1 bLd6 bBg2 wTg5 wSh8", "bBa5 wLb4 bKc8 wTd7 wKf1 bBf2 wDf3 bSg5", "bSa1 wBc6 wDd3 bBe2 bBf6 wKh2 bKh6 wSh8", "wSa2 bKa6 wDb8 bTd1 wTd5 bBe7 bBf7 wKh3", "bTa4 wSb3 wDb6 wKc3 bKc8 wBe7 bBf4 bBh7"],
+    patt: ["wKd2 wDg6 bKh8", "wDa3 bKb1 wKc3", "wKb8 wDg6 bKh8", "bKa1 wDb3 wKe3", "bKa1 wKa3 wDh7", "wDe3 bKf1 wKf3", "wKf2 wDf7 bKh8", "wKa3 bKa8 wDb6", "wKa6 bKa8 wDb3", "bKa1 wKb3 wDd3"],
+    block: ["wKa7 wLa8 bDc7 bKd7 bTe6 wBg3 wSg5", "bKc1 wBd4 wBe5 wLf3 bTg2 bTh2 wKh8", "wBc2 bSe3 wSf1 wDg3 bKh1 wKh3 bDh6", "wSa2 bTa4 wKa8 bTb7 bKc6 wLd4 wBf6", "wBa2 bDa4 wKa8 bTb4 wLc7 wBd3 bKe1", "wLb5 bTd5 wBe2 wLe4 bKf8 bTh4 wKh8", "wTb6 bTe1 bLe5 bKf7 wBg3 wBh7 wKh8", "wDa3 bKe6 wKe8 wSf5 wBf6 bLh4 bTh8"],
+    schlag: ["wBa2 bDe1 bLe4 wLf2 wLf8 wKg1 bKh3", "bDb8 wBc3 wSc6 wKd8 bKf6 bSf8 wBg4", "bKa3 wKa5 wLa8 wBb7 bDg5 wTh5 bTh6", "wLd2 wLd3 bTe3 wBe7 bKg1 bDg5 wKh3", "bTa2 bKd8 wBe3 wLe4 wSg1 wKh1 bTh3", "bKc6 bLc7 wKc8 wLe3 wTe4 bLe6 wBg7", "wBd3 wBe2 bKf1 bDg2 wLg7 wKh6 bTh8", "wBa7 bDd3 wLd5 bKf5 bTh1 wKh5 wBh6"],
+    flucht: ["wBa7 bSb4 wBc2 wKc8 bKd6 bTe8", "wBa6 bKc2 bTd3 wBf5 bDg1 wKh3", "wBa2 bLc4 wBd6 wKe1 bDe3 bKh3", "wKa7 wBb4 bKb5 bSc6 bTc8 wBd7", "bLd4 wBe2 wBe6 wKh1 bDh5 bKh6", "wBa3 wKa8 bSb5 bKc1 bTc8 wBg5", "bLa5 wBb3 wBb7 wKb8 bKe1 bTe8", "bDf2 bKf6 bTf7 wKh2 wBh3 wBh6"],
+  };
+
+  /* ======================= Schachschule 1: Brett und Figuren ======================= */
+  const CH_HOME = { T: "In den Ecken stehen die Türme.", S: "Neben den Türmen stehen die Springer.", L: "Neben den Springern stehen die Läufer.",
+    D: "Die Dame steht in der Mitte auf ihrer Farbe: die weiße Dame auf einem hellen Feld, die schwarze Dame auf einem dunklen Feld.",
+    K: "Der König steht in der Mitte neben seiner Dame.", B: "Die Bauern stehen in einer Reihe vor den anderen Figuren." };
+  const SCHACH_A = [
+    {
+      id: "brett", name: "Brett-Bucht", icon: "🏁", color: "#b5651d",
+      task: (d) => d === "leicht" ? "Lerne das Schachbrett kennen!" : d === "mittel" ? "Welche Linie oder Reihe ist markiert?" : "Linie, Reihe oder Diagonale?",
+      intro: (d) => d === "leicht" ? "Das Schachbrett hat 64 Felder: helle und dunkle. Linien laufen von unten nach oben und haben Buchstaben. Reihen laufen von links nach rechts und haben Zahlen."
+        : d === "mittel" ? "Jede Linie hat einen Buchstaben von a bis h. Jede Reihe hat eine Zahl von 1 bis 8. Schau am Rand nach!"
+        : "Jetzt kommen die Diagonalen dazu: Das sind schräge Wege über das Brett. Auf einer Diagonale haben alle Felder dieselbe Farbe.",
+      ex: (d) => d === "schwer" ? chPic({}, { b2: "hl", c3: "hl", d4: "hl", e5: "hl", f6: "hl" }) + "<br>eine Diagonale" : chPic({}, { c1: "hl", c2: "hl", c3: "hl", c4: "hl", c5: "hl", c6: "hl", c7: "hl", c8: "hl" }, { hlFile: "c" }) + "<br>die Linie c",
+      say: (d) => d === "leicht" ? "Das Schachbrett hat 64 Felder: helle und dunkle. Linien laufen von unten nach oben und haben Buchstaben. Reihen laufen von links nach rechts und haben Zahlen."
+        : d === "mittel" ? "Jede Linie hat einen Buchstaben von a bis h. Jede Reihe hat eine Zahl von 1 bis 8. Schau am Rand nach!"
+        : "Jetzt kommen die Diagonalen dazu. Das sind schräge Wege über das Brett. Auf einer Diagonale haben alle Felder dieselbe Farbe.",
+      build(d) {
+        if (d === "leicht") return gen(8, (k) => { const t = ["hell", "reihe", "linie", "dunkel", "reihe", "linie", "reihe", "linie"][k];
+          if (t === "hell" || t === "dunkel") return { k: "farbe", dark: t === "dunkel", lab: t };
+          const n = rint(0, 7); return { k: t, n, lab: t + n }; });
+        if (d === "mittel") return gen(8, (k) => { const n = rint(0, 7), t = k % 2 ? "wreihe" : "wlinie"; return { k: t, n, lab: t + n }; });
+        return gen(8, (k) => {
+          if (k % 2) { const s = sqOf(rint(1, 6), rint(1, 6)); return { k: "diag", s, lab: "d" + s }; }
+          const kind = ["linie", "reihe", "diag"][rint(0, 2)], n = rint(0, 7);
+          if (kind !== "diag") return { k: "art", kind, set: kind === "linie" ? chFileSq(n) : chRankSq(n), lab: kind + n };
+          const s0 = sqOf(rint(0, 3), rint(0, 3)), up = Math.random() < .5, set = [s0].concat(chDiagSq(s0).filter(q => (sqF(q) - sqF(s0)) * (sqR(q) - sqR(s0)) > 0 === up));
+          return set.length >= 4 ? { k: "art", kind, set, lab: "g" + set.join("") } : null;
+        });
+      },
+      render(x, stage) {
+        if (x.k === "farbe") return chTap(stage, { prompt: `Tippe ein <b>${x.dark ? "dunkles" : "helles"}</b> Feld an!`, targets: ALLSQ.filter(s => sqDark(s) === x.dark),
+          why: () => `Das ist ein ${x.dark ? "helles" : "dunkles"} Feld. Such ein ${x.dark ? "dunkles" : "helles"}!`, okText: "Helle und dunkle Felder wechseln sich immer ab." });
+        if (x.k === "reihe") return chTap(stage, { prompt: `Tippe ein Feld in der <b>Reihe ${x.n + 1}</b> an!`, targets: chRankSq(x.n), hlRank: x.n + 1,
+          why: (s) => `Dieses Feld liegt in der Reihe ${s[1]}. Die Reihen laufen von links nach rechts. Such die ${x.n + 1} links am Rand!`, okText: `Das ist die Reihe ${x.n + 1}.`, onDone: (B, s, fin) => { chRankSq(x.n).forEach(q => B.mark(q, "hl")); fin(); } });
+        if (x.k === "linie") return chTap(stage, { prompt: `Tippe ein Feld auf der <b>Linie ${SF[x.n]}</b> an!`, targets: chFileSq(x.n), hlFile: SF[x.n],
+          why: (s) => `Dieses Feld liegt auf der Linie ${s[0]}. Die Linien laufen von unten nach oben. Such das ${SF[x.n]} unten am Rand!`, okText: `Das ist die Linie ${SF[x.n]}.`, onDone: (B, s, fin) => { chFileSq(x.n).forEach(q => B.mark(q, "hl")); fin(); } });
+        if (x.k === "wlinie" || x.k === "wreihe") {
+          const L1 = x.k === "wlinie", marks = {}; (L1 ? chFileSq(x.n) : chRankSq(x.n)).forEach(s => { marks[s] = "hl"; });
+          const name = (n) => L1 ? SF[n] : String(n + 1), others = shuffle([0, 1, 2, 3, 4, 5, 6, 7].filter(n => n !== x.n)).slice(0, 3);
+          return chAsk(stage, chBoard({ pos: {}, marks }).el, L1 ? "Welche <b>Linie</b> ist markiert?" : "Welche <b>Reihe</b> ist markiert?", {
+            opts: [{ label: name(x.n), correct: true }].concat(others.map(n => ({ label: name(n), wrongText: L1 ? "Schau unten am Brett: Unter jeder Linie steht ihr Buchstabe." : "Schau links am Brett: Neben jeder Reihe steht ihre Zahl." }))),
+            okText: L1 ? `Das ist die Linie ${name(x.n)}.` : `Das ist die Reihe ${name(x.n)}.` });
+        }
+        if (x.k === "art") {
+          const marks = {}; x.set.forEach(s => { marks[s] = "hl"; });
+          const opt = (kind, label, tip) => ({ label, correct: x.kind === kind, wrongText: `Nein. ${tip}` });
+          return chAsk(stage, chBoard({ pos: {}, marks }).el, "Was ist hier markiert?", { opts: [opt("linie", "eine Linie", "Eine Linie läuft gerade von unten nach oben."), opt("reihe", "eine Reihe", "Eine Reihe läuft gerade von links nach rechts."), opt("diag", "eine Diagonale", "Eine Diagonale läuft schräg über das Brett.")],
+            okText: x.kind === "diag" ? "Eine Diagonale läuft schräg." : x.kind === "linie" ? "Eine Linie läuft von unten nach oben." : "Eine Reihe läuft von links nach rechts." });
+        }
+        return chTap(stage, { prompt: "Tippe ein Feld an, das <b>schräg</b> zum Stern liegt – auf einer <b>Diagonale</b>!", pos: {}, marks: { [x.s]: "star" }, targets: chDiagSq(x.s),
+          why: (s) => s === x.s ? "Das ist der Stern selbst. Such ein anderes Feld auf seiner Diagonale!" : "Dieses Feld liegt nicht schräg zum Stern. Geh vom Stern immer ein Feld zur Seite und eins nach oben oder unten.",
+          okText: "Alle diese Felder liegen schräg zum Stern.", onDone: (B, s, fin) => { chDiagSq(x.s).forEach(q => B.mark(q, "dot")); fin(); } });
+      },
+      explain: (x) => x.k === "farbe" ? { html: chPic({}) + "<p>Helle und dunkle Felder wechseln sich ab. Unten rechts ist immer ein <b>helles</b> Feld.</p>", say: "Helle und dunkle Felder wechseln sich ab. Unten rechts ist immer ein helles Feld." }
+        : x.k === "diag" ? { html: chPic({}, Object.assign({ [x.s]: "star" }, Object.fromEntries(chDiagSq(x.s).map(q => [q, "dot"])))) + "<p>Vom Stern aus <b>schräg</b>: immer ein Feld zur Seite und eins nach oben oder unten.</p>", say: "Vom Stern aus schräg: immer ein Feld zur Seite und eins nach oben oder unten." }
+        : { html: "<p><b>Linien</b> laufen von unten nach oben. Sie heißen a, b, c, d, e, f, g, h.</p><p><b>Reihen</b> laufen von links nach rechts. Sie heißen 1 bis 8.</p><p><b>Diagonalen</b> laufen schräg.</p>", say: "Linien laufen von unten nach oben und haben Buchstaben. Reihen laufen von links nach rechts und haben Zahlen. Diagonalen laufen schräg." }
+    },
+    {
+      id: "felder", name: "Feldnamen-Riff", icon: "🔤", color: "#2a9d8f",
+      task: (d) => d === "leicht" ? "Wie heißt das Feld?" : "Finde das Feld!",
+      intro: (d) => d === "leicht" ? "Jedes Feld hat einen Namen: erst der Buchstabe der Linie, dann die Zahl der Reihe. Das Feld auf der Linie e und der Reihe 4 heißt e4."
+        : d === "mittel" ? "Jetzt suchst du das Feld selbst: erst die Linie mit dem Buchstaben, dann die Reihe mit der Zahl." : "Die Buchstaben und Zahlen am Rand fehlen! Zähle selbst: a, b, c … von links und 1, 2, 3 … von unten.",
+      ex: () => chPic({}, { e4: "hl" }, { hlFile: "e", hlRank: 4 }) + "<br>das Feld <b>e4</b>",
+      say: (d) => d === "leicht" ? "Jedes Feld hat einen Namen: erst der Buchstabe der Linie, dann die Zahl der Reihe. Das Feld auf der Linie e und der Reihe 4 heißt e 4."
+        : d === "mittel" ? "Jetzt suchst du das Feld selbst. Erst die Linie mit dem Buchstaben, dann die Reihe mit der Zahl." : "Die Buchstaben und Zahlen am Rand fehlen! Zähle selbst: a, b, c von links und 1, 2, 3 von unten.",
+      build(d) { return gen(8, () => { const s = sqOf(rint(0, 7), rint(0, 7)); return { s, lab: s }; }); },
+      render(x, stage, d) {
+        const f = sqF(x.s), r = sqR(x.s), spell = (s) => `${s[0]} ${s[1]}`;
+        if (d === "leicht") {
+          const f2 = f + (f === 7 ? -1 : f === 0 ? 1 : (Math.random() < .5 ? 1 : -1)), r2 = r + (r === 7 ? -1 : r === 0 ? 1 : (Math.random() < .5 ? 1 : -1));
+          return chAsk(stage, chBoard({ pos: {}, marks: { [x.s]: "hl" }, hlFile: SF[f], hlRank: r + 1 }).el, "Wie heißt das markierte Feld?", {
+            opts: [{ label: x.s, correct: true }, { label: sqOf(f2, r), wrongText: `Schau genau auf die Linie: Unter dem Feld steht der Buchstabe ${SF[f]}.` }, { label: sqOf(f, r2), wrongText: `Schau genau auf die Reihe: Neben dem Feld steht die Zahl ${r + 1}.` }, { label: sqOf(f2, r2), wrongText: "Erst der Buchstabe unten, dann die Zahl links." }],
+            okText: `Linie ${SF[f]}, Reihe ${r + 1}: das Feld ${x.s}.`, okSpeak: spell(x.s), say: "Wie heißt das markierte Feld?" });
+        }
+        const no = d === "schwer";
+        return chTap(stage, { prompt: `Tippe das Feld <b>${x.s}</b> an!` + (no ? `<small>Unten links ist a1.</small>` : ""), say: `Tippe das Feld ${spell(x.s)} an!`, pos: {}, coords: !no, targets: [x.s],
+          why: (s) => `Das ist das Feld ${s}. ` + (s[0] !== x.s[0] ? (no ? `Zähle die Linien von links: ${SF.slice(0, f + 1).split("").join(", ")}.` : `Such erst die Linie ${x.s[0]} unten am Rand.`) : (no ? `Die Linie stimmt. Zähle die Reihen von unten: 1 bis ${r + 1}.` : `Die Linie stimmt. Such jetzt die Reihe ${x.s[1]} links am Rand.`)),
+          okText: `Das ist ${x.s}.`, okSay: spell(x.s) });
+      },
+      explain: (x) => ({ html: chPic({}, { [x.s]: "hl" }, { hlFile: x.s[0], hlRank: +x.s[1] }) + `<p>Erst der <b>Buchstabe</b> der Linie, dann die <b>Zahl</b> der Reihe.</p><p>Linie ${x.s[0]} + Reihe ${x.s[1]} = Feld <b>${x.s}</b></p>`, say: `Erst der Buchstabe der Linie, dann die Zahl der Reihe. Linie ${x.s[0]}, Reihe ${x.s[1]}.` })
+    },
+    {
+      id: "figuren", name: "Figuren-Hafen", icon: "♟️", color: "#3a86ff",
+      task: (d) => d === "leicht" ? "Wie heißt die Figur?" : "Finde die Figur!",
+      intro: (d) => d === "leicht" ? "Im Schach gibt es sechs verschiedene Figuren: König, Dame, Turm, Läufer, Springer und Bauer. Lerne ihre Namen!"
+        : d === "mittel" ? "Jetzt stehen mehrere Figuren auf dem Brett. Tippe die richtige an!" : "Jetzt spielen Weiß und Schwarz mit. Achte auf die Farbe der Figur!",
+      ex: () => `<div class="chrow6">${"KDTLSB".split("").map(t => `<span>${chPiece("w" + t)}<b>${PN[t]}</b></span>`).join("")}</div>`,
+      say: (d) => d === "leicht" ? "Im Schach gibt es sechs verschiedene Figuren: König, Dame, Turm, Läufer, Springer und Bauer. Lerne ihre Namen!"
+        : d === "mittel" ? "Jetzt stehen mehrere Figuren auf dem Brett. Tippe die richtige an!" : "Jetzt spielen Weiß und Schwarz mit. Achte auf die Farbe der Figur!",
+      build(d) {
+        const T6 = "KDTLSB".split("");
+        if (d === "leicht") return gen(8, (k) => { const t = T6[k % 6], c = k < 6 ? "w" : "b"; return { k: "wer", code: c + t, lab: c + t }; });
+        return gen(8, (k) => {
+          const t = T6[k % 6], both = d === "schwer", c = both && k % 2 ? "b" : "w", code = c + t, pos = {};
+          let codes = shuffle(T6.filter(q => q !== t)).slice(0, both ? 3 : 4).map(q => (both && Math.random() < .5 ? "b" : c) + q);
+          if (both) codes = codes.concat([chOther(c) + t, chOther(c) + chPickOne(T6.filter(q => q !== t))]);   // dieselbe Figur in der anderen Farbe steht auch da
+          codes = [code].concat(codes.filter((p, i, arr) => arr.indexOf(p) === i));
+          // Bauern stehen nie auf der ersten oder letzten Reihe, die Könige nie nebeneinander
+          for (const p of codes) { const q = shuffle(ALLSQ.filter(z => !pos[z] && (p[1] !== "B" || (z[1] !== "1" && z[1] !== "8")) && (p[1] !== "K" || !ALLSQ.some(y => pos[y] && pos[y][1] === "K" && chDist(y, z) < 2))))[0]; pos[q] = p; }
+          return { k: "find", code, pos, col: both, lab: code + k };
+        });
+      },
+      render(x, stage) {
+        if (x.k === "wer") {
+          const t = x.code[1], wrong = shuffle("KDTLSB".split("").filter(q => q !== t)).slice(0, 2);
+          return chAsk(stage, chBig([x.code]), "Wie heißt diese Figur?", { opts: [{ label: PN[t], correct: true }].concat(wrong.map(q => ({ label: PN[q], wrongText: `Nein. ${CH_LOOK[q]}` }))),
+            okText: `Das ist ${pNom(x.code)}. ${CH_LOOK[t]}`, okSpeak: `${capF(pNom(x.code))}.` });
+        }
+        const sq = chFind(x.pos, x.code);
+        return chTap(stage, { prompt: `Tippe <b>${pAkk(x.code, x.col)}</b> an!`, pos: x.pos, targets: sq,
+          why: (s) => { const p = x.pos[s]; return !p ? "Hier steht keine Figur." : p[1] === x.code[1] ? "Das ist die richtige Figur – aber in der falschen Farbe!" : `Das ist ${pNom(p, x.col)}. ${CH_LOOK[x.code[1]]}`; },
+          okText: `Das ist ${pNom(x.code, x.col)}.` });
+      },
+      explain: (x) => ({ html: `<div class="chrow6 one"><span>${chPiece(x.code)}<b>${PN[x.code[1]]}</b></span></div><p>${CH_LOOK[x.code[1]]}</p>`, say: CH_LOOK[x.code[1]] })
+    },
+    {
+      id: "aufstellung", name: "Start-Strand", icon: "🏰", color: "#9b5de5",
+      task: (d) => d === "schwer" ? "Wo steht die Figur am Anfang?" : "Welche Figur fehlt?",
+      intro: (d) => (d === "schwer" ? "Jetzt stehen nur die Bauern da. Weißt du, wo die anderen Figuren am Anfang stehen?" : "So stehen die Figuren am Anfang: Türme in den Ecken, daneben Springer, dann Läufer. In der Mitte Dame und König. Davor alle Bauern.")
+        + " Merke: Die Dame steht auf ihrer Farbe!",
+      ex: () => chPic(CH_START),
+      say: (d) => (d === "schwer" ? "Jetzt stehen nur die Bauern da. Weißt du, wo die anderen Figuren am Anfang stehen?" : "So stehen die Figuren am Anfang: Türme in den Ecken, daneben Springer, dann Läufer. In der Mitte Dame und König. Davor alle Bauern.")
+        + " Merke: Die Dame steht auf ihrer Farbe!",
+      build(d) {
+        if (d === "schwer") { const pawns = {}; ALLSQ.forEach(s => { if (CH_START[s] && CH_START[s][1] === "B") pawns[s] = CH_START[s]; });
+          return shuffle(["wT", "wS", "wL", "wD", "wK", "bT", "bS", "bL", "bD", "bK"]).slice(0, 8).map(code => ({ k: "wo", code, pos: pawns, lab: code })); }
+        return gen(8, (k) => { const c = d === "mittel" && k % 2 ? "b" : "w", r = k % 4 === 3 ? (c === "w" ? 1 : 6) : (c === "w" ? 0 : 7), s = sqOf(rint(0, 7), r), pos = Object.assign({}, CH_START); delete pos[s];
+          return { k: "fehlt", s, code: CH_START[s], pos, lab: s }; });
+      },
+      render(x, stage) {
+        const t = x.code[1];
+        if (x.k === "fehlt") {
+          const wrong = shuffle("KDTLSB".split("").filter(q => q !== t)).slice(0, 2);
+          return chAsk(stage, chBoard({ pos: x.pos, marks: { [x.s]: "hl q" } }).el, "Welche Figur fehlt hier?", { opts: [{ label: PN[t], correct: true }].concat(wrong.map(q => ({ label: PN[q], wrongText: `Nein. ${CH_HOME[t]}` }))),
+            okText: CH_HOME[t], okSpeak: `${capF(pNom(x.code))}.` });
+        }
+        const home = chFind(CH_START, x.code);
+        return chTap(stage, { prompt: `Wo steht am Anfang <b>${pNom(x.code, true)}</b>? Tippe das Feld an!`, pos: x.pos, targets: home,
+          why: (s) => `Dort steht ${pNom(x.code, true)} am Anfang nicht. ${CH_HOME[t]}`, okText: CH_HOME[t], onDone: (B, s, fin) => { home.forEach(q => B.put(q, x.code)); fin(); } });
+      },
+      explain: (x) => ({ html: chPic(CH_START, Object.fromEntries(chFind(CH_START, x.code).map(s => [s, "hl"]))) + `<p>${CH_HOME[x.code[1]]}</p>`, say: CH_HOME[x.code[1]] })
+    }
+  ];
+
+  /* ======================= Schachschule 2: So ziehen die Figuren ======================= */
+  // Stern-Aufgabe: Welche Sterne erreicht die Figur in einem Zug? block = eigene Bauern stehen im Weg
+  function chStars(t, block) {
+    for (let g = 0; g < 200; g++) {
+      const edge = t === "K" || t === "S" ? 1 : 0, s = sqOf(rint(edge, 7 - edge), rint(edge, 7 - edge)), pos = { [s]: "w" + t }, free = chReach(pos, s);
+      if (block) {
+        const near = ALLSQ.filter(q => chDist(q, s) === 1);
+        const cand = t === "S" || t === "K" ? near : free.filter(q => chDist(q, s) <= 3 && free.some(z => chDist(z, s) > chDist(q, s) && sameRay(s, q, z)));
+        const put = shuffle(cand.filter(q => q[1] !== "1" && q[1] !== "8")).slice(0, t === "S" ? 4 : 2); if (put.length < 2) continue;
+        put.forEach(q => { pos[q] = "wB"; });
+      }
+      const reach = chReach(pos, s), blocked = free.filter(q => reach.indexOf(q) < 0 && !pos[q]);
+      const off = shuffle(ALLSQ.filter(q => q !== s && !pos[q] && free.indexOf(q) < 0 && chDist(q, s) <= (t === "K" ? 2 : 3)));
+      const good = shuffle(reach.filter(q => !pos[q])).slice(0, 3), bad = shuffle(blocked).slice(0, block && t !== "S" && t !== "K" ? 2 : 0).concat(off).slice(0, 3);
+      if (good.length < 2 || bad.length < 2 || (block && t !== "S" && t !== "K" && !blocked.length)) continue;
+      return { k: "stars", t, s, pos, stars: good.concat(bad), good, free, reach, lab: t + s + good.join("") };
+    }
+    return null;
+  }
+  // liegen a → b → c in dieser Reihenfolge auf einem Strahl (gleiche Richtung)?
+  function sameRay(a, b, c) {
+    const d1 = [Math.sign(sqF(b) - sqF(a)), Math.sign(sqR(b) - sqR(a))], d2 = [Math.sign(sqF(c) - sqF(a)), Math.sign(sqR(c) - sqR(a))];
+    const line = (p, q) => sqF(p) === sqF(q) || sqR(p) === sqR(q) || Math.abs(sqF(p) - sqF(q)) === Math.abs(sqR(p) - sqR(q));
+    return d1[0] === d2[0] && d1[1] === d2[1] && line(a, b) && line(a, c);
+  }
+  // In zwei Zügen zum Stern: Auf welchem Feld hält die Figur zwischendurch an?
+  function chTwo(t) {
+    for (let g = 0; g < 200; g++) {
+      const s = sqOf(rint(0, 7), rint(0, 7)), pos = { [s]: "w" + t }, r1 = chReach(pos, s);
+      const far = shuffle(ALLSQ.filter(q => q !== s && r1.indexOf(q) < 0));
+      for (const star of far) {
+        const mids = r1.filter(m => chReach(chMove(pos, s, m), m).indexOf(star) >= 0);
+        if (mids.length >= 1 && mids.length <= (t === "D" ? 12 : 4)) return { k: "two", t, s, pos, star, mids, r1, lab: t + s + star };
+      }
+    }
+    return null;
+  }
+  // Bauern-Aufgabe: Wohin kann der Bauer ziehen (und schlagen)?
+  function chPawn(c, capt) {
+    for (let g = 0; g < 200; g++) {
+      const dir = c === "w" ? 1 : -1, start = c === "w" ? 1 : 6, home = Math.random() < (capt ? .3 : .5), r = home ? start : start + dir * rint(1, 4), f = rint(capt ? 1 : 0, capt ? 6 : 7), s = sqOf(f, r), pos = { [s]: c + "B" };
+      const en = chOther(c);
+      if (capt) {
+        const opts = shuffle([[-1, 1], [1, 1], [0, 1], [-1, 0], [1, 0], [0, 2]]).slice(0, rint(2, 3));
+        opts.forEach(([df, dr]) => { const y = r + dr * dir; if (onB(f + df, y)) pos[sqOf(f + df, y)] = en + chPickOne(y === 0 || y === 7 ? ["S", "L", "T"] : ["B", "S", "L", "T"]); });
+      }
+      const targets = chReach(pos, s);
+      if (!targets.length || (capt && !targets.some(q => pos[q]))) continue;
+      return { k: "pawn", c, s, pos, targets, capt, lab: c + s + Object.keys(pos).sort().join("") };
+    }
+    return null;
+  }
+  const CH_ZUG = {
+    T: { id: "turm", name: "Turm-Insel", icon: "🏰", color: "#b5651d", ex: { d4: "wT" }, two: "Der Turm kommt in zwei Zügen auf jedes Feld: erst geradeaus, dann um die Ecke." },
+    L: { id: "laeufer", name: "Läufer-Lagune", icon: "🏃", color: "#2a9d8f", ex: { d4: "wL" }, two: "Der Läufer bleibt immer auf seiner Feldfarbe. Such ein Feld, das schräg zum Läufer und schräg zum Stern liegt." },
+    D: { id: "dame", name: "Damen-Düne", icon: "👸", color: "#e63946", ex: { d4: "wD" }, two: "Die Dame ist die stärkste Figur: Sie kommt in zwei Zügen überall hin." },
+    K: { id: "koenig", name: "Königs-Kap", icon: "🤴", color: "#f77f00", ex: { d4: "wK" }, two: "Der König braucht zwei kleine Schritte. Such ein Feld, das neben dem König und neben dem Stern liegt." },
+    S: { id: "springer", name: "Springer-Sprung", icon: "🐴", color: "#9b5de5", ex: { d4: "wS" }, two: "Zwei Sprünge! Wohin springt der Springer zuerst, damit er danach den Stern erreicht?" }
+  };
+  function zugLevel(t) {
+    const C = CH_ZUG[t], code = "w" + t, Der = capF(pNom(code)), der = pNom(code), exPic = () => chPic(C.ex, Object.fromEntries(chReach(C.ex, "d4").map(q => [q, "dot"])));
+    const jump = t === "S" ? " Er ist die einzige Figur, die über andere Figuren springen darf!" : "";
+    return {
+      id: C.id, name: C.name, icon: C.icon, color: C.color,
+      task: (d) => d === "schwer" ? "In zwei Zügen zum Stern!" : `Welche Sterne erreicht ${der}?`,
+      intro: (d) => d === "leicht" ? `${CH_RULE[t]}${jump} Tippe alle Sterne an, die ${der} in einem Zug erreicht.`
+        : d === "mittel" ? (t === "S" ? "Jetzt stehen Bauern im Weg. Das stört den Springer nicht: Er springt einfach drüber!" : t === "K" ? "Jetzt stehen eigene Bauern neben dem König. Auf ein Feld mit einer eigenen Figur darf er nicht ziehen." : `Jetzt stehen eigene Bauern im Weg. ${Der} darf nicht über andere Figuren springen – ${t === "D" ? "sie" : "er"} muss vorher anhalten.`)
+        : `${C.two} Tippe das Feld an, auf dem ${der} nach dem ersten Zug steht.`,
+      ex: () => exPic() + `<br>So zieht ${der}.`,
+      say: (d) => d === "leicht" ? `${CH_RULE[t]}${jump} Tippe alle Sterne an, die ${der} in einem Zug erreicht.`
+        : d === "mittel" ? (t === "S" ? "Jetzt stehen Bauern im Weg. Das stört den Springer nicht: Er springt einfach drüber!" : t === "K" ? "Jetzt stehen eigene Bauern neben dem König. Auf ein Feld mit einer eigenen Figur darf er nicht ziehen." : `Jetzt stehen eigene Bauern im Weg. ${Der} darf nicht über andere Figuren springen.`)
+        : `${C.two} Tippe das Feld an, auf dem ${der} nach dem ersten Zug steht.`,
+      build(d) { return gen(6, () => d === "schwer" ? chTwo(t) : chStars(t, d === "mittel")); },
+      render(x, stage) {
+        if (x.k === "two") {
+          return chTap(stage, { prompt: `In <b>2 Zügen</b> zum Stern! Tippe das Feld an, auf dem ${der} nach dem <b>1. Zug</b> steht.`, pos: x.pos, marks: { [x.star]: "star" }, targets: x.mids,
+            why: (s) => s === x.star ? `Zum Stern kommt ${der} nicht in einem Zug. Wo hält ${t === "D" ? "sie" : "er"} vorher an?` : s === x.s ? `Dort steht ${der} schon.` : x.r1.indexOf(s) >= 0 ? `Dorthin kann ${der} ziehen – aber von dort erreicht ${t === "D" ? "sie" : "er"} den Stern nicht.` : `Dorthin kann ${der} nicht ziehen. ${CH_RULE[t]}`,
+            okText: "Zwei Züge – und der Stern ist erreicht!", delay: 2300,
+            onDone: (B, s, fin) => { B.clear("ok"); B.move(x.s, s, () => setTimeout(() => B.move(s, x.star, () => { B.clear("star"); B.mark(x.star, "ok"); fin(); }), 220)); } });
+        }
+        const marks = {}; x.stars.forEach(q => { marks[q] = "star"; });
+        return chTap(stage, { prompt: `Welche Sterne erreicht ${der} in <b>einem</b> Zug? Tippe sie an!`, pos: x.pos, marks, targets: x.good, all: true, only: x.stars, onlyText: "Tippe nur auf die Sterne!",
+          cnt: (n) => `Noch ${n} ${n === 1 ? "Stern" : "Sterne"}`,
+          why: (s) => x.free.indexOf(s) >= 0 ? `Im Weg steht eine Figur! ${Der} darf nicht über andere Figuren springen.` : `Diesen Stern erreicht ${der} nicht. ${CH_RULE[t]}`,
+          okText: t === "S" && Object.keys(x.pos).length > 1 ? "Der Springer springt über alle drüber!" : "Alle Sterne gefunden!", delay: 1900,
+          onDone: (B, s, fin) => { x.reach.forEach(q => { if (!B.pos[q]) B.mark(q, "dot"); }); fin(); } });
+      },
+      explain: (x) => x.k === "two" ? { html: chPic(x.pos, Object.assign({ [x.star]: "star" }, Object.fromEntries(x.r1.map(q => [q, "dot"])))) + `<p>Die Punkte zeigen, wohin ${der} im <b>1. Zug</b> ziehen kann. Von welchem Punkt aus erreicht ${t === "D" ? "sie" : "er"} den Stern?</p>`, say: `Die Punkte zeigen, wohin ${der} im ersten Zug ziehen kann. Von welchem Punkt aus erreicht ${t === "D" ? "sie" : "er"} den Stern?` }
+        : { html: chPic(x.pos, Object.fromEntries(x.reach.filter(q => !x.pos[q]).map(q => [q, "dot"]))) + `<p>${CH_RULE[t]}${jump}</p>`, say: CH_RULE[t] + jump }
+    };
+  }
+  const SCHACH_B = ["T", "L", "D", "K", "S"].map(zugLevel).concat([{
+    id: "bauer", name: "Bauern-Bucht", icon: "🚜", color: "#3a86ff",
+    task: (d) => d === "leicht" ? "Wohin kann der Bauer ziehen?" : "Wohin kann der Bauer ziehen oder schlagen?",
+    intro: (d) => d === "leicht" ? `${CH_RULE.B} Zurück darf er nie! Tippe alle Felder an, auf die der Bauer ziehen kann.`
+      : d === "mittel" ? "Der Bauer schlägt anders, als er zieht: Er schlägt nur schräg nach vorn – ein Feld. Steht eine Figur direkt vor ihm, kommt er nicht weiter."
+      : "Achtung: Weiße Bauern ziehen nach oben, schwarze Bauern ziehen nach unten!",
+    ex: (d) => d === "leicht" ? chPic({ c2: "wB", f4: "wB" }, { c3: "dot", c4: "dot", f5: "dot" }) + "<br>So zieht der Bauer." : chPic({ d4: "wB", c5: "bS", e5: "bT", g4: "wB", g5: "bB" }, { c5: "hl", e5: "hl", d5: "dot" }) + "<br>So schlägt der Bauer.",
+    say: (d) => d === "leicht" ? `${CH_RULE.B} Zurück darf er nie! Tippe alle Felder an, auf die der Bauer ziehen kann.`
+      : d === "mittel" ? "Der Bauer schlägt anders, als er zieht. Er schlägt nur schräg nach vorn, ein Feld. Steht eine Figur direkt vor ihm, kommt er nicht weiter."
+      : "Achtung: Weiße Bauern ziehen nach oben, schwarze Bauern ziehen nach unten!",
+    build(d) { return gen(6, (k) => chPawn(d === "schwer" && k % 2 === 0 ? "b" : "w", d !== "leicht" && !(d === "schwer" && k === 0))); },
+    render(x, stage) {
+      const dir = x.c === "w" ? 1 : -1, f = sqF(x.s), r = sqR(x.s), der = x.c === "w" ? "der weiße Bauer" : "der schwarze Bauer", vorn = x.c === "w" ? "nach oben" : "nach unten";
+      return chTap(stage, { prompt: `Wohin kann ${x.capt || x.c === "b" ? der : "der Bauer"} ziehen${x.capt ? " oder schlagen" : ""}? Tippe <b>alle</b> Felder an!`, pos: x.pos, marks: { [x.s]: "sel" }, targets: x.targets, all: true,
+        cnt: (n) => `Noch ${n} ${n === 1 ? "Feld" : "Felder"}`,
+        why: (s) => { const df = sqF(s) - f, dr = (sqR(s) - r) * dir;
+          if (s === x.s) return "Dort steht der Bauer schon.";
+          if (dr < 0) return `Bauern ziehen nie zurück! ${capF(der)} zieht immer nur ${vorn}.`;
+          if (dr === 0) return "Zur Seite darf der Bauer nicht ziehen.";
+          if (df === 0 && x.pos[s]) return "Der Bauer schlägt nie geradeaus! Vor ihm steht eine Figur – dort kommt er nicht hin.";
+          if (df === 0 && dr === 1) return "Dieses Feld ist frei – schau nochmal genau.";
+          if (df === 0 && dr === 2) return x.pos[sqOf(f, r + dir)] ? "Der Bauer darf nicht über eine Figur springen." : "Zwei Felder darf der Bauer nur von seinem Startfeld aus ziehen.";
+          if (Math.abs(df) === 1 && dr === 1) return x.pos[s] ? "Eigene Figuren schlägt man nicht." : "Schräg zieht der Bauer nur, wenn er dort eine Figur schlagen kann.";
+          return `So weit kommt der Bauer nicht. ${CH_RULE.B}`; },
+        okText: x.targets.some(q => x.pos[q]) ? "Der Bauer schlägt schräg nach vorn." : x.targets.length === 2 ? "Vom Startfeld aus: ein oder zwei Felder." : "Immer ein Feld nach vorn.", delay: 1700 });
+    },
+    explain: (x) => ({ html: chPic(x.pos, Object.assign({ [x.s]: "sel" }, Object.fromEntries(x.targets.map(q => [q, x.pos[q] ? "hl" : "dot"])))) + `<p>${x.c === "w" ? "Weiße Bauern ziehen nach oben." : "Schwarze Bauern ziehen nach unten."} Der Bauer <b>zieht</b> geradeaus und <b>schlägt</b> schräg nach vorn.</p>`,
+      say: (x.c === "w" ? "Weiße Bauern ziehen nach oben." : "Schwarze Bauern ziehen nach unten.") + " Der Bauer zieht geradeaus und schlägt schräg nach vorn." })
+  }]);
+
+  /* ======================= Schachschule 3: Schlagen, Schach und Matt ======================= */
+  const pDat = (code) => `${code[1] === "D" ? "der" : "dem"} ${PN[code[1]]}`;
+  const chBlack = (q, types) => "b" + chPickOne((types || ["B", "S", "L", "T"]).filter(t => t !== "B" || (q[1] !== "1" && q[1] !== "8")));
+  const chBetween = (a, b) => ALLSQ.filter(q => q !== a && q !== b && sameRay(a, q, b) && chDist(q, a) < chDist(b, a));
+  const CH_CAP = { T: "Der Turm schlägt so, wie er zieht: geradeaus.", L: "Der Läufer schlägt so, wie er zieht: schräg.", D: "Die Dame schlägt so, wie sie zieht: geradeaus oder schräg.",
+    S: "Der Springer schlägt so, wie er zieht: im L-Sprung.", K: "Der König schlägt nur Figuren direkt neben sich.", B: "Der Bauer schlägt nur schräg nach vorn – ein Feld. Geradeaus schlägt er nie!" };
+  // Welche schwarze Figur kann die weiße Figur schlagen? Genau eine. block = eine schwarze Figur steht hinter einem eigenen Bauern
+  function chCapture(types, block) {
+    for (let g = 0; g < 400; g++) {
+      const t = chPickOne(types), f = rint(0, 7), r = rint(t === "B" ? 1 : 0, t === "B" ? 5 : 7), s = sqOf(f, r), pos = { [s]: "w" + t }, free = chReach(pos, s, { attack: 1 });
+      if (!free.length) continue;
+      const hit = chPickOne(free); pos[hit] = chBlack(hit, ["B", "S", "L", "T", "D"]);
+      const lure = t === "B" ? [sqOf(f, r + 1)] : [];   // direkt vor dem Bauern: dort schlägt er nicht
+      if (block && "TLD".indexOf(t) >= 0) {
+        const far = shuffle(free.filter(q => q !== hit && !sameRay(s, hit, q) && !sameRay(s, q, hit) && chDist(q, s) >= 2 && chBetween(s, q).some(z => z[1] !== "1" && z[1] !== "8")))[0];
+        if (!far) continue;
+        pos[chPickOne(chBetween(s, far).filter(z => z[1] !== "1" && z[1] !== "8"))] = "wB"; pos[far] = chBlack(far);
+      }
+      const near = shuffle(ALLSQ.filter(q => !pos[q] && free.indexOf(q) < 0 && chDist(q, s) <= 3 && chDist(q, s) >= 1));
+      lure.concat(near).filter(q => !pos[q]).slice(0, block ? 1 : 2).forEach(q => { pos[q] = chBlack(q); });
+      const can = chReach(pos, s).filter(q => pos[q]);
+      if (can.length !== 1 || can[0] !== hit || chPieces(pos, "b").length < 3) continue;
+      if (t === "K" && chAttacked(pos, hit, "b")) continue;   // der König darf keine gedeckte Figur schlagen
+      return { k: "cap", t, s, pos, hit, free, lab: t + s + hit };
+    }
+    return null;
+  }
+  // Umgekehrt: Welche weiße Figur kann die markierte schwarze Figur schlagen? Genau eine.
+  function chAttacker() {
+    for (let g = 0; g < 400; g++) {
+      const f = rint(0, 7), r = rint(2, 6), q = sqOf(f, r), pos = { [q]: chBlack(q, ["S", "L", "T", "D"]) }, t = chPickOne(["T", "L", "D", "S", "B", "B"]);
+      const from = t === "B" ? [sqOf(f - 1, r - 1), sqOf(f + 1, r - 1)].filter((z, i) => onB(f + (i ? 1 : -1), r - 1)) : chReach({ [q]: "w" + t }, q);
+      if (!from.length) continue;
+      const a = chPickOne(from); pos[a] = "w" + t;
+      if (t !== "B" && !pos[sqOf(f, r - 1)]) pos[sqOf(f, r - 1)] = "wB";   // Bauer direkt davor: schlägt nicht geradeaus
+      shuffle(ALLSQ.filter(z => !pos[z] && chDist(z, q) <= 4)).slice(0, 2).forEach((z, i) => { pos[z] = "w" + chPickOne(["T", "L", "S", "D"].filter(y => y !== t)); });
+      const att = chAttackers(pos, q, "w");
+      if (att.length !== 1 || att[0] !== a) continue;
+      return { k: "att", q, a, t, pos, lab: q + a + t };
+    }
+    return null;
+  }
+  // Zwei Figuren kann man schlagen – welche ist mehr wert?
+  function chBest() {
+    for (let g = 0; g < 400; g++) {
+      const t = chPickOne(["T", "L", "D", "S"]), s = sqOf(rint(0, 7), rint(0, 7)), pos = { [s]: "w" + t }, free = shuffle(chReach(pos, s));
+      const a = free[0], b = free.find(q => q !== a && !sameRay(s, a, q) && !sameRay(s, q, a)); if (!a || !b) continue;
+      const ty = shuffle(["B", "S", "T", "D", chPickOne(["L", "S"])]).filter((x, i, arr) => arr.findIndex(y => PVAL[y] === PVAL[x]) === i);
+      if ((ty[0] === "B" && (a[1] === "1" || a[1] === "8")) || (ty[1] === "B" && (b[1] === "1" || b[1] === "8"))) continue;
+      pos[a] = "b" + ty[0]; pos[b] = "b" + ty[1];
+      const z = shuffle(ALLSQ.filter(q => !pos[q] && chReach({ [s]: "w" + t }, s).indexOf(q) < 0 && chDist(q, s) <= 3))[0]; if (z) pos[z] = chBlack(z, ["B", "S"]);
+      const can = chReach(pos, s).filter(q => pos[q]); if (can.length !== 2) continue;
+      const best = PVAL[pos[a][1]] > PVAL[pos[b][1]] ? a : b, less = best === a ? b : a;
+      if (chAttacked(pos, best, "b") || chAttacked(pos, less, "b")) continue;   // beide ungedeckt – es geht nur um den Wert
+      return { k: "best", t, s, pos, best, less, lab: t + s + a + b };
+    }
+    return null;
+  }
+  // Steht der schwarze König im Schach? check = ja · sonst knapp daneben oder ein Bauer steht dazwischen. extra = weitere weiße Figuren, die kein Schach geben
+  function chCheckPos(check, extra) {
+    for (let g = 0; g < 600; g++) {
+      const k = sqOf(rint(0, 7), rint(0, 7)), t = chPickOne(["T", "L", "D", "S"]), pos = { [k]: "bK" };
+      const lines = chReach({ [k]: "w" + t }, k).filter(q => chDist(q, k) >= 2);
+      if (!lines.length) continue;
+      let a, kind = "check";
+      if (!check && t !== "S" && Math.random() < .5) {
+        a = chPickOne(lines.filter(q => chDist(q, k) >= 3)); if (!a) continue;
+        const mid = chBetween(k, a).filter(q => q[1] !== "1" && q[1] !== "8"); if (!mid.length) continue;
+        pos[chPickOne(mid)] = "bB"; kind = "block";
+      } else if (!check) {
+        a = chPickOne(ALLSQ.filter(q => q !== k && lines.indexOf(q) < 0 && chDist(q, k) >= 2 && lines.some(z => chDist(z, q) === 1))); if (!a) continue; kind = "miss";
+      } else a = chPickOne(lines);
+      if (pos[a]) continue; pos[a] = "w" + t;
+      for (let i = 0; i < (extra || 0); i++) { const z = shuffle(ALLSQ.filter(q => !pos[q] && chDist(q, k) >= 2 && chDist(q, k) <= 4))[0]; if (z) pos[z] = "w" + chPickOne(["T", "L", "S", "D"].filter(y => y !== t)); }
+      const wk = shuffle(ALLSQ.filter(q => !pos[q] && chDist(q, k) >= 3))[0]; if (!wk) continue; pos[wk] = "wK";
+      const att = chAttackers(pos, k, "w");
+      if (chInCheck(pos, "w") || (check ? (att.length !== 1 || att[0] !== a) : att.length !== 0)) continue;
+      return { k: "chk", check, kind, king: k, a, t, pos, lab: (check ? "j" : "n") + k + a + t };
+    }
+    return null;
+  }
+  // Gib Schach: Auf welches Feld muss die Figur ziehen? (sicher = die Figur kann dort nicht geschlagen werden)
+  function chGiveCheck() {
+    for (let g = 0; g < 600; g++) {
+      const t = chPickOne(["T", "L", "D", "S"]), pos = {}, sq = shuffle(ALLSQ.slice());
+      pos[sq[0]] = "bK"; pos[sq[1]] = "w" + t; const wk = sq.slice(2).find(q => chDist(q, sq[0]) >= 3); if (!wk) continue; pos[wk] = "wK";
+      if (Math.random() < .5) { const z = sq.slice(3).find(q => !pos[q] && q[1] !== "1" && q[1] !== "8" && chDist(q, sq[0]) <= 2); if (z) pos[z] = "bB"; }
+      if (chInCheck(pos, "b") || chInCheck(pos, "w")) continue;
+      const s = sq[1], moves = chLegal(pos, "w").filter(m => m[0] === s && !pos[m[1]]).map(m => m[1]);
+      const checks = moves.filter(m => chInCheck(chMove(pos, s, m), "b")), safe = checks.filter(m => !chLegal(chMove(pos, s, m), "b").some(x => x[1] === m));
+      if (safe.length < 1 || safe.length > 3 || moves.length < 5) continue;
+      return { k: "give", t, s, pos, safe, checks, moves, king: sq[0], lab: t + s + sq[0] };
+    }
+    return null;
+  }
+  // Schach abwehren 1: Der weiße König läuft weg – welche Felder sind sicher?
+  function chFlee() {
+    for (let g = 0; g < 600; g++) {
+      const k = sqOf(rint(0, 7), rint(0, 7)), t = chPickOne(["T", "L", "D", "S"]), pos = { [k]: "wK" };
+      const a = chPickOne(chReach({ [k]: "b" + t }, k).filter(q => chDist(q, k) >= 2)); if (!a) continue; pos[a] = "b" + t;
+      const z = shuffle(ALLSQ.filter(q => !pos[q] && chDist(q, k) >= 2 && chDist(q, k) <= 4))[0]; if (z && Math.random() < .7) pos[z] = "b" + chPickOne(["T", "L", "S"]);
+      const bk = shuffle(ALLSQ.filter(q => !pos[q] && chDist(q, k) >= 3))[0]; if (!bk) continue; pos[bk] = "bK";
+      if (chAttackers(pos, k, "b").length !== 1 || chInCheck(pos, "b")) continue;
+      const safe = chLegal(pos, "w").map(m => m[1]), near = ALLSQ.filter(q => chDist(q, k) === 1);
+      if (safe.length < 1 || safe.length > 4 || near.length - safe.length < 2) continue;
+      return { k: "flee", king: k, a, pos, safe, lab: k + a + safe.join("") };
+    }
+    return null;
+  }
+  // Schach abwehren 2: Genau eine weiße Figur kann den Angreifer schlagen
+  function chTake() {
+    for (let g = 0; g < 600; g++) {
+      const k = sqOf(rint(0, 7), rint(0, 7)), t = chPickOne(["T", "L", "D", "S"]), pos = { [k]: "wK" };
+      const a = chPickOne(chReach({ [k]: "b" + t }, k).filter(q => chDist(q, k) >= 2)); if (!a) continue; pos[a] = "b" + t;
+      const ht = chPickOne(["T", "L", "D", "S", "B"]), f = sqF(a), r = sqR(a);
+      const from = (ht === "B" ? [[f - 1, r - 1], [f + 1, r - 1]].filter(([x, y]) => onB(x, y) && y >= 1).map(([x, y]) => sqOf(x, y)) : chReach({ [a]: "w" + ht }, a)).filter(q => !pos[q] && chBetween(k, a).indexOf(q) < 0);
+      if (!from.length) continue; const h = chPickOne(from); pos[h] = "w" + ht;
+      shuffle(ALLSQ.filter(q => !pos[q] && chBetween(k, a).indexOf(q) < 0)).slice(0, 2).forEach(q => { pos[q] = "w" + chPickOne(["T", "L", "S"].filter(y => y !== ht)); });
+      const bk = shuffle(ALLSQ.filter(q => !pos[q] && chDist(q, k) >= 3))[0]; if (!bk) continue; pos[bk] = "bK";
+      if (chAttackers(pos, k, "b").length !== 1 || chInCheck(pos, "b")) continue;
+      const caps = chLegal(pos, "w").filter(m => m[1] === a);
+      if (caps.length !== 1 || caps[0][0] !== h) continue;
+      return { k: "take", king: k, a, h, pos, lab: k + a + h };
+    }
+    return null;
+  }
+  // Wie kann sich Schwarz aus dem Schach retten? (für die Erklärung, warum es kein Matt ist)
+  function chEscape(pos, c) {
+    const k = chFind(pos, c + "K")[0], mv = chLegal(pos, c), att = chAttackers(pos, k, chOther(c)), Wer = c === "b" ? "Schwarz" : "Weiß";
+    const run = mv.find(m => m[0] === k && !pos[m[1]]), take = mv.find(m => att.indexOf(m[1]) >= 0), blockM = mv.find(m => m[0] !== k && att.indexOf(m[1]) < 0);
+    return run ? `Der König kann nach ${run[1]} ausweichen.` : take ? (take[0] === k ? "Der König kann die Figur schlagen, die Schach gibt." : `${Wer} kann die Figur schlagen, die Schach gibt.`) : blockM ? `${Wer} kann eine Figur dazwischenstellen.` : "";
+  }
+  const chState = (pos) => chMate(pos, "b") ? "matt" : chInCheck(pos, "b") ? "schach" : chPatt(pos, "b") ? "patt" : "kein";
+  const chBase = (keys) => shuffle([].concat(...keys.map(k => CH_POS[k]))).map(str => { const p = chParse(str); return Math.random() < .5 ? chMirror(p) : p; });
+  // aus einer „Matt in 1“-Stellung eine Stellung nach dem weißen Zug machen: matt, nur Schach oder gar kein Schach
+  function chAfter(pos, want) {
+    if (want === "kein") return pos;
+    const mv = shuffle(chLegal(pos, "w")).map(m => ({ m, p: chMove(pos, m[0], m[1]) })).filter(x => chInCheck(x.p, "b"));
+    const hit = mv.find(x => (chMate(x.p, "b") ? "matt" : "schach") === want);
+    return hit ? hit.p : null;
+  }
+  const CH_STATE = { matt: "Schachmatt!", schach: "Nur Schach", kein: "Kein Schach", patt: "Patt" };
+  const CH_STATE_WHY = (pos, st) => st === "matt" ? "Der König steht im Schach und hat keinen Ausweg mehr: Schachmatt!" : st === "schach" ? "Der König steht im Schach – aber es ist kein Matt. " + chEscape(pos, "b")
+    : st === "patt" ? "Der König steht nicht im Schach. Aber Schwarz hat keinen erlaubten Zug mehr. Das heißt Patt: unentschieden!" : "Keine weiße Figur greift den König an.";
+  // Hinweis nach einer falschen Antwort (ohne die Lösung zu verraten)
+  const chStateHint = (truth, said) => (truth === "matt" || truth === "schach") && (said === "kein" || said === "patt") ? "Schau genau: Eine weiße Figur greift den König an."
+    : truth === "matt" ? "Prüfe alle Auswege: Kann der König weglaufen? Kann Schwarz den Angreifer schlagen oder etwas dazwischenstellen?"
+    : truth === "schach" ? "Nicht so schnell! Prüfe alle Auswege: weglaufen, schlagen, dazwischenstellen. Einer davon klappt."
+    : "Schau nochmal: Wird der König wirklich angegriffen? Achte auf Figuren, die im Weg stehen.";
+  const SCHACH_C = [
+    {
+      id: "schlagen", name: "Schlag-Schlucht", icon: "⚔️", color: "#e63946",
+      task: (d) => d === "schwer" ? "Welche weiße Figur kann schlagen?" : "Welche Figur kannst du schlagen?",
+      intro: (d) => d === "leicht" ? "Schlagen heißt: Deine Figur zieht auf ein Feld, auf dem eine Figur vom Gegner steht. Die Figur vom Gegner kommt vom Brett. Jede Figur schlägt so, wie sie zieht."
+        : d === "mittel" ? "Achtung, Sonderfall: Der Bauer schlägt nur schräg nach vorn! Und über andere Figuren darf man beim Schlagen nicht springen – außer mit dem Springer."
+        : "Jetzt umgekehrt: Eine schwarze Figur ist markiert. Welche weiße Figur kann sie schlagen?",
+      ex: () => chPic({ b2: "wT", b6: "bS", e5: "bL" }, { b6: "hl", b3: "dot", b4: "dot", b5: "dot" }) + "<br>Der Turm schlägt den Springer.",
+      say: (d) => d === "leicht" ? "Schlagen heißt: Deine Figur zieht auf ein Feld, auf dem eine Figur vom Gegner steht. Die Figur vom Gegner kommt vom Brett. Jede Figur schlägt so, wie sie zieht."
+        : d === "mittel" ? "Achtung, Sonderfall: Der Bauer schlägt nur schräg nach vorn! Und über andere Figuren darf man beim Schlagen nicht springen, außer mit dem Springer."
+        : "Jetzt umgekehrt. Eine schwarze Figur ist markiert. Welche weiße Figur kann sie schlagen?",
+      build(d) { return gen(6, (k) => d === "leicht" ? chCapture(["T", "L", "D", "S"]) : d === "mittel" ? (k % 3 === 0 ? chCapture(["B"]) : k % 3 === 1 ? chCapture(["K", "S"]) : chCapture(["T", "L", "D"], true)) : chAttacker()); },
+      render(x, stage) {
+        if (x.k === "att") {
+          const X = x.pos[x.q];
+          return chTap(stage, { prompt: `Welche <b>weiße</b> Figur kann <b>${pAkk(X, true)}</b> schlagen? Tippe sie an!`, pos: x.pos, marks: { [x.q]: "hl" }, targets: [x.a],
+            why: (s) => { const p = x.pos[s]; return !p ? "Tippe eine weiße Figur an." : p[0] === "b" ? "Das ist eine schwarze Figur. Welche weiße Figur kann sie schlagen?" : `${capF(pNom(p))} kann die Figur nicht schlagen. ${CH_CAP[p[1]]}`; },
+            okText: `${capF(pNom(x.pos[x.a]))} schlägt ${pAkk(X)}.`, delay: 2000, onDone: (B, s, fin) => { B.clear("ok"); B.move(x.a, x.q, fin); } });
+        }
+        const code = "w" + x.t;
+        return chTap(stage, { prompt: `Welche Figur kann <b>${pNom(code)}</b> schlagen? Tippe sie an!`, pos: x.pos, marks: { [x.s]: "sel" }, targets: [x.hit],
+          why: (s) => { const p = x.pos[s]; return !p ? "Dort steht keine Figur." : p[0] === "w" ? (s === x.s ? "Das ist deine Figur. Welche schwarze Figur kann sie schlagen?" : "Das ist deine eigene Figur – die schlägst du nicht.")
+            : x.free.indexOf(s) >= 0 ? `Im Weg steht eine andere Figur. ${capF(pNom(code))} darf nicht über Figuren springen.` : `Diese Figur erreicht ${pNom(code)} nicht. ${CH_CAP[x.t]}`; },
+          okText: `${capF(pNom(code))} schlägt ${pAkk(x.pos[x.hit])}.`, delay: 2000, onDone: (B, s, fin) => { B.clear("ok"); B.clear("sel"); B.move(x.s, x.hit, fin); } });
+      },
+      explain: (x) => x.k === "att" ? { html: chPic(x.pos, { [x.q]: "hl" }) + "<p>Prüfe jede weiße Figur: Kann sie in einem Zug auf das markierte Feld ziehen?</p><p>Der Bauer schlägt nur <b>schräg nach vorn</b>.</p>", say: "Prüfe jede weiße Figur: Kann sie in einem Zug auf das markierte Feld ziehen? Der Bauer schlägt nur schräg nach vorn." }
+        : { html: chPic(x.pos, Object.assign({ [x.s]: "sel" }, Object.fromEntries(chReach(x.pos, x.s).map(q => [q, x.pos[q] ? "hl" : "dot"])))) + `<p>${CH_CAP[x.t]}</p>`, say: CH_CAP[x.t] }
+    },
+    {
+      id: "wert", name: "Wert-Waage", icon: "⚖️", color: "#f77f00",
+      task: (d) => d === "leicht" ? "Wie viel ist die Figur wert?" : d === "mittel" ? "Welche Figur ist mehr wert?" : "Schlage die wertvollere Figur!",
+      intro: (d) => "Nicht alle Figuren sind gleich stark. Man zählt in Punkten: Bauer 1, Springer 3, Läufer 3, Turm 5, Dame 9. Der König hat keine Punkte – ihn darf man nie verlieren!"
+        + (d === "schwer" ? " Wenn du wählen kannst, schlägst du die Figur mit mehr Punkten." : ""),
+      ex: () => `<div class="chrow6 val">${"BSLTD".split("").map(t => `<span>${chPiece("w" + t)}<b>${PVAL[t]}</b></span>`).join("")}</div>`,
+      say: (d) => "Nicht alle Figuren sind gleich stark. Man zählt in Punkten: Bauer 1, Springer 3, Läufer 3, Turm 5, Dame 9. Der König hat keine Punkte. Ihn darf man nie verlieren!"
+        + (d === "schwer" ? " Wenn du wählen kannst, schlägst du die Figur mit mehr Punkten." : ""),
+      build(d) {
+        if (d === "leicht") return gen(8, (k) => { const code = (k < 5 ? "w" : "b") + "BSLTD"[k % 5]; return { k: "val", code, lab: code }; });
+        if (d === "mittel") return gen(8, (k) => { const a = chPickOne("BSLTD".split("")), b = chPickOne("BSLTD".split("").filter(t => t !== a)); if (k < 7 && PVAL[a] === PVAL[b]) return null; return { k: "cmp", a: "w" + a, b: "b" + b, lab: [a, b].sort().join("") }; });
+        return gen(6, () => chBest());
+      },
+      render(x, stage) {
+        if (x.k === "val") { const t = x.code[1];
+          return chAsk(stage, chBig([x.code]), `Wie viele Punkte ist <b>${pNom(x.code)}</b> wert?`, { opts: [1, 3, 5, 9].map(v => ({ label: String(v), correct: v === PVAL[t], cls: "numopt", wrongText: `Nein. ${capF(pNom(x.code))} ist ${PVAL[t] > v ? "mehr" : "weniger"} wert.` })),
+            okText: `${capF(pNom(x.code))}: ${PVAL[t]} ${PVAL[t] === 1 ? "Punkt" : "Punkte"}.`, okSpeak: `${PVAL[t]} ${PVAL[t] === 1 ? "Punkt" : "Punkte"}.` }); }
+        if (x.k === "cmp") { const va = PVAL[x.a[1]], vb = PVAL[x.b[1]], txt = `${PN[x.a[1]]} ${va}, ${PN[x.b[1]]} ${vb}.`;
+          return chAsk(stage, chBig([x.a, x.b]), "Welche Figur ist <b>mehr</b> wert?", { opts: [{ label: PN[x.a[1]], correct: va > vb, wrongText: "Zähl die Punkte: " + txt }, { label: PN[x.b[1]], correct: vb > va, wrongText: "Zähl die Punkte: " + txt }, { label: "beide gleich", correct: va === vb, wrongText: "Zähl die Punkte: " + txt }],
+            okText: txt }); }
+        const code = "w" + x.t, vb = PVAL[x.pos[x.best][1]], vl = PVAL[x.pos[x.less][1]];
+        return chTap(stage, { prompt: `${capF(pNom(code))} kann <b>zwei</b> Figuren schlagen. Schlage die <b>wertvollere</b>!`, pos: x.pos, marks: { [x.s]: "sel" }, targets: [x.best],
+          why: (s) => { const p = x.pos[s]; return s === x.less ? `Das geht – aber ${pNom(x.pos[x.best])} ist mehr wert: ${vb} Punkte statt ${vl}.` : !p ? "Dort steht keine Figur." : p[0] === "w" ? "Das ist deine eigene Figur." : `Diese Figur kann ${pNom(code)} nicht schlagen.`; },
+          okText: `${PN[x.pos[x.best][1]]}: ${vb} Punkte – mehr als ${vl}.`, delay: 2000, onDone: (B, s, fin) => { B.clear("ok"); B.clear("sel"); B.move(x.s, x.best, fin); } });
+      },
+      explain: () => ({ html: `<div class="chrow6 val">${"BSLTD".split("").map(t => `<span>${chPiece("w" + t)}<b>${PVAL[t]}</b></span>`).join("")}</div><p>Bauer 1 · Springer 3 · Läufer 3 · Turm 5 · Dame 9</p>`, say: "Bauer 1, Springer 3, Läufer 3, Turm 5, Dame 9." })
+    },
+    {
+      id: "schach", name: "Schach-Schlucht", icon: "❗", color: "#9b5de5",
+      task: (d) => d === "leicht" ? "Steht der König im Schach?" : d === "mittel" ? "Welche Figur gibt Schach?" : "Gib Schach!",
+      intro: (d) => "Schach heißt: Der König wird angegriffen – eine Figur vom Gegner könnte ihn im nächsten Zug schlagen. " + (d === "leicht" ? "Schau genau: Greift die weiße Figur den schwarzen König an?" : d === "mittel" ? "Finde die weiße Figur, die den schwarzen König angreift." : "Zieh deine Figur so, dass sie den schwarzen König angreift. Aber stell sie nicht dorthin, wo der König sie schlagen kann!"),
+      ex: () => chPic({ e8: "bK", e2: "wT", g1: "wK" }, { e8: "chk", e3: "dot", e4: "dot", e5: "dot", e6: "dot", e7: "dot" }) + "<br>Der Turm gibt Schach.",
+      say: (d) => "Schach heißt: Der König wird angegriffen. Eine Figur vom Gegner könnte ihn im nächsten Zug schlagen. " + (d === "leicht" ? "Schau genau: Greift die weiße Figur den schwarzen König an?" : d === "mittel" ? "Finde die weiße Figur, die den schwarzen König angreift." : "Zieh deine Figur so, dass sie den schwarzen König angreift. Aber stell sie nicht dorthin, wo der König sie schlagen kann!"),
+      build(d) { return gen(6, (k) => d === "leicht" ? chCheckPos(k % 2 === 0) : d === "mittel" ? chCheckPos(true, 2) : chGiveCheck()); },
+      render(x, stage) {
+        if (x.k === "give") { const code = "w" + x.t;
+          return chTap(stage, { prompt: `Gib <b>Schach</b> mit ${pDat(code)}! Tippe das Feld an, auf das ${code[1] === "D" ? "sie" : "er"} ziehen soll.`, pos: x.pos, marks: { [x.s]: "sel" }, targets: x.safe,
+            why: (s) => x.checks.indexOf(s) >= 0 ? "Das ist Schach – aber dort kann Schwarz deine Figur schlagen! Such ein sicheres Feld." : x.pos[s] && x.pos[s][0] === "b" && s !== x.king ? "Hier sollst du nichts schlagen. Such ein freies Feld, von dem aus du den König angreifst." : s === x.s ? "Dort steht deine Figur schon." : x.moves.indexOf(s) >= 0 ? `Von dort greift ${pNom(code)} den König nicht an.` : s === x.king ? "Den König schlägt man nie. Du sollst ihn nur angreifen." : `Dorthin kann ${pNom(code)} nicht ziehen. ${CH_RULE[x.t]}`,
+            okText: "Schach!", okSay: "Schach!", delay: 2000, onDone: (B, s, fin) => { B.clear("ok"); B.clear("sel"); B.move(x.s, s, () => { B.mark(x.king, "chk"); fin(); }); } }); }
+        if (x.extraTap || chPieces(x.pos, "w").length > 2) {
+          return chTap(stage, { prompt: "Welche weiße Figur gibt dem schwarzen König <b>Schach</b>? Tippe sie an!", pos: x.pos, targets: [x.a],
+            why: (s) => { const p = x.pos[s]; return !p ? "Tippe eine weiße Figur an." : p === "bK" ? "Das ist der schwarze König. Welche weiße Figur greift ihn an?" : p === "wK" ? "Dein König gibt nie Schach." : p[0] === "b" ? "Tippe eine weiße Figur an." : `${capF(pNom(p))} greift den König nicht an. ${CH_RULE[p[1]]}`; },
+            okText: `${capF(pNom(x.pos[x.a]))} gibt Schach.`, okSay: "Schach!", onDone: (B, s, fin) => { B.mark(x.king, "chk"); chBetween(x.a, x.king).forEach(q => B.mark(q, "dot")); fin(); } });
+        }
+        const code = "w" + x.t, no = x.kind === "block" ? "Nein – der Bauer steht dazwischen. Er schützt den König." : `Nein. ${capF(pNom(code))} greift den König nicht an. ${CH_RULE[x.t]}`;
+        const B = chBoard({ pos: x.pos });
+        return chAsk(stage, B.el, "Steht der <b>schwarze König</b> im Schach?", { opts: [{ label: "Ja, Schach!", correct: x.check, wrongText: no }, { label: "Nein", correct: !x.check, wrongText: `Doch! ${capF(pNom(code))} greift den König an.` }],
+          okText: x.check ? `${capF(pNom(code))} greift den König an.` : (x.kind === "block" ? "Der Bauer steht dazwischen." : "Kein Angriff auf den König."), onRight: () => { if (x.check) { B.mark(x.king, "chk"); chBetween(x.a, x.king).forEach(q => B.mark(q, "dot")); } } });
+      },
+      explain: (x) => x.k === "give" ? { html: chPic(x.pos, Object.assign({ [x.s]: "sel" }, Object.fromEntries(x.moves.map(q => [q, "dot"])))) + `<p>Die Punkte zeigen, wohin ${pNom("w" + x.t)} ziehen kann. Von welchem Feld aus greift ${x.t === "D" ? "sie" : "er"} den König an?</p>`, say: "Die Punkte zeigen, wohin die Figur ziehen kann. Von welchem Feld aus greift sie den König an?" }
+        : { html: chPic(x.pos, { [x.king]: "hl" }) + "<p>Prüfe jede weiße Figur: Könnte sie im nächsten Zug auf das Feld des Königs ziehen? Dann ist es <b>Schach</b>.</p>", say: "Prüfe jede weiße Figur. Könnte sie im nächsten Zug auf das Feld des Königs ziehen? Dann ist es Schach." }
+    },
+    {
+      id: "abwehr", name: "Rettungs-Riff", icon: "🛡️", color: "#2a9d8f",
+      task: (d) => d === "leicht" ? "Schach! Bring deinen König in Sicherheit!" : d === "mittel" ? "Schach! Schlage den Angreifer!" : "Schach! Rette deinen König!",
+      intro: (d) => "Steht dein König im Schach, musst du sofort etwas tun. Es gibt drei Wege: weglaufen, den Angreifer schlagen oder eine Figur dazwischenstellen. "
+        + (d === "leicht" ? "Hier läuft dein König weg – aber nur auf ein sicheres Feld!" : d === "mittel" ? "Hier schlägst du die Figur, die Schach gibt." : "Hier gibt es immer nur einen einzigen rettenden Zug. Findest du ihn?"),
+      ex: () => chPic({ e1: "wK", e8: "bT", a8: "bK" }, { e1: "chk", d1: "ok", f1: "ok", d2: "ok", f2: "ok", e2: "no" }) + "<br>Weg von der Linie e!",
+      say: (d) => "Steht dein König im Schach, musst du sofort etwas tun. Es gibt drei Wege: weglaufen, den Angreifer schlagen oder eine Figur dazwischenstellen. "
+        + (d === "leicht" ? "Hier läuft dein König weg, aber nur auf ein sicheres Feld!" : d === "mittel" ? "Hier schlägst du die Figur, die Schach gibt." : "Hier gibt es immer nur einen einzigen rettenden Zug. Findest du ihn?"),
+      build(d) {
+        if (d === "leicht") return gen(6, () => chFlee());
+        if (d === "mittel") return gen(6, () => chTake());
+        const pool = { block: chBase(["block"]), schlag: chBase(["schlag"]), flucht: chBase(["flucht"]) };
+        return ["block", "schlag", "flucht", "block", "schlag", "block"].map((kind, i) => { const pos = pool[kind][i % pool[kind].length]; return { k: "save", kind, pos, king: chFind(pos, "wK")[0], lab: chStr(pos) }; });
+      },
+      render(x, stage) {
+        if (x.k === "flee") return chTap(stage, { prompt: "<b>Schach!</b> Tippe ein Feld an, auf dem dein König <b>sicher</b> ist!", pos: x.pos, marks: { [x.king]: "chk" }, targets: x.safe,
+          why: (s) => { if (chDist(s, x.king) !== 1) return s === x.king ? "Hier steht dein König im Schach. Er muss weg!" : "Der König geht immer nur ein Feld weit."; if (x.pos[s]) return "Dieses Feld ist besetzt.";
+            const at = chAttackers(chMove(x.pos, x.king, s), s, "b")[0]; return at ? `Dort greift ${pNom(x.pos[at], true)} an. Such ein sicheres Feld!` : "Dort ist dein König nicht sicher."; },
+          okText: "Der König ist in Sicherheit.", delay: 1900, onDone: (B, s, fin) => { B.clear("ok"); B.clear("chk"); B.move(x.king, s, () => { B.mark(s, "ok"); fin(); }); } });
+        if (x.k === "take") return chTap(stage, { prompt: `<b>Schach!</b> Welche weiße Figur kann den Angreifer <b>schlagen</b>? Tippe sie an!`, pos: x.pos, marks: { [x.king]: "chk", [x.a]: "hl" }, targets: [x.h],
+          why: (s) => { const p = x.pos[s]; return !p ? "Tippe eine weiße Figur an." : p[0] === "b" ? "Das ist eine schwarze Figur. Welche weiße Figur kann den Angreifer schlagen?" : p === "wK" ? "Der König kommt nicht hin – der Angreifer steht zu weit weg." : `${capF(pNom(p))} erreicht den Angreifer nicht. ${CH_CAP[p[1]]}`; },
+          okText: "Angreifer geschlagen – kein Schach mehr!", delay: 2000, onDone: (B, s, fin) => { B.clear("ok"); B.clear("hl"); B.move(x.h, x.a, () => { B.clear("chk"); fin(); }); } });
+        return chMoveTask(stage, { prompt: "<b>Schach!</b> Nur <b>ein</b> Zug rettet deinen König. Tippe erst die Figur an, dann das Zielfeld.", pos: x.pos, marks: { [x.king]: "chk" }, side: "w", ok: () => true,
+          okText: x.kind === "block" ? "Dazwischengestellt – kein Schach mehr!" : x.kind === "schlag" ? "Angreifer geschlagen!" : "Weggelaufen – der König ist sicher.", after: (B) => B.clear("chk") });
+      },
+      explain: (x) => x.k === "save" ? { html: chPic(x.pos, { [x.king]: "chk" }) + "<p>Prüfe der Reihe nach:</p><p>1. Kann der König auf ein sicheres Feld <b>weglaufen</b>?<br>2. Kann eine Figur den Angreifer <b>schlagen</b>?<br>3. Kann sich eine Figur <b>dazwischenstellen</b>?</p>", say: "Prüfe der Reihe nach. Erstens: Kann der König weglaufen? Zweitens: Kann eine Figur den Angreifer schlagen? Drittens: Kann sich eine Figur dazwischenstellen?" }
+        : x.k === "flee" ? { html: chPic(x.pos, Object.assign({ [x.king]: "chk" }, Object.fromEntries(ALLSQ.filter(q => chDist(q, x.king) === 1 && !x.pos[q]).map(q => [q, "q"])))) + "<p>Der König geht ein Feld weit. Prüfe jedes Nachbarfeld: Greift dort eine schwarze Figur an?</p>", say: "Der König geht ein Feld weit. Prüfe jedes Nachbarfeld: Greift dort eine schwarze Figur an?" }
+        : { html: chPic(x.pos, { [x.king]: "chk", [x.a]: "hl" }) + "<p>Der Angreifer ist markiert. Welche weiße Figur kann in einem Zug auf sein Feld ziehen?</p>", say: "Der Angreifer ist markiert. Welche weiße Figur kann in einem Zug auf sein Feld ziehen?" }
+    },
+    {
+      id: "matt", name: "Matt-Blick", icon: "👀", color: "#3a86ff",
+      task: () => "Was ist mit dem schwarzen König los?",
+      intro: (d) => "Schachmatt heißt: Der König steht im Schach und kann sich nicht mehr retten – nicht weglaufen, nicht schlagen, nichts dazwischenstellen. Dann ist das Spiel gewonnen! "
+        + (d === "leicht" ? "Ist es nur Schach oder schon Schachmatt?" : d === "mittel" ? "Kein Schach, Schach oder Schachmatt?" : "Neu: Patt. Der König steht nicht im Schach, aber Schwarz hat keinen erlaubten Zug mehr. Dann endet das Spiel unentschieden."),
+      ex: () => chPic(chParse("wKg1 wTa8 bKg8 bBf7 bBg7 bBh7"), { g8: "chk" }) + "<br>Schachmatt!",
+      say: (d) => "Schachmatt heißt: Der König steht im Schach und kann sich nicht mehr retten. Nicht weglaufen, nicht schlagen, nichts dazwischenstellen. Dann ist das Spiel gewonnen! "
+        + (d === "leicht" ? "Ist es nur Schach oder schon Schachmatt?" : d === "mittel" ? "Kein Schach, Schach oder Schachmatt?" : "Neu: Patt. Der König steht nicht im Schach, aber Schwarz hat keinen erlaubten Zug mehr. Dann endet das Spiel unentschieden."),
+      build(d) {
+        const plan = d === "leicht" ? ["matt", "schach", "matt", "schach", "matt", "schach"] : d === "mittel" ? ["kein", "schach", "matt", "schach", "matt", "kein"] : ["patt", "matt", "schach", "patt", "matt", "schach"];
+        const base = chBase(d === "leicht" ? ["treppe", "grund"] : d === "mittel" ? ["treppe", "grund", "dameK", "turmK"] : ["dameK", "dameH", "turmK", "mix"]), patt = chBase(["patt"]), out = [], opts = d === "leicht" ? ["matt", "schach"] : d === "mittel" ? ["kein", "schach", "matt"] : ["schach", "matt", "patt"];
+        shuffle(plan).forEach(want => { const pos = want === "patt" ? patt.pop() : (() => { for (let g = 0; g < 12 && base.length; g++) { const p = chAfter(base.pop(), want); if (p) return p; } return null; })();
+          if (pos && chState(pos) === want) out.push({ k: "state", pos, st: want, opts, king: chFind(pos, "bK")[0], lab: chStr(pos) }); });
+        return out;
+      },
+      render(x, stage) {
+        const B = chBoard({ pos: x.pos });
+        return chAsk(stage, B.el, "Was ist mit dem <b>schwarzen König</b> los?", { opts: x.opts.map(st => ({ label: CH_STATE[st], correct: st === x.st, wrongText: chStateHint(x.st, st) })),
+          okText: CH_STATE_WHY(x.pos, x.st), delay: 2600, onRight: () => { if (x.st === "matt" || x.st === "schach") B.mark(x.king, "chk"); if (x.st === "schach") chLegal(x.pos, "b").filter(m => m[0] === x.king).forEach(m => B.mark(m[1], "ok")); } });
+      },
+      explain: (x) => ({ html: chPic(x.pos, { [x.king]: "hl" }) + "<p>1. Greift eine weiße Figur den König an? Dann ist es <b>Schach</b>.</p><p>2. Kann sich der König retten? Wenn nicht: <b>Schachmatt</b>.</p>" + (x.opts.indexOf("patt") >= 0 ? "<p>3. Kein Schach, aber auch kein erlaubter Zug: <b>Patt</b>.</p>" : ""),
+        say: "Erstens: Greift eine weiße Figur den König an? Dann ist es Schach. Zweitens: Kann sich der König retten? Wenn nicht, ist es Schachmatt." })
+    },
+    {
+      id: "mattsetzen", name: "Matt-Gipfel", icon: "🏆", color: "#1b2a4a",
+      task: () => "Setze Schwarz matt – in einem Zug!",
+      intro: (d) => "Jetzt gewinnst du das Spiel: Finde den Zug, der den schwarzen König schachmatt setzt! Tippe erst deine Figur an, dann das Zielfeld. "
+        + (d === "leicht" ? "Tipp: Der König steht am Rand. Nimm ihm mit Turm oder Dame die letzte Reihe weg." : d === "mittel" ? "Tipp: Die Dame setzt matt, wenn sie direkt vor dem König steht und von einer eigenen Figur beschützt wird." : "Jetzt stehen viele Figuren auf dem Brett. Prüfe jeden Zug, der Schach gibt!"),
+      ex: () => chPic(chParse("wKg1 wTa1 bKg8 bBf7 bBg7 bBh7"), { a1: "sel", a8: "star" }) + "<br>Turm nach a8: Matt!",
+      say: (d) => "Jetzt gewinnst du das Spiel: Finde den Zug, der den schwarzen König schachmatt setzt! Tippe erst deine Figur an, dann das Zielfeld. "
+        + (d === "leicht" ? "Tipp: Der König steht am Rand. Nimm ihm mit Turm oder Dame die letzte Reihe weg." : d === "mittel" ? "Tipp: Die Dame setzt matt, wenn sie direkt vor dem König steht und von einer eigenen Figur beschützt wird." : "Jetzt stehen viele Figuren auf dem Brett. Prüfe jeden Zug, der Schach gibt!"),
+      build(d) { return chBase(d === "leicht" ? ["treppe", "grund"] : d === "mittel" ? ["dameK", "turmK", "dameH"] : ["mix"]).slice(0, 6).map(pos => ({ k: "m1", pos, king: chFind(pos, "bK")[0], lab: chStr(pos) })); },
+      render(x, stage) {
+        return chMoveTask(stage, { prompt: "<b>Matt in 1 Zug!</b> Weiß zieht. Tippe erst die Figur an, dann das Zielfeld.", pos: x.pos, side: "w",
+          ok: (from, to, pos) => { const p = chMove(pos, from, to); return chMate(p, "b") ? true : chInCheck(p, "b") ? "Das ist Schach – aber noch kein Matt. " + chEscape(p, "b") : chPatt(p, "b") ? "Vorsicht! Dann hätte Schwarz keinen Zug mehr, steht aber nicht im Schach. Das wäre Patt – unentschieden." : "Das ist kein Schach. Such einen Zug, der den König angreift."; },
+          okText: "Schachmatt! Gewonnen!", okSay: "Schachmatt!", delay: 2400, after: (B) => B.mark(x.king, "chk") });
+      },
+      explain: (x) => ({ html: chPic(x.pos, Object.assign({ [x.king]: "hl" }, Object.fromEntries(chLegal(x.pos, "b").filter(m => m[0] === x.king).map(m => [m[1], "q"])))) + "<p>Die Fragezeichen zeigen, wohin der König jetzt noch laufen kann.</p><p>Such einen Zug, der <b>Schach</b> gibt <b>und</b> ihm alle diese Felder wegnimmt.</p>",
+        say: "Die Fragezeichen zeigen, wohin der König jetzt noch laufen kann. Such einen Zug, der Schach gibt und ihm alle diese Felder wegnimmt." })
+    }
+  ];
+
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
@@ -5196,13 +6212,22 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       bonusPlan: [["zurueck", "schwer", 2], ["zerlegen", "mittel", 2], ["schritte", "mittel", 2], ["blitz", "schwer", 4]] },
     { id: "rechnen", world: "polly", name: "Plus & Minus", title: "Plus-Minus-Inseln", sub: "Rechnen bis 100", icon: "🧮", ready: true, levels: RECHENLEVELS, award: "Rechen-Profi", hunter: "Rechen",
       bonusPlan: [["zehner", "schwer", 2], ["einer", "schwer", 2], ["zehnerdazu", "schwer", 2], ["uebergang", "schwer", 2], ["zweistellig", "schwer", 1], ["profi", "schwer", 1]] },
+    { id: "schrittweise", world: "polly", name: "Rechnen in Schritten", title: "Schritte-Inseln", sub: "Erst die Einer, dann die Zehner", icon: "👟", ready: true, levels: STEPLEVELS, award: "Schritte-Profi", hunter: "Schritte", treasureAs: "rechnen",
+      bonusPlan: [["zerlegen", "schwer", 2], ["plus", "mittel", 2], ["minus", "mittel", 2], ["gemischt", "schwer", 2], ["kopf", "schwer", 3]] },
     // Förderinsel: Zahlen und Aufgaben mit Material legen (ohne Experten-Insel)
     { id: "werkstatt", world: "polly", name: "Werkstatt", title: "Pollys Werkstatt", sub: "Zahlen mit Material legen", icon: "🧰", ready: true, levels: WERKLEVELS, award: "Zahlen-Baumeister", hunter: "Werkstatt", noExpert: true,
       bonusPlan: [["bauen", "mittel", 2], ["tauschen", "mittel", 2], ["pluslegen", "schwer", 2], ["minuslegen", "schwer", 2]] },
     { id: "einmaleins", world: "polly", name: "Einmaleins", sub: "Malnehmen", icon: "✖️", ready: false, levels: [] },
     // ---- Eulenklasse (Eddie) ----
     { id: "million", world: "eule", name: "Zahlen bis 1 Million", title: "Millionen-Inseln", sub: "Zahlenraum bis 1 000 000", icon: "🔢", ready: true, levels: MILLION, award: "Millionen-Profi", hunter: "Millionen",
-      bonusPlan: [["nachbarzahlen", "schwer", 2], ["nachbartausender", "mittel", 2], ["stellenwert", "schwer", 2], ["zahlwoerter", "leicht", 2], ["plaettchen", "schwer", 2], ["zahlenstrahl", "mittel", 2], ["ordnen", "mittel", 1]] }
+      bonusPlan: [["nachbarzahlen", "schwer", 2], ["nachbartausender", "mittel", 2], ["stellenwert", "schwer", 2], ["zahlwoerter", "leicht", 2], ["plaettchen", "schwer", 2], ["zahlenstrahl", "mittel", 2], ["ordnen", "mittel", 1]] },
+    // ---- Schachschule (auf dem Schulhof, mit dem Schachpferd Hopsi) ----
+    { id: "schachbrett", world: "schach", name: "Brett und Figuren", title: "Brett-Inseln", sub: "Das Schachbrett kennenlernen", icon: "🏁", ready: true, levels: SCHACH_A, award: "Schachbrett-Profi", hunter: "Schachbrett", noExpert: true,
+      bonusPlan: [["brett", "schwer", 2], ["felder", "mittel", 2], ["felder", "schwer", 1], ["figuren", "schwer", 2], ["aufstellung", "mittel", 1], ["aufstellung", "schwer", 2]] },
+    { id: "schachzuege", world: "schach", name: "So ziehen die Figuren", title: "Zug-Inseln", sub: "Turm, Läufer, Dame, König, Springer, Bauer", icon: "🐴", ready: true, levels: SCHACH_B, award: "Figuren-Profi", hunter: "Figuren", noExpert: true,
+      bonusPlan: [["turm", "mittel", 1], ["laeufer", "mittel", 1], ["dame", "schwer", 1], ["koenig", "mittel", 1], ["springer", "mittel", 2], ["springer", "schwer", 1], ["bauer", "mittel", 2], ["bauer", "schwer", 1]] },
+    { id: "schachmatt", world: "schach", name: "Schlagen, Schach und Matt", title: "Matt-Inseln", sub: "Schlagen · Schach · Schachmatt", icon: "⚔️", ready: true, levels: SCHACH_C, award: "Schachmatt-Profi", hunter: "Schachmatt", noExpert: true,
+      bonusPlan: [["schlagen", "mittel", 2], ["wert", "schwer", 1], ["schach", "mittel", 2], ["abwehr", "leicht", 1], ["abwehr", "schwer", 1], ["matt", "mittel", 2], ["mattsetzen", "leicht", 1], ["mattsetzen", "mittel", 1]] }
   ];
   let CH = CHAPTERS[0];
 
@@ -5736,6 +6761,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   EART.goldeddie = `<rect x="22" y="84" width="56" height="13" rx="3" fill="#8a5a2b" ${OL}/><rect x="30" y="76" width="40" height="10" rx="2" fill="#ffc300" ${OL}/><g transform="translate(17 0) scale(.66)">${PART.eddie.replace(/#6f4fa0/g, "#e0a400").replace(/#5e418c/g, "#c9971f").replace(/#8e6cc0/g, "#ffd60a").replace(/#f3e3c3/g, "#fff3b0").replace(/#c9a66b/g, "#e0a400")}</g>${SPARK(84, 30, 7)}${SPARK(14, 22, 5)}${SPARK(82, 70, 4)}`;
   EART.sternenhirsch = `<circle cx="50" cy="52" r="46" fill="#cdb4f5" opacity=".45"/><g transform="translate(3 5) scale(.94)">${EART.hirsch.replace(/#99582a/g, "#ffc300").replace(/#7f4f24/g, "#e0a400").replace(/#6f4518/g, "#c9971f").replace(/#e6ccb2/g, "#fff3b0")}</g>${SPARK(57, 11, 5)}${SPARK(93, 7, 5)}${SPARK(14, 30, 6)}${SPARK(40, 84, 4)}<circle cx="61" cy="2" r="2.4" fill="#fff"/><circle cx="89" cy="2" r="2.4" fill="#fff"/>`;
   Object.assign(ART, EART);
+  ART.hopsi = `<path d="M21 92 Q21 80 30 80 H70 Q79 80 79 92 Z" fill="#e63946" ${OL}/><path d="M32 86 H68" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+    <path d="M70 80 Q70 64 58 54 Q54 50 58 46 Q67 53 75 51 L83 45 Q86 40 82 36 L64 19 L65 6 L54 14 Q28 18 26 54 Q25 68 28 80 Z" fill="#fff3d6" ${OL}/>
+    <path d="M52 15 Q34 24 31 52 Q30 62 31 70" fill="none" stroke="#c08552" stroke-width="7" stroke-linecap="round"/><path d="M47 22 q-9 4 -11 14 M42 34 q-7 5 -8 14" fill="none" stroke="#9c6644" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M62 9 L63 19" stroke="#f4acb7" stroke-width="3" stroke-linecap="round"/>${EYE(66, 31, 5)}<circle cx="80" cy="41" r="1.8" fill="#17324a"/><path d="M79 47 q-5 3 -9 0" fill="none" stroke="#17324a" stroke-width="2" stroke-linecap="round"/><ellipse cx="70" cy="42" rx="4" ry="2.6" fill="#ff8fab" opacity=".6"/>${SPARK(16, 30, 5)}`;
   const artSVG = (id, cls) => `<svg viewBox="0 0 100 100" class="${cls || "art-svg"}" aria-hidden="true">${ART[id] ? shade3d(ART[id], TREASURE_IDS[id]) : ""}</svg>`;
   // Polly (roter Papagei) als Bild im Text: pollyHTML("1em") – Größe relativ zur Schrift
   const pollyHTML = (sz) => `<span class="pi" style="width:${sz};height:${sz}">${artSVG("polly")}</span>`;
@@ -6371,6 +7400,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     lernView = false; $("homeTitle").textContent = W.room;
     if (isPolly()) return renderHomePolly();
     if (W.id === "eule") return renderHomeEule();
+    if (W.id === "schach") return renderHomeSchach();
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Nemo schwimmen?` : S.name ? `Hallo ${S.name}! Wohin soll Nemo schwimmen?` : "Wohin soll Nemo schwimmen?";
     updateFoot(); freiHello();
@@ -6454,11 +7484,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     updateFoot(); freiHello();
     show("scrHome");
     const P = portrait(), zc = CHAPTERS.find(c => c.id === "zahlen"), rc = CHAPTERS.find(c => c.id === "rechnen"), wc = CHAPTERS.find(c => c.id === "werkstatt");
-    const pc = CHAPTERS.find(c => c.id === "plus10"), mc = CHAPTERS.find(c => c.id === "minus10");
+    const pc = CHAPTERS.find(c => c.id === "plus10"), mc = CHAPTERS.find(c => c.id === "minus10"), sc = CHAPTERS.find(c => c.id === "schrittweise");
     // Hochformat: Pollys Dschungel unten, Inseln im Zickzack nach oben. Querformat: Dschungel links, Inseln im Zickzack nach rechts.
-    // Lernweg in einer klaren Reihe (Zahlen → über den Zehner → Plus & Minus → Einmaleins), Dschungel und Werkstatt darunter
-    const pos = P ? { nest: [150, 1470], wk: [450, 1470], z: [150, 1130], p: [450, 905], mi: [150, 680], r: [450, 455], m: [150, 235], w: 600, h: 1620, r0: 84 }
-                  : { nest: [250, 510], wk: [560, 510], z: [250, 195], p: [530, 195], mi: [810, 195], r: [1090, 195], m: [1090, 510], w: 1340, h: 710, r0: 84 };
+    // Lernweg in einer klaren Reihe (Zahlen → über den Zehner → Plus & Minus → Rechnen in Schritten → Einmaleins), Dschungel und Werkstatt darunter
+    const pos = P ? { nest: [150, 1695], wk: [450, 1695], z: [150, 1355], p: [450, 1130], mi: [150, 905], r: [450, 680], s: [150, 455], m: [450, 235], w: 600, h: 1845, r0: 84 }
+                  : { nest: [220, 510], wk: [500, 510], z: [250, 195], p: [530, 195], mi: [810, 195], r: [1090, 195], s: [1090, 510], m: [795, 510], w: 1340, h: 710, r0: 84 };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtP = i; save(); swimTo(i, renderMap); };
     const J = invOf({ w: "polly" }), canBuy = SHOP_P.some(w => !owned(w) && S.coins >= w.p);
@@ -6478,11 +7508,37 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         deco: [[-0.5, -0.3, "🌴", 0.46]], aria: "Einmaleins-Inseln, kommen bald",
         tap: (i) => { S.homeAtP = i; save(); swimTo(i, () => openSheet(c => { sheetTop(c, "✖️", "Einmaleins-Inseln", "Malnehmen"); c.appendChild(el("p", "note", "🚧 Hier bauen wir gerade neue Inseln. Bald kann Polly hier landen!")); })); } },
       { x: pos.wk[0], y: pos.wk[1], r: pos.r0 * 0.88, icon: "🧰", grass: "#ffe0a3", label: "Pollys Werkstatt", big: true, sub: chapSub(wc),
-        deco: [[-0.56, -0.26, "🔨", 0.34], [0.55, -0.3, "🌴", 0.44]], aria: "Pollys Werkstatt: Zahlen mit Material legen", ch: wc, tap: enter(wc) }
+        deco: [[-0.56, -0.26, "🔨", 0.34], [0.55, -0.3, "🌴", 0.44]], aria: "Pollys Werkstatt: Zahlen mit Material legen", ch: wc, tap: enter(wc) },
+      { x: pos.s[0], y: pos.s[1], r: pos.r0, icon: "👟", grass: "#f3d1f4", label: "Rechnen in Schritten", big: true, sub: starTotal(sc) ? chapSub(sc) : "✨ Neu!", subGold: !starTotal(sc),
+        deco: [[-0.55, -0.28, "🌴", 0.46], [0.56, -0.24, "🌺", 0.34]], aria: "Schritte-Inseln: erst die Einer, dann die Zehner", ch: sc, tap: enter(sc) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 3, dn(pc)], [3, 4, dn(mc)], [4, 2, dn(rc)], [2, 5, "faint"], [0, 6, dn(wc)]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 62, wrapBig: true, clouds: 4 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 3, dn(pc)], [3, 4, dn(mc)], [4, 2, dn(rc)], [2, 7, dn(sc)], [7, 5, "faint"], [0, 6, dn(wc)]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 62, wrapBig: true, clouds: 4 });
+    setCoins(false);
+  }
+
+  // Karte der Schachschule: vom Schulhof zu den drei Schach-Kapiteln
+  function renderHomeSchach() {
+    const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
+    $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Hopsi hüpfen?` : S.name ? `Hallo ${S.name}! Wohin soll Hopsi hüpfen?` : "Wohin soll Hopsi hüpfen?";
+    updateFoot(); freiHello();
+    show("scrHome");
+    const P = portrait(), A = CHAPTERS.find(c => c.id === "schachbrett"), B = CHAPTERS.find(c => c.id === "schachzuege"), C = CHAPTERS.find(c => c.id === "schachmatt");
+    const pos = P ? { hof: [300, 1300], a: [170, 965], b: [430, 640], c: [170, 310], w: 600, h: 1490, r0: 92 } : { hof: [180, 430], a: [490, 320], b: [820, 430], c: [1140, 320], w: 1320, h: 660, r0: 92 };
+    const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
+    const enter = (ch) => (i) => { CH = ch; S.homeAtS = i; save(); swimTo(i, renderMap); };
+    const isl = (ch, xy, icon, grass, label, aria, deco, first) => ({ x: xy[0], y: xy[1], r: pos.r0, icon, grass, label, big: true, sub: starTotal(ch) ? chapSub(ch) : first ? "✨ Hier geht's los!" : chapSub(ch), subGold: first && !starTotal(ch), next: first && !starTotal(ch), deco, aria, ch, tap: enter(ch) });
+    const nodes = [
+      { x: pos.hof[0], y: pos.hof[1], r: pos.r0 * 0.8, icon: "🏫", grass: "#d9d2c4", label: "Schulhof", big: true, sub: FREI ? "" : "Zurück zur Schule", aria: "Schulhof: zurück zur Schule",
+        deco: [[-0.55, -0.26, "🌳", 0.44]], tap: (i) => { S.homeAtS = i; if (FREI) swimTo(i); else swimTo(i, renderWorlds); } },
+      isl(A, pos.a, "🏁", "#f6e7c8", "Brett und Figuren", "Brett-Inseln: das Schachbrett und die Figuren kennenlernen", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "⭐", 0.26]], true),
+      isl(B, pos.b, "🐴", "#cfeec0", "So ziehen die Figuren", "Zug-Inseln: so ziehen Turm, Läufer, Dame, König, Springer und Bauer", [[-0.55, -0.28, "🌳", 0.44], [0.58, -0.2, "⭐", 0.26]]),
+      isl(C, pos.c, "⚔️", "#ffd6a5", "Schlagen, Schach und Matt", "Matt-Inseln: schlagen, Schach geben und matt setzen", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "🏆", 0.28]])
+    ];
+    const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
+    if (FREI) freiLock(nodes);
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(A)], [1, 2, dn(B)], [2, 3, dn(C)]], at: S.homeAtS == null ? 0 : S.homeAtS, label: "Schach-Inseln", seed: 11, nemo: 62, wrapBig: true, clouds: 4 });
     setCoins(false);
   }
 
@@ -6533,11 +7589,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const P = portrait(), n = CH.levels.length, lay = snake(n + (CH.noExpert ? 2 : 3), P), k = P ? 1.15 : 1;
     const firstOpen = CH.levels.findIndex((_, li) => !islandDone(CH, li));
     const open = bonusOpen(CH), pc = perfectCount(CH);
-    const pol = isBird(), eu = W.id === "eule", nodes = [{ ...lay.pts[0], r: 44 * k, icon: W.start, label: "Start", grass: eu ? "#d9cdf2" : pol ? "#c6eba6" : "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
+    const pol = isBird(), eu = W.id === "eule", sc = W.id === "schach", nodes = [{ ...lay.pts[0], r: 44 * k, icon: W.start, label: "Start", grass: eu ? "#d9cdf2" : sc ? "#f6e7c8" : pol ? "#c6eba6" : "#cfe8f2", aria: "Start", tap: (i) => swimTo(i) }];
     CH.levels.forEach((lv, li) => {
       const st = DK.reduce((a, d) => a + (S.stars[skey(CH, li, d)] || 0), 0);
       nodes.push({ ...lay.pts[li + 1], r: 56 * k, icon: lv.icon, label: lv.name, num: li + 1, sub: st ? `⭐ ${st}/${DK.length * 3}` : "", badge: S.perfect[pkey(CH, li)] ? "💎" : (islandDone(CH, li) ? "🚩" : ""),
-        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: eu ? [[0.56, -0.2, "🌲", 0.42], [-0.6, -0.22, "⭐", 0.26]] : pol ? [[0.56, -0.2, "🌴", 0.42], [-0.6, -0.22, "🌺", 0.28]] : [[0.56, -0.2, "🌴", 0.42]], grass: eu ? "#b9a6e8" : pol ? "#7fd36b" : undefined,
+        next: li === firstOpen, aria: `Insel ${li + 1}: ${lv.name}`, deco: eu ? [[0.56, -0.2, "🌲", 0.42], [-0.6, -0.22, "⭐", 0.26]] : sc ? [[0.56, -0.2, "🌳", 0.42], [-0.6, -0.22, "⭐", 0.26]] : pol ? [[0.56, -0.2, "🌴", 0.42], [-0.6, -0.22, "🌺", 0.28]] : [[0.56, -0.2, "🌴", 0.42]], grass: eu ? "#b9a6e8" : sc ? "#e9d3a4" : pol ? "#7fd36b" : undefined,
         tap: (i) => { S.at = S.at || {}; S.at[CH.id] = i; save(); swimTo(i, () => islandSheet(li)); } });
     });
     nodes.push({ ...lay.pts[n + 1], r: 64 * k, icon: S.bonus[CH.id] ? "👑" : "🎁", grass: "#e9c46a", label: "Schatzinsel", fog: !open, fogIcon: "🔒",
@@ -6662,7 +7718,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const start = () => { if (current === "scrIntro") startLevel(li, d); };
     $("inRule").hidden = false; $("inRule").onclick = () => openExplain({ lv, d, li, x: null, onDone: start });
     // Inseln mit Tafel: beim ersten Besuch (pro Sitzung, Zahlenraum 20 bzw. 100) rechnet Polly gleich ein Beispiel vor
-    const tk0 = typeof li === "number" && lv.tafel ? `${CH.id}:${lv.id}:${d === "leicht" ? 20 : 100}` : null;
+    const tk0 = typeof li === "number" && lv.tafel && lv.tafelAuto !== false ? `${CH.id}:${lv.id}:${d === "leicht" ? 20 : 100}` : null;
     if (tk0 && !tafelSeen[tk0] && !window.__NO_TAFEL_AUTO) { tafelSeen[tk0] = 1;
       setTimeout(() => { if (current === "scrIntro" && $("rulePop").hidden) openExplain({ lv, d, li, x: null, onDone: start, auto: true }); }, 450); }
   }
@@ -6806,6 +7862,27 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "minus10:blitz": "Ich rechne minus über den Zehner im Kopf.",
     "rechnen:zweistellig": "Ich rechne mit zwei zweistelligen Zahlen.",
     "rechnen:profi": "Ich rechne zweistellig auch über den Zehner.",
+    "schrittweise:zerlegen": "Ich zerlege eine Zahl in Einer und Zehner.",
+    "schrittweise:plus": "Ich rechne plus in zwei Schritten: erst die Einer, dann die Zehner.",
+    "schrittweise:minus": "Ich rechne minus in zwei Schritten: erst die Einer, dann die Zehner.",
+    "schrittweise:gemischt": "Ich rechne Plus und Minus in zwei Schritten.",
+    "schrittweise:kopf": "Ich rechne zweistellige Aufgaben im Kopf.",
+    "schachbrett:brett": "Ich kenne Linien, Reihen und Diagonalen auf dem Schachbrett.",
+    "schachbrett:felder": "Ich finde jedes Feld mit seinem Namen.",
+    "schachbrett:figuren": "Ich kenne die Namen aller Schachfiguren.",
+    "schachbrett:aufstellung": "Ich weiß, wie die Figuren am Anfang stehen.",
+    "schachzuege:turm": "Ich weiß, wie der Turm zieht.",
+    "schachzuege:laeufer": "Ich weiß, wie der Läufer zieht.",
+    "schachzuege:dame": "Ich weiß, wie die Dame zieht.",
+    "schachzuege:koenig": "Ich weiß, wie der König zieht.",
+    "schachzuege:springer": "Ich weiß, wie der Springer springt.",
+    "schachzuege:bauer": "Ich weiß, wie der Bauer zieht und schlägt.",
+    "schachmatt:schlagen": "Ich erkenne, welche Figur ich schlagen kann.",
+    "schachmatt:wert": "Ich weiß, wie viel die Figuren wert sind.",
+    "schachmatt:schach": "Ich erkenne, wann der König im Schach steht.",
+    "schachmatt:abwehr": "Ich kann meinen König aus dem Schach retten.",
+    "schachmatt:matt": "Ich erkenne ein Schachmatt.",
+    "schachmatt:mattsetzen": "Ich kann in einem Zug matt setzen.",
     "werkstatt:bauen": "Ich lege Zahlen mit Zehnern und Einern.",
     "werkstatt:tauschen": "Ich tausche 10 Einer gegen einen Zehner und zurück.",
     "werkstatt:pluslegen": "Ich lege Plusaufgaben mit Material.",
@@ -6971,6 +8048,38 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "rechnen:zweistellig": { k: "merk", t: "Erst die Zehner, dann die Einer", s: "Zerlege die zweite Zahl in <b>Zehner</b> und <b>Einer</b>. Rechne erst die Zehner, dann die Einer.",
       ex: [["1️⃣", "34 + *20* = 54", "erst Zehner"], ["2️⃣", "54 + *5* = 59", "dann Einer"]], v: "🧩 25 = 20 + 5",
       say: "Erst die Zehner, dann die Einer. 34 plus 25: Zerlege 25 in 20 und 5. Erst 34 plus 20 gleich 54, dann 54 plus 5 gleich 59." },
+    "schrittweise:zerlegen": { k: "merk", t: "Einer und Zehner", s: "Jede zweistellige Zahl kannst du zerlegen: in ihre <b>Einer</b> und ihre <b>Zehner</b>.",
+      ex: [["🧩", "25", "die Zahl"], ["1️⃣", "*5*", "Einer"], ["🔟", "*20*", "2 Zehner"]], v: "25 = 5 + 20", say: "Jede zweistellige Zahl kannst du zerlegen: in ihre Einer und ihre Zehner. 25 ist 5 plus 20." },
+    "schrittweise:plus": { k: "merk", t: "Plus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Einer</b> dazu. <b>2.</b> Dann die <b>Zehner</b> dazu.",
+      ex: [["1️⃣", "34 + *5* = 39", "erst Einer"], ["2️⃣", "39 + *20* = 59", "dann Zehner"]], v: "🧩 25 = 5 + 20", say: "Plus in zwei Schritten. 34 plus 25: Erst die Einer: 34 plus 5 gleich 39. Dann die Zehner: 39 plus 20 gleich 59." },
+    "schrittweise:minus": { k: "merk", t: "Minus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Einer</b> weg. <b>2.</b> Dann die <b>Zehner</b> weg.",
+      ex: [["1️⃣", "58 − *3* = 55", "erst Einer"], ["2️⃣", "55 − *20* = 35", "dann Zehner"]], v: "🧩 23 = 3 + 20", say: "Minus in zwei Schritten. 58 minus 23: Erst die Einer: 58 minus 3 gleich 55. Dann die Zehner: 55 minus 20 gleich 35." },
+    "schrittweise:gemischt": { k: "tipp", t: "Erst das Zeichen!", s: "Schau zuerst: <b>Plus</b> oder <b>Minus</b>? Dann rechnest du wie immer: erst die Einer, dann die Zehner.",
+      ex: [["➕", "34 + 25", "dazu"], ["➖", "58 − 23", "weg"]], say: "Schau zuerst: Plus oder Minus? Dann rechnest du wie immer: erst die Einer, dann die Zehner." },
+    "schrittweise:kopf": { k: "tipp", t: "Zwei Sprünge im Kopf", s: "Denk an den Rechenstrich: erst der <b>kleine Sprung</b> für die Einer, dann der <b>große Sprung</b> für die Zehner.",
+      ex: [["🐸", "34 → 39", "kleiner Sprung"], ["🦘", "39 → 59", "großer Sprung"]], say: "Denk an den Rechenstrich. Erst der kleine Sprung für die Einer, dann der große Sprung für die Zehner." },
+    "schachbrett:brett": { k: "merk", t: "Linien und Reihen", s: "<b>Linien</b> laufen von unten nach oben: a bis h. <b>Reihen</b> laufen von links nach rechts: 1 bis 8. Unten rechts ist immer ein helles Feld.",
+      ex: [["⬆️", "Linie", "a bis h"], ["➡️", "Reihe", "1 bis 8"], ["↗️", "Diagonale", "schräg"]], say: "Linien laufen von unten nach oben und haben Buchstaben. Reihen laufen von links nach rechts und haben Zahlen. Unten rechts ist immer ein helles Feld." },
+    "schachbrett:felder": { k: "merk", t: "So heißt ein Feld", s: "Erst der <b>Buchstabe</b> der Linie, dann die <b>Zahl</b> der Reihe.", ex: [["🔤", "e", "Linie"], ["🔢", "4", "Reihe"], ["🎯", "e4", "Feld"]], say: "Erst der Buchstabe der Linie, dann die Zahl der Reihe. Zum Beispiel e 4." },
+    "schachbrett:figuren": { k: "merk", t: "Die sechs Figuren", s: "Jeder Spieler hat 1 König, 1 Dame, 2 Türme, 2 Läufer, 2 Springer und 8 Bauern.",
+      ex: "KDTLSB".split("").map(t => [chPiece("w" + t), PN[t]]), say: "Jeder Spieler hat einen König, eine Dame, zwei Türme, zwei Läufer, zwei Springer und acht Bauern." },
+    "schachbrett:aufstellung": { k: "merk", t: "Die Aufstellung", s: "Türme in die Ecken, daneben Springer, dann Läufer. In der Mitte Dame und König – <b>die Dame steht auf ihrer Farbe</b>. Davor alle Bauern.",
+      ex: [[chPiece("wD"), "weiße Dame", "helles Feld"], [chPiece("bD"), "schwarze Dame", "dunkles Feld"]], say: "Türme in die Ecken, daneben Springer, dann Läufer. In der Mitte Dame und König. Die Dame steht auf ihrer Farbe. Davor alle Bauern." },
+    "schachzuege:turm": { k: "merk", t: "Der Turm", s: "Der Turm zieht <b>geradeaus</b>: vor, zurück, nach links oder rechts – so weit er will. Über andere Figuren springt er nicht.", ex: [[chPiece("wT"), "geradeaus", "so weit er will"]], say: CH_RULE.T },
+    "schachzuege:laeufer": { k: "merk", t: "Der Läufer", s: "Der Läufer zieht <b>schräg</b> – so weit er will. Er bleibt immer auf seiner Feldfarbe.", ex: [[chPiece("wL"), "schräg", "so weit er will"]], say: CH_RULE.L },
+    "schachzuege:dame": { k: "merk", t: "Die Dame", s: "Die Dame zieht <b>geradeaus oder schräg</b> – so weit sie will. Sie ist die stärkste Figur.", ex: [[chPiece("wD"), "gerade und schräg", "so weit sie will"]], say: CH_RULE.D + " Sie ist die stärkste Figur." },
+    "schachzuege:koenig": { k: "merk", t: "Der König", s: "Der König zieht in <b>jede Richtung</b> – aber immer nur <b>ein Feld</b>. Er ist die wichtigste Figur.", ex: [[chPiece("wK"), "jede Richtung", "nur 1 Feld"]], say: CH_RULE.K + " Er ist die wichtigste Figur." },
+    "schachzuege:springer": { k: "merk", t: "Der Springer", s: "Der Springer springt im <b>L</b>: zwei Felder geradeaus, dann eins zur Seite. Nur er darf über andere Figuren springen.", ex: [[chPiece("wS"), "im L", "2 gerade + 1 zur Seite"]], say: CH_RULE.S + " Nur er darf über andere Figuren springen." },
+    "schachzuege:bauer": { k: "merk", t: "Der Bauer", s: "Der Bauer <b>zieht</b> geradeaus nach vorn und <b>schlägt</b> schräg nach vorn. Vom Startfeld darf er zwei Felder gehen. Zurück geht er nie.",
+      ex: [[chPiece("wB"), "ziehen", "geradeaus"], [chPiece("wB"), "schlagen", "schräg"]], say: "Der Bauer zieht geradeaus nach vorn und schlägt schräg nach vorn. Vom Startfeld darf er zwei Felder gehen. Zurück geht er nie." },
+    "schachmatt:schlagen": { k: "merk", t: "Schlagen", s: "Zieh auf ein Feld, auf dem eine Figur vom Gegner steht – sie kommt vom Brett. Jede Figur schlägt so, wie sie zieht. <b>Nur der Bauer schlägt schräg.</b>",
+      ex: [[chPiece("wT"), "schlägt", "wie er zieht"], [chPiece("wB"), "schlägt", "nur schräg"]], say: "Zieh auf ein Feld, auf dem eine Figur vom Gegner steht. Sie kommt vom Brett. Jede Figur schlägt so, wie sie zieht. Nur der Bauer schlägt schräg." },
+    "schachmatt:wert": { k: "merk", t: "Was die Figuren wert sind", s: "Bauer 1 · Springer 3 · Läufer 3 · Turm 5 · Dame 9. Der König ist unbezahlbar.",
+      ex: "BSTD".split("").map(t => [chPiece("w" + t), String(PVAL[t]), PN[t]]), say: "Bauer 1, Springer 3, Läufer 3, Turm 5, Dame 9. Der König ist unbezahlbar." },
+    "schachmatt:schach": { k: "merk", t: "Schach!", s: "<b>Schach</b> heißt: Der König wird angegriffen. Er muss sofort gerettet werden.", ex: [["❗", "Schach", "König in Gefahr"]], say: "Schach heißt: Der König wird angegriffen. Er muss sofort gerettet werden." },
+    "schachmatt:abwehr": { k: "merk", t: "Drei Wege aus dem Schach", s: "<b>1.</b> Weglaufen. <b>2.</b> Den Angreifer schlagen. <b>3.</b> Eine Figur dazwischenstellen.", ex: [["🏃", "weglaufen"], ["⚔️", "schlagen"], ["🛡️", "dazwischen"]], say: "Drei Wege aus dem Schach: weglaufen, den Angreifer schlagen oder eine Figur dazwischenstellen." },
+    "schachmatt:matt": { k: "merk", t: "Schachmatt", s: "Der König steht im Schach und kann sich <b>nicht mehr retten</b>. Dann ist das Spiel zu Ende – gewonnen!", ex: [["❗", "Schach", "noch ein Ausweg"], ["🏆", "Schachmatt", "kein Ausweg"]], say: "Schachmatt heißt: Der König steht im Schach und kann sich nicht mehr retten. Dann ist das Spiel gewonnen." },
+    "schachmatt:mattsetzen": { k: "tipp", t: "Matt-Tipp", s: "Prüfe jeden Zug, der <b>Schach</b> gibt: Kann der König danach noch weg? Wenn nicht – Schachmatt!", ex: [["👀", "Schach?", "erst suchen"], ["🏆", "Matt!", "kein Ausweg"]], say: "Prüfe jeden Zug, der Schach gibt. Kann der König danach noch weg? Wenn nicht, ist es Schachmatt." },
     "rechnen:profi": { k: "merk", t: "Der Profi-Rechenweg", s: "Erst die <b>Zehner</b>. Dann rechnest du bis zum <b>vollen Zehner</b> und zum Schluss den <b>Rest</b>.",
       ex: [["1️⃣", "38 + *20* = 58", "Zehner"], ["2️⃣", "58 + *2* = 60", "bis zum Zehner"], ["3️⃣", "60 + *3* = 63", "Rest dazu"]], v: "🧩 25 = 20 + 2 + 3",
       say: "Der Profi-Rechenweg. 38 plus 25. Erst die Zehner: 38 plus 20 gleich 58. Dann bis zum vollen Zehner: 58 plus 2 gleich 60. Zum Schluss der Rest: 60 plus 3 gleich 63." },
@@ -7064,7 +8173,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     card.classList.add("tafel"); card.style.setProperty("--rc", ls.color || "#e63946");
     card.innerHTML = `<div class="rc-top"><span class="rc-chip expl">❓ So geht's</span><span class="rc-isl">${ls.icon || ""} ${ls.name || ""}</span><button class="tf-x" id="tfX" aria-label="Schließen">✕</button></div>
       <div class="tf-talk"><img class="tf-polly" src="${artURI("polly")}" alt=""><div class="tf-bub" id="tfBub" aria-live="polite"></div></div>
-      <div class="tf-board" id="tfBoard" role="img" aria-label="Tafel"><div class="tf-eq">${ls.board}</div>${ls.field ? `<div class="tf-field" id="tfField"></div>` : ""}</div>
+      <div class="tf-board" id="tfBoard" role="img" aria-label="Tafel"><div class="tf-eq">${ls.board}</div>${ls.field || ls.pic ? `<div class="tf-field${ls.pic ? " tf-pic" : ""}" id="tfField"></div>` : ""}</div>
       <div class="tf-ctl"><button class="iconbtn" id="tfBack" aria-label="Einen Schritt zurück">◀</button><div class="tf-dots" aria-hidden="true">${ls.steps.map(() => "<i></i>").join("")}</div><button class="iconbtn say" id="tfSay" aria-label="Nochmal vorlesen">🔊</button><button class="tf-again" id="tfAgain" hidden>🔁 Nochmal</button>${ls.auto ? `<button class="tf-again" id="tfSkip">⏭ Kenn ich schon</button>` : ""}<button class="big-btn" id="tfGo">Weiter ▶</button></div>`;
     const sayOf = (i) => ls.steps[i].replace(/<[^>]+>/g, "");
     const go = (to, anim) => {
@@ -7073,6 +8182,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         e.classList.toggle("on", on); e.classList.remove("new"); e.style.animationDelay = ""; if (on && anim && at === k) { void e.getBoundingClientRect(); e.classList.add("new"); } });
       let j = 0; card.querySelectorAll(".tf-k.new").forEach(e => { e.style.animationDelay = (j++ * 0.2).toFixed(2) + "s"; });
       if (ls.field) { const fo = Object.assign({}, ls.field(k)); if (!anim) delete fo.pop; $("tfField").innerHTML = zfHTML(fo); }
+      else if (ls.pic) $("tfField").innerHTML = ls.pic(k);
       const b = $("tfBub"); b.innerHTML = `<span>${ls.steps[k]}</span>`; b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
       card.querySelectorAll(".tf-dots i").forEach((d, i) => { d.classList.toggle("on", i <= k); d.classList.toggle("cur", i === k); });
       $("tfBack").disabled = k === 0; $("tfAgain").hidden = k < n - 1; if ($("tfSkip")) $("tfSkip").hidden = k === n - 1;
@@ -7544,12 +8654,32 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       s += `<path d="M0 650 H1400 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#f2d49b"/>
         <path d="M0 752 Q130 778 260 788 Q470 806 700 806 Q930 806 1150 786 Q1290 774 1400 738 V752 Q1290 792 1160 800 Q930 824 700 822 Q460 820 250 804 Q110 792 0 768 Z" fill="#e3bd7c"/>
         <rect x="0" y="650" width="1400" height="24" fill="${SE().grass}"/><path d="M0 674 Q60 684 120 674 T240 674 T360 674 T480 674 T600 674 T720 674 T840 674 T960 674 T1080 674 T1200 674 T1320 674 T1440 674" fill="${SE().grass}"/><path d="M0 651 H1400" stroke="${SE().edge}" stroke-width="3"/>${seasonDeco()}
-        <polygon points="${FDOOR - 33},652 ${FDOOR + 33},652 ${FDOOR + 65},720 ${FDOOR - 65},720" fill="#d9d2c4"/>`;
-      [[120, 712], [380, 740], [560, 716], [860, 744], [1250, 708], [1330, 742]].forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="${4 + i % 3}" fill="#c9a66b"/>`; });
-      s += `<text x="1290" y="770" text-anchor="middle" class="emo" font-size="34">⭐</text><text x="210" y="760" text-anchor="middle" class="emo" font-size="30">🐚</text>
+        ${yardBits()}`;
+      [[120, 712], [380, 740], [540, 716], [300, 776]].forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="${4 + i % 3}" fill="#c9a66b"/>`; });
+      s += `<text x="470" y="792" text-anchor="middle" class="emo" font-size="34">⭐</text><text x="210" y="760" text-anchor="middle" class="emo" font-size="30">🐚</text>
         <g class="nemofin"><text x="330" y="912" text-anchor="middle" class="emo" font-size="70">🦈</text><g fill="none" stroke="#fff" stroke-width="3" opacity=".85"><circle cx="400" cy="860" r="7"/><circle cx="414" cy="838" r="5"/></g></g>
         <text x="1060" y="930" text-anchor="middle" class="emo" font-size="40">🐠</text><text x="760" y="900" text-anchor="middle" class="emo" font-size="30">🐟</text>`;
     }
+    return s;
+  }
+  // Schulhof vor dem Eingang: Pflaster, Hüpfkästchen und das große Hof-Schachbrett (zum Antippen: dort ist die Schachschule)
+  const CHESS_X = 968;   // hier steht der Held, wenn er am Schachbrett ist
+  function yardBits() {
+    let s = `<polygon points="${FDOOR - 33},652 ${FDOOR + 33},652 ${FDOOR + 46},680 ${FDOOR - 46},680" fill="#d9d2c4"/>
+      <path d="M606 676 H1346 Q1380 680 1384 706 Q1386 746 1330 764 Q1250 782 1160 788 Q900 804 640 794 Q572 786 566 744 Q566 700 606 676 Z" fill="#d9d2c4" stroke="#c2b9a8" stroke-width="3"/>
+      <path d="M588 706 H1382 M570 742 H1372 M600 774 H1220" stroke="#c9c0b0" stroke-width="2.5"/>`;
+    for (let x = 680; x < 1340; x += 104) s += `<path d="M${x} 678 L${x - 18} ${x > 1180 ? 762 : 794}" stroke="#c9c0b0" stroke-width="2.5"/>`;
+    // Hüpfkästchen mit Kreide
+    s += `<g transform="translate(1204 700) skewX(-14)" fill="none" stroke="#fff" stroke-width="3.5" opacity=".9"><rect x="0" y="0" width="32" height="26"/><rect x="32" y="0" width="32" height="26"/><rect x="64" y="-13" width="32" height="26"/><rect x="64" y="13" width="32" height="26"/><rect x="96" y="0" width="32" height="26"/><path d="M128 0 a26 26 0 0 1 0 26"/></g>`;
+    // Schachbrett (schräg von oben gesehen)
+    const T = 694, H = 84, xl = (u) => 716 - 30 * u, xr = (u) => 916 + 30 * u, px = (i, j) => (xl(i / 8) + (xr(i / 8) - xl(i / 8)) * j / 8).toFixed(1), py = (i) => (T + H * i / 8).toFixed(1);
+    let b = `<polygon points="${xl(0) - 7},${T - 6} ${xr(0) + 7},${T - 6} ${xr(1) + 9},${T + H + 8} ${xl(1) - 9},${T + H + 8}" fill="#6b4226"/>`;
+    for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) b += `<polygon points="${px(i, j)},${py(i)} ${px(i, j + 1)},${py(i)} ${px(i + 1, j + 1)},${py(i + 1)} ${px(i + 1, j)},${py(i + 1)}" fill="${(i + j) % 2 ? "#8a5a2b" : "#f6e7c8"}"/>`;
+    const pc = (code, x, y, sz) => `<svg x="${x - sz / 2}" y="${y - sz * 0.92}" width="${sz}" height="${sz}" viewBox="0 0 100 100" class="chp ${code[0] === "w" ? "cw" : "cb2"}">${CH_SHAPE[code[1]]}${CH_BASE}</svg>`;
+    s += `<g class="chesshot" role="button" tabindex="0" aria-label="Zur Schachschule auf dem Schulhof"><rect x="570" y="652" width="400" height="156" fill="transparent"/>
+      <ellipse class="chessring" cx="816" cy="738" rx="158" ry="62" fill="none" stroke="#ffd60a" stroke-width="7"/>${b}
+      ${pc("bT", 748, 716, 58)}${pc("bK", 846, 714, 66)}${pc("wS", 790, 760, 74)}${pc("wB", 884, 772, 62)}
+      <path d="M640 792 V706" stroke="#6b4226" stroke-width="8" stroke-linecap="round"/><rect x="580" y="664" width="120" height="48" rx="9" fill="#fff8e7" stroke="#6b4226" stroke-width="5"/><text x="640" y="699" text-anchor="middle" font-size="30" font-weight="900" fill="#17324a">Schach</text></g>`;
     return s;
   }
   // Kleinigkeiten auf der Wiese vor der Schule
@@ -7635,7 +8765,24 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     kidAt(hero.x, FLOORS[hero.floor]);
     if (!inside) { $("schKidOut").innerHTML = kidSVG(S.fig == null ? 0 : S.fig); kidOutAt(outX); $("schFac").addEventListener("click", () => goIn()); }
     wrap.querySelectorAll(".door").forEach(d => d.addEventListener("click", () => goRoom(d.dataset.room)));
+    const hot = wrap.querySelector(".facade .chesshot");
+    if (hot) { hot.addEventListener("click", (e) => { e.stopPropagation(); goChess(); }); hot.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); goChess(); } }); }
     schInfo();
+  }
+  // Zum Schachbrett auf dem Schulhof laufen – dort ist die Schachschule
+  function goChess() {
+    if (busy() || entering) return;
+    if (walking) { walking.skip = true; return; }
+    if (inside) { const out = () => { goOut(); setTimeout(goChess, reducedMotion() ? 0 : 1000); }; if (hero.floor === "eg" && Math.abs(hero.x - ST.entry) < 2) out(); else move(planTo("eg", ST.entry), out); return; }
+    tone([523, 659, 784, 1047], 0.07); speak("Auf zum Schachbrett!");
+    const g = $("schKidOut"), kid = g && g.querySelector(".kid"), x0 = outX;
+    if (reducedMotion() || !kid) { outX = CHESS_X; return enterWorld("schach"); }
+    entering = true; kid.classList.add("walk"); const t0 = performance.now(), dur = Math.max(200, Math.abs(x0 - CHESS_X) / 560 * 1000);
+    const walk = (now) => { const u = Math.min(1, (now - t0) / dur); outX = x0 + (CHESS_X - x0) * u; kidOutAt(outX);
+      if (u < 1) return requestAnimationFrame(walk);
+      kid.classList.remove("walk"); kid.classList.add("hello"); entering = false;
+      setTimeout(() => { if (current === "scrWorld") enterWorld("schach"); }, 420); };
+    requestAnimationFrame(walk);
   }
   // Wegpunkte von der Figur zu einem Ziel (Stockwerk, x) – über das Treppenhaus
   function planTo(floor, x) {
@@ -7782,6 +8929,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const st = (wid) => CHAPTERS.filter(c => worldOf(c) === wid && c.levels.length).reduce((a, c) => a + starTotal(c), 0), sn = st("nemo"), sp = st("polly");
     $("wtNemo").textContent = `⭐ ${sn}`; $("wtNemo").hidden = !sn;
     $("wtPolly").textContent = `⭐ ${sp}`; $("wtPolly").hidden = !sp; const se = st("eule"); $("wtEule").textContent = `⭐ ${se}`; $("wtEule").hidden = !se;
+    const ss = st("schach"); $("wtSchach").textContent = `⭐ ${ss}`; $("wtSchach").hidden = !ss;
     updateFoot(); $("resetBtn2").textContent = $("resetBtn").textContent; $("whoTag2").hidden = $("whoTag").hidden; $("whoTag2").textContent = $("whoTag").textContent;
     setCoins(false); show("scrWorld");
     walking = null; entering = false; if (S.fig == null) { hero = { floor: "eg", x: ST.entry }; inside = false; }
@@ -7797,7 +8945,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     speak((who ? `Hallo ${who}! ` : "") + (inside ? "Lauf mit deinem Superhelden durch die Schule! Nemos Klasse ist im Erdgeschoss, da übst du Deutsch. Pollys Klasse ist oben, da übst du Mathe."
       : "Da ist unsere Schule auf der Neuerburginsel. Tippe auf Rein, dann gehen wir hinein!"));
   }
-  function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); renderHome(); }
+  function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); if (id === "schach" && S.homeAtS == null) speak("Willkommen in der Schachschule! Ich bin Hopsi, das Schachpferd."); renderHome(); }
 
   /* ---------- Freigabe-Link (nur freie Version) ----------
      Ein Link wie …/2a/#f=… schaltet nur bestimmte Kapitel (und auf Wunsch das Aquarium) frei und gilt bis zu einem Zeitpunkt.
@@ -7806,7 +8954,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function fsig(s) { let h = 0x811c9dc5; s = "nemo-freigabe|" + s; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); }
   const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
     lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
-    rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über den Zehner", "der Insel Plus über den Zehner"], minus10: ["Minus über den Zehner", "der Insel Minus über den Zehner"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"] };
+    rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über den Zehner", "der Insel Plus über den Zehner"], minus10: ["Minus über den Zehner", "der Insel Minus über den Zehner"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"], schrittweise: ["Schritte-Inseln", "den Schritte-Inseln"],
+    schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"] };
   function freiParse() {
     if (SCHOOL) return null;
     const m = location.hash.match(/(?:^#|&)f=([A-Za-z0-9_-]+)/); if (!m) return null;
@@ -7894,6 +9043,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   $("resetBtn2").addEventListener("click", () => $("resetBtn").click());
   $("goPolly").addEventListener("click", () => goRoom("polly"));
   $("goEule").addEventListener("click", () => goRoom("eule"));
+  $("goSchach").addEventListener("click", () => goChess());
   $("goOutBtn").addEventListener("click", () => leaveSchool());
   // Buchstaben auch mit der Tastatur (Smartboard, PC) – nur in Schreib-Aufgaben
   document.addEventListener("keydown", (e) => {
@@ -7909,7 +9059,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     else if (e.key === "Backspace") { e.preventDefault(); L.padKey("del"); }
     else if (e.key === "Enter") { e.preventDefault(); L.padKey("ok"); }
   });
-  $("wallet").addEventListener("click", () => { if ((current === "scrHome" || current === "scrMap") && (!FREI || FREI.aq)) renderAqua(); });
+  $("wallet").addEventListener("click", () => {
+    if (current !== "scrHome" && current !== "scrMap") return;
+    if (W.id === "schach") return openSheet(c => { sheetTop(c, "🪙", "Deine Münzen", `${S.coins} ${S.coins === 1 ? "Münze" : "Münzen"}`); c.appendChild(el("p", "note", "Die Schach-Münzen kannst du bei Nemo, Polly oder Eddie ausgeben: im Aquarium, im Dschungel oder im Wald.")); });
+    if (!FREI || FREI.aq) renderAqua();
+  });
   $("resMap").addEventListener("click", renderMap);
   $("taskSay").addEventListener("click", () => { if (L && L.speakNow) L.speakNow(); else if (L) speak($("taskText").textContent); });
   $("taskRule").addEventListener("click", () => openExplain(explainCur()));
