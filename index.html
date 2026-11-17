@@ -468,6 +468,9 @@ svg.sea .isl:focus-visible .sand { stroke: var(--gold); stroke-width: 8; }
 svg.sea .route { fill: none; stroke: rgba(255,255,255,.8); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 1 17; }
 svg.sea .route.done { stroke: var(--gold); stroke-width: 9; stroke-dasharray: 1 14; }
 svg.sea .route.faint { stroke: rgba(255,255,255,.35); }
+svg.sea .zone-bg { fill: rgba(255,255,255,.13); stroke: rgba(255,255,255,.6); stroke-width: 3; stroke-dasharray: 12 10; }
+svg.sea .zone-pill { fill: rgba(255,255,255,.93); filter: drop-shadow(0 3px 0 rgba(4,40,60,.18)); }
+svg.sea .zone-tx { font-size: 30px; font-weight: 900; fill: #17324a; }
 svg.sea .wave { fill: none; stroke: rgba(255,255,255,.34); stroke-width: 3; stroke-linecap: round; }
 svg.sea .wv { animation: wv 5s ease-in-out infinite alternate; }
 svg.sea .wv.w2 { animation-duration: 6.4s; animation-delay: -2s; }
@@ -579,6 +582,20 @@ svg.sea .nemo-in { animation: nbob 2.2s ease-in-out infinite; }
 .picbtn { background: var(--sand); border-radius: 26px; padding: 14px 22px; font-size: 76px; line-height: 1; box-shadow: 0 6px 0 var(--sand-edge), 0 10px 20px var(--shadow); }
 .picbtn svg { width: 1.3em; height: 1em; }
 .picbtn.right { background: #c9f0d4; box-shadow: 0 6px 0 #8fd3a3; }
+.blitzcard { min-width: min(520px, 90vw); transition: background .2s; }
+.blitzcard.on { background: #fff6c9; }
+.blitzopts { margin-top: 6px; }
+.blitzopts .opt { font-size: clamp(24px, 4vw, 36px); }
+.blitzopts .opt.small { font-size: clamp(18px, 2.6vw, 24px); max-width: 640px; }
+.blitzagain { margin-top: 8px; }
+.tfrow { display: flex; gap: clamp(8px, 2vw, 18px); flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.tfbtn { width: clamp(76px, 15vw, 128px); aspect-ratio: 1; background: var(--sand); border-radius: 22px; padding: 12px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 16px var(--shadow); }
+.tfbtn svg { width: 100%; height: 100%; display: block; }
+.tfbtn.right { background: #c9f0d4; box-shadow: 0 5px 0 #8fd3a3; }
+.puzline { min-width: min(640px, 92vw); min-height: 80px; }
+.qwords { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 10px; }
+.qword { font: inherit; font-size: inherit; color: var(--ink); background: rgba(255,255,255,.6); border-radius: 12px; padding: 2px 10px; box-shadow: 0 3px 0 var(--sand-edge); }
+.qword.right { background: #ffd6dc; text-decoration: line-through; text-decoration-thickness: 3px; }
 .sylword { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; row-gap: 10px; }
 .sylword .ch { font-size: clamp(36px, 6.5vw, 58px); font-weight: 900; color: var(--white); text-shadow: 0 3px 0 var(--deep); }
 .sylword .cut { width: 30px; height: 70px; border-radius: 10px; background: rgba(255,255,255,.22); border: 2px dashed rgba(255,255,255,.55); box-sizing: border-box; display: inline-grid; place-items: center; color: var(--gold); font-size: 44px; font-weight: 900; padding: 0; }
@@ -1149,6 +1166,28 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
   .bub, .sky .fe, .tank .tleaf, .tank .ffly { display: none; }
 }
+.chgstat { font-size: clamp(18px, 2.4vw, 24px); font-weight: 800; text-align: center; padding: 10px 16px; }
+body.schach .tank { height: clamp(360px, 64vh, 640px); background: linear-gradient(180deg, #5b2a86 0%, #8e5cc0 45%, #c9a0e8 70%, #f1d99a 100%); border-color: #f6edff; outline-color: #a678d6; }
+.tank .pal-hall { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 60px, rgba(255,255,255,0) 60px 120px); }
+.tank .pal-flag { position: absolute; top: 8%; font-size: clamp(36px, 7vw, 64px); filter: drop-shadow(0 4px 6px rgba(0,0,0,.3)); }
+.tank .pal-flag.l { left: 3%; } .tank .pal-flag.r { right: 3%; }
+.tank .pal-board { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 92%; aspect-ratio: 1; padding: 2.2%; border-radius: 14px; box-shadow: 0 10px 26px rgba(0,0,0,.35); box-sizing: border-box; }
+.tank .pal-grid { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); width: 100%; height: 100%; border-radius: 6px; overflow: hidden; }
+.tank .pal-sq { border: none; padding: 0; margin: 0; display: grid; place-items: center; position: relative; cursor: default; min-width: 0; min-height: 0; }
+.tank.edit .pal-sq { cursor: pointer; }
+.tank.edit .pal-sq:hover { outline: 3px solid rgba(255,214,10,.7); outline-offset: -3px; }
+.tank .pal-sq.sel { outline: 4px solid #ffd60a; outline-offset: -4px; }
+.tank .pal-pc { width: 92%; height: 92%; display: block; animation: palBob 3s ease-in-out infinite; filter: drop-shadow(0 3px 3px rgba(0,0,0,.35)); }
+.tank .pal-pc svg { width: 100%; height: 100%; display: block; }
+.tank .pal-pc.newbie { animation: palNew 1s ease-out 3, palBob 3s ease-in-out 3s infinite; }
+@keyframes palBob { 50% { transform: translateY(-4%); } }
+@keyframes palNew { 0% { transform: scale(.3); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+.tank .pal-hopsi { position: absolute; left: 4%; bottom: 4%; width: clamp(60px, 12vw, 110px); animation: kIdle 2.4s ease-in-out infinite; }
+.tank .pal-hopsi svg { width: 100%; height: auto; display: block; }
+.pal-th { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 14px; background: #fff; box-shadow: 0 3px 0 rgba(0,0,0,.12); font-weight: 800; font-size: 15px; }
+.pal-th.on { background: #ffe8a3; box-shadow: 0 0 0 3px #e0a400; }
+.pal-th-art { width: 28px; height: 28px; display: inline-block; } .pal-th-art svg { width: 100%; height: 100%; }
+@media (prefers-reduced-motion: reduce) { .tank .pal-pc, .tank .pal-hopsi { animation: none; } }
 </style>
 </head>
 <body>
@@ -1210,7 +1249,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     <div class="head l" id="homeTitle">Nemos Spielplatz</div>
     <div class="head s" id="homeHello"></div>
     <div class="mapwrap" id="homeMap"></div>
-    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 16.11. · Eddies Werkstatt</span></div>
+    <div class="foot"><button class="voice" id="voiceBtn">🔊 Stimme</button><span class="who" id="whoTag" hidden></span><button class="reset" id="resetBtn">Neues Kind / neu starten</button><span class="savestate" id="saveState" hidden></span><span class="frei-tag" id="freiTag" hidden></span><span class="ver">Version 17.11. · Schachpalast</span></div>
   </section>
 
   <!-- AQUARIUM -->
@@ -1541,9 +1580,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       shopTitle: "🌴 Pollys Dschungel", chest: "Pollys Schatzkiste", start: "🌴", art: "polly", conf: ["🪶", "⭐", "🍌", "🌺", "✨", "🍒"], buyConf: ["🪶", "✨", "⭐", "🌺"] },
     eule: { id: "eule", name: "Eddies Spielplatz", room: "Eulenklasse", hero: "Eddie", emo: "🦉", goes: "fliegt", go: "fliegen", place: "Wald", inPlace: "in deinem Wald", forPlace: "für deinen Wald",
       shopTitle: "🌲 Eddies Wald", chest: "Eddies Schatzkiste", start: "🌲", art: "eddie", klasse: "die Eulenklasse", conf: ["🪶", "⭐", "🌙", "✨", "🔢", "🍂"], buyConf: ["🪶", "✨", "⭐", "🌙"] },
-    // Schachschule auf der Schach-Insel: kein eigener Laden – die Münzen gelten bei Nemo, Polly und Eddie
-    schach: { id: "schach", name: "Schachschule", room: "Schachschule", hero: "Hopsi", emo: "🐴", goes: "hüpft", go: "hüpfen", place: "Schachschule", inPlace: "in der Schachschule", forPlace: "für die Schachschule",
-      shopTitle: "♟️ Schachschule", chest: "Hopsis Schatzkiste", start: "🏁", art: "hopsi", klasse: "die Schachschule", conf: ["⭐", "✨", "🏆", "🐴", "👑", "🎉"], buyConf: ["✨", "⭐"] }
+    // Schachschule auf der Schach-Insel: eigene Belohnungswelt „Hopsis Schachpalast“ (eigenes Brett, sehr teure Spezialfiguren)
+    schach: { id: "schach", name: "Schachschule", room: "Schachschule", hero: "Hopsi", emo: "🐴", goes: "hüpft", go: "hüpfen", place: "Schachpalast", inPlace: "in deinem Schachpalast", forPlace: "für deinen Schachpalast",
+      shopTitle: "🏰 Hopsis Schachpalast", chest: "Hopsis Schatzkiste", start: "🏁", art: "hopsi", klasse: "die Schachschule", conf: ["⭐", "✨", "🏆", "🐴", "👑", "🎉"], buyConf: ["✨", "⭐"] }
   };
   let W = WORLDS.nemo;
   const isPolly = () => W.id === "polly";
@@ -1575,7 +1614,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
 
   /* ---------- state ---------- */
   const KEY = "nemo-spielplatz-v2";
-  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [], jungle: [], wald: [] });
+  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [], jungle: [], wald: [], schatz: [] });
   let S = fresh();
   // Datenschutz:
   //  - Ohne Schulserver (z. B. GitHub-Version) speichert das Spiel NICHTS: alles nur im Arbeitsspeicher, jedes Öffnen beginnt bei 0.
@@ -3706,6 +3745,175 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       }
     }
   ];
+
+  /* ---------- Lese-Lagune, neue Inseln: Blitzlesen, Lies und tu, Satz-Puzzle, Quatsch-Sätze ---------- */
+  // Blitzlesen schwer: fast gleiche Sätze – nur ein Wort ist anders
+  const BLITZ_SAETZE = [["Der Hund liegt im Haus.", "Der Hund liegt am Haus.", "Die Maus liegt im Haus."], ["Ich esse einen Apfel.", "Ich esse keinen Apfel.", "Ich messe einen Apfel."],
+    ["Die Kuh steht auf der Wiese.", "Die Kuh geht auf die Wiese.", "Die Kuh steht auf dem Weg."], ["Mama kauft rote Rosen.", "Mama kauft rote Hosen.", "Mama mag rote Rosen."],
+    ["Tim malt eine Sonne.", "Tim malt eine Tonne.", "Tom malt eine Sonne."], ["Der Ball rollt in den Bach.", "Der Ball rollt in den Bauch.", "Der Ball fällt in den Bach."],
+    ["Lisa liest ein Buch.", "Lisa liest ein Tuch.", "Lisa leiht ein Buch."], ["Die Katze sitzt auf dem Dach.", "Die Katze sitzt unter dem Dach.", "Die Tatze sitzt auf dem Dach."],
+    ["Wir backen einen Kuchen.", "Wir packen einen Kuchen.", "Wir backen einen Kegel."], ["Opa trinkt heißen Tee.", "Opa trinkt heißen See.", "Oma trinkt heißen Tee."],
+    ["Der Vogel sitzt im Nest.", "Der Vogel sitzt im Netz.", "Der Vogel sitzt am Nest."], ["Ben hat einen Hut.", "Ben hat einen Hund.", "Ben hat keinen Hut."]];
+  // Satz-Puzzle: Sätze nach Länge; weitere erlaubte Reihenfolgen nach dem „|“
+  const PUZ_SAETZE = {
+    leicht: ["Der Hund bellt.", "Die Sonne scheint.", "Ich lese ein Buch.", "Mama kocht Suppe.", "Das Eis ist kalt.", "Der Ball ist rot.", "Wir spielen Fußball.", "Die Katze schläft.",
+      "Opa trinkt Tee.", "Der Vogel singt.", "Ich male ein Bild.", "Die Blume ist gelb."],
+    mittel: ["Der Hund spielt im Garten.", "Die Kinder lachen sehr laut.", "Im Winter fällt viel Schnee.", "Der Bus kommt um acht.", "Wir backen einen großen Kuchen.",
+      "Die Ente schwimmt im Teich.", "Papa repariert das alte Fahrrad.", "Mia isst gern rote Äpfel.", "Ich gehe heute zur Schule.|Ich gehe zur Schule heute.", "Am Abend lese ich gern."],
+    schwer: ["Nach der Schule spiele ich mit Ben.", "Der kleine Igel schläft unter dem Laub.", "Im Sommer fahren wir an das Meer.",
+      "Meine Oma backt am Sonntag einen Kuchen.|Meine Oma backt einen Kuchen am Sonntag.", "Die Kinder bauen im Schnee einen Schneemann.|Die Kinder bauen einen Schneemann im Schnee.",
+      "Der Hund rennt schnell über die grüne Wiese.", "Im Zoo sehen wir einen großen Elefanten.", "Am Morgen putze ich mir die Zähne."]
+  };
+  // Quatsch-Sätze: [Satz, falsches Wort, richtiges Wort]
+  const QUATSCH = {
+    leicht: [["Die Kuh gibt Saft.", "Saft", "Milch"], ["Der Fisch kann fliegen.", "fliegen", "schwimmen"], ["Im Winter ist es heiß.", "heiß", "kalt"], ["Die Sonne ist blau.", "blau", "gelb"],
+      ["Ich trinke ein Brot.", "trinke", "esse"], ["Der Hund miaut laut.", "miaut", "bellt"], ["Eine Banane ist rund.", "rund", "krumm"], ["Der Vogel hat vier Beine.", "vier", "zwei"],
+      ["Das Gras ist rot.", "rot", "grün"], ["Ein Auto hat drei Räder.", "drei", "vier"], ["Ich schlafe im Kühlschrank.", "Kühlschrank", "Bett"], ["Der Schnee ist schwarz.", "schwarz", "weiß"]],
+    mittel: [["Im Sommer baue ich einen Schneemann.", "Sommer", "Winter"], ["Der Bäcker backt frische Schuhe.", "Schuhe", "Brötchen"], ["Wir gehen ins Schwimmbad, um zu schlafen.", "schlafen", "schwimmen"],
+      ["Die Feuerwehr löscht das Feuer mit Saft.", "Saft", "Wasser"], ["Mein Hund schläft in einem Vogelnest.", "Vogelnest", "Körbchen"], ["Ich lese gern ein spannendes Brot.", "Brot", "Buch"],
+      ["Am Himmel schwimmen weiße Wolken.", "schwimmen", "ziehen"], ["Der Zahnarzt schaut sich meine Füße an.", "Füße", "Zähne"], ["Die Katze klettert auf das Dach und bellt.", "bellt", "miaut"],
+      ["Meine Suppe esse ich mit dem Kamm.", "Kamm", "Löffel"]],
+    schwer: [["Weil es regnet, nehme ich meine Sonnenbrille mit.", "Sonnenbrille", "Regenjacke"], ["Der Eisbär lebt dort, wo es sehr heiß ist.", "heiß", "kalt"],
+      ["Wenn ich müde bin, gehe ich zum Spielen ins Bett.", "Spielen", "Schlafen"], ["Im Herbst fallen die bunten Blätter von den Wolken.", "Wolken", "Bäumen"],
+      ["Ein Jahr hat zwölf Tage.", "Tage", "Monate"], ["Nach dem Essen putze ich mir die Haare.", "Haare", "Zähne"], ["Die Ampel zeigt Grün, also bleibe ich stehen.", "Grün", "Rot"],
+      ["Mit dem Thermometer messe ich, wie lang der Tisch ist.", "Thermometer", "Lineal"], ["Ein Dreieck hat vier Ecken.", "vier", "drei"], ["Fische atmen unter Wasser mit ihren Ohren.", "Ohren", "Kiemen"]]
+  };
+
+  // Lies und tu: Formen und Farben
+  const TF_FORM = { Kreis: { g: "m", d: '<circle cx="50" cy="50" r="38"/>' }, Stern: { g: "m", d: '<path d="M50 8 L61 38 L93 39 L68 59 L77 91 L50 73 L23 91 L32 59 L7 39 L39 38 Z"/>' },
+    Herz: { g: "n", d: '<path d="M50 88 C18 64 8 48 8 32 C8 18 19 9 31 9 C40 9 46 14 50 22 C54 14 60 9 69 9 C81 9 92 18 92 32 C92 48 82 64 50 88 Z"/>' },
+    Quadrat: { g: "n", d: '<rect x="14" y="14" width="72" height="72" rx="6"/>' }, Dreieck: { g: "n", d: '<path d="M50 10 L92 86 L8 86 Z"/>' } };
+  const TF_COL = { rot: "#e63946", blau: "#1f6fd1", gelb: "#ffc300", grün: "#2b9348" };
+  const tfAcc = (f, c) => (TF_FORM[f].g === "m" ? `den ${c}en ${f}` : `das ${c}e ${f}`);   // Akkusativ: den blauen Stern, das blaue Herz
+  const tfDat = (f, c) => `dem ${c}en ${f}`;                                                 // Dativ: neben dem gelben Kreis
+  const tfNom = (f, c) => (TF_FORM[f].g === "m" ? `ein ${c}er ${f}` : `ein ${c}es ${f}`);     // ein roter Kreis, ein rotes Herz
+  const tfArt = (f) => (TF_FORM[f].g === "m" ? "den" : "das");
+  function tfRow(d) {
+    const forms = Object.keys(TF_FORM), cols = Object.keys(TF_COL), n = d === "leicht" ? 4 : 5;
+    for (let g = 0; g < 400; g++) {
+      const row = [], used = new Set();
+      while (row.length < n) { const f = forms[rint(0, forms.length - 1)], c = cols[rint(0, cols.length - 1)]; if (used.has(f + c)) continue; used.add(f + c); row.push({ f, c }); }
+      const cnt = (f) => row.filter(s => s.f === f).length;
+      if (d === "leicht") { const ok = row.filter(s => cnt(s.f) === 1); if (!ok.length) continue; const t = ok[rint(0, ok.length - 1)];
+        return { row, ti: row.indexOf(t), text: `Tippe auf ${tfArt(t.f)} ${t.f}.`, lab: row.map(s => s.f + s.c).join() }; }
+      if (d === "mittel") { const ok = row.filter(s => cnt(s.f) >= 2); if (!ok.length) continue; const t = ok[rint(0, ok.length - 1)];
+        return { row, ti: row.indexOf(t), text: `Tippe auf ${tfAcc(t.f, t.c)}.`, lab: row.map(s => s.f + s.c).join() }; }
+      // schwer: Lage – rechts oder links neben einer eindeutig beschriebenen Form
+      const k = rint(0, n - 1), side = rint(0, 1) ? "rechts" : "links", ti = side === "rechts" ? k + 1 : k - 1; if (ti < 0 || ti >= n) continue;
+      const a = row[k]; if (row.filter(s => s.f === a.f && s.c === a.c).length !== 1 || cnt(a.f) < 2) continue;
+      return { row, ti, text: `Tippe auf die Form, die ${side} neben ${tfDat(a.f, a.c)} liegt.`, lab: row.map(s => s.f + s.c).join() + side + k };
+    }
+    return null;
+  }
+  const tfSVG = (s) => `<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="${TF_COL[s.c]}" stroke="rgba(0,0,0,.25)" stroke-width="3">${TF_FORM[s.f].d}</g></svg>`;
+  const LESE_NEU = [
+    {
+      id: "blitzlesen", name: "Blitzlese-Bucht", icon: "⚡", color: "#3a86ff",
+      task: (d) => d === "schwer" ? "Lies den Satz ganz schnell! Welcher war es?" : "Lies das Wort ganz schnell! Welches war es?",
+      intro: (d) => d === "leicht" ? "Ein Wort blitzt kurz auf. Lies es schnell und merk es dir!" : d === "mittel" ? "Das Wort blitzt nur ganz kurz auf – und die anderen Wörter sehen fast gleich aus!" : "Jetzt blitzt ein ganzer Satz auf. Nur ein Wort ist bei den anderen anders!",
+      ex: (d) => d === "schwer" ? "⚡ Der Hund liegt im Haus. → ?" : "⚡ Hose → Hose · Rose · Dose",
+      say: (d) => d === "schwer" ? "Ein Satz blitzt kurz auf. Lies ihn schnell. Welcher Satz war es?" : "Ein Wort blitzt kurz auf. Lies es schnell. Welches Wort war es?",
+      build(d) {
+        if (d === "schwer") return shuffle(BLITZ_SAETZE).slice(0, 8).map(g => ({ t: g[0], opts: g.slice(), ms: 3200, lab: g[0] }));
+        if (d === "mittel") return shuffle(WB_SIMILAR).slice(0, 8).map(g => { const t = g[rint(0, g.length - 1)][0]; let opts = g.map(q => q[0]);
+          if (opts.length < 3) opts = opts.concat(shuffle(WB_EASY.map(z => z[0].join("")).filter(w => opts.indexOf(w) < 0)).slice(0, 3 - opts.length)); return { t, opts, ms: 1300, lab: t }; });
+        return shuffle(WB_EASY).slice(0, 8).map(z => { const t = z[0].join(""); return { t, opts: [t].concat(shuffle(WB_EASY.map(q => q[0].join("")).filter(w => w !== t)).slice(0, 2)), ms: 2000, lab: t }; });
+      },
+      render(x, stage, d) {
+        L.tries = 0;
+        const card = el("div", "rcard read blitzcard", `<div class="${d === "schwer" ? "rsent" : "rword"}">👀</div>`), again = el("button", "opt small blitzagain", "👀 Nochmal zeigen"), opts = el("div", "blitzopts");
+        stage.appendChild(card); stage.appendChild(opts); stage.appendChild(again);
+        const flash = () => { const inner = card.firstChild; inner.innerHTML = escH(x.t); card.classList.add("on"); again.disabled = true;
+          setTimeout(() => { inner.textContent = "❓"; card.classList.remove("on"); again.disabled = false; opts.hidden = false; }, x.ms); };
+        again.addEventListener("click", () => { if (!L.locked) { L.tries++; flash(); } });
+        opts.hidden = true;
+        choiceTask(opts, { opts: x.opts.map(o => ({ label: o, correct: o === x.t })), small: d === "schwer", factor: d === "leicht" ? 1 : 2, okSpeak: x.t, okText: x.t,
+          wrongText: d === "schwer" ? "Nicht ganz – ein Wort war anders. Tipp auf „Nochmal zeigen“!" : "Nicht ganz – schau auf jeden Buchstaben. Tipp auf „Nochmal zeigen“!" });
+        setTimeout(flash, 700);
+        L.speakNow = () => speak(d === "schwer" ? "Lies den Satz ganz schnell. Welcher war es?" : "Lies das Wort ganz schnell. Welches war es?");
+      }
+    },
+    {
+      id: "tuwas", name: "Lies-und-tu-Turm", icon: "🎯", color: "#e76f51",
+      task: () => "Lies genau und tu, was da steht!",
+      intro: (d) => d === "leicht" ? "Lies den Auftrag und tippe die richtige Form an." : d === "mittel" ? "Jetzt kommt es auch auf die Farbe an: Lies genau!" : "Jetzt geht es um links und rechts. Lies den ganzen Satz!",
+      ex: (d) => d === "leicht" ? "Tippe auf das Herz. → ❤️" : d === "mittel" ? "Tippe auf den blauen Stern." : "Tippe auf die Form, die rechts neben dem gelben Kreis liegt.",
+      say: () => "Lies den Auftrag ganz genau und tu, was da steht!",
+      build(d) { return gen(8, () => tfRow(d)); },
+      render(x, stage, d) {
+        L.tries = 0;
+        stage.appendChild(el("div", "rcard read", `<div class="rsent">${lh(x.text)}</div>`));
+        const row = el("div", "tfrow");
+        x.row.forEach((s, i) => {
+          const b = el("button", "tfbtn", tfSVG(s)); b.setAttribute("aria-label", tfNom(s.f, s.c));
+          b.addEventListener("click", () => {
+            if (L.locked) return;
+            if (i === x.ti) { b.classList.add("right"); award(b, d === "leicht" ? 1 : d === "mittel" ? 2 : 3); hint(praise() + " Genau gelesen!", true); speak(x.text); done(1300); }
+            else miss(b, `Das ist ${tfNom(s.f, s.c)}.` + readHelp(x.text));
+          });
+          row.appendChild(b);
+        });
+        stage.appendChild(row);
+        L.speakNow = () => speak("Lies den Auftrag ganz genau und tu, was da steht.");
+      }
+    },
+    {
+      id: "satzpuzzle", name: "Satz-Puzzle-Steg", icon: "🧩", color: "#2a9d8f",
+      task: () => "Lege den Satz in der richtigen Reihenfolge!",
+      intro: (d) => d === "leicht" ? "Die Wörter sind durcheinander. Das Wort mit dem großen Anfangsbuchstaben kommt zuerst, das Wort mit dem Punkt zuletzt." : d === "mittel" ? "Längere Sätze! Lies jedes Wort und überlege: Was ergibt Sinn?" : "Lange Sätze mit vielen Wörtern. Lies sie dir am Ende noch einmal vor!",
+      ex: () => "bellt. · Der · Hund → Der Hund bellt.",
+      say: () => "Die Wörter sind durcheinander. Lege den Satz in der richtigen Reihenfolge.",
+      build(d) { return shuffle(PUZ_SAETZE[d] || PUZ_SAETZE.schwer).slice(0, d === "leicht" ? 8 : 6).map(s => { const alts = s.split("|"); return { alts: alts.map(a => a.split(" ")), t: alts[0], lab: alts[0] }; }); },
+      render(x, stage, d) {
+        L.tries = 0;
+        const words = x.alts[0], line = el("div", "rcard read puzline", `<div class="rsent">&nbsp;</div>`), out = [];
+        stage.appendChild(line);
+        const row = el("div", "tiles");
+        shuffle(words.map((w, i) => ({ w, i }))).forEach(o => {
+          const t = el("button", "stile read", escH(o.w));
+          t.addEventListener("click", () => {
+            if (L.locked || t.classList.contains("used")) return;
+            const next = out.concat([o.w]), ok = x.alts.some(a => next.every((w, k) => a[k] === w));
+            if (!ok) { miss(t, out.length === 0 ? "Welches Wort steht am Anfang? Schau auf den großen Buchstaben." : `„${out.join(" ")} ${o.w}“ – passt das? Lies nochmal.`); return; }
+            out.push(o.w); t.classList.add("used"); line.firstChild.textContent = out.join(" "); tone([560 + out.length * 40], 0.05);
+            if (out.length === words.length) { award(line, d === "leicht" ? 1 : d === "mittel" ? 2 : 3); speak(out.join(" ")); hint(praise() + " " + out.join(" "), true); done(1700); }
+          });
+          row.appendChild(t);
+        });
+        stage.appendChild(row);
+        L.speakNow = () => speak("Lege den Satz in der richtigen Reihenfolge.");
+      }
+    },
+    {
+      id: "quatsch", name: "Quatsch-Insel", icon: "🤪", color: "#9b5de5",
+      task: () => "Ein Wort ist Quatsch! Tippe es an.",
+      intro: (d) => d === "leicht" ? "In jedem Satz ist ein Wort falsch. Lies genau und finde den Quatsch!" : d === "mittel" ? "Die Sätze werden länger. Mach dir ein Bild im Kopf: Was passt nicht?" : "Hier ist der Quatsch gut versteckt. Lies den ganzen Satz und denk mit!",
+      ex: () => "Die Kuh gibt <b>Saft</b>. → Milch",
+      say: () => "In jedem Satz ist ein Wort Quatsch. Lies genau und tippe das falsche Wort an.",
+      build(d) { return shuffle(QUATSCH[d] || QUATSCH.schwer).slice(0, 8).map(q => ({ s: q[0], bad: q[1], good: q[2], lab: q[0] })); },
+      render(x, stage, d) {
+        L.tries = 0;
+        const card = el("div", "rcard read quatsch"), sent = el("div", "rsent qwords");
+        card.appendChild(sent); stage.appendChild(card);
+        const strip = (w) => w.replace(/[.,!?]/g, "");
+        x.s.split(" ").forEach(w => {
+          const b = el("button", "qword", escH(w));
+          b.addEventListener("click", () => {
+            if (L.locked) return;
+            if (strip(w) === x.bad) {
+              L.locked = true; b.classList.add("right");
+              const fixed = x.s.replace(x.bad, x.good);
+              setTimeout(() => { sent.innerHTML = lh(fixed); }, 700);
+              award(b, d === "leicht" ? 1 : d === "mittel" ? 2 : 3); hint(praise() + ` Richtig heißt es: ${fixed}`, true); speak(fixed); done(2200);
+            } else miss(b, `„${strip(w)}“ passt gut. Welches Wort ist Quatsch?` + readHelp(x.s));
+          });
+          sent.appendChild(b); sent.appendChild(document.createTextNode(" "));
+        });
+        L.speakNow = () => speak("Ein Wort ist Quatsch. Tippe es an.");
+      }
+    }
+  ];
+  LESELEVELS.push(...LESE_NEU);
 
   /* ---------- Kapitel Rechtschreibung: 10 Inseln für Klasse 2 ----------
      Lücken-Wörter: [Wort, Muster mit _, richtig, [falsch …], Bild, Tipp, Artikel]
@@ -6671,6 +6879,186 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     }
   ];
 
+
+  /* ======================= Schachschule 4: Kleine Partien gegen Hopsi =======================
+     Kurze Spiele mit wenigen Figuren: Bauernrennen, Bauernjagd und die Springer-Gabel. */
+  // Kleines Spiel: Das Kind zieht mit Weiß, Hopsi antwortet mit Schwarz. o.ai(pos) → [von, nach] | null · o.result(pos, wer) → "win" | "lose" | "draw" | null
+  function chGame(stage, o) {
+    let sel = null, busy = false;
+    const B = chBoard({ pos: Object.assign({}, o.pos), onTap: (s, c) => {
+      if (L.locked || busy) return;
+      const p = B.pos[s];
+      if (p && p[0] === "w") { sel = s; dots(s); tone([520], 0.04); if (!chLegal(B.pos, "w").some(m => m[0] === s)) hint(`${capF(pNom(p))} kann gerade nicht ziehen.`); return; }
+      if (!sel) { hint("Tippe zuerst eine weiße Figur an."); return; }
+      if (!chLegal(B.pos, "w").some(m => m[0] === sel && m[1] === s)) { hint(`So kann ${pNom(B.pos[sel])} nicht ziehen. ${CH_RULE[B.pos[sel][1]]}`); return; }
+      busy = true; const from = sel; sel = null; dots(null);
+      B.move(from, s, () => {
+        B.clear("from"); B.clear("to"); B.mark(from, "from"); B.mark(s, "to");
+        const r = o.result(B.pos, "w"); if (r) return finish(r, c);
+        stat.textContent = "🐴 Hopsi überlegt …";
+        setTimeout(() => {
+          const m = o.ai(B.pos);
+          if (!m) { if (o.pass) { busy = false; stat.textContent = "🐴 Hopsi kann nicht ziehen. Du bist wieder dran!"; return; } return finish("win", c); }
+          B.move(m[0], m[1], () => {
+            B.clear("from"); B.clear("to"); B.mark(m[0], "from"); B.mark(m[1], "to");
+            const r2 = o.result(B.pos, "b"); if (r2) return finish(r2, c);
+            if (!chLegal(B.pos, "w").length) return finish("draw", c);
+            busy = false; stat.textContent = "👉 Du bist dran!";
+          });
+        }, reducedMotion() ? 60 : 650);
+      });
+    } });
+    const dots = (s) => { B.clear("dot"); B.clear("sel"); if (s) { B.mark(s, "sel"); chLegal(B.pos, "w").filter(m => m[0] === s).forEach(m => B.mark(m[1], "dot")); } };
+    L.chB = B;
+    const lay = chLayout(stage, B.el, o.prompt), stat = el("div", "card chgstat", "👉 Du bist dran!");
+    lay.a.appendChild(stat);
+    function finish(r, c) {
+      if (r === "win") { L.locked = true; stat.textContent = "🏆 Gewonnen!"; award(c, o.factor || 1); hint(praise() + " " + o.winText, true); speak(o.winSay || o.winText); done(2300); return; }
+      if (r === "lose") { stat.textContent = "🐴 Hopsi hat diese Runde gewonnen."; miss(c, o.loseText + " Neue Runde!"); }
+      else { stat.textContent = "🤝 Unentschieden"; hint("Unentschieden – keiner kann mehr ziehen. Noch eine Runde!"); }
+      setTimeout(() => { if (L.locked) return; stage.innerHTML = ""; chGame(stage, o); }, 1900);
+    }
+    L.speakNow = () => speak(o.say || chPlain(o.prompt));
+    return B;
+  }
+  const chRank = (s) => +s[1];
+  // Hopsis Züge im Bauernrennen (Schwarz zieht nach unten)
+  function aiPawnRace(pos, d) {
+    const ms = chLegal(pos, "b"); if (!ms.length) return null;
+    if (d === "leicht" && Math.random() < 0.65) return chPickOne(ms);
+    const wAtt = (p, q) => chAttacked(p, q, "w"), bDef = (p, q) => chAttacked(p, q, "b");
+    const score = (m) => {
+      const [f, t] = m, after = chMove(pos, f, t); let v = Math.random() * (d === "schwer" ? 3 : 12);
+      if (chRank(t) === 1) v += 1000;
+      if (pos[t]) v += 60 + (chRank(t) <= 3 ? 400 : 0);                              // schlagen – vor allem weit vorgelaufene Bauern
+      if (wAtt(after, t) && !bDef(after, t)) v -= d === "schwer" ? 70 : 25;            // nicht ungedeckt vor einen weißen Bauern laufen
+      v += (8 - chRank(t)) * (d === "schwer" ? 6 : 3);
+      if (d === "schwer") { const fi = t[0], blocked = ALLSQ.some(q => after[q] === "wB" && Math.abs(SF.indexOf(q[0]) - SF.indexOf(fi)) <= 1 && chRank(q) < chRank(t)); if (!blocked) v += 40; }
+      return v;
+    };
+    return ms.map(m => [score(m), m]).sort((a, b) => b[0] - a[0])[0][1];
+  }
+  const raceResult = (pos) => {
+    if (ALLSQ.some(q => pos[q] && pos[q][0] === "w" && q[1] === "8")) return "win";
+    if (ALLSQ.some(q => pos[q] && pos[q][0] === "b" && q[1] === "1")) return "lose";
+    if (!chPieces(pos, "b").length) return "win";
+    if (!chPieces(pos, "w").length) return "lose";
+    return null;
+  };
+  // Bauernjagd: Schwarz hat nur Bauern. Schlägt ein Bauer die weiße Figur oder erreicht die letzte Reihe, gewinnt Hopsi.
+  function aiPawnRun(pos) {
+    const ms = chLegal(pos, "b"); if (!ms.length) return null;
+    const cap = ms.find(m => pos[m[1]]); if (cap) return cap;
+    const sc = (m) => { const after = chMove(pos, m[0], m[1]); return (8 - chRank(m[1])) * 10 + (chAttacked(after, m[1], "w") ? -100 : 0) + (m[1][1] === "1" ? 1000 : 0) + SF.indexOf(m[1][0]) * 0.01; };
+    return ms.map(m => [sc(m), m]).sort((a, b) => b[0] - a[0])[0][1];
+  }
+  const huntResult = (pos) => {
+    if (ALLSQ.some(q => pos[q] && pos[q][0] === "b" && q[1] === "1")) return "lose";
+    if (!chPieces(pos, "w").length) return "lose";
+    if (!chPieces(pos, "b").length) return "win";
+    return null;
+  };
+  function chHuntStart(t, n) {
+    for (let g = 0; g < 500; g++) {
+      const files = shuffle([0, 1, 2, 3, 4, 5, 6, 7]).slice(0, n).sort((a, b) => a - b);
+      if (files.some((f, i) => i && f - files[i - 1] < 2)) continue;          // keine Nachbarn: sie decken sich nicht gleich
+      const pos = {}; files.forEach(f => { pos[sqOf(f, 6)] = "bB"; });
+      const s = sqOf(rint(0, 7), rint(0, 2)); if (pos[s]) continue; pos[s] = "w" + t;
+      if (chAttacked(pos, s, "b")) continue;
+      return { pos, t, lab: t + chStr(pos) };
+    }
+    return null;
+  }
+  // Springer-Gabel: ein Springerzug, der zwei schwarze Figuren gleichzeitig angreift – auf einem sicheren Feld
+  const chForks = (pos, n, targets) => chReach(pos, n).filter(q => !pos[q]).filter(q => { const p = chMove(pos, n, q); return chReach(p, q, { attack: 1 }).filter(z => targets.indexOf(z) >= 0).length >= 2; });
+  function chFork(d) {
+    const kn = (q) => chReach({ [q]: "wS" }, q, { attack: 1 });
+    for (let g = 0; g < 4000; g++) {
+      // rückwärts gebaut: erst das Gabel-Feld, dann der Springer, dann die Figuren, die er von dort angreift
+      const F1 = sqOf(rint(0, 7), rint(0, 7)), n = chPickOne(kn(F1)), pos = { [n]: "wS" }, tg = [];
+      const A1 = kn(F1).filter(q => q !== n && chDist(q, n) >= 2);
+      if (d !== "schwer") {
+        const two = shuffle(A1).slice(0, 2); if (two.length < 2) continue;
+        (d === "leicht" ? ["D", "T"] : ["K", "D"]).forEach((k, i) => { pos[two[i]] = "b" + k; tg.push(two[i]); });
+      } else {
+        const F2 = chPickOne(kn(n).filter(q => q !== F1)), A2 = kn(F2).filter(q => q !== n && chDist(q, n) >= 2), both = A1.filter(q => A2.indexOf(q) >= 0);
+        if (!both.length) continue;
+        const k = chPickOne(both), t = chPickOne(A1.filter(q => q !== k && A2.indexOf(q) < 0)), dq = chPickOne(A2.filter(q => q !== k && A1.indexOf(q) < 0));
+        if (!t || !dq) continue;
+        pos[k] = "bK"; pos[t] = "bT"; pos[dq] = "bD"; tg.push(k, t, dq);
+        const wk = chPickOne(ALLSQ.filter(z => !pos[z] && z !== F1 && z !== F2 && chDist(z, k) >= 3)); pos[wk] = "wK";
+        const trap = chPickOne([F1, F2]), gt = chPickOne(["bB", "bL", "bS"]);   // eine der beiden Gabeln wird zur Falle
+        const gq = chPickOne(ALLSQ.filter(z => !pos[z] && z !== F1 && z !== F2 && (gt !== "bB" || (z[1] !== "1" && z[1] !== "8")) && chReach(Object.assign({}, pos, { [z]: gt }), z, { attack: 1 }).indexOf(trap) >= 0));
+        if (!gq) continue; pos[gq] = gt;
+      }
+      if (chReach(pos, n, { attack: 1 }).some(z => tg.indexOf(z) >= 0)) continue;   // der Springer greift am Anfang noch nichts an
+      if (chAttacked(pos, n, "b")) continue;                                         // er steht am Anfang sicher
+      if (chInCheck(pos, "b") || chInCheck(pos, "w")) continue;
+      if (chFind(pos, "bK").length && chFind(pos, "wK").length && chDist(chFind(pos, "bK")[0], chFind(pos, "wK")[0]) < 2) continue;
+      const all = chForks(pos, n, tg), safe = all.filter(q => !chAttacked(chMove(pos, n, q), q, "b"));
+      if (!safe.length || safe.length > 2) continue;
+      if (d === "schwer" && all.length === safe.length) continue;                     // schwer: eine Gabel ist eine Falle
+      if (chLegal(pos, "w").filter(m => m[0] === n).every(m => safe.indexOf(m[1]) < 0)) continue;
+      return { n, pos, tg, safe, all, lab: chStr(pos) };
+    }
+    return null;
+  }
+
+  const SCHACH_D = [
+    {
+      id: "bauernrennen", name: "Bauern-Rennen", icon: "🏁", color: "#2b9348",
+      task: () => "Bring einen Bauern ans Ziel – vor Hopsi!",
+      intro: (d) => "Ein Spiel nur mit Bauern! Du spielst Weiß, Hopsi spielt Schwarz. Wer zuerst einen Bauern auf die andere Seite bringt, gewinnt. "
+        + (d === "leicht" ? "Jeder hat 3 Bauern." : d === "mittel" ? "Jeder hat 5 Bauern. Schlag Hopsis Bauern, wenn es geht!" : "Jeder hat 8 Bauern – und Hopsi spielt jetzt richtig gut!"),
+      ex: () => chPic(chParse("wBc2 wBd2 wBe2 bBc7 bBd7 bBe7"), { c8: "star", d8: "star", e8: "star" }) + "<br>Wer ist zuerst auf der anderen Seite?",
+      say: (d) => "Ein Spiel nur mit Bauern! Du spielst Weiß, Hopsi spielt Schwarz. Wer zuerst einen Bauern auf die andere Seite bringt, gewinnt. Denk daran: Bauern schlagen schräg.",
+      build(d) { const n = d === "leicht" ? 3 : d === "mittel" ? 5 : 8; return [0, 1, 2].map(k => { const f0 = n === 8 ? 0 : rint(0, 8 - n), pos = {};
+        for (let i = 0; i < n; i++) { pos[sqOf(f0 + i, 1)] = "wB"; pos[sqOf(f0 + i, 6)] = "bB"; } return { pos, lab: d + k + f0 }; }); },
+      render(x, stage, d) {
+        return chGame(stage, { pos: x.pos, prompt: "<b>Bauern-Rennen!</b> Bring einen weißen Bauern auf die oberste Reihe.", factor: d === "leicht" ? 2 : 3,
+          ai: (p) => aiPawnRace(p, d), result: raceResult, winText: "Dein Bauer ist durch!", winSay: "Gewonnen! Dein Bauer ist durch.", loseText: "Hopsis Bauer war schneller." });
+      },
+      explain: () => ({ html: chPic(chParse("wBd4 bBe5 bBd5"), { e5: "q", d5: "no" }) + "<p>Der Bauer zieht geradeaus, aber er <b>schlägt schräg</b>. Steht ein Bauer direkt vor ihm, ist er blockiert.</p><p>Tipp: Lauf nicht ungeschützt vor Hopsis Bauern – sonst schlägt er dich!</p>",
+        say: "Der Bauer zieht geradeaus, aber er schlägt schräg. Lauf nicht ungeschützt vor Hopsis Bauern, sonst schlägt er dich." })
+    },
+    {
+      id: "bauernjagd", name: "Bauern-Jagd", icon: "🎯", color: "#e76f51",
+      task: () => "Fang alle Bauern, bevor sie unten ankommen!",
+      intro: (d) => `Hopsis Bauern laufen nach unten. Fang sie alle mit ${d === "schwer" ? "deinem Turm" : "deiner Dame"}, bevor einer die unterste Reihe erreicht! Achtung: Die Bauern können auch schlagen.`,
+      ex: () => chPic(chParse("wDd1 bBb7 bBg7"), { b7: "q", g7: "q" }) + "<br>Fang beide Bauern!",
+      say: (d) => `Hopsis Bauern laufen nach unten. Fang sie alle mit ${d === "schwer" ? "deinem Turm" : "deiner Dame"}, bevor einer die unterste Reihe erreicht. Achtung, die Bauern können auch schlagen.`,
+      build(d) { return gen(3, () => chHuntStart(d === "schwer" ? "T" : "D", d === "leicht" ? 2 : d === "mittel" ? 3 : 2)); },
+      render(x, stage, d) {
+        return chGame(stage, { pos: x.pos, pass: true, prompt: `<b>Bauern-Jagd!</b> Schlag alle schwarzen Bauern mit ${x.t === "T" ? "deinem Turm" : "deiner Dame"}.`, factor: d === "leicht" ? 2 : 3,
+          ai: aiPawnRun, result: huntResult, winText: "Alle Bauern gefangen!", winSay: "Super! Du hast alle Bauern gefangen.", loseText: "Oh nein, ein Bauer ist durchgekommen oder hat deine Figur geschlagen." });
+      },
+      explain: (x) => ({ html: chPic(chParse("wTa1 bBe7"), { e1: "q" }) + "<p>Stell dich <b>vor</b> den Bauern oder auf seine Linie – dann kommt er nicht durch.</p><p>Aber Vorsicht: Stell dich nie <b>schräg vor</b> einen Bauern. Dort kann er dich schlagen!</p>",
+        say: "Stell dich vor den Bauern oder auf seine Linie, dann kommt er nicht durch. Aber Vorsicht: Stell dich nie schräg vor einen Bauern, dort kann er dich schlagen." })
+    },
+    {
+      id: "gabel", name: "Springer-Gabel", icon: "🍴", color: "#9b5de5",
+      task: () => "Finde die Springer-Gabel!",
+      intro: (d) => "Eine Gabel ist ein Zug, der zwei Figuren auf einmal angreift. Der Springer ist dafür der Meister! "
+        + (d === "leicht" ? "Greif die Dame und den Turm gleichzeitig an." : d === "mittel" ? "Gib Schach und greif gleichzeitig die Dame an – eine Königsgabel!" : "Achtung: Ein Feld ist eine Falle. Dort wird dein Springer geschlagen!"),
+      ex: () => chPic(chParse("wSc3 bDb7 bTf7"), { d5: "star", b7: "q", f7: "q" }) + "<br>Springer nach d5: Gabel!",
+      say: (d) => "Eine Gabel ist ein Zug, der zwei Figuren auf einmal angreift. Finde das Feld, von dem der Springer zwei schwarze Figuren gleichzeitig angreift.",
+      build(d) { return gen(6, () => chFork(d)); },
+      render(x, stage, d) {
+        return chMoveTask(stage, { prompt: "<b>Gabel!</b> Wohin springt der Springer, damit er zwei Figuren gleichzeitig angreift?", pos: x.pos, side: "w", from: x.n, factor: d === "leicht" ? 2 : 3,
+          ok: (from, to, pos) => {
+            if (pos[to]) return "Schlagen ginge auch – aber such die Gabel: ein leeres Feld, von dem aus der Springer zwei Figuren angreift.";
+            const p = chMove(pos, from, to), hits = chReach(p, to, { attack: 1 }).filter(q => x.tg.indexOf(q) >= 0);
+            if (hits.length < 2) return hits.length ? `Von dort greift der Springer nur ${pNom(pos[hits[0]])} an. Such ein Feld, von dem er zwei Figuren trifft!` : "Von dort greift der Springer nichts an. Zähl den L-Sprung von den schwarzen Figuren aus!";
+            if (chAttacked(p, to, "b")) return `Gute Idee – aber dort wird dein Springer geschlagen von ${chAttackers(p, to, "b").map(q => pNom(p[q])).join(" und ")}. Such ein sicheres Feld!`;
+            return true;
+          },
+          after: (B, from, to) => { chReach(B.pos, to, { attack: 1 }).filter(q => x.tg.indexOf(q) >= 0).forEach(q => B.mark(q, "chk")); },
+          okText: "Gabel! Der Springer greift zwei Figuren gleichzeitig an.", okSay: "Gabel! Der Springer greift zwei Figuren gleichzeitig an.", delay: 2400 });
+      },
+      explain: (x) => ({ html: chPic(x.pos, Object.assign({ [x.n]: "sel" }, Object.fromEntries(x.tg.map(q => [q, "hl"])))) + "<p>Schau von jeder schwarzen Figur aus: Auf welchen Feldern müsste ein Springer stehen, um sie anzugreifen?</p><p>Ein Feld, das bei <b>zwei</b> Figuren vorkommt und das der Springer erreichen kann, ist die Gabel.</p>",
+        say: "Schau von jeder schwarzen Figur aus. Auf welchen Feldern müsste ein Springer stehen, um sie anzugreifen? Ein Feld, das bei zwei Figuren vorkommt, ist die Gabel." })
+    }
+  ];
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
@@ -6686,7 +7074,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { id: "leuchtturm", name: "Leuchtturm", title: "Leuchtturm-Insel", sub: "der, die, das", icon: "💡", ready: true, levels: LTLEVELS, award: "Artikel-Profi",
       bonusPlan: [["schule", "schwer", 2], ["essen", "schwer", 2], ["kleidung", "schwer", 2], ["zuhause", "schwer", 2], ["tiere", "schwer", 2], ["koerper", "schwer", 2], ["tricks", "schwer", 2]] },
     { id: "lesen", name: "Lesen", title: "Lese-Lagune", sub: "Lesen üben", icon: "📖", ready: true, levels: LESELEVELS, award: "Lese-Profi",
-      bonusPlan: [["anlaut", "schwer", 2], ["silbenschiff", "schwer", 2], ["wortbild", "schwer", 2], ["saetze", "mittel", 2], ["raetsel", "mittel", 2]] },
+      bonusPlan: [["anlaut", "schwer", 1], ["silbenschiff", "schwer", 1], ["wortbild", "schwer", 2], ["saetze", "mittel", 1], ["raetsel", "mittel", 1], ["blitzlesen", "mittel", 2], ["tuwas", "mittel", 1], ["quatsch", "mittel", 1]] },
     { id: "rechtschreibung", name: "Rechtschreib", title: "Rechtschreib-Inseln", sub: "Richtig schreiben", icon: "✍️", ready: true, levels: RSLEVELS, award: "Rechtschreib-Profi",
       bonusPlan: [["doppel", "schwer", 1], ["ck", "schwer", 1], ["tz", "mittel", 1], ["ie", "schwer", 1], ["verlaengern", "schwer", 1], ["ableiten", "schwer", 1],
                   ["spst", "schwer", 1], ["vogel", "mittel", 1], ["er", "schwer", 1], ["zeichen", "schwer", 1]] },
@@ -6716,7 +7104,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     { id: "schachzuege", world: "schach", name: "So ziehen die Figuren", title: "Zug-Inseln", sub: "Turm, Läufer, Dame, König, Springer, Bauer", icon: "🐴", ready: true, levels: SCHACH_B, award: "Figuren-Profi", hunter: "Figuren", noExpert: true,
       bonusPlan: [["turm", "mittel", 1], ["laeufer", "mittel", 1], ["dame", "schwer", 1], ["koenig", "mittel", 1], ["springer", "mittel", 2], ["springer", "schwer", 1], ["bauer", "mittel", 2], ["bauer", "schwer", 1]] },
     { id: "schachmatt", world: "schach", name: "Schlagen, Schach und Matt", title: "Matt-Inseln", sub: "Schlagen · Schach · Schachmatt", icon: "⚔️", ready: true, levels: SCHACH_C, award: "Schachmatt-Profi", hunter: "Schachmatt", noExpert: true,
-      bonusPlan: [["schlagen", "mittel", 2], ["wert", "schwer", 1], ["schach", "mittel", 2], ["abwehr", "leicht", 1], ["abwehr", "schwer", 1], ["matt", "mittel", 2], ["mattsetzen", "leicht", 1], ["mattsetzen", "mittel", 1]] }
+      bonusPlan: [["schlagen", "mittel", 2], ["wert", "schwer", 1], ["schach", "mittel", 2], ["abwehr", "leicht", 1], ["abwehr", "schwer", 1], ["matt", "mittel", 2], ["mattsetzen", "leicht", 1], ["mattsetzen", "mittel", 1]] },
+    { id: "schachpartie", world: "schach", name: "Kleine Partien", title: "Partie-Inseln", sub: "Kurze Spiele gegen Hopsi", icon: "🎲", ready: true, levels: SCHACH_D, award: "Partie-Profi", hunter: "Schach", noExpert: true,
+      bonusPlan: [["gabel", "leicht", 2], ["gabel", "mittel", 2], ["gabel", "schwer", 2]] }
   ];
   let CH = CHAPTERS[0];
 
@@ -7065,6 +7455,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     if (!Array.isArray(S.aqua)) { S.aqua = []; changed = true; }
     if (!Array.isArray(S.jungle)) { S.jungle = []; changed = true; }
     if (!Array.isArray(S.wald)) { S.wald = []; changed = true; }
+    if (!Array.isArray(S.schatz)) { S.schatz = []; changed = true; }
     if (changed) save();
   })();
   const islandDone = (ch, li) => DK.some(d => S.stars[skey(ch, li, d)] > 0);
@@ -7430,31 +7821,115 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const SHOP_CATS = [["tiere", "🐟 Meerestiere"], ["deko", "🌿 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   const SHOP_CATS_P = [["voegel", "🦜 Vögel"], ["tiere", "🐸 Dschungel-Tiere"], ["deko", "🌺 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   const SHOP_CATS_E = [["tiere", "🦔 Waldtiere"], ["voegel", "🦉 Vögel"], ["deko", "🍄 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
+
+  /* ---------- Hopsis Schachpalast: Belohnungswelt der Schachschule ----------
+     Ein eigenes Schachbrett mit besonderen (sehr teuren) Figuren und Brettern. Inventar: S.schatz = [{ uid, id, sq }], aktives Brett: S.chTheme */
+  const CH_THEMES = {
+    holz: { n: "Holzbrett", l: "#f6e7c8", d: "#8a5a2b", f: "#6b4226" }, marmor: { n: "Marmor-Brett", l: "#f4f1ec", d: "#9aa3ad", f: "#5b6470" },
+    eis: { n: "Eis-Brett", l: "#eef9ff", d: "#7cc4e8", f: "#3a86b8" }, wald: { n: "Wald-Brett", l: "#e9f5db", d: "#6a994e", f: "#386641" },
+    lava: { n: "Lava-Brett", l: "#ffd6a5", d: "#d1495b", f: "#6a1b1b" }, weltraum: { n: "Weltraum-Brett", l: "#c9c3ff", d: "#3d348b", f: "#1b1640" },
+    gold: { n: "Gold-Brett", l: "#fff3b0", d: "#e0a400", f: "#9c6f00" }, regenbogen: { n: "Regenbogen-Brett", l: "#ffffff", d: "rainbow", f: "#5e3c99" }
+  };
+  const RAINBOW = ["#e63946", "#f77f00", "#ffc300", "#2b9348", "#1f6fd1", "#3a0ca3", "#9b5de5", "#e05780"];
+  const SHOP_S = [
+    { id: "b_marmor", n: "Marmor-Brett", p: 400, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "marmor" },
+    { id: "b_eis", n: "Eis-Brett", p: 450, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "eis" },
+    { id: "b_wald", n: "Wald-Brett", p: 450, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "wald" },
+    { id: "b_lava", n: "Lava-Brett", p: 550, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "lava" },
+    { id: "b_weltraum", n: "Weltraum-Brett", p: 650, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "weltraum" },
+    { id: "b_regenbogen", n: "Regenbogen-Brett", p: 800, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "regenbogen" },
+    { id: "b_gold", n: "Gold-Brett", p: 900, k: "board", c: "bretter", z: 90, w: "schach", max: 1, theme: "gold" },
+    { id: "diamantbauer", n: "Diamant-Bauer", p: 500, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "eisturm", n: "Eis-Turm", p: 650, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "feuerspringer", n: "Feuer-Springer", p: 700, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "regenbogenlaeufer", n: "Regenbogen-Läufer", p: 750, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "kristalldame", n: "Kristall-Dame", p: 800, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "sternendame", n: "Sternen-Dame", p: 900, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "goldhopsi", n: "Goldener Hopsi", p: 1000, k: "piece", c: "figuren", z: 90, w: "schach", max: 2 },
+    { id: "goldkoenig", n: "Goldener König", p: 1200, k: "piece", c: "figuren", z: 90, w: "schach", max: 1 }
+  ];
+  const SHOP_CATS_S = [["figuren", "♞ Spezial-Figuren"], ["bretter", "🏁 Besondere Schachbretter"]];
+  // Figuren-Bilder: Schachfigur in besonderem Material
+  const spArt = (t, fill, extra, stroke) => `<g fill="${fill}" stroke="${stroke || "#1b2a4a"}" stroke-width="2.6" stroke-linejoin="round">${CH_SHAPE[t].replace(/class="ln"/g, 'fill="none" stroke-opacity=".45"').replace(/class="ey"/g, 'fill="#1b2a4a" stroke="none"')}${CH_BASE}</g>${extra || ""}`;
+  const SPK = (x, y, s) => `<path d="M${x} ${y - s}L${x + s * .25} ${y - s * .25}L${x + s} ${y}L${x + s * .25} ${y + s * .25}L${x} ${y + s}L${x - s * .25} ${y + s * .25}L${x - s} ${y}L${x - s * .25} ${y - s * .25}Z" fill="#fff6c9" stroke="none"/>`;
+  const boardArt = (th) => { const T = CH_THEMES[th]; let s = `<rect x="6" y="6" width="88" height="88" rx="8" fill="${T.f}"/>`;
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) s += `<rect x="${12 + c * 19}" y="${12 + r * 19}" width="19" height="19" fill="${(r + c) % 2 ? (T.d === "rainbow" ? RAINBOW[(c + r * 2) % 8] : T.d) : T.l}"/>`;
+    return s + (th === "gold" ? SPK(84, 14, 7) + SPK(14, 86, 5) : th === "weltraum" ? SPK(30, 30, 4) + SPK(70, 52, 3) : ""); };
+  const PALAST_ART = {
+    diamantbauer: spArt("B", "#9be7ff", SPK(70, 22, 7) + SPK(30, 62, 5)),
+    eisturm: spArt("T", "#d6f1ff", `<path d="M34 43 L37 52 L40 43 M46 43 L49 55 L52 43 M58 43 L61 50 L64 43" fill="#ffffff" stroke="#7cc4e8" stroke-width="1.5"/>` + SPK(80, 20, 6)),
+    feuerspringer: spArt("S", "#ff7b00", `<path d="M66 18 Q78 26 72 40 Q70 30 62 28 Q66 22 66 18 Z M76 46 Q86 54 80 66 Q78 58 72 56 Z" fill="#ffd60a" stroke="#e63946" stroke-width="2"/>`, "#8a1c00"),
+    regenbogenlaeufer: `<defs><linearGradient id="rgbL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e63946"/><stop offset=".25" stop-color="#ffc300"/><stop offset=".5" stop-color="#2b9348"/><stop offset=".75" stop-color="#1f6fd1"/><stop offset="1" stop-color="#9b5de5"/></linearGradient></defs>` + spArt("L", "url(#rgbL)", SPK(78, 24, 6)),
+    kristalldame: spArt("D", "#e0c3fc", `<path d="M40 44 L50 56 L60 44" fill="none" stroke="#ffffff" stroke-width="2"/>` + SPK(86, 18, 6) + SPK(16, 62, 4), "#5a3d8a"),
+    sternendame: spArt("D", "#2b2d6e", SPK(40, 46, 4) + SPK(58, 40, 3) + SPK(50, 74, 3) + SPK(86, 18, 6), "#0d0f30"),
+    goldhopsi: spArt("S", "#ffd60a", `<path d="M40 10 L44 2 L48 9 L53 1 L56 10 Z" fill="#ffc300" stroke="#9c6f00" stroke-width="1.6"/>` + SPK(82, 26, 6) + SPK(20, 66, 4), "#9c6f00"),
+    goldkoenig: spArt("K", "#ffd60a", SPK(82, 14, 7) + SPK(18, 30, 5) + SPK(84, 60, 4), "#9c6f00")
+  };
+  Object.keys(CH_THEMES).forEach(th => { PALAST_ART["b_" + th] = boardArt(th); });
+  const SQ_ORDER = (() => { const o = []; ["1", "2", "3", "4", "5", "6", "7", "8"].forEach(r => "debfcgah".split("").forEach(f => o.push(f + r))); return o; })();
+  const palastInv = () => { if (!Array.isArray(S.schatz)) S.schatz = []; return S.schatz; };
+  const chThemeNow = () => (S.chTheme && CH_THEMES[S.chTheme] && (S.chTheme === "holz" || palastInv().some(a => a.id === "b_" + S.chTheme))) ? S.chTheme : "holz";
+  let palastSel = null;
+  function renderPalast() {
+    const t = $("tank"), inv = palastInv(), T = CH_THEMES[chThemeNow()];
+    t.classList.toggle("edit", editMode);
+    t.innerHTML = `<div class="pal-hall"></div><div class="pal-flag l">🏰</div><div class="pal-flag r">🏆</div>`;
+    const wrap = el("div", "pal-board"), grid = el("div", "pal-grid");
+    wrap.style.background = T.f;
+    for (let r = 7; r >= 0; r--) for (let f = 0; f < 8; f++) {
+      const s = sqOf(f, r), dark = (f + r) % 2 === 0, c = el("button", "pal-sq" + (palastSel && palastSel.sq === s ? " sel" : ""));
+      c.style.background = dark ? (T.d === "rainbow" ? RAINBOW[(f + r) % 8] : T.d) : T.l;
+      c.dataset.s = s; c.setAttribute("aria-label", "Feld " + s);
+      const a = inv.find(q => q.sq === s && shopItem(q.id)); if (a) { c.innerHTML = `<span class="pal-pc${newbie === a.uid ? " newbie" : ""}" style="animation-delay:${-(f + r) * 0.3}s">${artSVG(a.id)}</span>`; c.setAttribute("aria-label", `Feld ${s}: ${shopItem(a.id).n}`); }
+      c.addEventListener("click", () => {
+        if (!editMode) { if (a) speak(shopItem(a.id).n); return; }
+        if (palastSel) { const other = inv.find(q => q.sq === s && q !== palastSel); if (other) other.sq = palastSel.sq; palastSel.sq = s; palastSel = null; tone([620], 0.05); save(); renderPalast(); return; }
+        if (a) { palastSel = a; renderPalast(); }
+      });
+      grid.appendChild(c);
+    }
+    wrap.appendChild(grid); t.appendChild(wrap);
+    if (!editMode) { const h = el("div", "pal-hopsi", artSVG("hopsi")); t.appendChild(h); }
+    if (!inv.some(a => a.sq)) t.appendChild(el("div", "empty", "Dein Schachbrett ist noch leer. Im Laden gibt es ganz besondere Figuren – sie sind sehr wertvoll! Sammle fleißig Münzen. 🪙"));
+  }
+  function palastNew(w) {
+    const uid = Date.now() + "-" + Math.floor(Math.random() * 1e6);
+    if (w.k === "board") { S.chTheme = w.theme; return { uid, id: w.id }; }
+    const used = new Set(palastInv().map(a => a.sq)), sq = SQ_ORDER.find(s => !used.has(s));
+    return { uid, id: w.id, sq };
+  }
+  Object.assign(ART, PALAST_ART);
   // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle), Eddie im Wald (S.wald). Die Münzen gelten in allen Welten.
-  const shopW = () => isPolly() ? SHOP_P : W.id === "eule" ? SHOP_E : SHOP;
+  const shopW = () => isPolly() ? SHOP_P : W.id === "eule" ? SHOP_E : W.id === "schach" ? SHOP_S : SHOP;
   const treasW = () => TREASURES.filter(t => (t.w || "nemo") === W.id);
-  const invOf = (w) => { if (w.w === "polly") { if (!Array.isArray(S.jungle)) S.jungle = []; return S.jungle; } if (w.w === "eule") { if (!Array.isArray(S.wald)) S.wald = []; return S.wald; } return S.aqua; };
+  const invOf = (w) => { if (w.w === "schach") return palastInv(); if (w.w === "polly") { if (!Array.isArray(S.jungle)) S.jungle = []; return S.jungle; } if (w.w === "eule") { if (!Array.isArray(S.wald)) S.wald = []; return S.wald; } return S.aqua; };
   const invW = () => invOf({ w: W.id });
   const MAX_EACH = 5;
   const countOf = (w) => (invOf(w) || []).filter(a => a.id === w.id).length;
   const owned = (w) => countOf(w) > 0;
   const aquaCount = () => shopW().filter(owned).length;
-  const shopItem = (id) => SHOP.find(w => w.id === id) || SHOP_P.find(w => w.id === id) || SHOP_E.find(w => w.id === id) || TREASURES.find(w => w.id === id);
+  const shopItem = (id) => SHOP.find(w => w.id === id) || SHOP_P.find(w => w.id === id) || SHOP_E.find(w => w.id === id) || SHOP_S.find(w => w.id === id) || TREASURES.find(w => w.id === id);
+  const maxOf = (w) => w.max || MAX_EACH;
   let newbie = null, editMode = false;
   function renderStat() {
     const n = aquaCount(), box = $("aqStat"), list = shopW(), inv = invW(), tr = treasW();
     const next = list.filter(w => !owned(w)).sort((a, b) => a.p - b.p)[0];
     const canNew = list.some(w => !owned(w) && S.coins >= w.p);
-    box.innerHTML = `<div class="aq-row"><span>${isBird() ? birdHTML("1.3em") : "🐠"} ${n} von ${list.length} Arten · ${inv.length} ${inv.length === 1 ? "Sache" : "Sachen"} im ${W.place} · 🏆 ${tr.filter(owned).length}/${tr.length} Experten-Schätze</span><span class="aq-bar"><i style="width:${Math.round(n / list.length * 100)}%"></i></span></div>` +
+    box.innerHTML = `<div class="aq-row"><span>${isBird() ? birdHTML("1.3em") : "🐠"} ${n} von ${list.length} Arten · ${inv.length} ${inv.length === 1 ? "Sache" : "Sachen"} im ${W.place}${tr.length ? ` · 🏆 ${tr.filter(owned).length}/${tr.length} Experten-Schätze` : ""}</span><span class="aq-bar"><i style="width:${Math.round(n / list.length * 100)}%"></i></span></div>` +
       (n === list.length ? `<div class="aq-goal can">👑 Wow! Du hast von allem etwas gesammelt!</div>` :
        canNew ? `<div class="aq-goal can">🛒 Du hast ${S.coins} Münzen – such dir etwas Neues aus!</div>` :
        `<div class="aq-goal">${artSVG(next.id)}<span>Nächstes Ziel: <b>${next.n}</b> – noch ${next.p - S.coins} ${next.p - S.coins === 1 ? "Münze" : "Münzen"}</span></div>`);
     const tools = el("div", "aq-tools");
     if (inv.length) {
-      const eb = el("button", "big-btn" + (editMode ? "" : " ghost"), editMode ? "✅ Fertig" : "✋ Einrichten");
-      eb.addEventListener("click", () => { editMode = !editMode; renderStat(); renderTank(); if (editMode) speak("Zieh deine Sachen mit dem Finger an ihren Platz."); });
-      tools.appendChild(eb);
-      if (editMode) tools.appendChild(el("span", "aq-hint", "👆 Zieh deine Sachen mit dem Finger an ihren Platz!"));
+      const sch = W.id === "schach", eb = el("button", "big-btn" + (editMode ? "" : " ghost"), editMode ? "✅ Fertig" : sch ? "✋ Figuren umstellen" : "✋ Einrichten");
+      eb.addEventListener("click", () => { editMode = !editMode; palastSel = null; renderStat(); renderTank(); if (editMode) speak(sch ? "Tippe eine Figur an und dann das Feld, auf das sie soll." : "Zieh deine Sachen mit dem Finger an ihren Platz."); });
+      if (!sch || inv.some(a => a.sq)) tools.appendChild(eb);
+      if (editMode) tools.appendChild(el("span", "aq-hint", sch ? "👆 Tippe eine Figur an und dann ihr neues Feld!" : "👆 Zieh deine Sachen mit dem Finger an ihren Platz!"));
+    }
+    if (W.id === "schach") {   // Bretter wechseln
+      const th = ["holz"].concat(inv.filter(a => shopItem(a.id) && shopItem(a.id).k === "board").map(a => shopItem(a.id).theme));
+      if (th.length > 1) th.forEach(k => { const b = el("button", "pal-th" + (chThemeNow() === k ? " on" : ""), `<span class="pal-th-art">${artSVG("b_" + k)}</span>${CH_THEMES[k].n}`);
+        b.addEventListener("click", () => { S.chTheme = k; save(); tone([660], 0.05); renderStat(); renderTank(); }); tools.appendChild(b); });
     }
     box.appendChild(tools);
   }
@@ -7465,6 +7940,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     return { uid, id: w.id, x: Math.round(10 + Math.random() * 80), y, t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) };
   }
   function renderTank() {
+    if (W.id === "schach") return renderPalast();
     const t = $("tank"), pol = isPolly(), eu = W.id === "eule", inv = invW();
     t.classList.toggle("edit", editMode);
     t.innerHTML = eu ? `<div class="moon"></div><div class="stars"></div><div class="firs"></div><div class="item bgplant" style="left:1%">${artSVG("tanne")}</div><div class="item bgplant" style="right:2%">${artSVG("eiche")}</div><div class="ground wald"></div>` : pol ? `<div class="sun"></div><div class="hills"></div><div class="item bgplant" style="left:1%">${artSVG("palme")}</div><div class="item bgplant" style="right:2%">${artSVG("bananen")}</div><div class="ground"></div>`
@@ -7526,14 +8002,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   function renderShop() {
     const box = $("shop"); box.innerHTML = "";
     box.appendChild(el("div", "shop-title", "🛒 Laden – tippe zweimal zum Kaufen"));
-    (W.id === "eule" ? SHOP_CATS_E : isPolly() ? SHOP_CATS_P : SHOP_CATS).forEach(([cat, title]) => {
+    (W.id === "eule" ? SHOP_CATS_E : W.id === "schach" ? SHOP_CATS_S : isPolly() ? SHOP_CATS_P : SHOP_CATS).forEach(([cat, title]) => {
       box.appendChild(el("div", "head s", title));
       const grid = el("div", "shop");
       shopW().filter(w => w.c === cat).forEach(w => {
-        const cnt = countOf(w), full = cnt >= MAX_EACH, can = !full && S.coins >= w.p, ask = asking === w.id;
+        const cnt = countOf(w), full = cnt >= maxOf(w), can = !full && S.coins >= w.p, ask = asking === w.id;
         const b = el("button", "ware" + (full ? " owned" : can ? " can" : " poor") + (ask ? " ask" : ""));
         b.innerHTML = (cnt ? `<span class="wcount">${cnt}×</span>` : "") + `<span class="wart">${artSVG(w.id)}</span><span class="wn">${w.n}</span>` +
-          (full ? `<span class="wp">✓ ${MAX_EACH}× – voll</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` :
+          (full ? `<span class="wp">${maxOf(w) === 1 ? "✓ gekauft" : `✓ ${maxOf(w)}× – voll`}</span>` : ask ? `<span class="wp">Kaufen? Nochmal tippen!</span>` :
            can ? `<span class="wp">${cnt ? "Noch einen" : "Kaufen"} · ${w.p} <span class="coin sm"></span></span>` : `<span class="wp">🔒 noch ${w.p - S.coins} <span class="coin sm"></span></span>`);
         b.disabled = full;
         b.setAttribute("aria-label", `${w.n} für ${w.p} Münzen` + (cnt ? `, schon ${cnt} im ${W.place}` : ""));
@@ -7542,6 +8018,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       });
       box.appendChild(grid);
     });
+    if (!treasW().length) return;
     box.appendChild(el("div", "head s", "🏆 Experten-Schätze – nur auf den Experten-Inseln"));
     const tg = el("div", "shop");
     treasW().forEach(w => {
@@ -7555,12 +8032,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     box.appendChild(tg);
   }
   function buy(w) {
-    if (countOf(w) >= MAX_EACH) return;
+    if (countOf(w) >= maxOf(w)) return;
     if (S.coins < w.p) { asking = null; renderShop(); sfxBad(); speak(`Dir fehlen noch ${w.p - S.coins} ${w.p - S.coins === 1 ? "Münze" : "Münzen"}. Übe weiter, dann klappt es!`); return; }
     if (asking !== w.id) { asking = w.id; renderShop(); speak(`${w.n} für ${w.p} Münzen. Tippe nochmal zum Kaufen.`); return; }
     asking = null;
     S.coins -= w.p;
-    const inst = newInstance(w), uid = inst.uid;
+    const inst = W.id === "schach" ? palastNew(w) : newInstance(w), uid = inst.uid;
     invOf(w).push(inst);
     save(); setCoins(true); sfxWin(); confetti(W.buyConf);
     newbie = uid;
@@ -7615,6 +8092,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       const sp = sv("path", { d: `M${x} ${y - k}L${x + k * .22} ${y - k * .22}L${x + k} ${y}L${x + k * .22} ${y + k * .22}L${x} ${y + k}L${x - k * .22} ${y + k * .22}L${x - k} ${y}L${x - k * .22} ${y - k * .22}Z`, class: "spark" }, svg);
       sp.style.animationDelay = (-rnd() * 2.8).toFixed(2) + "s";
     }
+    // Themen-Bereiche: helle Flachwasser-Felder mit einem Schild, damit ähnliche Inseln zusammen liegen
+    (cfg.zones || []).forEach(z => {
+      const zg = sv("g", { class: "zone", "aria-hidden": "true" }, svg);
+      sv("rect", { x: z.x, y: z.y, width: z.w, height: z.h, rx: 44, class: "zone-bg" }, zg);
+    });
     const edges = cfg.edges.map(([a, b, cls], i) => ({ a, b, el: sv("path", { d: curve(cfg.nodes[a], cfg.nodes[b], i), class: "route " + (cls || "") }, svg) }));
     // Pollys Welt: Wolken ziehen zwischen den Inseln über das Meer (mit Schatten auf dem Wasser)
     if (cfg.clouds) {
@@ -7630,6 +8112,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     }
     cfg.under = sv("g", { "aria-hidden": "true" }, svg); // Ebene unter den Inseln (hinterer Leuchtturm-Strahl)
     cfg.nodes.forEach((n, i) => drawNode(svg, n, i, cfg));
+    // Schilder der Themen-Bereiche über Wolken und Inseln
+    (cfg.zones || []).forEach(z => {
+      const zg = sv("g", { class: "zone", "aria-hidden": "true" }, svg), tw = Math.round([...z.label].length * 18.5 + 56);
+      sv("rect", { x: z.x + 28, y: z.y - 26, width: tw, height: 52, rx: 26, class: "zone-pill" }, zg);
+      const t = sv("text", { x: z.x + 28 + tw / 2, y: z.y + 11, "text-anchor": "middle", class: "zone-tx" }, zg); t.textContent = z.label;
+    });
     const g = sv("g", { "aria-hidden": "true" }, svg), fly = isBird(), hs = cfg.nemo || 62;
     sv("ellipse", { cx: 0, cy: hs * (fly ? 0.95 : 0.55), rx: hs * (fly ? 0.26 : 0.36), ry: hs * (fly ? 0.07 : 0.09), fill: fly ? "rgba(4,40,60,.2)" : "rgba(4,30,52,.25)" }, g);
     const inner = sv("g", { class: fly ? "fly-in" : "nemo-in" }, g);
@@ -7917,9 +8405,12 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     show("scrHome");
     const P = portrait(), nom = CHAPTERS.find(c => c.id === "nomen"), lern = CHAPTERS.find(c => c.id === "lernwoerter");
     const lt = CHAPTERS.find(c => c.id === "leuchtturm"), lese = CHAPTERS.find(c => c.id === "lesen"), rs = CHAPTERS.find(c => c.id === "rechtschreibung"), vb = CHAPTERS.find(c => c.id === "verben");
-    // Hochformat: zwei Spalten, Nemos Riff unten. Querformat: Nemos Riff links, rechts zwei Reihen mit je drei Inseln.
-    const pos = P ? { bay: [300, 1030], nomen: [455, 795], adj: [460, 135], lern: [135, 770], fog: [150, 165], lt: [455, 480], rs: [150, 440], w: 600, h: 1195, r: 84 }
-                  : { bay: [218, 335], nomen: [860, 470], adj: [1170, 115], lern: [535, 465], fog: [540, 140], lt: [860, 175], rs: [1176, 470], w: 1340, h: 640, r: 90 };
+    // Nach Themen geordnet: oben die Wortarten (Nomen, Begleiter, Verben), unten Richtig schreiben (Lernwörter, Rechtschreibung) und Lesen.
+    // Hochformat: Nemos Riff unten, die Bereiche darüber gestapelt.
+    const pos = P ? { bay: [300, 1800], nomen: [150, 1440], lt: [450, 1440], adj: [300, 1110], lern: [150, 680], rs: [450, 680], fog: [300, 230], w: 600, h: 2000, r: 84,
+                      zones: [{ x: 14, y: 950, w: 572, h: 700, label: "🔤 Wortarten" }, { x: 14, y: 520, w: 572, h: 380, label: "✏️ Richtig schreiben" }, { x: 120, y: 70, w: 360, h: 380, label: "📖 Lesen" }] }
+                  : { bay: [190, 400], nomen: [530, 210], lt: [880, 210], adj: [1230, 210], lern: [530, 590], rs: [880, 590], fog: [1250, 590], w: 1440, h: 800, r: 90,
+                      zones: [{ x: 360, y: 56, w: 1050, h: 330, label: "🔤 Wortarten" }, { x: 360, y: 436, w: 700, h: 340, label: "✏️ Richtig schreiben" }, { x: 1090, y: 436, w: 320, h: 340, label: "📖 Lesen" }] };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAt = i; save(); swimTo(i, renderMap); };
     const canBuy = SHOP.some(w => !owned(w) && S.coins >= w.p);
@@ -7943,10 +8434,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         deco: [[-0.52, -0.3, "✏️", 0.42], [0.54, -0.28, "🌴", 0.44]], aria: "Rechtschreib-Inseln: richtig schreiben", ch: rs, tap: enter(rs) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
-    const edges = P ? [[0, 3, dnL], [3, 6, dn(rs)], [6, 5, dn(lese)], [0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, dn(vb)]]
-                    : [[0, 3, dnL], [3, 1, dn(nom)], [1, 6, dn(rs)], [0, 5, dn(lese)], [5, 4, dn(lt)], [4, 2, dn(vb)]];
+    const edges = P ? [[0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, dn(vb)], [2, 3, dnL], [3, 6, dn(rs)], [6, 5, dn(lese)]]
+                    : [[0, 1, dn(nom)], [1, 4, dn(lt)], [4, 2, dn(vb)], [0, 3, dnL], [3, 6, dn(rs)], [6, 5, dn(lese)]];
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges, zones: pos.zones, at: S.homeAt || 0, label: "Ozean-Karte", seed: 5, nemo: 64, wrapBig: P });
     setCoins(false);
   }
   const islandsDoneCount = (ch) => ch.levels.filter((_, li) => islandDone(ch, li)).length;
@@ -7997,8 +8488,11 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     const pc = CHAPTERS.find(c => c.id === "plus10"), mc = CHAPTERS.find(c => c.id === "minus10"), sc = CHAPTERS.find(c => c.id === "schrittweise");
     // Hochformat: Pollys Dschungel unten, Inseln im Zickzack nach oben. Querformat: Dschungel links, Inseln im Zickzack nach rechts.
     // Lernweg in einer klaren Reihe (Zahlen → über den Zehner → Plus & Minus → Rechnen in Schritten → Einmaleins), Dschungel und Werkstatt darunter
-    const pos = P ? { nest: [150, 1695], wk: [450, 1695], z: [150, 1355], p: [450, 1130], mi: [150, 905], r: [450, 680], s: [150, 455], m: [450, 235], w: 600, h: 1845, r0: 84 }
-                  : { nest: [220, 510], wk: [500, 510], z: [250, 195], p: [530, 195], mi: [810, 195], r: [1090, 195], s: [1090, 510], m: [795, 510], w: 1340, h: 710, r0: 84 };
+    // Nach Themen geordnet: „Zahlen bis 100“ (Zahlen-Inseln, Werkstatt mit Material) und „Rechnen bis 100“ (über den Zehner nebeneinander, darunter Plus & Minus und Rechnen in Schritten)
+    const pos = P ? { nest: [300, 1790], z: [150, 1420], wk: [450, 1420], p: [150, 980], mi: [450, 980], r: [450, 640], s: [150, 640], m: [300, 230], w: 600, h: 1980, r0: 84,
+                      zones: [{ x: 14, y: 1250, w: 572, h: 380, label: "🔢 Zahlen bis 100" }, { x: 14, y: 470, w: 572, h: 730, label: "🧮 Rechnen bis 100" }] }
+                  : { nest: [180, 330], z: [490, 200], wk: [490, 560], p: [810, 200], mi: [1110, 200], r: [1110, 560], s: [810, 560], m: [180, 610], w: 1340, h: 760, r0: 84,
+                      zones: [{ x: 340, y: 50, w: 300, h: 690, label: "🔢 Zahlen" }, { x: 670, y: 50, w: 590, h: 690, label: "🧮 Rechnen bis 100" }] };
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtP = i; save(); swimTo(i, renderMap); };
     const J = invOf({ w: "polly" }), canBuy = SHOP_P.some(w => !owned(w) && S.coins >= w.p);
@@ -8024,7 +8518,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(zc)], [1, 3, dn(pc)], [3, 4, dn(mc)], [4, 2, dn(rc)], [2, 7, dn(sc)], [7, 5, "faint"], [0, 6, dn(wc)]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 62, wrapBig: true, clouds: 4 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, zones: pos.zones, edges: P ? [[0, 1, dn(zc)], [1, 6, dn(wc)], [1, 3, dn(pc)], [3, 4, dn(mc)], [4, 2, dn(rc)], [2, 7, dn(sc)], [7, 5, "faint"]]
+      : [[0, 1, dn(zc)], [1, 6, dn(wc)], [1, 3, dn(pc)], [3, 4, dn(mc)], [4, 2, dn(rc)], [2, 7, dn(sc)], [0, 5, "faint"]], at: S.homeAtP || 0, label: "Papageien-Inseln", seed: 7, nemo: 62, wrapBig: true, clouds: 4 });
     setCoins(false);
   }
 
@@ -8034,8 +8529,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Hopsi hüpfen?` : S.name ? `Hallo ${S.name}! Wohin soll Hopsi hüpfen?` : "Wohin soll Hopsi hüpfen?";
     updateFoot(); freiHello();
     show("scrHome");
-    const P = portrait(), A = CHAPTERS.find(c => c.id === "schachbrett"), B = CHAPTERS.find(c => c.id === "schachzuege"), C = CHAPTERS.find(c => c.id === "schachmatt");
-    const pos = P ? { hof: [300, 1300], a: [170, 965], b: [430, 640], c: [170, 310], w: 600, h: 1490, r0: 92 } : { hof: [180, 430], a: [490, 320], b: [820, 430], c: [1140, 320], w: 1320, h: 660, r0: 92 };
+    const P = portrait(), A = CHAPTERS.find(c => c.id === "schachbrett"), B = CHAPTERS.find(c => c.id === "schachzuege"), C = CHAPTERS.find(c => c.id === "schachmatt"), D = CHAPTERS.find(c => c.id === "schachpartie");
+    const pos = P ? { hof: [150, 1830], pal: [450, 1830], a: [170, 1480], b: [430, 1150], c: [170, 820], d: [430, 470], w: 600, h: 2020, r0: 92 }
+                  : { hof: [210, 520], pal: [240, 190], a: [520, 450], b: [780, 250], c: [1080, 450], d: [1300, 210], w: 1460, h: 680, r0: 92 };
+    const inv = palastInv(), canBuy = SHOP_S.some(w => countOf(w) < maxOf(w) && S.coins >= w.p), cheapest = Math.min(...SHOP_S.filter(w => countOf(w) < maxOf(w)).map(w => w.p));
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtS = i; save(); swimTo(i, renderMap); };
     const isl = (ch, xy, icon, grass, label, aria, deco, first) => ({ x: xy[0], y: xy[1], r: pos.r0, icon, grass, label, big: true, sub: starTotal(ch) ? chapSub(ch) : first ? "✨ Hier geht's los!" : chapSub(ch), subGold: first && !starTotal(ch), next: first && !starTotal(ch), deco, aria, ch, tap: enter(ch) });
@@ -8044,11 +8541,16 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
         deco: [[-0.55, -0.26, "🌳", 0.44]], tap: (i) => { S.homeAtS = i; if (FREI) swimTo(i); else swimTo(i, renderWorlds); } },
       isl(A, pos.a, "🏁", "#f6e7c8", "Brett und Figuren", "Brett-Inseln: das Schachbrett und die Figuren kennenlernen", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "⭐", 0.26]], true),
       isl(B, pos.b, "🐴", "#cfeec0", "So ziehen die Figuren", "Zug-Inseln: so ziehen Turm, Läufer, Dame, König, Springer und Bauer", [[-0.55, -0.28, "🌳", 0.44], [0.58, -0.2, "⭐", 0.26]]),
-      isl(C, pos.c, "⚔️", "#ffd6a5", "Schlagen, Schach und Matt", "Matt-Inseln: schlagen, Schach geben und matt setzen", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "🏆", 0.28]])
+      isl(C, pos.c, "⚔️", "#ffd6a5", "Schlagen, Schach und Matt", "Matt-Inseln: schlagen, Schach geben und matt setzen", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "🏆", 0.28]]),
+      Object.assign(isl(D, pos.d, "🎲", "#d7ecff", "Kleine Partien", "Partie-Inseln: kurze Spiele gegen Hopsi", [[-0.55, -0.28, "🌳", 0.44], [0.58, -0.2, "🐴", 0.3]]),
+        starTotal(D) ? {} : { sub: "✨ Neu!", subGold: true }),
+      { x: pos.pal[0], y: pos.pal[1], r: pos.r0 * 0.9, icon: "🏰", grass: "#e9d8fd", label: "Hopsis Schachpalast", big: true, subGold: canBuy, next: canBuy,
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : inv.length ? `♞ ${inv.length} ${inv.length === 1 ? "Schatz" : "Schätze"} im Palast` : `Spezial-Figuren ab ${cheapest} 🪙`,
+        deco: [[-0.55, -0.3, "👑", 0.36], [0.56, -0.26, "♞", 0.36]], aria: "Hopsis Schachpalast: dein eigenes Schachbrett mit besonderen Figuren", tap: (i) => { S.homeAtS = i; save(); swimTo(i, renderAqua); } }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(A)], [1, 2, dn(B)], [2, 3, dn(C)]], at: S.homeAtS == null ? 0 : S.homeAtS, label: "Schach-Inseln", seed: 11, nemo: 62, wrapBig: true, clouds: 4 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(A)], [1, 2, dn(B)], [2, 3, dn(C)], [3, 4, dn(D)], [0, 5, inv.length ? "done" : ""]], at: S.homeAtS == null ? 0 : S.homeAtS, label: "Schach-Inseln", seed: 11, nemo: 62, wrapBig: true, clouds: 4 });
     setCoins(false);
   }
 
@@ -8345,6 +8847,10 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "lesen:wortbild": "Ich lese ein Wort und finde das passende Bild.",
     "lesen:saetze": "Ich lese Sätze und verstehe, was sie sagen.",
     "lesen:raetsel": "Ich löse Rätsel, weil ich genau lese.",
+    "lesen:blitzlesen": "Ich erkenne Wörter und Sätze auf einen Blick.",
+    "lesen:tuwas": "Ich lese einen Auftrag und tue genau das, was da steht.",
+    "lesen:satzpuzzle": "Ich lege Wörter zu einem sinnvollen Satz.",
+    "lesen:quatsch": "Ich merke beim Lesen, wenn etwas nicht passt.",
     "rechtschreibung:doppel": "Ich höre, wann ich einen Mitlaut doppelt schreibe.",
     "rechtschreibung:ck": "Ich weiß, wann ich ck oder k schreibe.",
     "rechtschreibung:tz": "Ich weiß, wann ich tz oder z schreibe.",
@@ -8401,6 +8907,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "schachmatt:abwehr": "Ich kann meinen König aus dem Schach retten.",
     "schachmatt:matt": "Ich erkenne ein Schachmatt.",
     "schachmatt:mattsetzen": "Ich kann in einem Zug matt setzen.",
+    "schachpartie:bauernrennen": "Ich spiele ein Bauernspiel und bringe einen Bauern ans Ziel.",
+    "schachpartie:bauernjagd": "Ich fange Bauern mit Dame und Turm, bevor sie durchkommen.",
+    "schachpartie:gabel": "Ich finde eine Springer-Gabel.",
     "werkstatt:bauen": "Ich lege Zahlen mit Zehnern und Einern.",
     "werkstatt:tauschen": "Ich tausche 10 Einer gegen einen Zehner und zurück.",
     "werkstatt:pluslegen": "Ich lege Plusaufgaben mit Material.",
@@ -8488,6 +8997,14 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
       ex: [["🐶", "Der Hund schläft.", "Wer? der Hund · Was? schläft"]], v: "🔵🔴 Tipp: Mit dem Knopf „Silben“ oben färbst du die Wörter in Silben – blau, rot, blau.", say: "Sätze verstehen. Lies den Satz bis zum Punkt. Mach dir ein Bild im Kopf: Wer macht was? Zum Beispiel: Der Hund schläft. Wer? Der Hund. Was macht er? Er schläft." },
     "lesen:raetsel": { k: "tipp", t: "Rätsel lösen", s: "Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei <b>nicht</b>: Es dreht alles um!",
       ex: [["❓", "Ich bin gelb und krumm.", "die Banane 🍌"]], v: "🔵🔴 Tipp: Mit dem Knopf „Silben“ oben färbst du die Wörter in Silben – blau, rot, blau.", say: "Rätsel lösen. Lies jeden Satz und sammle die Hinweise im Kopf. Achtung bei nicht: Es dreht alles um! Zum Beispiel: Ich bin gelb und krumm. Das ist die Banane." },
+    "lesen:blitzlesen": { k: "tipp", t: "Blitzlesen", s: "Schau auf das <b>ganze Wort</b> auf einmal. Merk dir den <b>Anfang</b> und das <b>Ende</b> – oft ist genau dort der Unterschied.",
+      ex: [["👖", "*H*ose"], ["🌹", "*R*ose"], ["🥫", "*D*ose"]], say: "Blitzlesen. Schau auf das ganze Wort auf einmal. Merk dir den Anfang und das Ende. Oft ist genau dort der Unterschied." },
+    "lesen:tuwas": { k: "tipp", t: "Lies und tu", s: "Lies den <b>ganzen</b> Auftrag, bevor du tippst. Achte auf <b>Farbe</b>, <b>Form</b> und auf <b>links</b> und <b>rechts</b>.",
+      ex: [["🔵", "den blauen Stern", "Farbe + Form"], ["👉", "rechts neben …", "die Form daneben"]], say: "Lies und tu. Lies den ganzen Auftrag, bevor du tippst. Achte auf Farbe, Form und auf links und rechts." },
+    "lesen:satzpuzzle": { k: "merk", t: "So beginnt und endet ein Satz", s: "Ein Satz beginnt mit einem <b>großen Buchstaben</b> und endet mit einem <b>Punkt</b>. Lies den Satz am Ende laut: Ergibt er Sinn?",
+      ex: [["🔠", "*D*er Hund", "Anfang"], ["⏺️", "bellt*.*", "Ende"]], say: "Ein Satz beginnt mit einem großen Buchstaben und endet mit einem Punkt. Lies den Satz am Ende laut. Ergibt er Sinn?" },
+    "lesen:quatsch": { k: "tipp", t: "Quatsch finden", s: "Mach dir beim Lesen ein <b>Bild im Kopf</b>. Wenn das Bild komisch wird, hast du den Quatsch gefunden!",
+      ex: [["🐄", "Die Kuh gibt *Saft*.", "richtig: Milch"]], say: "Quatsch finden. Mach dir beim Lesen ein Bild im Kopf. Wenn das Bild komisch wird, hast du den Quatsch gefunden." },
 
     "rechtschreibung:doppel": { k: "merk", t: "Kurzer Laut – doppelter Mitlaut", s: "Sprich das Wort in Silben. Klingt der Laut vor der Lücke <b>kurz</b>? Dann schreibst du den Mitlaut danach <b>doppelt</b>.",
       ex: [["☀️", "So*n|n*e"], ["👩", "Mu*t|t*er"], ["☕", "Ta*s|s*e"]], v: "Langer Laut wie bei Ho-se? Dann nur ein Mitlaut." },
@@ -8610,6 +9127,9 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     "schachmatt:abwehr": { k: "merk", t: "Drei Wege aus dem Schach", s: "<b>1.</b> Weglaufen. <b>2.</b> Den Angreifer schlagen. <b>3.</b> Eine Figur dazwischenstellen.", ex: [["🏃", "weglaufen"], ["⚔️", "schlagen"], ["🛡️", "dazwischen"]], say: "Drei Wege aus dem Schach: weglaufen, den Angreifer schlagen oder eine Figur dazwischenstellen." },
     "schachmatt:matt": { k: "merk", t: "Schachmatt", s: "Der König steht im Schach und kann sich <b>nicht mehr retten</b>. Dann ist das Spiel zu Ende – gewonnen!", ex: [["❗", "Schach", "noch ein Ausweg"], ["🏆", "Schachmatt", "kein Ausweg"]], say: "Schachmatt heißt: Der König steht im Schach und kann sich nicht mehr retten. Dann ist das Spiel gewonnen." },
     "schachmatt:mattsetzen": { k: "tipp", t: "Matt-Tipp", s: "Prüfe jeden Zug, der <b>Schach</b> gibt: Kann der König danach noch weg? Wenn nicht – Schachmatt!", ex: [["👀", "Schach?", "erst suchen"], ["🏆", "Matt!", "kein Ausweg"]], say: "Prüfe jeden Zug, der Schach gibt. Kann der König danach noch weg? Wenn nicht, ist es Schachmatt." },
+    "schachpartie:bauernrennen": { k: "tipp", t: "Bauern-Tipp", s: "Bauern ziehen <b>geradeaus</b>, schlagen aber <b>schräg</b>. Lauf nicht ungeschützt vor einen gegnerischen Bauern. Ein Bauer, den keiner mehr aufhalten kann, gewinnt!", ex: [["⬆️", "geradeaus", "ziehen"], ["↗️", "schräg", "schlagen"]], say: "Bauern ziehen geradeaus, schlagen aber schräg. Lauf nicht ungeschützt vor einen gegnerischen Bauern. Ein Bauer, den keiner mehr aufhalten kann, gewinnt." },
+    "schachpartie:bauernjagd": { k: "tipp", t: "Jagd-Tipp", s: "Stell dich <b>vor</b> einen Bauern, dann ist er blockiert. Aber nie <b>schräg davor</b> – dort kann er dich schlagen! Fang zuerst den Bauern, der am weitesten gelaufen ist.", ex: [["🛑", "vor den Bauern", "blockiert"], ["⚠️", "schräg davor", "gefährlich"]], say: "Stell dich vor einen Bauern, dann ist er blockiert. Aber nie schräg davor, dort kann er dich schlagen. Fang zuerst den Bauern, der am weitesten gelaufen ist." },
+    "schachpartie:gabel": { k: "merk", t: "Die Gabel", s: "Eine <b>Gabel</b> ist ein Zug, der <b>zwei Figuren gleichzeitig</b> angreift. Der Gegner kann nur eine retten – die andere schlägst du!", ex: [["🐴", "ein Sprung", "Springer"], ["🎯🎯", "zwei Ziele", "Gabel"]], say: "Eine Gabel ist ein Zug, der zwei Figuren gleichzeitig angreift. Der Gegner kann nur eine retten, die andere schlägst du." },
     "rechnen:profi": { k: "merk", t: "Der Profi-Rechenweg", s: "Erst die <b>Zehner</b>. Dann rechnest du bis zum <b>vollen Zehner</b> und zum Schluss den <b>Rest</b>.",
       ex: [["1️⃣", "38 + *20* = 58", "Zehner"], ["2️⃣", "58 + *2* = 60", "bis zum Zehner"], ["3️⃣", "60 + *3* = 63", "Rest dazu"]], v: "🧩 25 = 20 + 2 + 3",
       say: "Der Profi-Rechenweg. 38 plus 25. Erst die Zehner: 38 plus 20 gleich 58. Dann bis zum vollen Zehner: 58 plus 2 gleich 60. Zum Schluss der Rest: 60 plus 3 gleich 63." },
@@ -9502,7 +10022,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   const FREI_NAME = { nomen: ["Nomen-Inseln", "den Nomen-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
     lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
     rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über den Zehner", "der Insel Plus über den Zehner"], minus10: ["Minus über den Zehner", "der Insel Minus über den Zehner"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"], schrittweise: ["Schritte-Inseln", "den Schritte-Inseln"],
-    eddiewerk: ["Eddies Werkstatt", "Eddies Werkstatt"], schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"] };
+    eddiewerk: ["Eddies Werkstatt", "Eddies Werkstatt"], schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachpartie: ["Partie-Inseln", "den Partie-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"] };
   function freiParse() {
     if (SCHOOL) return null;
     const m = location.hash.match(/(?:^#|&)f=([A-Za-z0-9_-]+)/); if (!m) return null;
@@ -9608,7 +10128,6 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   });
   $("wallet").addEventListener("click", () => {
     if (current !== "scrHome" && current !== "scrMap") return;
-    if (W.id === "schach") return openSheet(c => { sheetTop(c, "🪙", "Deine Münzen", `${S.coins} ${S.coins === 1 ? "Münze" : "Münzen"}`); c.appendChild(el("p", "note", "Die Schach-Münzen kannst du bei Nemo, Polly oder Eddie ausgeben: im Aquarium, im Dschungel oder im Wald.")); });
     if (!FREI || FREI.aq) renderAqua();
   });
   $("resMap").addEventListener("click", renderMap);
@@ -9643,6 +10162,7 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
     if (!Array.isArray(S.aqua)) S.aqua = [];
     if (!Array.isArray(S.jungle)) S.jungle = [];
     if (!Array.isArray(S.wald)) S.wald = [];
+    if (!Array.isArray(S.schatz)) S.schatz = [];
     S.coins = +S.coins || 0; S.total = S.total == null ? S.coins : +S.total || 0; S.name = "";
   }
   function startAccount(j) {
