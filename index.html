@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nemos & Pollys Spielplatz</title>
+<title>Die Neugierburg</title>
 <style>
 /* Layout: one-screen ocean app. Top bar (back, coins), then one screen at a time:
    start → home (chapters) → chapter map (islands × difficulty) → intro → play → result. */
@@ -32,6 +32,7 @@
   color-scheme: light;
 }
 [hidden] { display: none !important; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
 html, body { min-height: 100%; margin: 0; }
 body {
   background: var(--deep);
@@ -829,7 +830,22 @@ body.polly .tank { background: linear-gradient(180deg, #8fdcff 0%, #c9f1ff 40%, 
 .eqline.small { font-size: clamp(22px, 3.8vw, 30px); color: var(--muted); }
 .eqline.step { font-size: clamp(28px, 4.8vw, 40px); }
 .eqline.eqhead { border-bottom: 3px dashed var(--sand-edge); padding-bottom: 8px; }
-.eqline .tag { font-size: clamp(15px, 2.4vw, 18px); font-weight: 900; color: var(--muted); background: #fff; border-radius: 999px; padding: 3px 10px; }
+.eqline .tag { font-size: clamp(17px, 2.6vw, 21px); font-weight: 900; color: #5b4a2a; background: #fff; border: 2px solid var(--sand-edge); border-radius: 999px; padding: 2px 11px; }
+.eqline.has-split { align-items: flex-start; }
+.eqline.has-split > span:not(.zsp) { line-height: 1.15; }
+.zsp { display: inline-flex; flex-direction: column; align-items: center; }
+.zsp-n { line-height: 1.15; }
+.zsp-v { display: block; width: 2.3em; height: .5em; }
+.zsp-v svg { display: block; width: 100%; height: 100%; }
+.zsp-p { display: flex; gap: .3em; font-size: .62em; line-height: 1.2; }
+.zsp-c { display: inline-flex; min-width: 1.1em; justify-content: center; }
+.zsp-c .given { color: #c2410c; }
+.zsp-c .refn { min-width: 1em; text-align: center; border-bottom: 3px dotted var(--sand-edge); }
+.zsp-c .refn.got { color: #c2410c; border-bottom-color: transparent; }
+.zsp-c .slotn { border-width: 3px; border-radius: 10px; }
+.hilfe { display: flex; flex-direction: column; align-items: center; gap: 6px; animation: pop-in .45s cubic-bezier(.3,1.4,.5,1) both; }
+.hilfe-t { font-size: 17px; font-weight: 900; color: var(--ink); background: #fff3c4; border-radius: 999px; padding: 4px 14px; box-shadow: 0 3px 0 var(--gold-edge); }
+.numpad { min-width: min(360px, calc(100vw - 48px)); }
 .eqline .stepnum { color: #c2410c; }
 .eqline .qmark { color: #b8860b; min-width: 1.1em; text-align: center; }
 .eqline .qmark.ok { color: var(--good); }
@@ -950,6 +966,7 @@ body.schach .taskrow .task { background: rgba(10, 60, 40, .4); }
 .slotn.ok { border: 4px solid var(--good); background: #e3f6e8; color: #145c2c; box-shadow: none; }
 .refn { color: var(--muted); }
 .refn.got { color: var(--ink); }
+.eqline.step .refn:not(.got) { display: inline-grid; place-items: center; min-width: 1.5em; height: 1.2em; border: 3px dotted #d8c59a; border-radius: 12px; color: #b9a77c; font-size: .8em; box-sizing: border-box; }
 .numpad { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; width: min(430px, 100%); }
 .nk { height: 62px; border-radius: 16px; background: var(--sand); font-size: 32px; font-weight: 900; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); padding: 0; }
 .nk:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--sand-edge); }
@@ -1057,9 +1074,9 @@ body.schach .taskrow .task { background: rgba(10, 60, 40, .4); }
 .numchip { min-width: 96px; }
 .numchip.used { visibility: hidden; }
 .sortslots { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
-.sortslot { min-width: 84px; height: 66px; border-bottom: 5px solid var(--gold); font-size: clamp(30px, 5vw, 42px); font-weight: 900; color: #fff; text-shadow: 0 3px 0 var(--deep); display: grid; place-items: center; }
-.sortslots .lt { color: #fff; font-size: 26px; font-weight: 900; opacity: .85; }
-.sorthint { color: #fff; font-size: 21px; font-weight: 900; text-shadow: 0 2px 0 var(--deep); }
+.sortslot { min-width: 84px; height: 66px; border: 4px dashed var(--sand-edge); border-radius: 18px; background: rgba(255, 251, 232, .9); font-size: clamp(30px, 5vw, 42px); font-weight: 900; color: var(--ink); display: grid; place-items: center; box-sizing: border-box; }
+.sortslots .lt { color: #fff; font-size: 34px; font-weight: 900; text-shadow: 0 3px 0 var(--deep); }
+.sorthint { color: var(--ink); font-size: 21px; font-weight: 900; background: #fffbe8; border-radius: 999px; padding: 6px 18px; box-shadow: 0 4px 0 var(--sand-edge); }
 .cmpcard { display: flex; align-items: center; gap: clamp(10px, 3vw, 22px); font-size: clamp(36px, 8vw, 66px); font-weight: 900; padding: 14px clamp(16px, 4vw, 32px); white-space: nowrap; max-width: 100%; box-sizing: border-box; }
 .cmpcard .markslot { min-width: 1em; }
 .opt.numopt { font-size: clamp(36px, 7vw, 56px); min-width: 150px; font-variant-numeric: tabular-nums; }
@@ -1087,8 +1104,9 @@ body.schach .taskrow .task { background: rgba(10, 60, 40, .4); }
 .mz.fresh, .me.fresh { animation: pop-in .35s cubic-bezier(.3,1.6,.5,1) both; }
 .mz.merge, .me.merge { animation: mergeOut .55s ease-in forwards; }
 @keyframes mergeOut { 40% { transform: scale(1.15); filter: brightness(1.3); } 100% { transform: scale(.2); opacity: 0; } }
-.mstep { font-size: clamp(20px, 3.2vw, 25px); font-weight: 900; color: #fff; text-shadow: 0 2px 0 var(--deep); text-align: center; max-width: 440px; line-height: 1.3; }
-.mstep b { color: #ffe066; }
+.mstep { font-size: clamp(19px, 2.9vw, 23px); font-weight: 800; color: var(--ink); background: #fffbe8; border: 3px solid #ffe08a; border-radius: 20px; padding: 10px 16px; box-shadow: 0 4px 0 var(--sand-edge); text-align: center; max-width: 440px; line-height: 1.3; box-sizing: border-box; }
+.mstep::before { content: "👉 "; }
+.mstep b { color: #c2410c; }
 .mbtns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: min(440px, 100%); }
 .mbtns:empty { display: none; }
 .mbtn { background: var(--sand); font-size: 21px; font-weight: 900; padding: 12px 14px; border-radius: 18px; box-shadow: 0 5px 0 var(--sand-edge), 0 8px 14px var(--shadow); display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
@@ -1193,9 +1211,23 @@ body.schach .tank { height: clamp(360px, 64vh, 640px); background: linear-gradie
 @media (prefers-reduced-motion: reduce) { .tank .pal-pc, .tank .pal-hopsi { animation: none; } }
 /* ---------- Löwenklasse ---------- */
 body.loewe .sky { display: block; }
+body.loewe .sky .fe { display: none; }
+body.loewe .sky::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 34vh; opacity: .45; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 220' preserveAspectRatio='xMidYMax slice'><path d='M0 170 Q120 120 260 150 T520 140 Q640 110 760 150 T900 150 V220 H0 Z' fill='%23b5762a' opacity='.55'/><g fill='%235a3a14'><path d='M120 182 L126 130 L120 128 L104 116 L108 114 L124 124 L130 100 L134 100 L132 126 L150 112 L154 115 L136 130 L134 182 Z'/><ellipse cx='128' cy='104' rx='58' ry='12'/><ellipse cx='110' cy='96' rx='30' ry='9'/><ellipse cx='150' cy='97' rx='34' ry='9'/><path d='M610 186 L614 150 L600 138 L604 136 L616 146 L620 128 L624 128 L622 148 L636 140 L638 143 L624 152 L622 186 Z'/><ellipse cx='620' cy='126' rx='40' ry='9'/><ellipse cx='606' cy='120' rx='20' ry='7'/><ellipse cx='636' cy='121' rx='22' ry='7'/><path d='M380 190 L383 168 L377 160 L380 158 L385 164 L388 152 L391 152 L389 166 L396 161 L398 163 L390 170 L388 190 Z'/><ellipse cx='388' cy='151' rx='24' ry='6'/><path d='M790 176 l4 -24 l-6 -6 l2 -2 l6 5 l2 -16 h3 l-1 18 l8 -6 l2 2 l-9 8 l-2 21 z'/><ellipse cx='797' cy='146' rx='30' ry='7'/></g><g fill='%235a3a14' opacity='.8'><path d='M470 192 l2 -30 l3 0 l1 -14 l4 -3 l2 2 l-3 3 l-1 12 l10 0 l2 30 h-3 l-2 -22 h-7 l-2 22 z'/><path d='M500 192 l1 -12 q8 -6 16 0 l1 12 h-3 l-1 -8 h-10 l-1 8 z M514 176 q3 -10 8 -12 l2 2 q-5 3 -6 11 z'/></g><path d='M0 200 Q225 186 450 198 T900 196 V220 H0 Z' fill='%23a86a22' opacity='.5'/></svg>") center bottom / auto 100% repeat-x; }
 body.loewe .rays, body.loewe #bubbles { display: none; }
 body.loewe { --deep: #7a4a12; --sea: #e0a44a; --shallow: #ffe3a3; --shadow: rgba(90, 50, 10, 0.3);
-  background: #e9a948; background-image: linear-gradient(180deg, #fff1c4 0%, #ffd789 32%, #f0ad4e 68%, #c47a2c 100%); background-attachment: fixed; }
+  background: #e2a849; background-image: linear-gradient(180deg, #fff3cf 0%, #ffe1a0 22%, #f6c768 46%, #e3a94a 70%, #c58834 100%); background-attachment: fixed; }
+body.loewe svg.sea .route { stroke: rgba(110, 66, 18, .55); }
+body.loewe svg.sea .route.done { stroke: #fff3b0; }
+body.loewe svg.sea .route.faint { stroke: rgba(110, 66, 18, .25); }
+body.loewe svg.sea .gtuft { fill: none; stroke: rgba(120, 82, 20, .5); stroke-width: 3; stroke-linecap: round; }
+body.loewe svg.sea .gtuft.g2 { stroke: rgba(150, 150, 40, .45); }
+body.loewe svg.sea .sub { stroke: #6b3d0c; }
+body.loewe .tank { background: linear-gradient(180deg, #8fd0ee 0%, #cdeaf0 30%, #ffe6ad 50%, #f2c56c 64%, #dba34c 100%); border-color: #fff3d6; outline-color: #d9a441; box-shadow: 0 12px 30px var(--shadow), inset 0 0 40px rgba(120,70,10,.25); }
+.tank .sav-sky { position: absolute; left: 0; right: 0; top: 0; height: 50%; background: radial-gradient(ellipse 40% 26% at 22% 30%, rgba(255,255,255,.75), transparent 70%), radial-gradient(ellipse 30% 18% at 70% 18%, rgba(255,255,255,.6), transparent 70%); }
+.tank .sav-hills { position: absolute; left: 0; right: 0; bottom: 15%; height: 34%; opacity: .5; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100' preserveAspectRatio='none'><path d='M0 70 Q60 30 130 58 Q200 20 270 52 Q330 34 400 60 V100 H0 Z' fill='%23c98a3d'/><g fill='%23805020'><path d='M80 70 l2 -18 l-8 -6 l2 -2 l7 5 l2 -10 h2 l-1 11 l7 -5 l1 2 l-8 6 l-1 17 z'/><ellipse cx='84' cy='42' rx='16' ry='4'/><path d='M300 66 l2 -14 l-6 -5 l2 -1 l5 4 l2 -8 h2 l-1 9 l5 -4 l1 2 l-6 5 l-1 12 z'/><ellipse cx='303' cy='43' rx='13' ry='3.4'/></g></svg>") 0 100% / 100% 100% no-repeat; }
+.tank .ground.sav { background: radial-gradient(circle at 20% 40%, #a07a2a 0 3px, transparent 4px) 0 0/40px 22px, radial-gradient(circle at 70% 64%, #f7e08a 0 3px, transparent 4px) 0 0/34px 20px, linear-gradient(180deg, #e2bd5c, #c4923e); border-top: 4px solid #f0d27a; }
+.tank .swim.walk .nemo-fish { animation: lwalk .45s ease-in-out infinite alternate; }
+@keyframes lwalk { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-5px) rotate(2deg); } }
 body.loewe #scrPlay .stage { background: rgba(255, 252, 240, .25); }
 body.loewe .head, body.loewe .lwshow { color: #5a2f05; text-shadow: 0 2px 0 rgba(255, 255, 255, .75); }
 body.loewe .taskrow .task { background: rgba(110, 60, 10, .45); }
@@ -1258,7 +1290,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
 
   <!-- START -->
   <section class="screen start center" id="scrStart">
-    <div class="head xl st-title">Neuerburginsel</div>
+    <h1 class="vh">Die Neugierburg</h1>
     <div class="st-stage">
     <div class="schoolwrap st-pic" id="startPic" aria-hidden="true"></div>
     <div class="st-cards">
@@ -1671,7 +1703,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
 
   /* ---------- state ---------- */
   const KEY = "nemo-spielplatz-v2";
-  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [], jungle: [], wald: [], schatz: [] });
+  const fresh = () => ({ name: "", coins: 0, total: 0, stars: {}, perfect: {}, bonus: {}, expert: {}, aqua: [], jungle: [], wald: [], savanne: [], schatz: [] });
   let S = fresh();
   // Datenschutz:
   //  - Ohne Schulserver (z. B. GitHub-Version) speichert das Spiel NICHTS: alles nur im Arbeitsspeicher, jedes Öffnen beginnt bei 0.
@@ -4399,23 +4431,60 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     L.speakNow = () => speak(o.say);
   }
   // Rechenzeilen: Token = Zahl/Text · {a: Lösung} · {ref: k} · {t: "Text", c: "klasse"}
+  // { split: [links, rechts], n: 7 } = Zerlegung wie im Heft: unter der Zahl zwei Striche zu den beiden Teilen
   function eqLayout(lines, top) {
     return (slot, ref) => {
       const card = el("div", "eq");
       if (top) card.appendChild(top);
+      const put = (tok, row) => {
+        if (tok && typeof tok === "object") {
+          if ("a" in tok) row.appendChild(slot(tok.a));
+          else if ("ref" in tok) row.appendChild(ref(tok.ref));
+          else if ("split" in tok) {
+            const z = el("span", "zsp"), top0 = el("span", "zsp-n " + (tok.c || "stepnum")), parts = el("span", "zsp-p");
+            top0.textContent = tok.n; z.appendChild(top0);
+            z.appendChild(el("span", "zsp-v", `<svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="M50 2 L18 28 M50 2 L82 28" stroke="#c2410c" stroke-width="5" stroke-linecap="round" fill="none" vector-effect="non-scaling-stroke"/></svg>`));
+            tok.split.forEach(t => { const c = el("span", "zsp-c"); put(t, c); parts.appendChild(c); });
+            z.appendChild(parts); row.appendChild(z); row.classList.add("has-split");
+          }
+          else { const sp = el("span", tok.c || null, ""); sp.textContent = tok.t; row.appendChild(sp); }
+        } else row.appendChild(el("span", null, String(tok)));
+      };
       lines.forEach(line => {
         const row = el("div", "eqline" + (line.c ? " " + line.c : ""));
-        line.t.forEach(tok => {
-          if (tok && typeof tok === "object") {
-            if ("a" in tok) row.appendChild(slot(tok.a));
-            else if ("ref" in tok) row.appendChild(ref(tok.ref));
-            else { const sp = el("span", tok.c || null, ""); sp.textContent = tok.t; row.appendChild(sp); }
-          } else row.appendChild(el("span", null, String(tok)));
-        });
+        line.t.forEach(tok => put(tok, row));
         card.appendChild(row);
       });
       return card;
     };
+  }
+  // Hilfe bei Bedarf: Erst nach einem Fehler zeigt Polly ein Bild (Zwanzigerfeld, Rechenstrich …) – einmal pro Aufgabe
+  function helpPic(stage, mk) {
+    const row = stage.querySelector(".mrow"); if (!row || row.querySelector(".hilfe")) return false;
+    const pic = mk(); if (!pic) return false;
+    const h = el("div", "hilfe"); h.appendChild(el("div", "hilfe-t", "💡 Polly zeigt dir ein Bild")); h.appendChild(pic);
+    row.insertBefore(h, row.firstChild); requestAnimationFrame(fitAllEq); return true;
+  }
+  // Rechenstrich mit beliebig vielen Sprüngen (blau = Einer-Sprung, grün = Zehner-Sprung).
+  // st.n[k] = Landeplatz k ist schon bekannt (sonst „?“), st.j[k] = Sprung-Zahl k steht schon da
+  function rsMulti(a, op, jumps, st) {
+    st = st || {}; const P = op === "+", W0 = 360, H0 = 142, y = 96, pad = 34, sg = P ? "+" : "−";
+    const ws0 = jumps.map(v => Math.sqrt(Math.max(1, v))), t0 = ws0.reduce((q, w) => q + w, 0), ws = ws0.map(w => Math.max(w, t0 * 0.24)), tot = ws.reduce((q, w) => q + w, 0), xs = [0];
+    ws.forEach(w => xs.push(xs[xs.length - 1] + w / tot * (W0 - 2 * pad)));
+    const X = (i) => P ? pad + xs[i] : W0 - pad - xs[i], pts = [a];
+    jumps.forEach(j => pts.push(P ? pts[pts.length - 1] + j : pts[pts.length - 1] - j));
+    const maxW = Math.max(...xs.slice(1).map((v, i) => v - xs[i]));
+    let out = `<svg class="rstrich" viewBox="0 0 ${W0} ${H0}" role="img" aria-label="Rechenstrich"><path d="M8 ${y} H${W0 - 8}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/>`;
+    jumps.forEach((j, i) => {
+      const x1 = X(i), x2 = X(i + 1), h = 16 + 26 * Math.abs(x2 - x1) / maxW, c = j % 10 === 0 ? "#138a4b" : "#1d63d8";
+      const cx = (x1 + x2) / 2, cy = y - 2 * h, dx = x2 - cx, dy = (y - 5) - cy, n = Math.hypot(dx, dy), ux = dx / n, uy = dy / n, tx = x2 - ux * 2, ty = y - 5 - uy * 2, on = !st.j || st.j[i];
+      out += `<path d="M${x1.toFixed(1)} ${y - 5} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y - 5}" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
+        <path d="M${tx.toFixed(1)} ${ty.toFixed(1)} L${(tx - ux * 12 - uy * 6).toFixed(1)} ${(ty - uy * 12 + ux * 6).toFixed(1)} L${(tx - ux * 12 + uy * 6).toFixed(1)} ${(ty - uy * 12 - ux * 6).toFixed(1)} Z" fill="${c}"/>
+        <text x="${cx.toFixed(1)}" y="${(y - h - 12).toFixed(1)}" text-anchor="middle" class="rs-l${on ? "" : " q"}" fill="${c}">${sg} ${on ? j : "?"}</text>`;
+    });
+    pts.forEach((v, i) => { const on = i === 0 || (st.n ? st.n[i] : true), xx = X(i);
+      out += `<path d="M${xx.toFixed(1)} ${y - 9} V${y + 9}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><text x="${xx.toFixed(1)}" y="${y + 34}" text-anchor="middle" class="rs-n${on ? "" : " q"}">${on ? v : "?"}</text>`; });
+    return out + `</svg>`;
   }
   // Bild links, Rechnen rechts (im Hochformat untereinander)
   function mathRow(stage, pic) {
@@ -4938,11 +5007,22 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       if (op === "+") pic = dienes([{ z: za, e: ea, c: "b" }, { z: Math.floor(b / 10), e: b % 10, c: "o" }], ["+"]);
       else pic = dienes([{ z: za, e: ea, c: "b", xz: Math.floor(b / 10), xe: b % 10 }], []);
     }
+    const stepsHelp = help.indexOf("steps") >= 0, stW = stepsOf(id, x);
+    let rsBox = null, rsSt = null;
+    if (stepsHelp && stW && !x.form || stepsHelp && stW && x.form === "res") { rsSt = { n: stW.map(() => false).concat([false]) }; rsBox = el("div", "rs-box", rsMulti(a, op, stW.map(q => q[1]), rsSt)); pic = rsBox; }
     const col = mathRow(stage, pic);
-    if (help.indexOf("steps") >= 0) {
-      const st = stepsOf(id, x), lines = [{ t: [a, o, b, "=", { t: "?", c: "qmark" }], c: "eqhead" }];
+    // schwer (ohne Bild): nach dem ersten Fehler hilft ein Bild – Rechenstrich mit den Schritten oder die kleine Aufgabe
+    const needPic = !pic && !x.terms && (!x.form || x.form === "res");
+    const showHelp = () => needPic && helpPic(stage, () => {
+      if (stW) return el("div", "rs-box", rsMulti(a, op, stW.map(q => q[1]), { n: stW.map(() => false).concat([false]) }));
+      const [za, ea] = ZE(a);
+      if (id === "zehner" || id === "einer" || id === "zehnerdazu") return op === "+" ? dienes([{ z: za, e: ea, c: "b" }, { z: Math.floor(b / 10), e: b % 10, c: "o" }], ["+"]) : dienes([{ z: za, e: ea, c: "b", xz: Math.floor(b / 10), xe: b % 10 }], []);
+      return null; });
+    if (stepsHelp) {
+      const st = stW, lines = [{ t: [a, o, b, "=", { t: "?", c: "qmark" }], c: "eqhead" }];
       st.forEach((s, k) => lines.push({ t: [{ t: (k + 1) + ".", c: "tag" }, k ? { ref: k - 1 } : s[0], o, { t: String(s[1]), c: "stepnum" }, "=", { a: op === "+" ? s[0] + s[1] : s[0] - s[1] }], c: "step" }));
       padTask(col, { layout: eqLayout(lines), say: `${sayQ}. Rechne in Schritten.`,
+        onSlot: (k) => { if (rsBox) { rsSt.n[k + 1] = true; rsBox.innerHTML = rsMulti(a, op, st.map(q => q[1]), rsSt); } },
         why: (k, v) => { const s = st[k], res = op === "+" ? s[0] + s[1] : s[0] - s[1]; return numWhy(res, v, `Rechne genau: ${s[0]} ${o} ${s[1]}.` + (res % 10 === 0 && s[1] % 10 ? " So kommst du genau zum Zehner." : "")); },
         onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = r; q.classList.add("ok"); } }, okText: eqStr(x), okSay: `${a} ${opW(op)} ${b} gleich ${r}.` });
       return;
@@ -4956,7 +5036,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       : x.form === "pa" ? [a, o, { a: b }, "=", r] : x.form === "pb" ? [{ a: a }, o, b, "=", r] : [a, o, b, "=", { a: r }];
     const ans = x.form === "pa" ? b : x.form === "pb" ? a : r;
     padTask(col, { layout: eqLayout(small ? [small, { t: line }] : [{ t: line }]), say: x.terms ? x.terms.reduce((s, t, i) => i ? `${s} ${opW(x.ops[i - 1])} ${t}` : String(t), "") : sayQ,
-      why: (k, v, tr) => numWhy(ans, v, rechenTip(id, x, tr)), okText: x.terms ? `= ${r}` : eqStr(x), okSay: x.terms ? `Ergebnis: ${r}.` : `${a} ${opW(op)} ${b} gleich ${r}.`, factor: x.factor || 1 });
+      why: (k, v, tr) => numWhy(ans, v, rechenTip(id, x, tr) + (showHelp() ? " Schau dir das Bild an." : "")), okText: x.terms ? `= ${r}` : eqStr(x), okSay: x.terms ? `Ergebnis: ${r}.` : `${a} ${opW(op)} ${b} gleich ${r}.`, factor: x.factor || 1 });
   }
   // Experten-Aufgaben: Platzhalter (eine Zahl fehlt) und Ketten
   function placeholders(id, n) {
@@ -5107,7 +5187,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         const col = mathRow(stage, d === "schwer" ? null : zfEl({ tens: Math.floor(x.a / 10), a: x.a % 10, rows: 1 })), ans = x.form === "a" ? x.a : x.b;
         const line = x.form === "a" ? [{ a: x.a }, "+", x.b, "=", x.Z] : x.form === "eq" ? [x.Z, "=", x.a, "+", { a: x.b }] : [x.a, "+", { a: x.b }, "=", x.Z];
         padTask(col, { layout: eqLayout([{ t: line }]), say: x.form === "a" ? `Wie viel plus ${x.b} gleich ${x.Z}?` : `${x.a} plus wie viel gleich ${x.Z}?`,
-          why: (k, v) => numWhy(ans, v, d !== "schwer" ? "Zähle die freien Plätze im Zehnerfeld." : x.form === "a" ? `Rechne rückwärts: ${x.Z} ${MI} ${x.b}.` : `Schau auf die Einer: ${x.a % 10} + ? = 10.`),
+          why: (k, v) => numWhy(ans, v, d !== "schwer" ? "Zähle die freien Plätze im Zehnerfeld." : x.form === "a" ? `Rechne rückwärts: ${x.Z} ${MI} ${x.b}.` : `Schau auf die Einer: ${x.a % 10} + ? = 10.` + (x.form !== "a" && helpPic(stage, () => zfEl({ tens: Math.floor(x.a / 10), a: x.a % 10, rows: 1 })) ? " Schau dir das Bild an." : "")),
           okText: `${x.a} + ${x.b} = ${x.Z}`, okSay: `${x.a} plus ${x.b} gleich ${x.Z}.` });
       },
       tafel: tafelTen,
@@ -5126,7 +5206,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       render(x, stage, d) {
         const col = mathRow(stage, d === "schwer" ? null : zfEl({ tens: Math.floor(x.a / 10) - 1, a: 10 + x.a % 10 })), ans = x.form === "a" ? x.a : x.b;
         padTask(col, { layout: eqLayout([{ t: x.form === "a" ? [{ a: x.a }, MI, x.b, "=", x.Z] : [x.a, MI, { a: x.b }, "=", x.Z] }]), say: x.form === "a" ? `Wie viel minus ${x.b} gleich ${x.Z}?` : `${x.a} minus wie viel gleich ${x.Z}?`,
-          why: (k, v) => numWhy(ans, v, d !== "schwer" ? "Zähle die Punkte in der zweiten Reihe." : x.form === "a" ? `Rechne rückwärts: ${x.Z} + ${x.b}.` : `Schau auf die Einer von ${x.a}.`),
+          why: (k, v) => numWhy(ans, v, d !== "schwer" ? "Zähle die Punkte in der zweiten Reihe." : x.form === "a" ? `Rechne rückwärts: ${x.Z} + ${x.b}.` : `Schau auf die Einer von ${x.a}.` + (x.form !== "a" && helpPic(stage, () => zfEl({ tens: Math.floor(x.a / 10) - 1, a: 10 + x.a % 10 })) ? " Schau dir das Bild an." : "")),
           okText: `${x.a} − ${x.b} = ${x.Z}`, okSay: `${x.a} minus ${x.b} gleich ${x.Z}.` });
       },
       tafel: tafelTen,
@@ -5145,11 +5225,14 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         build(d) { return gen(8, () => u10(op, zrOf(d), d === "leicht")); },
         render(x, stage, d) {
           const col = mathRow(stage, d === "schwer" ? null : zfEl(zfOpt(x, false))), g = d === "leicht";
-          const lines = [{ t: [x.a, o, { t: String(x.b), c: "stepnum" }], c: "eqhead" },
-            { t: [{ t: (P ? "bis " : "zur ") + x.Z, c: "tag" }, x.a, o, g ? x.t : { a: x.t }, "=", x.Z], c: "step" },
-            { t: [{ t: "Rest", c: "tag" }, { t: String(x.b), c: "stepnum" }, "=", g ? x.t : { ref: 0 }, "+", { a: x.s }], c: "step" }];
-          padTask(col, { layout: eqLayout(lines), say: `${x.a} ${W} ${x.b}. Zerlege die ${x.b}.`,
-            why: (k, v) => !g && k === 0 ? numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis ${x.Z}?` : `Wie viel musst du von ${x.a} wegnehmen, damit ${x.Z} übrig bleibt?`) : numWhy(x.s, v, `${x.b} = ${x.t} + ? Wie viel fehlt noch bis ${x.b}?`),
+          const iS = g ? 0 : 1;
+          const lines = [{ t: [x.a, o, { split: [g ? { t: String(x.t), c: "given" } : { a: x.t }, { a: x.s }], n: x.b }], c: "eqhead" },
+            { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.t), c: "stepnum" } : { ref: 0 }, "=", x.Z], c: "step" },
+            { t: [{ t: "2.", c: "tag" }, x.Z, o, { ref: iS }, "=", { t: "?", c: "qmark" }], c: "step" }];
+          padTask(col, { layout: eqLayout(lines), say: g ? `${x.a} ${W} ${x.b}. Die ${x.b} wird zerlegt: ${x.t} und wie viel?` : `${x.a} ${W} ${x.b}. Zerlege die ${x.b}: erst ${P ? "bis zum" : "zurück zum"} Zehner, dann der Rest.`,
+            why: (k, v) => { if (d === "schwer") helpPic(stage, () => zfEl(zfOpt(x, false)));
+              return !g && k === 0 ? numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis ${x.Z}?` : `Wie viel musst du von ${x.a} wegnehmen, damit ${x.Z} übrig bleibt?`) : numWhy(x.s, v, `${x.b} = ${x.t} + ? Wie viel fehlt noch bis ${x.b}?`); },
+            onDone: () => { const q = col.querySelectorAll(".qmark"); q.forEach(e => { e.textContent = x.r; e.classList.add("ok"); }); },
             okText: `${x.b} = ${x.t} + ${x.s}`, okSay: `${x.b} gleich ${x.t} plus ${x.s}.` });
         },
         tafel: tafelWay, explain: explainWay
@@ -5163,12 +5246,12 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         build(d) { return gen(6, () => u10(op, zrOf(d), d === "leicht")); },
         render(x, stage, d) {
           const col = mathRow(stage, d === "schwer" ? null : zfEl(zfOpt(x, false))), g = d === "leicht";
-          const lines = [{ t: [x.a, o, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" },
+          const lines = [{ t: [x.a, o, { split: g ? [{ t: String(x.t), c: "given" }, { t: String(x.s), c: "given" }] : [{ ref: 0 }, { ref: 2 }], n: x.b, c: "headn" }, "=", { t: "?", c: "qmark" }], c: "eqhead" },
             { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.t), c: "stepnum" } : { a: x.t }, "=", { a: x.Z }], c: "step" },
             { t: [{ t: "2.", c: "tag" }, { ref: g ? 0 : 1 }, o, g ? { t: String(x.s), c: "stepnum" } : { a: x.s }, "=", { a: x.r }], c: "step" }];
           const kind = g ? ["ten", "res"] : ["t", "ten", "s", "res"];
           padTask(col, { layout: eqLayout(lines), say: `${x.a} ${W} ${x.b}. Rechne in zwei Schritten.`,
-            why: (k, v) => { const w = kind[k];
+            why: (k, v) => { const w = kind[k]; if (d === "schwer") helpPic(stage, () => zfEl(zfOpt(x, false)));
               if (w === "t") return numWhy(x.t, v, P ? `Wie viel fehlt von ${x.a} bis ${x.Z}?` : `Wie viel nimmst du von ${x.a} weg bis ${x.Z}?`);
               if (w === "ten") return numWhy(x.Z, v, `Rechne genau: ${x.a} ${o} ${x.t}. Du landest genau beim Zehner.`);
               if (w === "s") return numWhy(x.s, v, `Die ${x.b} hast du zerlegt: ${x.t} hast du schon. Wie viel fehlt noch bis ${x.b}?`);
@@ -5202,7 +5285,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         render(x, stage, d) {
           const col = mathRow(stage, d === "schwer" ? null : zfEl(zfOpt(x, false)));
           padTask(col, { layout: eqLayout([{ t: [x.a, o, x.b, "=", { a: x.r }] }]), say: `${x.a} ${W} ${x.b}`,
-            why: (k, v, tr) => { const w = way(x); return numWhy(x.r, v, tr >= 2 ? `Rechne in zwei Schritten: ${w.html.replace(/<[^>]+>/g, "")}` : (x.swap ? "Tausche die Zahlen. Dann " : "Rechne in zwei Schritten: ") + `erst ${toZ(x)}, dann weiter.`); },
+            why: (k, v, tr) => { const w = way(x); if (d === "schwer") helpPic(stage, () => x.swap ? null : el("div", "rs-box", rsMulti(x.a, op === "+" ? "+" : "−", [x.t, x.s], { n: [true, false, false] }))); return numWhy(x.r, v, tr >= 2 ? `Rechne in zwei Schritten: ${w.html.replace(/<[^>]+>/g, "")}` : (x.swap ? "Tausche die Zahlen. Dann " : "Rechne in zwei Schritten: ") + `erst ${toZ(x)}, dann weiter.`); },
             okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${W} ${x.b} gleich ${x.r}.` });
         },
         tafel: tafelWay, explain: explainWay,
@@ -7897,6 +7980,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     if (!Array.isArray(S.jungle)) { S.jungle = []; changed = true; }
     if (!Array.isArray(S.wald)) { S.wald = []; changed = true; }
     if (!Array.isArray(S.schatz)) { S.schatz = []; changed = true; }
+    if (!Array.isArray(S.savanne)) { S.savanne = []; changed = true; }
     if (changed) save();
   })();
   const islandDone = (ch, li) => DK.some(d => S.stars[skey(ch, li, d)] > 0);
@@ -8253,6 +8337,85 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     { id: "goldeichel", n: "Goldene Eichel", p: 260, k: "deco", c: "schatz", z: 82 },
     { id: "goldeddie", n: "Goldener Eddie", p: 400, k: "deco", c: "schatz", z: 114 }
   ].map(w => Object.assign(w, { w: "eule" }));
+  // Leos Savanne (Löwenklasse): eigene Zeichnungen; k wie im Aquarium (swim = läuft/fliegt hin und her, float = schwebt, deco = steht unten)
+  const LEG = (x, y1, y2, w, c) => `<rect x="${x}" y="${y1}" width="${w}" height="${y2 - y1}" rx="${w / 2.4}" fill="${c}" ${OL}/>`;
+  const HOOF = (x, y, w) => `<rect x="${x - 0.5}" y="${y - 4}" width="${w + 1}" height="5" rx="2" fill="#3d2b1f"/>`;
+  const LART = {
+    // ---- Pflanzen & Deko ----
+    grasbuesche: `<path d="M18 96 Q20 72 10 54 Q28 70 32 96 Z M28 96 Q32 60 38 32 Q44 64 42 96 Z M40 96 Q46 58 58 40 Q54 70 54 96 Z M50 96 Q62 66 80 56 Q66 76 64 96 Z M60 96 Q72 78 90 74 Q78 84 74 96 Z" fill="#cdb43e" ${OL}/><path d="M26 96 Q30 78 25 64 M46 96 Q48 74 53 58 M66 96 Q70 84 80 76" stroke="#a08a22" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M8 96 Q50 90 92 96 Z" fill="#b5762a" ${OL}/>`,
+    blumen: `${[[28, 58, "#ff9f1c"], [52, 42, "#ffd166"], [74, 60, "#e85d04"]].map(([x, y, c]) => `<path d="M${x} 94 Q${x - 3} ${y + 18} ${x} ${y}" stroke="#5a8f29" stroke-width="3.4" fill="none" stroke-linecap="round"/>${Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4, px = (x + Math.cos(a) * 8.5).toFixed(1), py = (y + Math.sin(a) * 8.5).toFixed(1); return `<ellipse cx="${px}" cy="${py}" rx="5.4" ry="3" transform="rotate(${i * 45} ${px} ${py})" fill="${c}" ${OL}/>`; }).join("")}<circle cx="${x}" cy="${y}" r="5.2" fill="#7a4a1e" ${OL}/>`).join("")}<path d="M14 96 Q30 80 46 96 Q62 80 86 96 Z" fill="#8bb33a" ${OL}/>`,
+    felsen: `<path d="M6 96 Q4 72 22 64 Q32 46 52 52 Q66 42 80 56 Q96 64 94 96 Z" fill="#a39385" ${OL}/><path d="M50 96 Q50 80 62 76 Q76 74 80 86 Q82 92 80 96" fill="#8c7b6d" ${OL}/><path d="M24 70 Q30 62 40 62" stroke="#fff" stroke-width="3" opacity=".45" fill="none" stroke-linecap="round"/><path d="M30 88 Q40 84 46 88" stroke="#7a6a5c" stroke-width="2" fill="none"/>`,
+    aloe: `<path d="M51 62 L57 14" stroke="#6b8f2a" stroke-width="3.4" stroke-linecap="round"/>${[[57, 14], [56, 22], [55, 30], [54, 38]].map(([x, y], i) => `<ellipse cx="${x + (i % 2 ? 4 : -4)}" cy="${y}" rx="3.2" ry="6" fill="#f77f00" ${OL}/>`).join("")}${[[-40, 72], [-30, 54], [-14, 44], [6, 42], [24, 50], [40, 66]].map(([dx, y]) => `<path d="M${50 - 7} 94 L${50 + dx} ${y} L${50 + 7} 94 Z" fill="#7fb069" ${OL}/>`).join("")}<path d="M40 94 L50 60 L60 94 Z" fill="#8fc27a" ${OL}/>`,
+    termitenhuegel: `<path d="M16 96 Q24 70 30 48 Q36 22 46 10 Q54 4 58 18 Q60 30 64 28 Q72 26 72 42 Q76 64 86 96 Z" fill="#c98a3d" ${OL}/><path d="M36 56 q6 3 12 0 M30 76 q8 4 16 0 M56 48 q5 2 10 0 M54 72 q7 3 14 0 M44 30 q4 2 8 0" stroke="#8a5a1c" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M42 20 Q44 40 40 60" stroke="#fff" stroke-width="3" opacity=".3" fill="none"/>`,
+    dornbusch: `<path d="M10 94 Q6 74 22 68 Q22 50 42 50 Q52 38 66 48 Q86 48 88 68 Q98 78 90 94 Z" fill="#7a9a36" ${OL}/><path d="M24 76 l-6 -4 M40 62 l-4 -6 M62 58 l4 -6 M78 74 l6 -4 M50 80 l0 -6" stroke="#4a6b1c" stroke-width="2.4" stroke-linecap="round"/>${[[30, 60], [56, 50], [74, 62], [44, 74], [66, 80]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.4" fill="#ffd60a" ${OL}/>`).join("")}`,
+    akazie: `<path d="M46 96 L48 64 L28 44 L33 40 L50 56 L52 30 L58 30 L57 54 L74 38 L78 43 L58 64 L56 96 Z" fill="#7a4a1e" ${OL}/>${[[50, 30, 46, 11, "#6f9a2c"], [26, 27, 22, 8, "#7fae34"], [74, 27, 24, 8, "#7fae34"], [50, 21, 28, 7, "#93c23f"]].map(([cx, cy, rx, ry, c]) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${c}" ${OL}/>`).join("")}`,
+    wasserloch: `<path d="M16 72 Q10 60 14 48 M20 72 Q22 56 18 42 M84 72 Q90 60 86 50" stroke="#5a8f29" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="17" cy="44" rx="3" ry="7" fill="#8a5a2b" ${OL}/><ellipse cx="86" cy="48" rx="3" ry="7" fill="#8a5a2b" ${OL}/><ellipse cx="50" cy="80" rx="47" ry="16" fill="#c4823c" ${OL}/><ellipse cx="50" cy="80" rx="38" ry="11" fill="#4fb3d9" ${OL}/><path d="M26 78 Q36 74 46 78 M56 84 Q64 80 72 84" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".8"/>`,
+    baobab: `<path d="M28 96 Q34 70 34 46 Q34 36 28 26 L35 23 Q40 32 42 36 L44 18 L51 18 L52 34 L58 20 L65 23 Q62 34 64 46 Q64 70 72 96 Z" fill="#9c6b45" ${OL}/><path d="M42 50 Q44 70 40 90 M56 56 Q58 74 60 90" stroke="#7a4e2e" stroke-width="2.4" fill="none"/>${[[30, 20, 10], [47, 13, 11], [62, 17, 10], [22, 30, 7], [72, 28, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#6f9a2c" ${OL}/>`).join("")}`,
+    zelt: `<path d="M6 94 L28 40 L72 40 L94 94 Z" fill="#d8c08a" ${OL}/><path d="M28 40 L50 28 L72 40 Z" fill="#c9ad6b" ${OL}/><path d="M40 94 L50 54 L60 94 Z" fill="#6b4a2a" ${OL}/><path d="M50 28 V12" stroke="#7a4a1e" stroke-width="2.6"/><path d="M50 12 L64 16 L50 20 Z" fill="#e63946" ${OL}/><path d="M18 70 H34 M66 70 H82" stroke="#b39556" stroke-width="2.4"/>`,
+    ballon: `<path d="M50 4 Q82 4 82 36 Q82 56 58 70 L42 70 Q18 56 18 36 Q18 4 50 4 Z" fill="#e63946" ${OL}/><path d="M50 4 Q64 30 57 70 L43 70 Q36 30 50 4 Z" fill="#ffd166" ${OL}/><path d="M31 12 Q24 34 40 66 M69 12 Q76 34 60 66" stroke="#17324a" stroke-opacity=".35" stroke-width="2" fill="none"/><path d="M43 70 L44 82 M57 70 L56 82" stroke="#7a4a1e" stroke-width="2"/><rect x="40" y="80" width="20" height="14" rx="3" fill="#a0672e" ${OL}/><path d="M40 86 H60" stroke="#7a4a1e" stroke-width="2"/><path d="M30 20 Q34 12 42 10" stroke="#fff" stroke-width="3" opacity=".5" fill="none" stroke-linecap="round"/>`,
+    // ---- Savannentiere ----
+    mistkaefer: `<circle cx="32" cy="70" r="22" fill="#8a5a2b" ${OL}/>${[[24, 62], [38, 58], [30, 78], [42, 74], [20, 74]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.4" fill="#6b4220"/>`).join("")}<path d="M58 88 l-4 8 M66 90 l0 6 M76 88 l4 8 M56 80 l-6 -2" stroke="#2b2d42" stroke-width="3" stroke-linecap="round"/><ellipse cx="68" cy="80" rx="16" ry="11" fill="#2b2d42" ${OL}/><circle cx="54" cy="78" r="7" fill="#3a3d5c" ${OL}/><path d="M68 70 V90" stroke="#5a5d7c" stroke-width="2"/><ellipse cx="64" cy="75" rx="5" ry="2.4" fill="#fff" opacity=".4"/>`,
+    erdmaennchen: `<path d="M38 94 Q32 70 40 50 Q42 42 50 42 Q58 42 60 50 Q68 70 62 94 Z" fill="#d4a373" ${OL}/><path d="M44 92 Q42 72 50 58 Q58 72 56 92 Z" fill="#f0d9b5"/><path d="M42 58 q-4 8 2 13 M58 58 q4 8 -2 13" stroke="#17324a" stroke-opacity=".7" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="40" cy="22" r="4.5" fill="#b08053" ${OL}/><circle cx="60" cy="22" r="4.5" fill="#b08053" ${OL}/><ellipse cx="50" cy="30" rx="12" ry="12" fill="#d4a373" ${OL}/><ellipse cx="45" cy="28" rx="3.8" ry="3" fill="#5a3a1a"/><ellipse cx="55" cy="28" rx="3.8" ry="3" fill="#5a3a1a"/><circle cx="45.6" cy="27.4" r="1.2" fill="#fff"/><circle cx="55.6" cy="27.4" r="1.2" fill="#fff"/><ellipse cx="50" cy="37" rx="5" ry="4" fill="#e9c9a0" ${OL}/><circle cx="50" cy="35" r="1.8" fill="#3d2b1f"/><path d="M60 92 Q74 90 72 76" stroke="#b08053" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+    landschildkroete: `${LEG(22, 76, 94, 12, "#a3a36a")}${LEG(66, 76, 94, 12, "#a3a36a")}<ellipse cx="88" cy="74" rx="10" ry="8" fill="#a3a36a" ${OL}/>${EYE(91, 72, 2.6)}<path d="M14 84 Q18 44 50 42 Q82 44 86 84 Z" fill="#8a6a2e" ${OL}/><path d="M34 84 L38 62 L50 54 L62 62 L66 84 M38 62 L24 66 M62 62 L76 66 M50 54 L50 44" stroke="#5e4512" stroke-width="2.4" fill="none"/><path d="M12 84 H88" stroke="#5e4512" stroke-width="3"/><path d="M28 56 Q36 48 46 48" stroke="#fff" stroke-width="3" opacity=".35" fill="none"/>`,
+    warzenschwein: `<path d="M12 58 q-8 -10 -4 -22" stroke="#6b5a4c" stroke-width="2.6" fill="none"/><path d="M6 36 l-2 -6 l5 2 Z" fill="#3d2b1f"/>${LEG(20, 70, 94, 8, "#8d7766")}${LEG(32, 72, 94, 8, "#7c6758")}${LEG(54, 72, 94, 8, "#7c6758")}${LEG(64, 70, 94, 8, "#8d7766")}<ellipse cx="44" cy="62" rx="32" ry="19" fill="#8d7766" ${OL}/><path d="M28 44 q10 -8 20 -2 q10 -6 22 4" stroke="#4a3a2e" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M68 50 Q92 48 95 70 Q95 80 86 80 Q76 80 70 72 Z" fill="#8d7766" ${OL}/><ellipse cx="93" cy="74" rx="3.6" ry="5.4" fill="#c9a89a" ${OL}/><path d="M84 74 q8 -4 6 -14" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M84 74 q8 -4 6 -14" stroke="#17324a" stroke-opacity=".5" stroke-width="1" fill="none"/><circle cx="79" cy="64" r="2.4" fill="#6b5a4c"/>${EYE(80, 58, 2.8)}<path d="M70 48 l-2 -8 l7 5 Z" fill="#7c6758" ${OL}/>`,
+    gazelle: `${LEG(27, 58, 94, 4, "#c98a45")}${LEG(35, 58, 94, 4, "#b87a38")}${LEG(61, 58, 94, 4, "#b87a38")}${LEG(69, 58, 94, 4, "#c98a45")}${HOOF(27, 95, 4)}${HOOF(69, 95, 4)}<path d="M18 46 q-6 0 -6 8" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M18 50 Q20 40 38 40 L64 40 Q76 40 76 50 Q76 62 64 62 L30 62 Q18 62 18 50 Z" fill="#d49a55" ${OL}/><path d="M26 61 Q48 66 70 60" fill="#fff"/><path d="M24 56 Q48 61 72 54" stroke="#3a2410" stroke-width="3.4" fill="none"/><path d="M66 44 L74 22 L84 24 L78 48 Z" fill="#d49a55" ${OL}/><path d="M80 18 q-4 -10 0 -16 M86 18 q0 -10 6 -14" stroke="#3d2b1f" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M74 18 Q86 12 94 22 Q96 28 90 30 Q80 30 74 24 Z" fill="#d49a55" ${OL}/><path d="M76 20 l-6 -4 l2 6 Z" fill="#c98a45" ${OL}/>${EYE(84, 21, 2.6)}<circle cx="94" cy="26" r="1.6" fill="#3d2b1f"/>`,
+    zebra: `${[18, 28, 56, 66].map(x => LEG(x, 58, 94, 7, "#ffffff") + `<path d="M${x} 70 h7 M${x} 80 h7" stroke="#17324a" stroke-width="3"/>` + HOOF(x, 95, 7)).join("")}<path d="M14 46 q-8 4 -6 16" stroke="#17324a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M14 50 Q14 36 32 36 L62 36 Q74 36 76 46 L76 56 Q74 64 62 64 L26 64 Q14 64 14 50 Z" fill="#ffffff" ${OL}/><path d="M28 37 Q23 50 28 63 M38 36 Q34 50 38 64 M48 36 Q45 50 48 64 M58 36 Q54 50 58 64 M68 38 Q65 48 70 60" stroke="#17324a" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M64 42 L74 16 L86 20 L78 48 Z" fill="#ffffff" ${OL}/><path d="M68 34 l10 3 M71 26 l10 3" stroke="#17324a" stroke-width="3.4" stroke-linecap="round"/><path d="M73 15 Q76 10 82 12 L88 20" stroke="#17324a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M76 14 Q90 10 96 24 Q97 32 90 32 Q82 30 78 22 Z" fill="#ffffff" ${OL}/><path d="M89 22 Q97 24 96 30 Q92 33 88 30 Z" fill="#3a3d5c"/><path d="M78 13 l-2 -8 l6 5 Z" fill="#ffffff" ${OL}/>${EYE(83, 19, 2.6)}`,
+    loewenbaby: `<path d="M66 88 q20 0 18 -18" stroke="#e0a85a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="84" cy="68" rx="4" ry="5" fill="#8a5a2b"/><path d="M30 94 Q24 70 34 56 Q44 48 58 54 Q72 62 70 94 Z" fill="#e0a85a" ${OL}/><ellipse cx="38" cy="92" rx="8" ry="5" fill="#f0c27a" ${OL}/><ellipse cx="60" cy="92" rx="8" ry="5" fill="#f0c27a" ${OL}/><circle cx="34" cy="22" r="7.5" fill="#e8b468" ${OL}/><circle cx="66" cy="22" r="7.5" fill="#e8b468" ${OL}/><circle cx="34" cy="22" r="3.4" fill="#f4a261"/><circle cx="66" cy="22" r="3.4" fill="#f4a261"/><circle cx="50" cy="38" r="20" fill="#e8b468" ${OL}/><ellipse cx="50" cy="47" rx="10" ry="7" fill="#f7dcae" ${OL}/><path d="M46 42 H54 L50 47 Z" fill="#7a3e1d"/><circle cx="42" cy="35" r="3.4" fill="#1b2a4a"/><circle cx="58" cy="35" r="3.4" fill="#1b2a4a"/><circle cx="43" cy="34" r="1.1" fill="#fff"/><circle cx="59" cy="34" r="1.1" fill="#fff"/><path d="M50 47 q-3 4 -6 2 M50 47 q3 4 6 2" stroke="#7a3e1d" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    giraffe: `${[20, 28, 54, 62].map(x => LEG(x, 56, 95, 5, "#f2b84b") + HOOF(x, 96, 5)).join("")}<path d="M14 48 q-6 4 -4 14" stroke="#b5651d" stroke-width="2.4" fill="none"/><path d="M12 50 Q12 38 28 38 L54 38 Q66 38 66 50 Q66 60 54 60 L24 60 Q12 60 12 50 Z" fill="#f2b84b" ${OL}/><path d="M54 44 L70 10 L80 14 L64 50 Z" fill="#f2b84b" ${OL}/><path d="M68 12 Q80 2 92 10 Q96 18 90 20 Q78 20 70 16 Z" fill="#f2b84b" ${OL}/><path d="M74 6 v-5 M80 5 v-5" stroke="#8a5a2b" stroke-width="2.6" stroke-linecap="round"/><circle cx="74" cy="1.5" r="2" fill="#8a5a2b"/><circle cx="80" cy="0.8" r="2" fill="#8a5a2b"/>${[[22, 44], [34, 46], [46, 44], [28, 54], [42, 54], [56, 48], [62, 40], [66, 32], [70, 24]].map(([x, y]) => `<rect x="${x - 3.4}" y="${y - 3}" width="7" height="6" rx="2" fill="#b5651d"/>`).join("")}${EYE(80, 11, 2.4)}<circle cx="92" cy="15" r="1.2" fill="#3d2b1f"/>`,
+    gepard: `${[24, 32, 60, 68].map(x => LEG(x, 56, 94, 4.5, "#f2c45a")).join("")}<path d="M16 48 Q4 54 8 72 Q10 78 14 76" stroke="#f2c45a" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M8 70 Q10 78 14 76" stroke="#3d2b1f" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M14 50 Q18 40 36 40 L66 42 Q76 44 76 52 Q74 60 64 60 L28 60 Q16 60 14 50 Z" fill="#f2c45a" ${OL}/>${[[24, 46], [32, 52], [40, 45], [48, 52], [56, 46], [64, 52], [70, 46], [30, 58], [52, 58]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="#3d2b1f"/>`).join("")}<circle cx="76" cy="34" r="3.6" fill="#f2c45a" ${OL}/><ellipse cx="82" cy="44" rx="11" ry="9" fill="#f2c45a" ${OL}/><path d="M80 47 q1 6 6 8" stroke="#3d2b1f" stroke-width="2" fill="none"/>${EYE(83, 41, 2.4)}<circle cx="92" cy="46" r="1.8" fill="#3d2b1f"/>`,
+    nashorn: `${[16, 30, 54, 66].map(x => LEG(x, 64, 94, 11, "#8a9198")).join("")}<path d="M10 54 q-6 2 -6 10" stroke="#6b7280" stroke-width="2.6" fill="none"/><path d="M8 58 Q8 36 34 34 L60 34 Q76 36 78 52 L78 62 Q76 72 64 72 L22 72 Q8 72 8 58 Z" fill="#9aa1a8" ${OL}/><path d="M30 40 Q34 56 30 70 M58 38 Q54 54 58 70" stroke="#7a828a" stroke-width="2.4" fill="none"/><path d="M72 40 Q94 42 96 62 Q96 70 88 70 L74 66 Z" fill="#9aa1a8" ${OL}/><path d="M88 50 L96 30 L94 54 Z" fill="#efe6d4" ${OL}/><path d="M80 46 L84 36 L86 48 Z" fill="#efe6d4" ${OL}/><path d="M74 40 l-2 -9 l7 5 Z" fill="#9aa1a8" ${OL}/>${EYE(80, 52, 2.4)}<path d="M86 64 q4 2 8 0" stroke="#5a6068" stroke-width="2" fill="none"/>`,
+    nilpferd: `${[22, 36, 52, 66].map(x => LEG(x, 70, 94, 12, "#7f7096")).join("")}<ellipse cx="44" cy="62" rx="34" ry="22" fill="#8e7fa6" ${OL}/><path d="M22 72 Q44 82 66 72" fill="#b4a6c8" opacity=".7"/><circle cx="70" cy="40" r="5" fill="#8e7fa6" ${OL}/><path d="M64 46 Q90 40 95 60 Q97 76 82 78 Q68 78 64 66 Z" fill="#8e7fa6" ${OL}/><path d="M74 70 Q84 74 94 68" stroke="#e8a0b4" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="90" cy="54" rx="2" ry="1.4" fill="#4a3d60"/><ellipse cx="94" cy="56" rx="2" ry="1.4" fill="#4a3d60"/>${EYE(74, 48, 3)}<path d="M14 58 q-6 2 -6 8" stroke="#6b5d80" stroke-width="2.4" fill="none"/>`,
+    elefant: `${[14, 28, 50, 62].map(x => LEG(x, 68, 96, 12, "#8d9aa8")).join("")}<path d="M10 50 q-8 6 -6 16" stroke="#7a8794" stroke-width="2.6" fill="none"/><path d="M6 54 Q6 30 34 28 L58 28 Q72 30 74 46 L74 64 Q72 74 60 74 L20 74 Q6 74 6 54 Z" fill="#9aa7b4" ${OL}/><circle cx="76" cy="40" r="18" fill="#9aa7b4" ${OL}/><path d="M86 48 Q96 62 92 82 Q90 88 85 84 Q87 68 80 56 Z" fill="#9aa7b4" ${OL}/><path d="M66 26 Q50 28 52 50 Q54 62 70 58 Z" fill="#b5c1cc" ${OL}/><path d="M82 54 Q88 62 96 60 Q90 66 82 60 Z" fill="#ffffff" ${OL}/>${EYE(80, 36, 2.6)}<path d="M88 70 q-4 0 -4 4 M89 78 q-4 0 -4 4" stroke="#7a8794" stroke-width="1.8" fill="none"/>`,
+    // ---- Vögel ----
+    webervogel: `<path d="M30 52 L10 44 L12 60 Z" fill="#e0a400" ${OL}/><ellipse cx="48" cy="54" rx="24" ry="15" fill="#ffd60a" ${OL}/><circle cx="70" cy="42" r="12" fill="#ffd60a" ${OL}/><path d="M64 38 Q72 34 81 40 Q78 50 67 48 Z" fill="#2b2d42"/><path d="M81 41 L94 45 L81 49 Z" fill="#8a6a3a" ${OL}/><circle cx="73" cy="41" r="2.6" fill="#e63946"/><circle cx="73" cy="41" r="1.1" fill="#17324a"/><path d="M38 48 Q46 20 64 30 Q58 50 42 56 Z" fill="#f4b400" ${OL}/><path d="M44 44 Q50 34 58 34" stroke="#c98a00" stroke-width="2" fill="none"/>`,
+    perlhuhn: `<path d="M40 76 L38 94 M54 76 L56 94" stroke="#8a96a6" stroke-width="3" stroke-linecap="round"/><path d="M32 94 h8 M52 94 h8" stroke="#8a96a6" stroke-width="2.6" stroke-linecap="round"/><path d="M12 62 Q12 38 44 36 Q70 36 76 58 Q76 76 50 78 Q18 78 12 62 Z" fill="#4a5568" ${OL}/>${Array.from({ length: 18 }, (_, i) => `<circle cx="${20 + (i % 6) * 9 + (Math.floor(i / 6) % 2) * 4}" cy="${46 + Math.floor(i / 6) * 9}" r="1.8" fill="#fff"/>`).join("")}<path d="M66 50 Q70 32 78 26 Q88 22 90 30 Q88 38 80 42 L76 56 Z" fill="#5b8fd1" ${OL}/><path d="M78 24 L82 12 L86 24 Z" fill="#e0a400" ${OL}/><path d="M90 30 L97 33 L89 35 Z" fill="#e0a400" ${OL}/><ellipse cx="86" cy="39" rx="3" ry="4" fill="#e63946" ${OL}/>${EYE(82, 29, 2.4)}`,
+    nashornvogel: `<path d="M4 84 Q50 76 96 86" stroke="#7a4a1e" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M26 74 L14 96 L32 90 Z" fill="#2b2d42" ${OL}/><path d="M16 92 L22 88 L30 90" stroke="#fff" stroke-width="3" fill="none"/><path d="M24 76 Q20 50 40 40 Q56 34 62 46 Q66 60 52 78 Z" fill="#2b2d42" ${OL}/><path d="M40 76 Q50 60 58 54 Q60 66 52 78 Z" fill="#fff"/><circle cx="60" cy="38" r="11" fill="#2b2d42" ${OL}/><path d="M68 35 Q92 34 97 50 Q84 44 68 44 Z" fill="#ffb703" ${OL}/><path d="M66 32 Q80 22 92 32 L70 36 Z" fill="#e63946" ${OL}/>${EYE(61, 36, 3.2)}<path d="M44 80 l-2 6 M52 80 l2 6" stroke="#5a5d7c" stroke-width="2.6" stroke-linecap="round"/>`,
+    geier: `<path d="M50 50 Q30 28 3 34 Q14 42 9 48 Q22 49 19 55 Q34 54 50 60 Z M50 50 Q70 28 97 34 Q86 42 91 48 Q78 49 81 55 Q66 54 50 60 Z" fill="#6b4f3a" ${OL}/><path d="M12 40 Q24 40 34 46 M88 40 Q76 40 66 46" stroke="#4a3526" stroke-width="2" fill="none"/><path d="M44 66 L50 80 L56 66 Z" fill="#5a4030" ${OL}/><ellipse cx="50" cy="56" rx="9" ry="13" fill="#5a4030" ${OL}/><ellipse cx="50" cy="45" rx="10" ry="4.5" fill="#f4ecd8" ${OL}/><circle cx="50" cy="37" r="7" fill="#f0c9b0" ${OL}/><path d="M50 41 q3 3 0 6 q-2 -2 0 -6" fill="#8a6a3a" ${OL}/><circle cx="47" cy="35.5" r="1.4" fill="#17324a"/><circle cx="53" cy="35.5" r="1.4" fill="#17324a"/>`,
+    strauss: `<path d="M38 60 L32 78 L40 94 M50 60 L58 78 L52 94" stroke="#f0a6a0" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 94 h8 M48 94 h8" stroke="#c9827c" stroke-width="3.4" stroke-linecap="round"/><path d="M18 44 Q4 34 6 50 Q2 60 18 54 Z" fill="#fff" ${OL}/><path d="M16 48 Q18 28 46 28 Q64 28 66 44 Q66 60 46 62 Q22 62 16 48 Z" fill="#2b2d42" ${OL}/><path d="M28 50 Q40 42 52 50" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/><path d="M60 38 Q70 22 70 10" stroke="#17324a" stroke-opacity=".72" stroke-width="8.6" fill="none" stroke-linecap="round"/><path d="M60 38 Q70 22 70 10" stroke="#f0a6a0" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="73" cy="9" rx="7.5" ry="5.4" fill="#f0a6a0" ${OL}/><path d="M80 8 L90 10 L80 13 Z" fill="#e0a07a" ${OL}/>${EYE(74, 7, 2.2)}`,
+    kronenkranich: `<path d="M44 60 L42 96 M50 60 L52 96" stroke="#3d2b1f" stroke-width="2.6" stroke-linecap="round"/><path d="M26 52 L10 60 L22 62 Z" fill="#2b2d42" ${OL}/><path d="M22 50 Q24 34 44 34 Q60 36 60 48 Q58 60 42 62 Q26 62 22 50 Z" fill="#8a96a6" ${OL}/><path d="M26 46 Q38 38 52 46 Q44 58 28 56 Z" fill="#fff" ${OL}/><path d="M54 42 Q62 28 62 18" stroke="#17324a" stroke-opacity=".72" stroke-width="7.6" fill="none" stroke-linecap="round"/><path d="M54 42 Q62 28 62 18" stroke="#8a96a6" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M64 10 l-9 -6 M64 10 l-5 -9 M64 10 l0 -9 M64 10 l5 -9 M64 10 l9 -6" stroke="#e0a400" stroke-width="2.4" stroke-linecap="round"/>${[[55, 4], [59, 1], [64, 1], [69, 1], [73, 4]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.8" fill="#ffc300"/>`).join("")}<circle cx="64" cy="16" r="7" fill="#2b2d42" ${OL}/><ellipse cx="66" cy="18" rx="3.4" ry="2.6" fill="#fff"/><ellipse cx="65" cy="22" rx="2.2" ry="3" fill="#e63946"/><path d="M70 15 L80 18 L70 20 Z" fill="#5a5d7c" ${OL}/><circle cx="65" cy="14" r="1.3" fill="#fff"/>`,
+    // ---- Schätze ----
+    skarabaeus: `${[[-1, 44], [-1, 58], [-1, 72], [1, 44], [1, 58], [1, 72]].map(([sd, y]) => `<path d="M${50 + sd * 18} ${y} l${sd * 14} ${-6 + (y - 58) / 3}" stroke="#9c6f00" stroke-width="3" stroke-linecap="round"/>`).join("")}<path d="M44 22 q-6 -10 -12 -10 M56 22 q6 -10 12 -10" stroke="#9c6f00" stroke-width="2.4" fill="none" stroke-linecap="round"/><ellipse cx="50" cy="60" rx="22" ry="28" fill="#ffc300" ${OL}/><ellipse cx="50" cy="28" rx="11" ry="8" fill="#e0a400" ${OL}/><path d="M50 34 V88" stroke="#9c6f00" stroke-width="2.4"/><circle cx="40" cy="56" r="4.4" fill="#2bb6c9" ${OL}/><circle cx="60" cy="56" r="4.4" fill="#2bb6c9" ${OL}/><circle cx="50" cy="74" r="3.6" fill="#e63946" ${OL}/>${SPARK(82, 22, 7)}${SPARK(16, 76, 5)}`,
+    kristallfels: `<path d="M6 96 Q8 74 28 70 Q46 64 62 70 Q88 70 94 96 Z" fill="#8c7b6d" ${OL}/><path d="M22 74 L26 50 L36 74 Z" fill="#ff8fab" ${OL}/><path d="M32 72 L40 28 L50 72 Z" fill="#9be7ff" ${OL}/><path d="M46 72 L58 12 L70 72 Z" fill="#c77dff" ${OL}/><path d="M64 74 L74 42 L82 76 Z" fill="#9be7ff" ${OL}/><path d="M40 30 L44 70 M58 14 L60 70 M74 44 L76 74" stroke="#fff" stroke-width="2" opacity=".6"/>${SPARK(84, 26, 7)}${SPARK(20, 36, 5)}`,
+    regenbogen: `${["#e63946", "#f77f00", "#ffc300", "#2b9348", "#1f6fd1", "#7b2cbf"].map((c, i) => `<path d="M${10 + i * 5} 70 A${40 - i * 5} ${40 - i * 5} 0 0 1 ${90 - i * 5} 70" fill="none" stroke="${c}" stroke-width="5.4"/>`).join("")}${[[12, 70], [88, 70]].map(([x, y]) => `<circle cx="${x - 8}" cy="${y}" r="8" fill="#ffffff" ${OL}/><circle cx="${x + 6}" cy="${y + 1}" r="9" fill="#ffffff" ${OL}/><circle cx="${x - 1}" cy="${y - 6}" r="9" fill="#ffffff" ${OL}/><rect x="${x - 15}" y="${y}" width="30" height="9" rx="4" fill="#ffffff"/>`).join("")}${SPARK(50, 16, 6)}`
+  };
+  LART.goldleo = `<rect x="20" y="86" width="60" height="11" rx="3" fill="#8a5a2b" ${OL}/><g transform="translate(16 4) scale(.68)">${ART.leo.replace(/#c8741a/g, "#e0a400").replace(/#d9822b/g, "#ffc300").replace(/#ffcf6b/g, "#ffe066").replace(/#f4a261/g, "#ffd60a")}</g>${SPARK(86, 24, 7)}${SPARK(14, 20, 5)}${SPARK(84, 72, 4)}`;
+  Object.assign(ART, LART);
+  const SHOP_L = [
+    { id: "grasbuesche", n: "Grasbüschel", p: 5, k: "deco", c: "deko", z: 70 },
+    { id: "blumen", n: "Savannenblumen", p: 6, k: "deco", c: "deko", z: 66 },
+    { id: "mistkaefer", n: "Mistkäfer", p: 8, k: "deco", c: "tiere", z: 50 },
+    { id: "felsen", n: "Felsen", p: 8, k: "deco", c: "deko", z: 80 },
+    { id: "webervogel", n: "Webervogel", p: 10, k: "swim", c: "voegel", z: 54 },
+    { id: "erdmaennchen", n: "Erdmännchen", p: 12, k: "deco", c: "tiere", z: 70 },
+    { id: "aloe", n: "Aloe", p: 12, k: "deco", c: "deko", z: 82 },
+    { id: "dornbusch", n: "Dornbusch", p: 14, k: "deco", c: "deko", z: 90 },
+    { id: "landschildkroete", n: "Landschildkröte", p: 15, k: "deco", c: "tiere", z: 66 },
+    { id: "termitenhuegel", n: "Termitenhügel", p: 16, k: "deco", c: "deko", z: 104 },
+    { id: "perlhuhn", n: "Perlhuhn", p: 18, k: "deco", c: "voegel", z: 64 },
+    { id: "warzenschwein", n: "Warzenschwein", p: 22, k: "deco", c: "tiere", z: 84 },
+    { id: "gazelle", n: "Gazelle", p: 28, k: "swim", c: "tiere", z: 88 },
+    { id: "nashornvogel", n: "Nashornvogel", p: 30, k: "deco", c: "voegel", z: 80 },
+    { id: "zebra", n: "Zebra", p: 35, k: "swim", c: "tiere", z: 104 },
+    { id: "geier", n: "Geier", p: 38, k: "float", c: "voegel", z: 84 },
+    { id: "akazie", n: "Akazie", p: 40, k: "deco", c: "deko", z: 160 },
+    { id: "loewenbaby", n: "Löwenbaby", p: 45, k: "deco", c: "tiere", z: 76 },
+    { id: "wasserloch", n: "Wasserloch", p: 50, k: "deco", c: "deko", z: 140 },
+    { id: "strauss", n: "Strauß", p: 55, k: "swim", c: "voegel", z: 112 },
+    { id: "giraffe", n: "Giraffe", p: 60, k: "deco", c: "tiere", z: 150 },
+    { id: "zelt", n: "Safari-Zelt", p: 60, k: "deco", c: "deko", z: 116 },
+    { id: "kronenkranich", n: "Kronenkranich", p: 65, k: "deco", c: "voegel", z: 110 },
+    { id: "baobab", n: "Affenbrotbaum", p: 70, k: "deco", c: "deko", z: 170 },
+    { id: "gepard", n: "Gepard", p: 75, k: "swim", c: "tiere", z: 100 },
+    { id: "nashorn", n: "Nashorn", p: 85, k: "deco", c: "tiere", z: 120 },
+    { id: "ballon", n: "Heißluftballon", p: 90, k: "float", c: "deko", z: 100 },
+    { id: "nilpferd", n: "Flusspferd", p: 95, k: "deco", c: "tiere", z: 116 },
+    { id: "elefant", n: "Elefant", p: 120, k: "deco", c: "tiere", z: 150 },
+    { id: "skarabaeus", n: "Goldener Skarabäus", p: 160, k: "deco", c: "schatz", z: 70 },
+    { id: "kristallfels", n: "Kristall-Felsen", p: 200, k: "deco", c: "schatz", z: 100 },
+    { id: "regenbogen", n: "Regenbogen", p: 220, k: "float", c: "schatz", z: 130 },
+    { id: "goldleo", n: "Goldener Leo", p: 400, k: "deco", c: "schatz", z: 114 }
+  ].map(w => Object.assign(w, { w: "loewe" }));
+  const SHOP_CATS_L = [["tiere", "🦓 Savannen-Tiere"], ["voegel", "🦅 Vögel"], ["deko", "🌳 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   // Experten-Schätze: gibt es nur auf der Experten-Insel des Kapitels (nicht im Laden zu kaufen)
   const TREASURES = [
     { id: "kristallstern", n: "Kristall-Seestern", art: "der", pr: "Er", ch: "nomen", k: "deco", z: 76 },
@@ -8348,16 +8511,16 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     return { uid, id: w.id, sq };
   }
   Object.assign(ART, PALAST_ART);
-  // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle), Eddie im Wald (S.wald). Die Münzen gelten in allen Welten.
-  const shopW = () => isPolly() ? SHOP_P : W.id === "eule" ? SHOP_E : W.id === "schach" ? SHOP_S : SHOP;
+  // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle), Eddie im Wald (S.wald), Leo in der Savanne (S.savanne). Die Münzen gelten in allen Welten.
+  const shopW = () => isPolly() ? SHOP_P : W.id === "eule" ? SHOP_E : W.id === "schach" ? SHOP_S : W.id === "loewe" ? SHOP_L : SHOP;
   const treasW = () => TREASURES.filter(t => (t.w || "nemo") === W.id);
-  const invOf = (w) => { if (w.w === "schach") return palastInv(); if (w.w === "polly") { if (!Array.isArray(S.jungle)) S.jungle = []; return S.jungle; } if (w.w === "eule") { if (!Array.isArray(S.wald)) S.wald = []; return S.wald; } return S.aqua; };
+  const invOf = (w) => { if (w.w === "schach") return palastInv(); if (w.w === "polly") { if (!Array.isArray(S.jungle)) S.jungle = []; return S.jungle; } if (w.w === "eule") { if (!Array.isArray(S.wald)) S.wald = []; return S.wald; } if (w.w === "loewe") { if (!Array.isArray(S.savanne)) S.savanne = []; return S.savanne; } return S.aqua; };
   const invW = () => invOf({ w: W.id });
   const MAX_EACH = 5;
   const countOf = (w) => (invOf(w) || []).filter(a => a.id === w.id).length;
   const owned = (w) => countOf(w) > 0;
   const aquaCount = () => shopW().filter(owned).length;
-  const shopItem = (id) => SHOP.find(w => w.id === id) || SHOP_P.find(w => w.id === id) || SHOP_E.find(w => w.id === id) || SHOP_S.find(w => w.id === id) || TREASURES.find(w => w.id === id);
+  const shopItem = (id) => SHOP.find(w => w.id === id) || SHOP_P.find(w => w.id === id) || SHOP_E.find(w => w.id === id) || SHOP_S.find(w => w.id === id) || SHOP_L.find(w => w.id === id) || TREASURES.find(w => w.id === id);
   const maxOf = (w) => w.max || MAX_EACH;
   let newbie = null, editMode = false;
   function renderStat() {
@@ -8385,16 +8548,19 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   function tankH() { const t = $("tank"); return (t && t.clientHeight) || 360; }
   function newInstance(w) {
     const h = tankH(), uid = Date.now() + "-" + Math.floor(Math.random() * 1e6);
-    const y = w.k === "deco" ? Math.max(30, Math.round(97 - w.z / h * 100 - Math.random() * 3)) : w.k === "float" ? Math.round(8 + Math.random() * 30) : Math.round(6 + Math.random() * 46);
+    const walk = w.w === "loewe" && w.k === "swim" && w.c !== "voegel" || w.id === "strauss";
+    const y = walk ? Math.max(40, Math.round(97 - w.z / h * 100 - Math.random() * 6)) : w.k === "deco" ? Math.max(30, Math.round(97 - w.z / h * 100 - Math.random() * 3)) : w.k === "float" ? Math.round(8 + Math.random() * 30) : Math.round(6 + Math.random() * 46);
     return { uid, id: w.id, x: Math.round(10 + Math.random() * 80), y, t: Math.round(10 + Math.random() * 9), d: Math.round(Math.random() * 12) };
   }
   function renderTank() {
     if (W.id === "schach") return renderPalast();
-    const t = $("tank"), pol = isPolly(), eu = W.id === "eule", inv = invW();
+    const t = $("tank"), pol = isPolly(), eu = W.id === "eule", sa = W.id === "loewe", inv = invW();
     t.classList.toggle("edit", editMode);
-    t.innerHTML = eu ? `<div class="moon"></div><div class="stars"></div><div class="firs"></div><div class="item bgplant" style="left:1%">${artSVG("tanne")}</div><div class="item bgplant" style="right:2%">${artSVG("eiche")}</div><div class="ground wald"></div>` : pol ? `<div class="sun"></div><div class="hills"></div><div class="item bgplant" style="left:1%">${artSVG("palme")}</div><div class="item bgplant" style="right:2%">${artSVG("bananen")}</div><div class="ground"></div>`
+    t.innerHTML = sa ? `<div class="sav-sky"></div><div class="sav-hills"></div><div class="item bgplant" style="left:1%">${artSVG("akazie")}</div><div class="item bgplant" style="right:2%">${artSVG("baobab")}</div><div class="ground sav"></div>`
+      : eu ? `<div class="moon"></div><div class="stars"></div><div class="firs"></div><div class="item bgplant" style="left:1%">${artSVG("tanne")}</div><div class="item bgplant" style="right:2%">${artSVG("eiche")}</div><div class="ground wald"></div>` : pol ? `<div class="sun"></div><div class="hills"></div><div class="item bgplant" style="left:1%">${artSVG("palme")}</div><div class="item bgplant" style="right:2%">${artSVG("bananen")}</div><div class="ground"></div>`
       : `<div class="rays"></div><div class="item bgplant" style="left:2%">${artSVG("seegras")}</div><div class="item bgplant" style="right:3%">${artSVG("seegras")}</div><div class="gravel"></div>`;
-    for (let i = 0; i < (pol || eu ? 4 : 6); i++) {
+    for (let i = 0; i < (pol || eu || sa ? 4 : 6); i++) {
+      if (sa) { const b = el("span", "tleaf", i % 2 ? "🦋" : "🌾"); b.style.left = (10 + i * 22) + "%"; b.style.animationDuration = (8 + i * 1.6) + "s"; b.style.animationDelay = (-i * 2.4) + "s"; t.appendChild(b); continue; }
       if (eu) { const b = el("span", "tleaf", i % 2 ? "🍂" : "🍃"); b.style.left = (12 + i * 22) + "%"; b.style.animationDuration = (8 + i * 1.7) + "s"; b.style.animationDelay = (-i * 2.6) + "s"; t.appendChild(b); const f = el("i", "ffly"); f.style.left = (8 + i * 24) + "%"; f.style.top = (30 + (i % 2) * 22) + "%"; f.style.animationDelay = (-i * 1.1) + "s"; t.appendChild(f); continue; }
       if (pol) { const b = el("span", "tleaf", i % 2 ? "🍃" : "🪶"); b.style.left = (10 + i * 22) + "%"; b.style.animationDuration = (7 + i * 1.6) + "s"; b.style.animationDelay = (-i * 2.3) + "s"; t.appendChild(b); continue; }
       const b = el("span", "tb"); b.style.left = (8 + i * 16) + "%"; b.style.animationDuration = (4 + (i % 3)) + "s"; b.style.animationDelay = (-i * 1.3) + "s"; t.appendChild(b);
@@ -8420,11 +8586,11 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       t.appendChild(it);
     });
     if (!editMode) {
-      const nm = el("div", "item swim", `<div class="flip rev"><div class="nemo-fish">${pol || eu ? birdHTML("84px") : W.emo}</div></div>`);
-      nm.style.setProperty("--t", pol || eu ? "13s" : "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = pol || eu ? "22%" : "34%";
+      const nm = el("div", "item swim" + (sa ? " walk" : ""), `<div class="flip rev"><div class="nemo-fish">${pol || eu || sa ? birdHTML("84px") : W.emo}</div></div>`);
+      nm.style.setProperty("--t", sa ? "18s" : pol || eu ? "13s" : "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = sa ? "64%" : pol || eu ? "22%" : "34%";
       nm.style.animationDelay = nm.firstChild.style.animationDelay = "-3s"; t.appendChild(nm);
     }
-    if (!inv.length) t.appendChild(el("div", "empty", eu ? "Eddies Wald ist noch leer. Kauf im Laden Bäume, Waldtiere und schöne Sachen! 🛒" : pol ? "Polly wartet auf Freunde. Kauf im Laden Vögel, Tiere und schöne Sachen! 🛒" : "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
+    if (!inv.length) t.appendChild(el("div", "empty", sa ? "Leos Savanne ist noch leer. Kauf im Laden Tiere, Bäume und schöne Sachen! 🛒" : eu ? "Eddies Wald ist noch leer. Kauf im Laden Bäume, Waldtiere und schöne Sachen! 🛒" : pol ? "Polly wartet auf Freunde. Kauf im Laden Vögel, Tiere und schöne Sachen! 🛒" : "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
   }
   // Einrichten: Sachen mit dem Finger verschieben
   function makeDraggable(it, a, w) {
@@ -8451,7 +8617,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   function renderShop() {
     const box = $("shop"); box.innerHTML = "";
     box.appendChild(el("div", "shop-title", "🛒 Laden – tippe zweimal zum Kaufen"));
-    (W.id === "eule" ? SHOP_CATS_E : W.id === "schach" ? SHOP_CATS_S : isPolly() ? SHOP_CATS_P : SHOP_CATS).forEach(([cat, title]) => {
+    (W.id === "eule" ? SHOP_CATS_E : W.id === "loewe" ? SHOP_CATS_L : W.id === "schach" ? SHOP_CATS_S : isPolly() ? SHOP_CATS_P : SHOP_CATS).forEach(([cat, title]) => {
       box.appendChild(el("div", "head s", title));
       const grid = el("div", "shop");
       shopW().filter(w => w.c === cat).forEach(w => {
@@ -8529,13 +8695,30 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     seaDefs(svg, cfg.pid);
     const rnd = seeded(cfg.seed || 11);
     const free = (x, y, k) => !cfg.nodes.some(n => Math.hypot(n.x - x, n.y - y) < n.r * k);
-    const wg = [1, 2, 3].map(k => sv("g", { class: "wv w" + k }, svg));
-    for (let i = 0; i < 38; i++) {
+    const sav = W.id === "loewe";
+    const wg = [1, 2, 3].map(k => sv("g", { class: sav ? "" : "wv w" + k }, svg));
+    if (sav) {   // Leos Savanne: Grasbüschel, Akazien, Termitenhügel und Tiere statt Wellen
+      for (let i = 0; i < 46; i++) {
+        const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), q = 0.8 + rnd() * 0.6;
+        if (!free(x, y, 1.75)) continue;
+        sv("path", { d: `M${x - 9 * q} ${y} q2 -10 -3 -17 M${x - 3 * q} ${y} q0 -14 4 -21 M${x + 3 * q} ${y} q1 -11 8 -15 M${x + 8 * q} ${y} q2 -6 7 -9`, class: "gtuft" + (i % 3 ? "" : " g2") }, wg[i % 3]);
+      }
+      const dg = sv("g", { "aria-hidden": "true" }, svg), deco = ["acacia", "acacia", "mound", "🦓", "acacia", "🦒", "mound", "🐘", "acacia", "🦩", "acacia", "🐃"];
+      for (let i = 0, made = 0; i < 120 && made < (cfg.savDeco || 9); i++) {
+        const x = 60 + rnd() * (cfg.w - 120), y = 60 + rnd() * (cfg.h - 110);
+        if (!free(x, y, 2.1)) continue;
+        const kind = deco[made % deco.length]; made++;
+        if (kind === "acacia") drawAcacia(dg, x, y, 0.7 + rnd() * 0.5);
+        else if (kind === "mound") { sv("ellipse", { cx: x, cy: y + 2, rx: 22, ry: 6, fill: "rgba(90,50,10,.2)" }, dg); sv("path", { d: `M${x - 18} ${y} Q${x - 12} ${y - 30} ${x - 4} ${y - 44} Q${x + 2} ${y - 52} ${x + 6} ${y - 36} Q${x + 10} ${y - 22} ${x + 18} ${y} Z`, fill: "#c98a3d", stroke: "#8a5a1c", "stroke-width": 2.5 }, dg); sv("path", { d: `M${x - 6} ${y - 22} q4 2 8 0 M${x - 10} ${y - 8} q6 3 12 0`, stroke: "#8a5a1c", "stroke-width": 2, fill: "none" }, dg); }
+        else { sv("ellipse", { cx: x, cy: y + 14, rx: 16, ry: 4, fill: "rgba(90,50,10,.2)" }, dg); const t = sv("text", { x, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 34, opacity: 0.9 }, dg); t.textContent = kind; }
+      }
+    }
+    for (let i = 0; i < (sav ? 0 : 38); i++) {
       const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40);
       if (!free(x, y, 1.9)) continue;
       sv("path", { d: `M${x - 21} ${y} c4 -6 10 -6 14 0 s10 6 14 0 s10 -6 14 0`, class: "wave" }, wg[i % 3]);
     }
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < (sav ? 0 : 14); i++) {
       const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), k = 4 + rnd() * 4;
       if (!free(x, y, 1.7)) continue;
       const sp = sv("path", { d: `M${x} ${y - k}L${x + k * .22} ${y - k * .22}L${x + k} ${y}L${x + k * .22} ${y + k * .22}L${x} ${y + k}L${x - k * .22} ${y + k * .22}L${x - k} ${y}L${x - k * .22} ${y - k * .22}Z`, class: "spark" }, svg);
@@ -8579,6 +8762,13 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     const g = sv("g", { class: "isl", transform: `translate(${n.x} ${n.y})`, tabindex: "0", role: "button", "aria-label": n.aria || n.label }, svg);
     const r = n.r, P = cfg.pid, U = (id) => `url(#${P}-${id})`;
     const rnd = seeded(i * 37 + (cfg.seed || 1) * 7 + 11), ph = rnd() * 6.28, ph2 = rnd() * 6.28;
+    const sav = W.id === "loewe";
+    if (sav) {   // Savanne: Lichtung aus roter Erde mit Schatten statt Lagune und Strand
+      sv("ellipse", { cy: r * 0.16, rx: r * 1.18, ry: r * 0.86, fill: "rgba(110,62,12,.22)" }, g);
+      if (n.next) sv("ellipse", { rx: r * 1.3, ry: r * 0.98, class: "nextring" }, g);
+      sv("path", { d: blob(r * 1.02, r * 0.76, r * 0.1, 0.035, 5, ph), fill: "#a8692a" }, g);
+      sv("path", { d: blob(r * 1.02, r * 0.76, 0, 0.035, 5, ph), fill: U("earth"), stroke: "#b77a35", "stroke-width": 3, class: "sand" }, g);
+    } else {
     // Lagune, Brandung, Schaum
     sv("ellipse", { cy: r * 0.04, rx: r * 1.46, ry: r * 1.1, fill: U("lagoon") }, g);
     if (n.next) sv("ellipse", { rx: r * 1.34, ry: r * 1.0, class: "nextring" }, g);
@@ -8588,20 +8778,22 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     // Sandstrand mit Kante
     sv("path", { d: blob(r, r * 0.74, r * 0.1, 0.03, 5, ph), fill: "#cf9d52" }, g);
     sv("path", { d: blob(r, r * 0.74, 0, 0.03, 5, ph), fill: U("sand"), stroke: "#e0b868", "stroke-width": 3, class: "sand" }, g);
+    }
     if (!n.fog) for (let k = 0; k < 3; k++) {
       const a = (0.18 + rnd() * 0.64) * Math.PI, q = r * (0.045 + rnd() * 0.035);
       sv("ellipse", { cx: Math.cos(a) * r * 0.87, cy: Math.sin(a) * r * 0.6, rx: q * 1.35, ry: q, fill: U("rock"), stroke: "rgba(60,70,80,.35)", "stroke-width": 1 }, g);
     }
     // Wiese mit Licht und Schatten
     const gp = blob(r * 0.76, r * 0.5, -r * 0.1, 0.06, 6, ph2);
-    sv("path", { d: gp, fill: n.grass || "#86cf7d", stroke: "rgba(20,80,40,.22)", "stroke-width": 3 }, g);
+    sv("path", { d: gp, fill: sav ? "#d9c25a" : (n.grass || "#86cf7d"), stroke: "rgba(20,80,40,.22)", "stroke-width": 3 }, g);
     sv("path", { d: gp, fill: U("shade") }, g);
     sv("path", { d: gp, fill: U("shine") }, g);
-    if (n.draw !== "reef" && n.draw !== "jungle" && n.draw !== "wald" && !n.fog) for (let k = 0; k < 4; k++) {
+    if (n.draw !== "reef" && n.draw !== "jungle" && n.draw !== "wald" && n.draw !== "savanne" && !n.fog) for (let k = 0; k < 4; k++) {
       const a = (k / 4 + rnd() * 0.15) * Math.PI * 2, tx = Math.cos(a) * r * 0.55, ty = -r * 0.1 + Math.sin(a) * r * 0.33, q = r / 90;
       sv("path", { d: `M${tx - 5 * q} ${ty}L${tx - 2 * q} ${ty - 9 * q}M${tx} ${ty}L${tx + q} ${ty - 12 * q}M${tx + 5 * q} ${ty}L${tx + 4 * q} ${ty - 8 * q}`, stroke: "rgba(20,95,45,.5)", "stroke-width": 2.4 * q, "stroke-linecap": "round", fill: "none" }, g);
     }
     (n.deco || []).forEach((d, k) => {
+      if (d[2] === "🌴" && sav) { drawAcacia(g, d[0] * r, d[1] * r + r * (d[3] || 0.5) * 0.55, r * (d[3] || 0.5) / 34); return; }
       if (d[2] === "🌴") { drawPalm(g, d[0] * r, d[1] * r + r * (d[3] || 0.5) * 0.5, r * (d[3] || 0.5) * 1.75, d[0] < 0 ? -1 : 1, P, -(i * 1.3 + k * 0.9)); return; }
       const tt = sv("text", { x: d[0] * r, y: d[1] * r, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (d[3] || 0.5) }, g); tt.textContent = d[2];
     });
@@ -8609,6 +8801,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     else if (n.draw === "reef") drawReef(g, r, n, P);
     else if (n.draw === "jungle") drawJungle(g, r, n, P);
     else if (n.draw === "wald") drawWald(g, r, n, P);
+    else if (n.draw === "savanne") drawSavanne(g, r, n, P);
     else {
       sv("ellipse", { cx: 0, cy: r * 0.2, rx: r * 0.34, ry: r * 0.08, fill: "rgba(10,60,30,.2)" }, g);
       const ic = sv("text", { x: 0, y: -r * 0.18, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * (n.iconScale || 0.82) }, g); ic.textContent = n.icon;
@@ -8689,6 +8882,19 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       im.style.animationDelay = (-k * 0.4) + "s";
     });
   }
+  // Leos Savanne auf der Karte: große Akazie, Wasserloch und Giraffe – darum herum die gekauften Sachen
+  function drawSavanne(g, r, n, P) {
+    sv("ellipse", { cx: r * 0.34, cy: r * 0.2, rx: r * 0.34, ry: r * 0.11, fill: "#4fb3d9", stroke: "#c4823c", "stroke-width": 4 }, g);
+    sv("path", { d: `M${r * 0.18} ${r * 0.19} q${r * 0.08} -${r * 0.04} ${r * 0.16} 0`, stroke: "#fff", "stroke-width": 3, fill: "none", opacity: 0.8 }, g);
+    drawAcacia(g, -r * 0.12, r * 0.22, r / 52);
+    sv("image", { href: artURI("giraffe"), x: r * 0.1, y: -r * 0.82, width: r * 0.78, height: r * 0.78 }, g);
+    const sp = sv("text", { x: -r * 0.7, y: -r * 0.9, "text-anchor": "middle", "dominant-baseline": "central", "font-size": r * 0.3, class: "twinkle" }, g); sp.textContent = "✨";
+    (n.items || []).slice(0, 10).forEach((id, k, arr) => {
+      const a = (-200 + (220 / Math.max(1, arr.length - 1)) * k) * Math.PI / 180, sz = r * 0.42;
+      const im = sv("image", { href: artURI(id), x: Math.cos(a) * r * 1.5 - sz / 2, y: Math.sin(a) * r * 1.12 - r * 0.1 - sz / 2, width: sz, height: sz, class: "reef-item" }, g);
+      im.style.animationDelay = (-k * 0.4) + "s";
+    });
+  }
   // Eddies Wald auf der Karte: Eiche mit Eddies Baumhöhle, kleine Tannen, Pilze – darum herum die gekauften Sachen
   function drawWald(g, r, n, P) {
     const s = r / 80, G = sv("g", { transform: `translate(0 ${-r * 0.14}) scale(${s})` }, g);
@@ -8746,6 +8952,13 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     sv("circle", { r: 30, fill: U("glow"), class: "lamp-glow" }, a);
   }
   // Farbverläufe für Inseln, Palmen und Leuchtturm (je Karte eigene IDs)
+  // Akazie (Schirmbaum) für Leos Savanne; x/y = Fuß des Stamms
+  function drawAcacia(parent, x, y, k) {
+    const g = sv("g", { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${k.toFixed(2)})`, "aria-hidden": "true" }, parent);
+    sv("ellipse", { cx: 4, cy: 2, rx: 40, ry: 7, fill: "rgba(90,50,10,.22)" }, g);
+    sv("path", { d: "M-4 2 L-2 -30 L-20 -50 L-15 -52 L0 -38 L4 -62 L9 -62 L7 -36 L24 -52 L28 -48 L8 -28 L6 2 Z", fill: "#7a4a1e", stroke: "#4f2c12", "stroke-width": 2, "stroke-linejoin": "round" }, g);
+    [[0, -62, 46, 11, "#6f9a2c"], [-20, -58, 26, 9, "#7fae34"], [22, -58, 28, 9, "#7fae34"], [2, -68, 30, 8, "#93c23f"]].forEach(([cx, cy, rx, ry, c]) => sv("ellipse", { cx, cy, rx, ry, fill: c, stroke: "#4a6b1c", "stroke-width": 2 }, g));
+  }
   function seaDefs(svg, P) {
     const d = sv("defs", {}, svg);
     const grad = (type, id, attrs, stops) => { const gg = sv(type, Object.assign({ id: P + "-" + id }, attrs), d); stops.forEach(([o, c, a]) => sv("stop", { offset: o, "stop-color": c, "stop-opacity": a == null ? 1 : a }, gg)); };
@@ -8754,6 +8967,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     grad("radialGradient", "shine", { cx: 0.36, cy: 0.28, r: 0.7 }, [[0, "#ffffff", 0.55], [0.5, "#ffffff", 0.12], [1, "#ffffff", 0]]);
     grad("linearGradient", "shade", { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#0a4020", 0], [0.6, "#0a4020", 0], [1, "#0a4020", 0.25]]);
     grad("radialGradient", "fog", {}, [[0, "#f4fafd", 0.97], [0.62, "#eef6fa", 0.9], [1, "#eef6fa", 0]]);
+    grad("radialGradient", "earth", { cx: 0.42, cy: 0.36, r: 0.72 }, [[0, "#f3c98a"], [0.62, "#dba25c"], [1, "#c4823c"]]);
     grad("radialGradient", "rock", { cx: 0.35, cy: 0.3, r: 0.8 }, [[0, "#dde3e7"], [1, "#7f8c96"]]);
     grad("linearGradient", "trunk", {}, [[0, "#6b3f1d"], [0.45, "#b9834d"], [1, "#5e3517"]]);
     grad("linearGradient", "leaf", { x1: 0, y1: 0, x2: 1, y2: 1 }, [[0, "#86dc62"], [1, "#2e8b3a"]]);
@@ -8981,7 +9195,8 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     updateFoot(); freiHello();
     show("scrHome");
     const P = portrait(), A = CHAPTERS.find(c => c.id === "vorlaeufer"), B = CHAPTERS.find(c => c.id === "buchstaben");
-    const pos = P ? { hof: [300, 1280], a: [170, 880], b: [430, 460], w: 600, h: 1440, r0: 96 } : { hof: [200, 470], a: [590, 300], b: [1010, 440], w: 1240, h: 660, r0: 100 };
+    const pos = P ? { hof: [310, 1650], sav: [180, 1250], a: [430, 840], b: [200, 420], w: 600, h: 1840, r0: 96 } : { hof: [170, 290], sav: [480, 470], a: [810, 290], b: [1150, 460], w: 1330, h: 670, r0: 98 };
+    const Lv = invOf({ w: "loewe" }), canBuy = SHOP_L.some(w => !owned(w) && S.coins >= w.p);
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtL = i; save(); swimTo(i, renderMap); };
     const nodes = [
@@ -8990,11 +9205,14 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       { x: pos.a[0], y: pos.a[1], r: pos.r0, icon: "👂", grass: "#ffe8a3", label: "Hören und Sehen", big: true, sub: starTotal(A) ? chapSub(A) : "✨ Hier geht's los!", subGold: !starTotal(A), next: !starTotal(A),
         deco: [[0.56, -0.26, "🌻", 0.4], [-0.58, -0.2, "🎵", 0.3]], aria: "Hör-Inseln: Laute, Reime und Silben", ch: A, tap: enter(A) },
       { x: pos.b[0], y: pos.b[1], r: pos.r0, icon: "🔤", grass: "#ffd6a5", label: "Buchstaben-Inseln", big: true, sub: starTotal(B) ? chapSub(B) : "11 Buchstaben", subGold: !!starTotal(A) && !starTotal(B), next: !!starTotal(A) && !starTotal(B),
-        deco: [[-0.55, -0.28, "🌴", 0.44], [0.58, -0.2, "✏️", 0.3]], aria: "Buchstaben-Inseln: A, L, E, O, M, S, T, U, R, N und D", ch: B, tap: enter(B) }
+        deco: [[-0.55, -0.28, "🌴", 0.44], [0.58, -0.2, "✏️", 0.3]], aria: "Buchstaben-Inseln: A, L, E, O, M, S, T, U, R, N und D", ch: B, tap: enter(B) },
+      { x: pos.sav[0], y: pos.sav[1], r: pos.r0 * 0.9, icon: "🦒", draw: "savanne", subGold: canBuy, label: "Leos Savanne", big: true,
+        sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (Lv.length ? `🦒 ${Lv.length} ${Lv.length === 1 ? "Sache" : "Sachen"} in der Savanne` : "Sammle Münzen! 🪙"),
+        items: Lv.slice(-10).map(a => a.id), next: canBuy, aria: "Leos Savanne mit dem Laden", aqua: true, tap: (i) => { S.homeAtL = i; swimTo(i, renderAqua); } }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(A)], [1, 2, dn(B)]], at: S.homeAtL == null ? 0 : S.homeAtL, label: "Leos Inseln", seed: 13, nemo: 64, wrapBig: true, clouds: 3 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 3, ""], [3, 1, dn(A)], [1, 2, dn(B)]], at: S.homeAtL == null ? 0 : S.homeAtL, label: "Leos Savanne und Inseln", seed: 13, nemo: 64, wrapBig: true, clouds: 2, savDeco: 8 });
     setCoins(false);
   }
   function renderHomeSchach() {
@@ -10279,12 +10497,30 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   }
   // Umgebung als eigenes Bild hinter dem Schnitt (Schulhaus-Ansicht im Spiel)
   const sceneSVG = (gid) => `<svg viewBox="0 0 1400 960" class="school scene" aria-hidden="true">${sceneBits(gid)}</svg>`;
+  // Schriftzug „Die Neugierburg“ als geschwungenes Band über dem Schulhaus (Startbild)
+  function burgBanner() {
+    const arc = "M150 -6 Q700 -262 1250 -6", cols = ["#e63946", "#f77f00", "#e0a400", "#2b9348", "#1f6fd1", "#7b2cbf"];
+    const word = "Neugierburg".split("").map((c, i) => `<tspan fill="${cols[i % cols.length]}">${c}</tspan>`).join("");
+    const tower = (x, y, k, flip) => `<g transform="translate(${x} ${y}) scale(${flip ? -k : k} ${k})"><rect x="-26" y="-60" width="52" height="64" rx="4" fill="#e9d8b4" stroke="#17324a" stroke-width="5"/><path d="M-30 -60 v-14 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v14 Z" fill="#e9d8b4" stroke="#17324a" stroke-width="5" stroke-linejoin="round"/><path d="M-8 4 v-22 a8 8 0 0 1 16 0 v22" fill="#6b4a2a" stroke="#17324a" stroke-width="4"/><path d="M0 -74 v-34" stroke="#17324a" stroke-width="5"/><path d="M0 -108 l30 9 l-30 9 Z" fill="#e63946" stroke="#17324a" stroke-width="4" stroke-linejoin="round"/></g>`;
+    const star = (x, y, k) => `<path transform="translate(${x} ${y}) scale(${k})" d="M0 -20 L5 -5 L20 0 L5 5 L0 20 L-5 5 L-20 0 L-5 -5 Z" fill="#fff6c9" stroke="#e0a400" stroke-width="3" stroke-linejoin="round"/>`;
+    return `<g class="burg-banner" aria-hidden="true">
+      <path d="M118 30 l-70 4 l34 -46 l-40 -40 l96 -6 Z" fill="#c9971f" stroke="#17324a" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M1282 30 l70 4 l-34 -46 l40 -40 l-96 -6 Z" fill="#c9971f" stroke="#17324a" stroke-width="6" stroke-linejoin="round"/>
+      <path d="${arc}" fill="none" stroke="rgba(10,40,70,.28)" stroke-width="176" transform="translate(8 14)"/>
+      <path d="${arc}" fill="none" stroke="#17324a" stroke-width="176"/>
+      <path d="${arc}" fill="none" stroke="#ffd75e" stroke-width="164"/>
+      <path d="${arc}" fill="none" stroke="#fff4dc" stroke-width="140"/>
+      <path id="burgArc" d="M150 28 Q700 -228 1250 28" fill="none"/>
+      <text font-size="118" font-weight="900" letter-spacing="2" text-anchor="middle" stroke="#17324a" stroke-width="12" stroke-linejoin="round" paint-order="stroke" style="font-family: var(--font)"><textPath href="#burgArc" startOffset="50%"><tspan fill="#17324a" font-size="84">Die </tspan>${word}</textPath></text>
+      ${tower(118, -40, 1.05, false)}${tower(1282, -40, 1.05, true)}${star(400, -164, 1.3)}${star(1000, -166, 1.1)}
+    </g>`;
+  }
   // ganze Außenansicht als ein Bild (Startbildschirm): Insel mit Umgebung, Schule von außen, Polly auf dem Dach
   function outsideSVG() {
-    let s = `<svg viewBox="-280 -232 1960 1340" class="school outside" role="img" aria-label="Die Schule auf der Neuerburginsel">`;
+    let s = `<svg viewBox="-280 -232 1960 1340" class="school outside" role="img" aria-label="Die Neugierburg: unsere Schule mit dem Schriftzug Die Neugierburg">`;
     s += sceneBits("stSky", false) + skyBits() + gableBits() + facadePart("kg") + facadePart("eg") + facadePart("og") + fasciaBits() + treeBits();
     s += `<svg x="560" y="76" width="84" height="84" viewBox="0 0 100 100" class="roofpolly">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
-    return s + `</svg>`;
+    return s + burgBanner() + `</svg>`;
   }
   /* ==== SCHULHAUS ENDE ==== */
   /* ---------- Schulhaus: mit dem Superhelden durch Flure und Treppenhaus ---------- */
@@ -10499,7 +10735,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     }
     if (S.fig == null && !window.__NO_FIGPICK) return openFigPick(true);
     speak((who ? `Hallo ${who}! ` : "") + (inside ? "Lauf mit deinem Superhelden durch die Schule! Nemos Klasse ist im Erdgeschoss, da übst du Deutsch. Pollys Klasse ist oben, da übst du Mathe."
-      : "Da ist unsere Schule auf der Neuerburginsel. Tippe auf Rein, dann gehen wir hinein!"));
+      : "Da ist unsere Schule, die Neugierburg. Tippe auf Rein, dann gehen wir hinein!"));
   }
   function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); if (id === "loewe" && S.homeAtL == null) speak("Hallo! Ich bin Leo, der Löwe. Willkommen in der Löwenklasse! Hier hörst du genau hin und lernst die ersten Buchstaben."); if (id === "schach" && S.homeAtS == null) speak("Willkommen in der Schachschule! Ich bin Hopsi, das Schachpferd."); renderHome(); }
 
@@ -10618,7 +10854,6 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   });
   $("wallet").addEventListener("click", () => {
     if (current !== "scrHome" && current !== "scrMap") return;
-    if (W.id === "loewe") return openSheet(c => { sheetTop(c, "🪙", "Deine Münzen", `${S.coins} ${S.coins === 1 ? "Münze" : "Münzen"}`); c.appendChild(el("p", "note", "Deine Münzen kannst du bei Nemo, Polly, Eddie und Hopsi ausgeben: im Aquarium, im Dschungel, im Wald oder im Schachpalast.")); });
     if (!FREI || FREI.aq) renderAqua();
   });
   $("resMap").addEventListener("click", renderMap);
