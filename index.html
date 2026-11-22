@@ -1187,6 +1187,8 @@ body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
   .bub, .sky .fe, .tank .tleaf, .tank .ffly { display: none; }
 }
+.chlim { font-size: .8em; opacity: .75; white-space: nowrap; }
+.chvals { display: inline-block; font-size: .85em; background: #fff3c4; border-radius: 10px; padding: 0 8px; white-space: nowrap; }
 .chgstat { font-size: clamp(18px, 2.4vw, 24px); font-weight: 800; text-align: center; padding: 10px 16px; }
 body.schach .tank { height: clamp(360px, 64vh, 640px); background: linear-gradient(180deg, #5b2a86 0%, #8e5cc0 45%, #c9a0e8 70%, #f1d99a 100%); border-color: #f6edff; outline-color: #a678d6; }
 .tank .pal-hall { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 60px, rgba(255,255,255,0) 60px 120px); }
@@ -7035,7 +7037,8 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
      Kurze Spiele mit wenigen Figuren: Bauernrennen, Bauernjagd und die Springer-Gabel. */
   // Kleines Spiel: Das Kind zieht mit Weiß, Hopsi antwortet mit Schwarz. o.ai(pos) → [von, nach] | null · o.result(pos, wer) → "win" | "lose" | "draw" | null
   function chGame(stage, o) {
-    let sel = null, busy = false;
+    let sel = null, busy = false, moves = 0;
+    const turnTxt = () => "👉 Du bist dran!" + (o.limit ? ` <span class="chlim">Zug ${moves + 1} von ${o.limit}</span>` : "");
     const B = chBoard({ pos: Object.assign({}, o.pos), onTap: (s, c) => {
       if (L.locked || busy) return;
       const p = B.pos[s];
@@ -7045,7 +7048,9 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       busy = true; const from = sel; sel = null; dots(null);
       B.move(from, s, () => {
         B.clear("from"); B.clear("to"); B.mark(from, "from"); B.mark(s, "to");
+        moves++;
         const r = o.result(B.pos, "w"); if (r) return finish(r, c);
+        if (o.limit && moves >= o.limit) return finish("limit", c);
         stat.textContent = "🐴 Hopsi überlegt …";
         setTimeout(() => {
           const m = o.ai(B.pos);
@@ -7054,20 +7059,21 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
             B.clear("from"); B.clear("to"); B.mark(m[0], "from"); B.mark(m[1], "to");
             const r2 = o.result(B.pos, "b"); if (r2) return finish(r2, c);
             if (!chLegal(B.pos, "w").length) return finish("draw", c);
-            busy = false; stat.textContent = "👉 Du bist dran!";
+            busy = false; stat.innerHTML = turnTxt();
           });
         }, reducedMotion() ? 60 : 650);
       });
     } });
     const dots = (s) => { B.clear("dot"); B.clear("sel"); if (s) { B.mark(s, "sel"); chLegal(B.pos, "w").filter(m => m[0] === s).forEach(m => B.mark(m[1], "dot")); } };
     L.chB = B;
-    const lay = chLayout(stage, B.el, o.prompt), stat = el("div", "card chgstat", "👉 Du bist dran!");
+    const lay = chLayout(stage, B.el, o.prompt), stat = el("div", "card chgstat", turnTxt());
     lay.a.appendChild(stat);
     function finish(r, c) {
       if (r === "win") { L.locked = true; stat.textContent = "🏆 Gewonnen!"; award(c, o.factor || 1); hint(praise() + " " + o.winText, true); speak(o.winSay || o.winText); done(2300); return; }
       if (r === "lose") { stat.textContent = "🐴 Hopsi hat diese Runde gewonnen."; miss(c, o.loseText + " Neue Runde!"); }
-      else { stat.textContent = "🤝 Unentschieden"; hint("Unentschieden – keiner kann mehr ziehen. Noch eine Runde!"); }
-      setTimeout(() => { if (L.locked) return; stage.innerHTML = ""; chGame(stage, o); }, 1900);
+      else if (r === "limit") { stat.textContent = "⏰ Die Züge sind aufgebraucht."; miss(c, `Du hattest ${o.limit} Züge. Versuch es nochmal – schieb Hopsis König zügig an den Rand!`); }
+      else { stat.textContent = "🤝 Unentschieden"; hint((o.drawText || "Unentschieden – keiner kann mehr ziehen.") + " Noch eine Runde!"); }
+      setTimeout(() => { if (L.locked) return; stage.innerHTML = ""; chGame(stage, o); }, r === "draw" && o.drawText ? 3600 : 1900);
     }
     L.speakNow = () => speak(o.say || chPlain(o.prompt));
     return B;
@@ -7208,6 +7214,256 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       },
       explain: (x) => ({ html: chPic(x.pos, Object.assign({ [x.n]: "sel" }, Object.fromEntries(x.tg.map(q => [q, "hl"])))) + "<p>Schau von jeder schwarzen Figur aus: Auf welchen Feldern müsste ein Springer stehen, um sie anzugreifen?</p><p>Ein Feld, das bei <b>zwei</b> Figuren vorkommt und das der Springer erreichen kann, ist die Gabel.</p>",
         say: "Schau von jeder schwarzen Figur aus. Auf welchen Feldern müsste ein Springer stehen, um sie anzugreifen? Ein Feld, das bei zwei Figuren vorkommt, ist die Gabel." })
+    }
+  ];
+  /* ======================= Schachschule 5: Hopsis Herausforderungen (Taktik und Endspiele) =======================
+     Jede Insel hat drei deutlich verschiedene Stufen: leicht = eine Sache üben, mittel = eine Falle dazu, schwer = planen. */
+  // kürzeste Zugzahl einer Figur ab "from" (Breitensuche). walls = andere Figuren (nicht betreten), bad = verbotene Felder
+  function chDistMap(code, from, walls, bad) {
+    const D = { [from]: 0 }, q = [from];
+    while (q.length) {
+      const s = q.shift(), pos = Object.assign({}, walls, { [s]: code });
+      chReach(pos, s).forEach(t => { if (walls[t] || (bad && bad.has(t)) || D[t] != null) return; D[t] = D[s] + 1; q.push(t); });
+    }
+    return D;
+  }
+  const chPerms = (a) => a.length < 2 ? [a] : [].concat(...a.map((v, i) => chPerms(a.slice(0, i).concat(a.slice(i + 1))).map(p => [v].concat(p))));
+  // Sternen-Jagd: leicht Turm ohne Hindernisse · mittel Turm/Läufer mit eigenen Bauern und Zuglimit · schwer Springer, schwarze Wächter bewachen Felder
+  function chStarHunt(d) {
+    for (let g = 0; g < 300; g++) {
+      const t = d === "leicht" ? "T" : d === "mittel" ? (Math.random() < .5 ? "T" : "L") : "S", walls = {}, used = new Set();
+      const free = () => { for (let k = 0; k < 60; k++) { const s = chPickOne(ALLSQ); if (!used.has(s)) { used.add(s); return s; } } return null; };
+      const start = free();
+      if (d === "mittel") for (let i = 0; i < 4; i++) { const s = free(); if (s[1] !== "1" && s[1] !== "8") walls[s] = "wB"; }
+      if (d === "schwer") for (let i = 0; i < 3; i++) { const s = free(); walls[s] = "b" + chPickOne(["T", "L", "S", "B"]); if (walls[s] === "bB" && (s[1] === "1" || s[1] === "8")) walls[s] = "bT"; }
+      const bad = new Set(); if (d === "schwer") ALLSQ.forEach(q => { if (!walls[q] && chAttacked(Object.assign({}, walls), q, "b")) bad.add(q); });
+      if (bad.has(start)) continue;
+      const D0 = chDistMap("w" + t, start, walls, bad), cand = Object.keys(D0).filter(q => q !== start && D0[q] >= 1 && !used.has(q));
+      if (t === "L" && cand.length < 6) continue;
+      const n = d === "leicht" ? 3 : 4, stars = shuffle(cand).slice(0, n); if (stars.length < n) continue;
+      if (d !== "leicht" && stars.filter(q => D0[q] === 1).length > 1) continue;   // nicht zu einfach
+      const maps = {}; stars.forEach(q => { maps[q] = chDistMap("w" + t, q, walls, bad); });
+      let best = 99; chPerms(stars).forEach(p => { let v = D0[p[0]]; for (let i = 1; i < p.length; i++) v += maps[p[i - 1]][p[i]] == null ? 99 : maps[p[i - 1]][p[i]]; best = Math.min(best, v); });
+      if (best >= 99 || best < n) continue;
+      if (d === "schwer" && best > 9) continue;
+      const limit = d === "leicht" ? null : best + (d === "mittel" ? 2 : 1);
+      return { t, start, walls, stars, bad: [...bad], best, limit, lab: t + start + stars.join("") + Object.keys(walls).join("") };
+    }
+    return null;
+  }
+  function chStarGame(stage, x, d) {
+    let cur = x.start, moves = 0; const got = new Set(), bad = new Set(x.bad), code = "w" + x.t;
+    const marks = {}; x.stars.forEach(q => { marks[q] = "star"; });
+    const pos0 = Object.assign({}, x.walls, { [x.start]: code });
+    const stat = el("div", "card chgstat", "");
+    const upd = () => { stat.innerHTML = `⭐ ${got.size} von ${x.stars.length} · 👣 ${moves} ${moves === 1 ? "Zug" : "Züge"}${x.limit ? ` <span class="chlim">(höchstens ${x.limit})</span>` : ""}`; };
+    const reach = () => chReach(B.pos, cur).filter(q => !x.walls[q]);
+    const dots = () => { B.clear("dot"); if (d === "leicht") reach().forEach(q => B.mark(q, "dot")); };
+    const again = (msg, c) => { L.locked = true; miss(c, msg + " Neuer Versuch!"); setTimeout(() => { L.locked = false; stage.innerHTML = ""; chStarGame(stage, x, d); }, 2000); };
+    const B = chBoard({ pos: pos0, marks, onTap: (s, c) => {
+      if (L.locked) return;
+      if (s === cur) { hint(`Tippe das Feld an, auf das ${pNom(code)} ziehen soll.`); return; }
+      if (x.walls[s] && x.walls[s][0] === "b") { hint("Die schwarzen Wächter kannst du nicht schlagen. Mach einen Bogen um sie!"); return; }
+      if (reach().indexOf(s) < 0) { miss(c, `So kann ${pNom(code)} nicht ziehen. ${CH_RULE[x.t]}`); return; }
+      const from = cur; cur = s; moves++; L.locked = true; B.clear("dot");
+      B.move(from, s, () => {
+        L.locked = false; B.clear("from"); B.clear("to"); B.mark(from, "from"); B.mark(s, "to");
+        if (bad.has(s)) { chAttackers(B.pos, s, "b").forEach(q => B.mark(q, "chk")); upd(); return again(`Oh nein! Dort wird ${pNom(code)} geschlagen von ${chAttackers(B.pos, s, "b").map(q => pNom(B.pos[q])).join(" und ")}.`, c); }
+        if (marks[s] && !got.has(s)) { got.add(s); B.mark(s, "ok"); tone([620 + got.size * 80], 0.08); }
+        upd();
+        if (got.size === x.stars.length) {
+          if (x.limit && moves > x.limit) return again(`Alle Sterne – aber mit ${moves} Zügen. Es geht mit höchstens ${x.limit}!`, c);
+          L.locked = true; award(c, d === "leicht" ? 1 : d === "mittel" ? 2 : 3);
+          const perfect = moves === x.best;
+          hint(praise() + (perfect ? ` Alle Sterne in nur ${moves} Zügen – kürzer geht es nicht!` : ` Alle Sterne gesammelt!`), true);
+          speak(perfect ? `Super! Alle Sterne in nur ${moves} Zügen. Kürzer geht es nicht!` : "Super! Alle Sterne gesammelt!"); done(2000); return;
+        }
+        if (x.limit && moves >= x.limit) return again(`Die Züge sind aufgebraucht – es fehlen noch ${x.stars.length - got.size} Sterne. Plane den Weg vorher!`, c);
+        dots();
+      });
+    } });
+    const pD = (x.t === "D" ? "der " : "dem ") + PN[x.t];
+    const lay = chLayout(stage, B.el, d === "leicht" ? `<b>Sternen-Jagd!</b> Sammle alle Sterne mit ${pD}.`
+      : d === "mittel" ? `<b>Sternen-Jagd!</b> Sammle alle Sterne mit ${pD} – mit höchstens <b>${x.limit}</b> Zügen. Deine Bauern stehen im Weg.`
+      : `<b>Sternen-Jagd!</b> Sammle alle Sterne mit dem Springer – höchstens <b>${x.limit}</b> Züge. Vorsicht: Lande nie auf einem Feld, das ein schwarzer Wächter angreift!`);
+    lay.a.appendChild(stat); upd(); dots();
+    L.speakNow = () => speak(chPlain(lay.q.innerHTML));
+    return B;
+  }
+  // Gratis-Figur: Welche schwarze Figur kannst du schlagen, ohne zurückgeschlagen zu werden? schwer: der beste Fang nach Punkten
+  const chGain = (pos, f, t) => { const after = chMove(pos, f, t); return PVAL[pos[t][1]] - (chAttacked(after, t, "b") ? (PVAL[pos[f][1]] || 99) : 0); };
+  function chFree(d) {
+    for (let g = 0; g < 600; g++) {
+      const pos = {}, put = (code) => { for (let k = 0; k < 60; k++) { const s = chPickOne(ALLSQ); if (pos[s] || (code[1] === "B" && (s[1] === "1" || s[1] === "8"))) continue; pos[s] = code; return s; } return null; };
+      const wk = put("wK"), bk = put("bK"); if (chDist(wk, bk) < 2) continue;
+      const nW = d === "leicht" ? 1 : 2, nB = d === "leicht" ? 2 : d === "mittel" ? 3 : 4;
+      shuffle(d === "leicht" ? ["T", "L", "S"] : ["T", "L", "S", "D"]).slice(0, nW).forEach(t => put("w" + t));
+      for (let i = 0; i < nB; i++) put("b" + chPickOne(d === "schwer" ? ["B", "S", "L", "T", "D"] : ["B", "S", "L", "T"]));
+      if (chInCheck(pos, "w") || chInCheck(pos, "b")) continue;
+      const caps = chLegal(pos, "w").filter(([f, t]) => pos[t] && pos[t][0] === "b").map(([f, t]) => ({ f, t, gain: pos[f][1] === "K" ? -99 : chGain(pos, f, t) }));
+      if (caps.some(c => c.gain === -99)) continue;            // der König soll hier nicht schlagen
+      const good = caps.filter(c => c.gain > 0), trap = caps.filter(c => c.gain <= 0);
+      if (d === "leicht" && !(caps.length === 2 && good.length === 1)) continue;
+      if (d === "mittel" && !(caps.length >= 3 && good.length === 1 && trap.length >= 2)) continue;
+      if (d === "schwer") { if (good.length < 2 || !trap.length) continue; const s = good.map(c => c.gain).sort((a, b) => b - a); if (s[0] - s[1] < 2) continue; }
+      const best = good.sort((a, b) => b.gain - a.gain)[0];
+      return { pos, best, caps, lab: chStr(pos) };
+    }
+    return null;
+  }
+  // Bauern-Krönung: leicht Bauer auf der 7. Reihe · mittel vorne versperrt, nur schräg schlagend · schwer Wettlauf gegen Hopsis König
+  function chPromo(d) {
+    for (let g = 0; g < 600; g++) {
+      if (d === "schwer") {
+        const f = rint(1, 6), r = rint(3, 4), p = sqOf(f, r), q8 = sqOf(f, 7), n = 7 - r;
+        const bk = sqOf(rint(0, 7), rint(3, 7)), wk = sqOf(rint(0, 7), rint(0, 1));
+        if (new Set([p, bk, wk]).size < 3 || chDist(bk, wk) < 2 || bk[0] === p[0]) continue;
+        if (chDist(bk, q8) !== n + 1) continue;           // genau außerhalb des Quadrats: Jeder Bummelzug ist zu viel!
+        const pos = { [p]: "wB", [bk]: "bK", [wk]: "wK" }; if (chInCheck(pos, "b") || chAttacked(pos, p, "b")) continue;
+        if (chDist(wk, q8) <= n + 1) continue;           // der weiße König hilft nicht
+        return { pos, game: true, lab: chStr(pos) };
+      }
+      const pos = {}, f = rint(0, 7), p = sqOf(f, 6), ahead = sqOf(f, 7); pos[p] = "wB";
+      const put = (code, avoid) => { for (let k = 0; k < 60; k++) { const s = chPickOne(ALLSQ); if (pos[s] || (avoid && avoid.indexOf(s) >= 0) || (code[1] === "B" && (s[1] === "1" || s[1] === "8"))) continue; pos[s] = code; return s; } return null; };
+      if (d === "mittel") {
+        pos[ahead] = "b" + chPickOne(["T", "L", "S"]);
+        const sides = [-1, 1].map(df => f + df).filter(x => x >= 0 && x < 8), cap = sqOf(chPickOne(sides), 7); pos[cap] = "b" + chPickOne(["T", "S", "L"]);
+        put("w" + chPickOne(["T", "S"]));
+      } else { put("wB", [sqOf(f, 7)]); }
+      const wk = put("wK"), bk = put("bK", [ahead]); if (!wk || !bk || chDist(wk, bk) < 2) continue;
+      if (chInCheck(pos, "w") || chInCheck(pos, "b")) continue;
+      const promos = chLegal(pos, "w").filter(([a, b]) => pos[a] === "wB" && b[1] === "8");
+      if (d === "leicht" && promos.length !== 1) continue;
+      if (d === "mittel" && (promos.length !== 1 || promos[0][1] === ahead)) continue;
+      return { pos, move: promos[0], lab: chStr(pos) };
+    }
+    return null;
+  }
+  // Hopsis König im Wettlauf: geht auf das Umwandlungsfeld zu und schlägt, was er kann
+  function aiKingChase(pos) {
+    const ms = chLegal(pos, "b"); if (!ms.length) return null;
+    const pawn = ALLSQ.find(q => pos[q] === "wB"), queen = ALLSQ.find(q => pos[q] === "wD"), goal = queen || (pawn ? sqOf(sqF(pawn), 7) : null);
+    const sc = (m) => (pos[m[1]] ? 1000 : 0) - (goal ? chDist(m[1], goal) * 10 : 0) - (pawn ? chDist(m[1], pawn) : 0) + Math.random();
+    return ms.sort((a, b) => sc(b) - sc(a))[0];
+  }
+  const promoResult = (pos) => {
+    if (!ALLSQ.some(q => pos[q] === "wB" || pos[q] === "wD")) return "lose";
+    const qd = ALLSQ.find(q => pos[q] === "wD"); if (qd && !chAttacked(pos, qd, "b")) return "win";
+    return null;
+  };
+  // Matt-Training: Hopsis König flieht in die Mitte und schlägt ungedeckte Figuren
+  function aiKingFlee(d) {
+    return (pos) => {
+      const ms = chLegal(pos, "b"); if (!ms.length) return null;
+      const sc = (m) => {
+        const [f, t] = m, after = chMove(pos, f, t), cx = Math.abs(sqF(t) - 3.5), cy = Math.abs(sqR(t) - 3.5);
+        let v = (pos[t] ? 1000 : 0) - (cx + cy) * 4 + chReach(after, t).filter(q => !chAttacked(after, q, "w")).length * 2;
+        return v + Math.random() * (d === "leicht" ? 9 : d === "mittel" ? 3 : 1);
+      };
+      return ms.sort((a, b) => sc(b) - sc(a))[0];
+    };
+  }
+  function chMateStart(d) {
+    for (let g = 0; g < 400; g++) {
+      const pos = {}, put = (code, rs) => { for (let k = 0; k < 60; k++) { const s = sqOf(rint(0, 7), chPickOne(rs)); if (pos[s]) continue; pos[s] = code; return s; } return null; };
+      let bk;
+      if (d === "leicht") { bk = put("bK", [3, 4, 5]); put("wT", [0]); put("wT", [1]); put("wK", [0, 1]); }
+      else if (d === "mittel") { bk = put("bK", [3, 4, 5, 6]); put("wD", [1, 2]); put("wK", [0, 1]); }
+      else { bk = put("bK", [5, 6]); put("wT", [2, 3]); put("wK", [3, 4]); }
+      if (Object.keys(pos).length < (d === "leicht" ? 4 : 3)) continue;
+      const wk = ALLSQ.find(q => pos[q] === "wK"); if (chDist(wk, bk) < 2) continue;
+      if (chInCheck(pos, "b") || chInCheck(pos, "w")) continue;
+      if (chPieces(pos, "w").some(q => pos[q][1] !== "K" && chAttacked(pos, q, "b") && !chAttacked(Object.assign({}, pos, { [q]: undefined }), q, "w"))) continue;
+      return { pos, n: chPieces(pos, "w").length, lab: chStr(pos) };
+    }
+    return null;
+  }
+  const SCHACH_E = [
+    {
+      id: "sternenjagd", name: "Sternen-Jagd", icon: "🌟", color: "#e0a400",
+      task: () => "Sammle alle Sterne!",
+      intro: (d) => d === "leicht" ? "Der Turm sammelt Sterne: Er zieht geradeaus, so weit er will. Sammle alle Sterne – die Punkte zeigen dir, wohin er ziehen kann."
+        : d === "mittel" ? "Jetzt zählen die Züge! Deine eigenen Bauern stehen im Weg. Plane einen kurzen Weg: Es gibt ein Zuglimit."
+        : "Profi-Jagd mit dem Springer! Schwarze Wächter bewachen Felder. Landest du auf einem bewachten Feld, wird dein Springer geschlagen. Und die Züge sind knapp!",
+      ex: (d) => chPic(chParse(d === "schwer" ? "wSb1 bTf5" : "wTa1"), d === "schwer" ? { c3: "star", e4: "star", f1: "no" } : { a6: "star", e6: "star", e2: "star" }) + "<br>" + (d === "schwer" ? "Bewachte Felder meiden!" : "Erst nach oben, dann zur Seite …"),
+      say: (d) => d === "leicht" ? "Der Turm sammelt Sterne. Er zieht geradeaus, so weit er will. Sammle alle Sterne." : d === "mittel" ? "Jetzt zählen die Züge! Deine eigenen Bauern stehen im Weg. Plane einen kurzen Weg." : "Profi-Jagd mit dem Springer! Lande nie auf einem Feld, das ein schwarzer Wächter angreift. Und die Züge sind knapp!",
+      build(d) { return gen(3, () => chStarHunt(d)); },
+      render(x, stage, d) { return chStarGame(stage, x, d); },
+      explain: (x) => ({ html: chPic(Object.assign({}, x.walls, { [x.start]: "w" + x.t }), Object.fromEntries(x.stars.map(q => [q, "star"]))) + `<p>Schau zuerst: Welcher Stern ist am nächsten? Und von dort – welcher als Nächstes? ${x.t === "S" ? "Der Springer springt im L: zwei geradeaus, eins zur Seite." : CH_RULE[x.t]}</p>` + (x.bad.length ? "<p>Prüfe vor jedem Sprung: Kann ein schwarzer Wächter dieses Feld erreichen? Dann such ein anderes!</p>" : "") + `<p>Kürzester Weg: <b>${x.best} Züge</b>.</p>`,
+        say: `Schau zuerst, welcher Stern am nächsten ist, und plane den Weg. Der kürzeste Weg hat ${x.best} Züge.` })
+    },
+    {
+      id: "gratis", name: "Gratis-Figur", icon: "🎁", color: "#2a9d8f",
+      task: (d) => d === "schwer" ? "Finde den besten Fang!" : "Schlag eine Figur – ohne Risiko!",
+      intro: (d) => d === "leicht" ? "Zwei schwarze Figuren kannst du schlagen. Aber eine ist gedeckt: Dann schlägt Hopsi deine Figur sofort zurück! Schlag die Figur, die niemand beschützt."
+        : d === "mittel" ? "Jetzt gibt es mehr Möglichkeiten – und mehrere Fallen. Prüfe bei jedem Schlag: Wer kann danach meine Figur schlagen?"
+        : "Jetzt zählen die Punkte: Bauer 1, Springer 3, Läufer 3, Turm 5, Dame 9. Welcher Schlag bringt dir am meisten? Manchmal lohnt sich sogar ein Tausch!",
+      ex: (d) => chPic(chParse("wTa1 bSa6 bBb7 bLe1 bKh8 wKh1"), { a6: "no", e1: "ok" }) + "<br>Der Springer ist gedeckt – der Läufer nicht.",
+      say: (d) => d === "schwer" ? "Welcher Schlag bringt dir die meisten Punkte? Bauer 1, Springer 3, Läufer 3, Turm 5, Dame 9." : "Schlag die schwarze Figur, die niemand beschützt. Prüfe immer: Wer kann danach meine Figur schlagen?",
+      build(d) { return gen(6, () => chFree(d)); },
+      render(x, stage, d) {
+        const bv = PVAL[x.pos[x.best.t][1]];
+        return chMoveTask(stage, { pos: x.pos, side: "w", factor: d === "leicht" ? 1 : d === "mittel" ? 2 : 3, delay: 2400,
+          prompt: d === "schwer" ? "<b>Bester Fang!</b> Welcher Schlag bringt dir die meisten Punkte? <span class=\"chvals\">♟ 1 · ♞ 3 · ♝ 3 · ♜ 5 · ♛ 9</span>" : d === "mittel" ? "<b>Gratis-Figur!</b> Nur ein Schlag ist sicher. Achtung, Fallen!" : "<b>Gratis-Figur!</b> Schlag die schwarze Figur, die niemand beschützt.",
+          ok: (from, to, pos) => {
+            if (!pos[to]) return "Such einen Schlag: Zieh auf ein Feld mit einer schwarzen Figur.";
+            const g = chGain(pos, from, to), after = chMove(pos, from, to), def = chAttackers(after, to, "b");
+            if (g <= 0) return `Falle! ${capF(pNom(pos[to]))} ist gedeckt: ${capF(def.map(q => pNom(after[q])).join(" und "))} schlägt sofort zurück. Dann verlierst du ${pAkk(pos[from])}.`;
+            if (g < x.best.gain) return `Das ist sicher und bringt ${g} ${g === 1 ? "Punkt" : "Punkte"}. Aber es gibt einen noch besseren Fang!`;
+            return true;
+          },
+          after: (B, from, to) => { B.mark(to, "ok"); },
+          okText: `Gratis! Du gewinnst ${pAkk(x.pos[x.best.t])} – ${x.best.gain} ${x.best.gain === 1 ? "Punkt" : "Punkte"}${x.best.gain < bv ? ` (${bv} minus ${bv - x.best.gain} für deine Figur)` : ""}.`,
+          okSay: `Gratis! Du gewinnst ${pAkk(x.pos[x.best.t])}.` });
+      },
+      explain: (x) => ({ html: chPic(x.pos, Object.fromEntries(x.caps.map(c => [c.t, c.gain > 0 ? "ok" : "no"]))) + "<p>Prüfe jeden Schlag: <b>Wer kann danach meine Figur schlagen?</b> Steht dort niemand, ist die Figur <b>gratis</b>.</p><p>Grün = sicher, rot = gedeckt (Falle).</p>",
+        say: "Prüfe jeden Schlag: Wer kann danach meine Figur schlagen? Steht dort niemand, ist die Figur gratis." })
+    },
+    {
+      id: "kroenung", name: "Bauern-Krönung", icon: "👑", color: "#e63946",
+      task: (d) => d === "schwer" ? "Gewinne das Wettrennen gegen Hopsis König!" : "Mach aus dem Bauern eine Dame!",
+      intro: (d) => d === "leicht" ? "Kommt ein Bauer auf die letzte Reihe, darf er sich verwandeln – meistens in eine Dame! Welcher Bauer schafft es mit einem Zug?"
+        : d === "mittel" ? "Jetzt ist das Feld vor dem Bauern besetzt. Geradeaus geht nicht – aber der Bauer schlägt schräg! So kommt er trotzdem ans Ziel."
+        : "Ein Wettrennen! Dein Bauer läuft nach oben, Hopsis König will ihn fangen. Verschwende keinen einzigen Zug – sonst holt Hopsi dich ein!",
+      ex: (d) => chPic(chParse(d === "mittel" ? "wBd7 bTd8 bSe8" : "wBd7"), d === "mittel" ? { e8: "ok", d8: "no" } : { d8: "star" }) + "<br>" + (d === "mittel" ? "Schräg schlagen – und Dame werden!" : "Auf der letzten Reihe wird der Bauer zur Dame."),
+      say: (d) => d === "schwer" ? "Ein Wettrennen! Dein Bauer läuft nach oben, Hopsis König will ihn fangen. Verschwende keinen einzigen Zug!" : "Kommt ein Bauer auf die letzte Reihe, wird er zur Dame. Bring den Bauern ans Ziel!",
+      build(d) { return gen(d === "schwer" ? 3 : 6, () => chPromo(d)); },
+      render(x, stage, d) {
+        if (x.game) return chGame(stage, { pos: x.pos, factor: 3, prompt: "<b>Wettrennen!</b> Bring deinen Bauern auf die oberste Reihe, bevor Hopsis König ihn fängt.",
+          ai: aiKingChase, result: promoResult, limit: 12, winText: "Dein Bauer ist eine Dame geworden!", winSay: "Gewonnen! Dein Bauer ist eine Dame geworden.", loseText: "Hopsis König hat deinen Bauern gefangen. Lauf sofort los – jeder Zug zählt!" });
+        return chMoveTask(stage, { pos: x.pos, side: "w", factor: d === "leicht" ? 1 : 2, delay: 2300,
+          prompt: d === "mittel" ? "<b>Krönung!</b> Der Weg geradeaus ist versperrt. Wie kommt der Bauer trotzdem auf die letzte Reihe?" : "<b>Krönung!</b> Welcher Bauer wird mit einem Zug zur Dame?",
+          ok: (from, to, pos) => {
+            if (pos[from] !== "wB") return "Hier soll ein Bauer ans Ziel. Tippe einen weißen Bauern an!";
+            if (to[1] !== "8") return d === "leicht" ? "Dieser Bauer braucht zu lange. Welcher Bauer steht schon ganz vorn?" : "Das ist noch nicht die letzte Reihe!";
+            return true;
+          },
+          after: (B, from, to) => { B.mark(to, "ok"); },
+          okText: "Krönung! Aus dem Bauern wird eine Dame.", okSay: "Krönung! Aus dem Bauern wird eine Dame." });
+      },
+      explain: (x) => ({ html: x.game ? chPic(x.pos, {}) + "<p><b>Quadrat-Regel:</b> Zähle, wie viele Züge dein Bauer bis oben braucht. Braucht Hopsis König mehr Züge bis zum Zielfeld, gewinnt dein Bauer – wenn du <b>sofort</b> losläufst!</p>"
+          : chPic(x.pos, { [x.move[1]]: "ok" }) + "<p>Ein Bauer, der die letzte Reihe erreicht, wird zur <b>Dame</b>. Ist das Feld vor ihm besetzt, kann er <b>schräg schlagen</b>.</p>",
+        say: x.game ? "Zähle, wie viele Züge dein Bauer bis oben braucht. Braucht Hopsis König mehr Züge, gewinnt dein Bauer, wenn du sofort losläufst." : "Ein Bauer, der die letzte Reihe erreicht, wird zur Dame. Ist das Feld vor ihm besetzt, kann er schräg schlagen." })
+    },
+    {
+      id: "matttraining", name: "Matt-Training", icon: "🥊", color: "#1b2a4a",
+      task: (d) => d === "leicht" ? "Setz matt mit zwei Türmen!" : d === "mittel" ? "Setz matt mit der Dame!" : "Setz matt mit dem Turm!",
+      intro: (d) => d === "leicht" ? "Treppenmatt: Die zwei Türme schieben Hopsis König Reihe für Reihe an den Rand – wie auf einer Treppe. Pass auf, dass er deine Türme nicht schlagen kann!"
+        : d === "mittel" ? "Dame und König gegen König. Die Dame sperrt den König immer enger ein, dein König hilft am Ende. Achtung: Hat Hopsis König keinen Zug mehr, steht aber nicht im Schach, ist es Patt – unentschieden!"
+        : "Die Profi-Aufgabe: nur Turm und König! Der Turm sperrt eine Reihe ab, dein König läuft mit. Gemeinsam drängt ihr Hopsis König an den Rand.",
+      ex: (d) => chPic(chParse(d === "leicht" ? "wTa7 wTb8 bKh8 wKe1" : d === "mittel" ? "wDg7 wKf6 bKh8" : "wTa8 wKg6 bKg8"), {}) + "<br>Schachmatt!",
+      say: (d) => d === "leicht" ? "Treppenmatt: Die zwei Türme schieben Hopsis König Reihe für Reihe an den Rand." : d === "mittel" ? "Dame und König gegen König. Achtung, Patt ist unentschieden!" : "Die Profi-Aufgabe: nur Turm und König. Gemeinsam drängt ihr Hopsis König an den Rand.",
+      build(d) { return gen(2, () => chMateStart(d)); },
+      render(x, stage, d) {
+        const lim = d === "leicht" ? 16 : d === "mittel" ? 24 : 30;
+        return chGame(stage, { pos: x.pos, factor: d === "leicht" ? 3 : d === "mittel" ? 4 : 5, limit: lim,
+          prompt: d === "leicht" ? `<b>Treppenmatt!</b> Setz Hopsis König mit den zwei Türmen matt. Du hast ${lim} Züge.` : d === "mittel" ? `<b>Damen-Matt!</b> Setz Hopsis König matt – ohne Patt! Du hast ${lim} Züge.` : `<b>Turm-Matt!</b> Turm und König gegen König. Du hast ${lim} Züge.`,
+          ai: aiKingFlee(d), result: (pos, side) => { if (chMate(pos, "b")) return "win"; if (side === "w" && chPatt(pos, "b")) return "draw"; if (chPieces(pos, "w").length < x.n) return "lose"; return null; },
+          drawText: "Patt! Hopsis König kann nicht ziehen, steht aber nicht im Schach. Das ist unentschieden. Lass ihm immer ein Feld frei, bis du matt setzt!",
+          winText: "Schachmatt! Du hast Hopsis König besiegt.", winSay: "Schachmatt! Du hast Hopsis König besiegt.", loseText: "Hopsi hat eine ungedeckte Figur geschlagen." });
+      },
+      explain: (x) => ({ html: chPic(x.pos, {}) + "<p>1. Schieb den König Reihe für Reihe an den Rand.</p><p>2. Stell deine Figuren nie <b>direkt neben</b> Hopsis König, wenn sie nicht gedeckt sind.</p><p>3. Kurz vor dem Matt: Lass ihm noch ein Feld – sonst ist es <b>Patt</b>.</p>",
+        say: "Schieb den König Reihe für Reihe an den Rand. Stell deine Figuren nie ungedeckt direkt neben Hopsis König. Und kurz vor dem Matt: Lass ihm noch ein Feld, sonst ist es Patt." })
     }
   ];
   // Schreibspuren (Koordinaten 0–100 breit, Lineatur: Oberlinie 12, Mittellinie 50, Grundlinie 90, Unterlinie 108).
@@ -7626,6 +7882,8 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       bonusPlan: [["schlagen", "mittel", 2], ["wert", "schwer", 1], ["schach", "mittel", 2], ["abwehr", "leicht", 1], ["abwehr", "schwer", 1], ["matt", "mittel", 2], ["mattsetzen", "leicht", 1], ["mattsetzen", "mittel", 1]] },
     { id: "schachpartie", world: "schach", name: "Kleine Partien", title: "Partie-Inseln", sub: "Kurze Spiele gegen Hopsi", icon: "🎲", ready: true, levels: SCHACH_D, award: "Partie-Profi", hunter: "Schach", noExpert: true,
       bonusPlan: [["gabel", "leicht", 2], ["gabel", "mittel", 2], ["gabel", "schwer", 2]] },
+    { id: "schachmeister", world: "schach", name: "Hopsis Herausforderungen", title: "Meister-Inseln", sub: "Taktik und Endspiele", icon: "🏆", ready: true, levels: SCHACH_E, award: "Schach-Meister", hunter: "Meister", noExpert: true,
+      bonusPlan: [["sternenjagd", "mittel", 1], ["gratis", "mittel", 2], ["gratis", "schwer", 2], ["kroenung", "mittel", 2]] },
     // ---- Löwenklasse (1. Klasse) mit Leo, dem Löwen ----
     { id: "vorlaeufer", world: "loewe", name: "Hören und Sehen", title: "Hör-Inseln", sub: "Laute, Reime und Silben", icon: "👂", ready: true, levels: VORL, award: "Hör-Profi", hunter: "Hör", noExpert: true,
       bonusPlan: [["hoerbild", "schwer", 2], ["reime", "mittel", 2], ["silbentrommel", "mittel", 2], ["anlautohr", "mittel", 2]] },
@@ -9220,9 +9478,9 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Hopsi hüpfen?` : S.name ? `Hallo ${S.name}! Wohin soll Hopsi hüpfen?` : "Wohin soll Hopsi hüpfen?";
     updateFoot(); freiHello();
     show("scrHome");
-    const P = portrait(), A = CHAPTERS.find(c => c.id === "schachbrett"), B = CHAPTERS.find(c => c.id === "schachzuege"), C = CHAPTERS.find(c => c.id === "schachmatt"), D = CHAPTERS.find(c => c.id === "schachpartie");
-    const pos = P ? { hof: [150, 1830], pal: [450, 1830], a: [170, 1480], b: [430, 1150], c: [170, 820], d: [430, 470], w: 600, h: 2020, r0: 92 }
-                  : { hof: [210, 520], pal: [240, 190], a: [520, 450], b: [780, 250], c: [1080, 450], d: [1300, 210], w: 1460, h: 680, r0: 92 };
+    const P = portrait(), A = CHAPTERS.find(c => c.id === "schachbrett"), B = CHAPTERS.find(c => c.id === "schachzuege"), C = CHAPTERS.find(c => c.id === "schachmatt"), D = CHAPTERS.find(c => c.id === "schachpartie"), E = CHAPTERS.find(c => c.id === "schachmeister");
+    const pos = P ? { hof: [150, 2160], pal: [450, 2160], a: [170, 1810], b: [430, 1480], c: [170, 1150], d: [430, 810], e: [180, 450], w: 600, h: 2350, r0: 92 }
+                  : { hof: [200, 520], pal: [230, 190], a: [490, 460], b: [740, 250], c: [990, 460], d: [1240, 250], e: [1490, 460], w: 1690, h: 680, r0: 92 };
     const inv = palastInv(), canBuy = SHOP_S.some(w => countOf(w) < maxOf(w) && S.coins >= w.p), cheapest = Math.min(...SHOP_S.filter(w => countOf(w) < maxOf(w)).map(w => w.p));
     const chapSub = (ch) => `⭐ ${starTotal(ch)}/${ch.levels.length * DK.length * 3} · 💎 ${perfectCount(ch)}/${ch.levels.length}${S.bonus[ch.id] ? " · 👑" : ""}`;
     const enter = (ch) => (i) => { CH = ch; S.homeAtS = i; save(); swimTo(i, renderMap); };
@@ -9237,11 +9495,13 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         starTotal(D) ? {} : { sub: "✨ Neu!", subGold: true }),
       { x: pos.pal[0], y: pos.pal[1], r: pos.r0 * 0.9, icon: "🏰", grass: "#e9d8fd", label: "Hopsis Schachpalast", big: true, subGold: canBuy, next: canBuy,
         sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : inv.length ? `♞ ${inv.length} ${inv.length === 1 ? "Schatz" : "Schätze"} im Palast` : `Spezial-Figuren ab ${cheapest} 🪙`,
-        deco: [[-0.55, -0.3, "👑", 0.36], [0.56, -0.26, "♞", 0.36]], aria: "Hopsis Schachpalast: dein eigenes Schachbrett mit besonderen Figuren", tap: (i) => { S.homeAtS = i; save(); swimTo(i, renderAqua); } }
+        deco: [[-0.55, -0.3, "👑", 0.36], [0.56, -0.26, "♞", 0.36]], aria: "Hopsis Schachpalast: dein eigenes Schachbrett mit besonderen Figuren", tap: (i) => { S.homeAtS = i; save(); swimTo(i, renderAqua); } },
+      Object.assign(isl(E, pos.e, "🏆", "#ffe8a3", "Hopsis Herausforderungen", "Meister-Inseln: Sternen-Jagd, Gratis-Figur, Bauern-Krönung und Matt-Training", [[0.56, -0.26, "🌳", 0.44], [-0.58, -0.2, "👑", 0.3]]),
+        starTotal(E) ? {} : { sub: "✨ Neu!", subGold: true })
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(A)], [1, 2, dn(B)], [2, 3, dn(C)], [3, 4, dn(D)], [0, 5, inv.length ? "done" : ""]], at: S.homeAtS == null ? 0 : S.homeAtS, label: "Schach-Inseln", seed: 11, nemo: 62, wrapBig: true, clouds: 4 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 1, dn(A)], [1, 2, dn(B)], [2, 3, dn(C)], [3, 4, dn(D)], [4, 6, dn(E)], [0, 5, inv.length ? "done" : ""]], at: S.homeAtS == null ? 0 : S.homeAtS, label: "Schach-Inseln", seed: 11, nemo: 62, wrapBig: true, clouds: 4 });
     setCoins(false);
   }
 
@@ -9604,6 +9864,10 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     "schachpartie:bauernrennen": "Ich spiele ein Bauernspiel und bringe einen Bauern ans Ziel.",
     "schachpartie:bauernjagd": "Ich fange Bauern mit Dame und Turm, bevor sie durchkommen.",
     "schachpartie:gabel": "Ich finde eine Springer-Gabel.",
+    "schachmeister:sternenjagd": "Ich plane einen kurzen Weg für meine Figur.",
+    "schachmeister:gratis": "Ich schlage nur Figuren, die nicht gedeckt sind.",
+    "schachmeister:kroenung": "Ich mache aus einem Bauern eine Dame.",
+    "schachmeister:matttraining": "Ich setze den König mit wenigen Figuren matt.",
     "werkstatt:bauen": "Ich lege Zahlen mit Zehnern und Einern.",
     "werkstatt:tauschen": "Ich tausche 10 Einer gegen einen Zehner und zurück.",
     "werkstatt:pluslegen": "Ich lege Plusaufgaben mit Material.",
@@ -9824,6 +10088,10 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     "schachpartie:bauernrennen": { k: "tipp", t: "Bauern-Tipp", s: "Bauern ziehen <b>geradeaus</b>, schlagen aber <b>schräg</b>. Lauf nicht ungeschützt vor einen gegnerischen Bauern. Ein Bauer, den keiner mehr aufhalten kann, gewinnt!", ex: [["⬆️", "geradeaus", "ziehen"], ["↗️", "schräg", "schlagen"]], say: "Bauern ziehen geradeaus, schlagen aber schräg. Lauf nicht ungeschützt vor einen gegnerischen Bauern. Ein Bauer, den keiner mehr aufhalten kann, gewinnt." },
     "schachpartie:bauernjagd": { k: "tipp", t: "Jagd-Tipp", s: "Stell dich <b>vor</b> einen Bauern, dann ist er blockiert. Aber nie <b>schräg davor</b> – dort kann er dich schlagen! Fang zuerst den Bauern, der am weitesten gelaufen ist.", ex: [["🛑", "vor den Bauern", "blockiert"], ["⚠️", "schräg davor", "gefährlich"]], say: "Stell dich vor einen Bauern, dann ist er blockiert. Aber nie schräg davor, dort kann er dich schlagen. Fang zuerst den Bauern, der am weitesten gelaufen ist." },
     "schachpartie:gabel": { k: "merk", t: "Die Gabel", s: "Eine <b>Gabel</b> ist ein Zug, der <b>zwei Figuren gleichzeitig</b> angreift. Der Gegner kann nur eine retten – die andere schlägst du!", ex: [["🐴", "ein Sprung", "Springer"], ["🎯🎯", "zwei Ziele", "Gabel"]], say: "Eine Gabel ist ein Zug, der zwei Figuren gleichzeitig angreift. Der Gegner kann nur eine retten, die andere schlägst du." },
+    "schachmeister:sternenjagd": { k: "tipp", t: "Erst planen, dann ziehen", s: "Schau dir <b>alle Sterne</b> an, bevor du ziehst. Welcher ist am nächsten? Welcher kommt danach? Ein guter Plan spart Züge!", ex: [["👀", "erst schauen", "Plan"], ["👣", "dann ziehen", "wenig Züge"]], say: "Schau dir alle Sterne an, bevor du ziehst. Ein guter Plan spart Züge." },
+    "schachmeister:gratis": { k: "merk", t: "Ist die Figur gedeckt?", s: "Bevor du schlägst, frag dich: <b>Wer kann danach meine Figur schlagen?</b> Ist niemand da, ist die Figur <b>gratis</b>.", ex: [["✅", "nicht gedeckt", "gratis"], ["⚠️", "gedeckt", "Falle"]], v: "♟ 1 · ♞ 3 · ♝ 3 · ♜ 5 · ♛ 9", say: "Bevor du schlägst, frag dich: Wer kann danach meine Figur schlagen? Ist niemand da, ist die Figur gratis." },
+    "schachmeister:kroenung": { k: "merk", t: "Die Bauern-Krönung", s: "Erreicht ein Bauer die <b>letzte Reihe</b>, wird er zur <b>Dame</b>. Ist der Weg versperrt, kann er <b>schräg schlagen</b>.", ex: [["♙", "letzte Reihe", "Bauer"], ["♕", "wird zur", "Dame"]], say: "Erreicht ein Bauer die letzte Reihe, wird er zur Dame. Ist der Weg versperrt, kann er schräg schlagen." },
+    "schachmeister:matttraining": { k: "tipp", t: "So setzt du matt", s: "1. König an den <b>Rand</b> schieben. 2. Figuren nie ungedeckt <b>neben</b> den König stellen. 3. Kein <b>Patt</b>: Lass ihm ein Feld bis zum Matt!", ex: [["⬆️", "an den Rand", "schieben"], ["🛡️", "decken", "schützen"], ["🏆", "matt", "gewonnen"]], say: "König an den Rand schieben. Figuren nie ungedeckt neben den König stellen. Und kein Patt: Lass ihm ein Feld bis zum Matt." },
     "rechnen:profi": { k: "merk", t: "Der Profi-Rechenweg", s: "Erst die <b>Zehner</b>. Dann rechnest du bis zum <b>vollen Zehner</b> und zum Schluss den <b>Rest</b>.",
       ex: [["1️⃣", "38 + *20* = 58", "Zehner"], ["2️⃣", "58 + *2* = 60", "bis zum Zehner"], ["3️⃣", "60 + *3* = 63", "Rest dazu"]], v: "🧩 25 = 20 + 2 + 3",
       say: "Der Profi-Rechenweg. 38 plus 25. Erst die Zehner: 38 plus 20 gleich 58. Dann bis zum vollen Zehner: 58 plus 2 gleich 60. Zum Schluss der Rest: 60 plus 3 gleich 63." },
@@ -10747,7 +11015,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   const FREI_NAME = { vorlaeufer: ["Hör-Inseln", "den Hör-Inseln"], buchstaben: ["Buchstaben-Inseln", "den Buchstaben-Inseln"], nomen: ["Nomen-Inseln", "den Nomen-Inseln"], leuchtturm: ["Leuchtturm-Insel", "der Leuchtturm-Insel"],
     lesen: ["Lese-Lagune", "der Lese-Lagune"], rechtschreibung: ["Rechtschreib-Inseln", "den Rechtschreib-Inseln"], zahlen: ["Zahlen-Inseln", "den Zahlen-Inseln"],
     rechnen: ["Plus-Minus-Inseln", "den Plus-Minus-Inseln"], plus10: ["Plus über den Zehner", "der Insel Plus über den Zehner"], minus10: ["Minus über den Zehner", "der Insel Minus über den Zehner"], werkstatt: ["Pollys Werkstatt", "Pollys Werkstatt"], schrittweise: ["Schritte-Inseln", "den Schritte-Inseln"],
-    eddiewerk: ["Eddies Werkstatt", "Eddies Werkstatt"], schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachpartie: ["Partie-Inseln", "den Partie-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"] };
+    eddiewerk: ["Eddies Werkstatt", "Eddies Werkstatt"], schachbrett: ["Brett-Inseln", "den Brett-Inseln"], schachpartie: ["Partie-Inseln", "den Partie-Inseln"], schachzuege: ["Zug-Inseln", "den Zug-Inseln"], schachmatt: ["Matt-Inseln", "den Matt-Inseln"], schachmeister: ["Meister-Inseln", "den Meister-Inseln"] };
   function freiParse() {
     if (SCHOOL) return null;
     const m = location.hash.match(/(?:^#|&)f=([A-Za-z0-9_-]+)/); if (!m) return null;
