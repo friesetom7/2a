@@ -10446,15 +10446,15 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
      Unten unter dem Vordach: Nemos Klasse (Deutsch). Oben im Neubau: Pollys Klasse (Mathe) – hinauf über die Außentreppe am Altbau.
      Jedes Kind sucht sich eine Figur aus und läuft damit durch das Schulhaus in den Raum. Im Raum geht es wie gewohnt über die Inseln. */
   // Die Neugierburg-Helden: eigene Figuren mit eigenen Namen und Kräften (Haut, Haare, Frisur, Anzug, Umhang, Maske, Abzeichen, Extra)
-  const KIDS = [
+  const KIDS = [   // abwechselnd Junge und Mädchen: 4 Jungen, 4 Mädchen (g = Mädchen)
     { name: "Blitzfuchs", say: "der Blitzfuchs", power: "rennt schneller als der Wind", skin: "#f6d3b3", hair: "#a0411d", style: "short", suit: "#f77f00", cape: "#ffd166", mask: "#7a2e0e", logo: "bolt", extra: "fox" },
-    { name: "Sternenkapitänin", say: "die Sternenkapitänin", power: "lässt die Sterne leuchten", skin: "#f1c9a5", hair: "#e3b04b", style: "pony", suit: "#1f3c88", cape: "#62d3e3", mask: "#62d3e3", logo: "star", extra: "stars" },
+    { name: "Sternenkapitänin", g: 1, say: "die Sternenkapitänin", power: "lässt die Sterne leuchten", skin: "#f1c9a5", hair: "#e3b04b", style: "pony", suit: "#1f3c88", cape: "#62d3e3", mask: "#62d3e3", logo: "star", extra: "stars" },
     { name: "Donnerdachs", say: "der Donnerdachs", power: "hält mit seinem Schild alles auf", skin: "#c68a62", hair: "#2b1a12", style: "short", suit: "#3f7f4a", cape: "#9aa1a8", mask: "#2b2d42", logo: "paw", extra: "badger" },
-    { name: "Wolkenreiterin", say: "die Wolkenreiterin", power: "fliegt auf jeder Wolke", skin: "#8d5a3b", hair: "#1b1210", style: "long", suit: "#4ea8de", cape: "#ffffff", mask: "#ffffff", logo: "cloud", extra: "cloud" },
-    { name: "Blätterblitz", say: "der Blätterblitz", power: "lässt Pflanzen wachsen", skin: "#e8b48f", hair: "#5a3a1a", style: "curly", suit: "#2a9d8f", cape: "#80b918", mask: "#80b918", logo: "leaf", extra: "leaf" },
-    { name: "Nachteulen-Nora", say: "Nachteulen-Nora", power: "sieht auch im Dunkeln alles", skin: "#f6d3b3", hair: "#1b1b1b", style: "long", suit: "#5a189a", cape: "#2b2d6e", mask: "#c77dff", logo: "moon", extra: "owl" },
-    { name: "Rechenrakete", say: "die Rechenrakete", power: "rechnet blitzschnell im Kopf", skin: "#a86f4c", hair: "#2b1a12", style: "pony", suit: "#e63946", cape: "#ffb703", mask: "#1d3557", logo: "plus", extra: "rocket" },
-    { name: "Wortwirbel", say: "der Wortwirbel", power: "zaubert mit Buchstaben", skin: "#f1c9a5", hair: "#c9a227", style: "curly", suit: "#7b2cbf", cape: "#ff70a6", mask: "#ff70a6", logo: "aa", extra: "scarf" }
+    { name: "Wolkenreiterin", g: 1, say: "die Wolkenreiterin", power: "fliegt auf jeder Wolke", skin: "#8d5a3b", hair: "#1b1210", style: "long", suit: "#4ea8de", cape: "#ffffff", mask: "#ffffff", logo: "cloud", extra: "cloud" },
+    { name: "Blätterblitz", say: "der Blätterblitz", power: "lässt Pflanzen wachsen", skin: "#e8b48f", hair: "#5a3a1a", style: "short", suit: "#2a9d8f", cape: "#80b918", mask: "#80b918", logo: "leaf", extra: "leaf" },
+    { name: "Nachteulen-Nora", g: 1, say: "Nachteulen-Nora", power: "sieht auch im Dunkeln alles", skin: "#f6d3b3", hair: "#1b1b1b", style: "long", suit: "#5a189a", cape: "#2b2d6e", mask: "#c77dff", logo: "moon", extra: "owl" },
+    { name: "Wortwirbel", say: "der Wortwirbel", power: "zaubert mit Buchstaben", skin: "#a86f4c", hair: "#1b1210", style: "curly", suit: "#7b2cbf", cape: "#f77f00", mask: "#f77f00", logo: "aa", extra: "scarf" },
+    { name: "Rechenrakete", g: 1, say: "die Rechenrakete", power: "rechnet blitzschnell im Kopf", skin: "#f1c9a5", hair: "#c9a227", style: "pony", suit: "#e63946", cape: "#ffb703", mask: "#1d3557", logo: "plus", extra: "rocket" }
   ];
   const LOGO = {
     star: `<polygon points="0,-9 2.6,-3 9,-2.8 4,1.4 5.6,8 0,4.4 -5.6,8 -4,1.4 -9,-2.8 -2.6,-3" fill="#ffd60a" stroke="#c99700" stroke-width="1"/>`,
@@ -10513,6 +10513,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         <ellipse cx="-8" cy="-95" rx="4.6" ry="3.8" fill="#fff"/><ellipse cx="8" cy="-95" rx="4.6" ry="3.8" fill="#fff"/>
         <circle cx="-7.5" cy="-95" r="2.4" fill="#1b2a4a"/><circle cx="8.5" cy="-95" r="2.4" fill="#1b2a4a"/>
         <path d="M-6 -85 Q0 -80 6 -85" stroke="#1b2a4a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        ${K.g ? `<path d="M-13 -99 l-3 -2.6 M-11 -100.4 l-2 -3 M13 -99 l3 -2.6 M11 -100.4 l2 -3" stroke="#1b2a4a" stroke-width="1.6" stroke-linecap="round"/><circle cx="-12" cy="-87" r="2.6" fill="#ff8fab" opacity=".5"/><circle cx="12" cy="-87" r="2.6" fill="#ff8fab" opacity=".5"/>` : ""}
         ${head}${arm}
       </g></g></g>`;
   }
