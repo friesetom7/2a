@@ -786,9 +786,13 @@ svg.sea .shopsign { animation: nbob 1.6s ease-in-out infinite; }
 .world .wt { background: rgba(255,255,255,.24); border-radius: 999px; padding: 6px 16px; font-size: 19px; font-weight: 900; margin-top: 4px; }
 .sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; display: none; }
 body.polly .sky { display: block; }
-body.polly .rays, body.polly #bubbles { display: none; }
-body.polly { --deep: #0b4b5a; --sea: #138a9e; --shallow: #62d3e3; --shadow: rgba(5, 52, 62, 0.33);
-  background: #1592ad; background-image: linear-gradient(180deg, #86dcec 0%, #47c2d8 28%, #1e9dbb 64%, #12789a 100%); background-attachment: fixed; }
+body.polly #bubbles { display: none; }
+body.polly .rays i { background: linear-gradient(90deg, rgba(255,246,190,0), rgba(255,246,190,.22) 50%, rgba(255,246,190,0)); }
+body.polly .sky .cl { display: none; }
+body.polly .sky::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 20vh; min-height: 110px; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 160' preserveAspectRatio='xMidYMin slice'><g fill='%23123d22'><ellipse cx='40' cy='10' rx='90' ry='46'/><ellipse cx='190' cy='0' rx='110' ry='40'/><ellipse cx='340' cy='8' rx='90' ry='44'/><ellipse cx='500' cy='2' rx='120' ry='42'/></g><g fill='%231d5a31'><ellipse cx='110' cy='34' rx='46' ry='16' transform='rotate(18 110 34)'/><ellipse cx='260' cy='30' rx='50' ry='15' transform='rotate(-14 260 30)'/><ellipse cx='420' cy='38' rx='48' ry='16' transform='rotate(12 420 38)'/><ellipse cx='560' cy='34' rx='44' ry='15' transform='rotate(-20 560 34)'/><ellipse cx='20' cy='44' rx='40' ry='14' transform='rotate(-24 20 44)'/></g><g fill='none' stroke='%232d6a3e' stroke-width='4' stroke-linecap='round'><path d='M150 30 Q156 80 146 130 Q142 150 150 158'/><path d='M380 34 Q372 70 382 104'/><path d='M470 30 Q480 90 468 140'/><path d='M60 40 Q66 70 58 96'/></g><g fill='%233f8f4a'><ellipse cx='146' cy='70' rx='7' ry='4' transform='rotate(40 146 70)'/><ellipse cx='154' cy='100' rx='7' ry='4' transform='rotate(-40 154 100)'/><ellipse cx='147' cy='128' rx='7' ry='4' transform='rotate(40 147 128)'/><ellipse cx='378' cy='64' rx='7' ry='4' transform='rotate(-40 378 64)'/><ellipse cx='474' cy='70' rx='7' ry='4' transform='rotate(40 474 70)'/><ellipse cx='470' cy='110' rx='7' ry='4' transform='rotate(-40 470 110)'/><ellipse cx='62' cy='72' rx='6' ry='3.5' transform='rotate(40 62 72)'/></g><g fill='%23ff70a6'><circle cx='146' cy='136' r='5'/><circle cx='469' cy='142' r='5'/></g></svg>") center top / auto 100% repeat-x; opacity: .9; }
+body.polly .sky::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 24vh; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 220' preserveAspectRatio='xMidYMax slice'><g fill='%230f3f22'><path d='M0 220 Q20 120 90 90 Q70 150 120 220 Z'/><path d='M60 220 Q120 100 220 110 Q150 160 170 220 Z'/><path d='M300 220 Q300 140 360 120 Q350 170 390 220 Z'/><path d='M380 220 Q430 130 520 140 Q460 180 470 220 Z'/><path d='M620 220 Q600 130 660 100 Q670 160 700 220 Z'/><path d='M690 220 Q760 110 860 120 Q790 170 800 220 Z'/><path d='M820 220 Q850 150 900 140 V220 Z'/></g><g fill='%23175a30'><ellipse cx='250' cy='200' rx='70' ry='26' transform='rotate(-20 250 200)'/><ellipse cx='560' cy='204' rx='80' ry='24' transform='rotate(16 560 204)'/><ellipse cx='30' cy='206' rx='60' ry='22' transform='rotate(14 30 206)'/></g><g fill='%23ff70a6'><circle cx='238' cy='176' r='7'/><circle cx='572' cy='180' r='6'/></g><g fill='%23ffd60a'><circle cx='238' cy='176' r='2.6'/><circle cx='572' cy='180' r='2.4'/></g></svg>") center bottom / auto 100% repeat-x; opacity: .7; }
+body.polly { --deep: #0f3d24; --sea: #2a7f46; --shallow: #7cc96b; --shadow: rgba(6, 40, 20, 0.36);
+  background: #2a7a44; background-image: radial-gradient(ellipse 60% 40% at 50% 30%, rgba(214, 240, 150, .35), rgba(214, 240, 150, 0) 70%), linear-gradient(180deg, #4f9e4f 0%, #3a8c4a 26%, #2a7543 60%, #164e30 100%); background-attachment: fixed; }
 .sky .cl { position: absolute; left: 0; top: var(--y); width: var(--w); height: calc(var(--w) * .36); background: #fff; border-radius: 999px; opacity: .42; animation: cloud var(--d) linear infinite; animation-delay: var(--dl); }
 .sky .cl::before { content: ""; position: absolute; background: #fff; border-radius: 50%; width: 46%; height: 120%; left: 16%; bottom: 34%; }
 .sky .cl::after { content: ""; position: absolute; background: #fff; border-radius: 50%; width: 34%; height: 92%; right: 16%; bottom: 40%; }
@@ -1162,7 +1166,7 @@ body.calm .sky .cl { opacity: .25; }
 #scrPlay .stage { background: rgba(255, 252, 240, .16); border-radius: 34px; padding: 18px 12px; box-shadow: inset 0 0 0 2px rgba(255,255,255,.2); }
 body.polly #scrPlay .stage { background: rgba(255, 252, 240, .22); }
 .taskrow .task { background: rgba(4, 30, 52, .32); border-radius: 999px; padding: 4px 18px; }
-body.polly .taskrow .task { background: rgba(8, 60, 72, .38); }
+body.polly .taskrow .task { background: rgba(8, 45, 22, .42); }
 .nk.ok, .mbtn.go, .mbtn.ex { background: var(--gold); color: var(--ink); box-shadow: 0 5px 0 var(--gold-edge), 0 8px 14px var(--shadow); }
 .nk.ok:active, .mbtn.go:active, .mbtn.ex:active { box-shadow: 0 2px 0 var(--gold-edge); }
 
@@ -1218,6 +1222,8 @@ body.loewe .sky::after { content: ""; position: absolute; left: 0; right: 0; bot
 body.loewe .rays, body.loewe #bubbles { display: none; }
 body.loewe { --deep: #7a4a12; --sea: #e0a44a; --shallow: #ffe3a3; --shadow: rgba(90, 50, 10, 0.3);
   background: #e2a849; background-image: linear-gradient(180deg, #fff3cf 0%, #ffe1a0 22%, #f6c768 46%, #e3a94a 70%, #c58834 100%); background-attachment: fixed; }
+body.polly svg.sea .jleaf { fill: #5fae4c; opacity: .55; } body.polly svg.sea .jleaf.j2 { fill: #8fd06a; opacity: .5; }
+body.polly svg.sea .route { stroke: rgba(255, 244, 200, .85); }
 body.loewe svg.sea .route { stroke: rgba(110, 66, 18, .55); }
 body.loewe svg.sea .route.done { stroke: #fff3b0; }
 body.loewe svg.sea .route.faint { stroke: rgba(110, 66, 18, .25); }
@@ -8953,8 +8959,24 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     seaDefs(svg, cfg.pid);
     const rnd = seeded(cfg.seed || 11);
     const free = (x, y, k) => !cfg.nodes.some(n => Math.hypot(n.x - x, n.y - y) < n.r * k);
-    const sav = W.id === "loewe";
-    const wg = [1, 2, 3].map(k => sv("g", { class: sav ? "" : "wv w" + k }, svg));
+    const sav = W.id === "loewe", jun = W.id === "polly";
+    const wg = [1, 2, 3].map(k => sv("g", { class: sav || jun ? "" : "wv w" + k }, svg));
+    if (jun) {   // Pollys Dschungel: Farne, Palmen, Blüten und Tiere statt Wellen
+      for (let i = 0; i < 44; i++) {
+        const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), q = 0.8 + rnd() * 0.7, a = Math.round(rnd() * 50 - 25);
+        if (!free(x, y, 1.75)) continue;
+        const lf = sv("g", { transform: `translate(${x.toFixed(0)} ${y.toFixed(0)}) rotate(${a}) scale(${q.toFixed(2)})`, class: "jleaf" + (i % 3 ? "" : " j2") }, wg[i % 3]);
+        sv("path", { d: "M0 0 Q-14 -10 -18 -26 Q-4 -20 0 0 Z M0 0 Q12 -12 22 -20 Q14 -4 0 0 Z M0 0 Q-2 -16 4 -32 Q8 -14 0 0 Z" }, lf);
+      }
+      const dg = sv("g", { "aria-hidden": "true" }, svg), deco = ["palm", "🌺", "palm", "🦋", "🍌", "palm", "🐸", "🌺", "palm", "🐒", "🌸", "🦎"];
+      for (let i = 0, made = 0; i < 120 && made < (cfg.junDeco || 10); i++) {
+        const x = 60 + rnd() * (cfg.w - 120), y = 70 + rnd() * (cfg.h - 120);
+        if (!free(x, y, 2.05)) continue;
+        const kind = deco[made % deco.length]; made++;
+        if (kind === "palm") { drawPalm(dg, x, y, 70 + rnd() * 40, rnd() < .5 ? -1 : 1, cfg.pid, -rnd() * 4); }
+        else { const t = sv("text", { x, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 30, opacity: 0.92 }, dg); t.textContent = kind; }
+      }
+    }
     if (sav) {   // Leos Savanne: Grasbüschel, Akazien, Termitenhügel und Tiere statt Wellen
       for (let i = 0; i < 46; i++) {
         const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), q = 0.8 + rnd() * 0.6;
@@ -8971,12 +8993,12 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         else { sv("ellipse", { cx: x, cy: y + 14, rx: 16, ry: 4, fill: "rgba(90,50,10,.2)" }, dg); const t = sv("text", { x, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 34, opacity: 0.9 }, dg); t.textContent = kind; }
       }
     }
-    for (let i = 0; i < (sav ? 0 : 38); i++) {
+    for (let i = 0; i < (sav || jun ? 0 : 38); i++) {
       const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40);
       if (!free(x, y, 1.9)) continue;
       sv("path", { d: `M${x - 21} ${y} c4 -6 10 -6 14 0 s10 6 14 0 s10 -6 14 0`, class: "wave" }, wg[i % 3]);
     }
-    for (let i = 0; i < (sav ? 0 : 14); i++) {
+    for (let i = 0; i < (sav || jun ? 0 : 14); i++) {
       const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), k = 4 + rnd() * 4;
       if (!free(x, y, 1.7)) continue;
       const sp = sv("path", { d: `M${x} ${y - k}L${x + k * .22} ${y - k * .22}L${x + k} ${y}L${x + k * .22} ${y + k * .22}L${x} ${y + k}L${x - k * .22} ${y + k * .22}L${x - k} ${y}L${x - k * .22} ${y - k * .22}Z`, class: "spark" }, svg);
@@ -8989,7 +9011,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     });
     const edges = cfg.edges.map(([a, b, cls], i) => ({ a, b, el: sv("path", { d: curve(cfg.nodes[a], cfg.nodes[b], i), class: "route " + (cls || "") }, svg) }));
     // Pollys Welt: Wolken ziehen zwischen den Inseln über das Meer (mit Schatten auf dem Wasser)
-    if (cfg.clouds) {
+    if (cfg.clouds && !jun) {
       const cg = sv("g", { "aria-hidden": "true" }, svg);
       for (let i = 0, made = 0; i < 60 && made < cfg.clouds; i++) {
         const cx = 70 + rnd() * (cfg.w - 140), cy = 50 + rnd() * (cfg.h - 100), s = 0.55 + rnd() * 0.45;
@@ -9020,12 +9042,12 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     const g = sv("g", { class: "isl", transform: `translate(${n.x} ${n.y})`, tabindex: "0", role: "button", "aria-label": n.aria || n.label }, svg);
     const r = n.r, P = cfg.pid, U = (id) => `url(#${P}-${id})`;
     const rnd = seeded(i * 37 + (cfg.seed || 1) * 7 + 11), ph = rnd() * 6.28, ph2 = rnd() * 6.28;
-    const sav = W.id === "loewe";
-    if (sav) {   // Savanne: Lichtung aus roter Erde mit Schatten statt Lagune und Strand
-      sv("ellipse", { cy: r * 0.16, rx: r * 1.18, ry: r * 0.86, fill: "rgba(110,62,12,.22)" }, g);
+    const sav = W.id === "loewe", jun = W.id === "polly";
+    if (sav || jun) {   // Savanne: rote Erde · Dschungel: Lichtung mit Waldboden – mit Schatten statt Lagune und Strand
+      sv("ellipse", { cy: r * 0.16, rx: r * 1.18, ry: r * 0.86, fill: jun ? "rgba(4,30,14,.3)" : "rgba(110,62,12,.22)" }, g);
       if (n.next) sv("ellipse", { rx: r * 1.3, ry: r * 0.98, class: "nextring" }, g);
-      sv("path", { d: blob(r * 1.02, r * 0.76, r * 0.1, 0.035, 5, ph), fill: "#a8692a" }, g);
-      sv("path", { d: blob(r * 1.02, r * 0.76, 0, 0.035, 5, ph), fill: U("earth"), stroke: "#b77a35", "stroke-width": 3, class: "sand" }, g);
+      sv("path", { d: blob(r * 1.02, r * 0.76, r * 0.1, 0.035, 5, ph), fill: jun ? "#6b4a24" : "#a8692a" }, g);
+      sv("path", { d: blob(r * 1.02, r * 0.76, 0, 0.035, 5, ph), fill: U(jun ? "jearth" : "earth"), stroke: jun ? "#8a6232" : "#b77a35", "stroke-width": 3, class: "sand" }, g);
     } else {
     // Lagune, Brandung, Schaum
     sv("ellipse", { cy: r * 0.04, rx: r * 1.46, ry: r * 1.1, fill: U("lagoon") }, g);
@@ -9225,6 +9247,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     grad("radialGradient", "shine", { cx: 0.36, cy: 0.28, r: 0.7 }, [[0, "#ffffff", 0.55], [0.5, "#ffffff", 0.12], [1, "#ffffff", 0]]);
     grad("linearGradient", "shade", { x1: 0, y1: 0, x2: 0, y2: 1 }, [[0, "#0a4020", 0], [0.6, "#0a4020", 0], [1, "#0a4020", 0.25]]);
     grad("radialGradient", "fog", {}, [[0, "#f4fafd", 0.97], [0.62, "#eef6fa", 0.9], [1, "#eef6fa", 0]]);
+    grad("radialGradient", "jearth", { cx: 0.42, cy: 0.36, r: 0.72 }, [[0, "#f1dca6"], [0.6, "#cfa86a"], [1, "#a77c45"]]);
     grad("radialGradient", "earth", { cx: 0.42, cy: 0.36, r: 0.72 }, [[0, "#f3c98a"], [0.62, "#dba25c"], [1, "#c4823c"]]);
     grad("radialGradient", "rock", { cx: 0.35, cy: 0.3, r: 0.8 }, [[0, "#dde3e7"], [1, "#7f8c96"]]);
     grad("linearGradient", "trunk", {}, [[0, "#6b3f1d"], [0.45, "#b9834d"], [1, "#5e3517"]]);
