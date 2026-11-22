@@ -5311,26 +5311,26 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   }
   const PLUS10 = ueberLevels("+"), MINUS10 = ueberLevels("−");
 
-  /* ======================= Rechnen in Schritten: erst die Einer, dann die Zehner =======================
-     Zwei zweistellige Zahlen, bei den Einern gibt es nie einen Zehnerübergang:
-     34 + 25 → 34 + 5 = 39, 39 + 20 = 59 · 58 − 23 → 58 − 3 = 55, 55 − 20 = 35
-     (e = Einer der zweiten Zahl, z = ihre Zehner, m = Zwischenergebnis nach den Einern, r = Ergebnis) */
+  /* ======================= Rechnen in Schritten: erst die Zehner, dann die Einer =======================
+     Einheitlich mit den Plus-Minus-Inseln (schrittweise wie in Denken & Rechnen). Bei den Einern gibt es nie einen Zehnerübergang:
+     34 + 25 → 34 + 20 = 54, 54 + 5 = 59 · 58 − 23 → 58 − 20 = 38, 38 − 3 = 35
+     (z = Zehner der zweiten Zahl, e = ihre Einer, m = Zwischenergebnis nach den Zehnern, r = Ergebnis) */
   function stepZE(op, d) {
     const big = d !== "leicht", e2 = rint(1, 8), z2 = rint(1, big ? 6 : 2);
     if (op === "+") {
       const e1 = rint(1, 9 - e2), z1 = rint(1, big ? 8 : 5), a = 10 * z1 + e1, b = 10 * z2 + e2;
       if (a + b > 99) return null;
-      return { a, op, b, e: e2, z: 10 * z2, m: a + e2, r: a + b, lab: `${a}+${b}` };
+      return { a, op, b, e: e2, z: 10 * z2, m: a + 10 * z2, r: a + b, lab: `${a}+${b}` };
     }
     const e1 = rint(e2, 9), z1 = rint(z2 + (big ? 0 : 1), big ? 9 : 6), a = 10 * z1 + e1, b = 10 * z2 + e2;
     if (a - b < 1) return null;
-    return { a, op, b, e: e2, z: 10 * z2, m: a - e2, r: a - b, lab: `${a}-${b}` };
+    return { a, op, b, e: e2, z: 10 * z2, m: a - 10 * z2, r: a - b, lab: `${a}-${b}` };
   }
-  // Rechenstrich: von a in zwei Sprüngen zum Ergebnis – kleiner Sprung für die Einer, großer Sprung für die Zehner.
+  // Rechenstrich: von a in zwei Sprüngen zum Ergebnis – erst der große Sprung für die Zehner, dann der kleine für die Einer.
   // s = was schon dasteht: { e, m, z, r } (Sprung-Zahlen und Landeplätze); sonst steht dort ein Fragezeichen.
   function rsHTML(x, s) {
     s = s || { e: 1, m: 1, z: 1, r: 1 };
-    const P = x.op === "+", W0 = 340, H0 = 138, y = 92, xa = P ? 36 : W0 - 36, xm = P ? 118 : W0 - 118, xr = P ? W0 - 36 : 36, sg = P ? "+" : "−";
+    const P = x.op === "+", W0 = 340, H0 = 138, y = 92, xa = P ? 36 : W0 - 36, xm = P ? W0 - 118 : 118, xr = P ? W0 - 36 : 36, sg = P ? "+" : "−";
     const arc = (x1, x2, h, c, t, on) => {
       const cx = (x1 + x2) / 2, cy = y - 2 * h, dx = x2 - cx, dy = (y - 5) - cy, n = Math.hypot(dx, dy), ux = dx / n, uy = dy / n, tx = x2 - ux * 2, ty = y - 5 - uy * 2;
       return `<g class="rs-j"><path d="M${x1} ${y - 5} Q${cx} ${cy} ${x2} ${y - 5}" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
@@ -5339,67 +5339,67 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     };
     const tick = (xx, t, on) => `<path d="M${xx} ${y - 9} V${y + 9}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><text x="${xx}" y="${y + 34}" text-anchor="middle" class="rs-n${on ? "" : " q"}">${on ? t : "?"}</text>`;
     return `<svg class="rstrich" viewBox="0 0 ${W0} ${H0}" role="img" aria-label="Rechenstrich"><path d="M10 ${y} H${W0 - 10}" stroke="#17324a" stroke-width="4" stroke-linecap="round"/>
-      ${arc(xa, xm, 20, "#1d63d8", x.e, s.e)}${arc(xm, xr, 34, "#138a4b", x.z, s.z)}${tick(xa, x.a, true)}${tick(xm, x.m, s.m)}${tick(xr, x.r, s.r)}</svg>`;
+      ${arc(xa, xm, 34, "#138a4b", x.z, s.z)}${arc(xm, xr, 20, "#1d63d8", x.e, s.e)}${tick(xa, x.a, true)}${tick(xm, x.m, s.m)}${tick(xr, x.r, s.r)}</svg>`;
   }
   function stepLevels() {
     const o1 = (x) => opS(x.op), w1 = (x) => opW(x.op), dazu = (x) => x.op === "+" ? "dazu" : "weg";
-    const wayHTML = (x) => `Zerlege die ${x.b} in <b>${x.e}</b> und <b>${x.z}</b>. Erst die Einer: <b>${x.a} ${o1(x)} ${x.e} = ${x.m}</b>. Dann die Zehner: <b>${x.m} ${o1(x)} ${x.z} = ${x.r}</b>.`;
-    const waySay = (x) => `Zerlege die ${x.b} in ${x.e} und ${x.z}. Erst die Einer: ${x.a} ${w1(x)} ${x.e} gleich ${x.m}. Dann die Zehner: ${x.m} ${w1(x)} ${x.z} gleich ${x.r}.`;
+    const wayHTML = (x) => `Zerlege die ${x.b} in <b>${x.z}</b> und <b>${x.e}</b>. Erst die Zehner: <b>${x.a} ${o1(x)} ${x.z} = ${x.m}</b>. Dann die Einer: <b>${x.m} ${o1(x)} ${x.e} = ${x.r}</b>.`;
+    const waySay = (x) => `Zerlege die ${x.b} in ${x.z} und ${x.e}. Erst die Zehner: ${x.a} ${w1(x)} ${x.z} gleich ${x.m}. Dann die Einer: ${x.m} ${w1(x)} ${x.e} gleich ${x.r}.`;
     const explainWay = (x) => x.chain ? { html: x.chain.map(c => `<p><b>${c.a} ${o1(c)} ${c.b}</b>: ${wayHTML(c)}</p>`).join(""), say: x.chain.map(c => `${c.a} ${w1(c)} ${c.b}. ${waySay(c)}`).join(" ") }
       : { html: `<div class="rs-box">${rsHTML(x)}</div><p><b>${x.a} ${o1(x)} ${x.b}</b>: ${wayHTML(x)}</p>`, say: `${x.a} ${w1(x)} ${x.b}. ${waySay(x)}` };
     // Tafel: Polly rechnet die Aufgabe (oder ein Beispiel) Schritt für Schritt vor
-    const demo = (op, d) => op === "+" ? (d === "leicht" ? { a: 34, op, b: 25, e: 5, z: 20, m: 39, r: 59 } : { a: 43, op, b: 36, e: 6, z: 30, m: 49, r: 79 })
-      : (d === "leicht" ? { a: 58, op, b: 23, e: 3, z: 20, m: 55, r: 35 } : { a: 87, op, b: 42, e: 2, z: 40, m: 85, r: 45 });
+    const demo = (op, d) => op === "+" ? (d === "leicht" ? { a: 34, op, b: 25, e: 5, z: 20, m: 54, r: 59 } : { a: 43, op, b: 36, e: 6, z: 30, m: 73, r: 79 })
+      : (d === "leicht" ? { a: 58, op, b: 23, e: 3, z: 20, m: 38, r: 35 } : { a: 87, op, b: 42, e: 2, z: 40, m: 47, r: 45 });
     const tafelWay = (op0) => (x0, d) => {
       let x = x0 || demo(op0 || "+", d), tail = " Jetzt du!";
       if (x.chain) { x = x.chain[0]; tail = " Die zweite Aufgabe rechnest du genauso!"; }
       if (x.e == null) return null;
       const { a, b, e, z, m, r } = x, o = o1(x), P = x.op === "+";
-      const board = `<div class="tf-row r1">${tks(0, a, o)}${tkSplit(b, 0, e, 1, z, 2)}${tks(0, "=")}${tkQ("?", 5, r)}</div>
-        <div class="tf-row">${tk("1.", 3, "tf-tag")}${tks(3, a, o, [e, "c1"], "=", [m, "cz"])}</div>
-        <div class="tf-row">${tk("2.", 4, "tf-tag")}${tks(4, [m, "cz"], o, [z, "c2"], "=", r)}</div>`;
-      const steps = [`Wir rechnen <b>${a} ${o} ${b}</b>.`, `Die ${b} hat <b class="c1">${e}</b> Einer.`, `Und ${z / 10} Zehner – das sind <b class="c2">${z}</b>.`,
-        `Schritt 1: erst die Einer ${P ? "dazu" : "weg"}: <b>${a} ${o} ${e} = ${m}</b>.`, `Schritt 2: dann die Zehner ${P ? "dazu" : "weg"}: <b>${m} ${o} ${z} = ${r}</b>.`, `Also: <b>${a} ${o} ${b} = ${r}</b>.${tail}`];
-      return { board, steps, pic: (k) => `<div class="rs-box">${rsHTML(x, { e: k >= 3, m: k >= 3, z: k >= 4, r: k >= 4 })}</div>` };
+      const board = `<div class="tf-row r1">${tks(0, a, o)}${tkSplit(b, 0, z, 1, e, 2)}${tks(0, "=")}${tkQ("?", 5, r)}</div>
+        <div class="tf-row">${tk("1.", 3, "tf-tag")}${tks(3, a, o, [z, "c1"], "=", [m, "cz"])}</div>
+        <div class="tf-row">${tk("2.", 4, "tf-tag")}${tks(4, [m, "cz"], o, [e, "c2"], "=", r)}</div>`;
+      const steps = [`Wir rechnen <b>${a} ${o} ${b}</b>.`, `Die ${b} hat ${z / 10} Zehner – das sind <b class="c1">${z}</b>.`, `Und <b class="c2">${e}</b> Einer.`,
+        `Schritt 1: erst die Zehner ${P ? "dazu" : "weg"}: <b>${a} ${o} ${z} = ${m}</b>.`, `Schritt 2: dann die Einer ${P ? "dazu" : "weg"}: <b>${m} ${o} ${e} = ${r}</b>.`, `Also: <b>${a} ${o} ${b} = ${r}</b>.${tail}`];
+      return { board, steps, pic: (k) => `<div class="rs-box">${rsHTML(x, { z: k >= 3, m: k >= 3, e: k >= 4, r: k >= 4 })}</div>` };
     };
     // Aufgabe in zwei Schritten: leicht = die Sprung-Zahlen stehen schon da, sonst zerlegt das Kind selbst
     function twoSteps(stage, x, d, pic) {
       const g = d === "leicht", o = o1(x), st = { e: g, m: false, z: g, r: false };
       const box = pic ? el("div", "rs-box", rsHTML(x, st)) : null, col = mathRow(stage, box);
-      const lines = [{ t: [x.a, o, x.b, "=", { t: "?", c: "qmark" }], c: "eqhead" },
-        { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.e), c: "stepnum" } : { a: x.e }, "=", { a: x.m }], c: "step" },
-        { t: [{ t: "2.", c: "tag" }, { ref: g ? 0 : 1 }, o, g ? { t: String(x.z), c: "stepnum" } : { a: x.z }, "=", { a: x.r }], c: "step" }];
-      const kind = g ? ["m", "r"] : ["e", "m", "z", "r"];
-      padTask(col, { layout: eqLayout(lines), say: `${x.a} ${w1(x)} ${x.b}. Rechne in zwei Schritten: erst die Einer, dann die Zehner.`,
+      const lines = [{ t: [x.a, o, { split: g ? [{ t: String(x.z), c: "given" }, { t: String(x.e), c: "given" }] : [{ ref: 0 }, { ref: 2 }], n: x.b, c: "headn" }, "=", { t: "?", c: "qmark" }], c: "eqhead" },
+        { t: [{ t: "1.", c: "tag" }, x.a, o, g ? { t: String(x.z), c: "stepnum" } : { a: x.z }, "=", { a: x.m }], c: "step" },
+        { t: [{ t: "2.", c: "tag" }, { ref: g ? 0 : 1 }, o, g ? { t: String(x.e), c: "stepnum" } : { a: x.e }, "=", { a: x.r }], c: "step" }];
+      const kind = g ? ["m", "r"] : ["z", "m", "e", "r"];
+      padTask(col, { layout: eqLayout(lines), say: `${x.a} ${w1(x)} ${x.b}. Rechne in zwei Schritten: erst die Zehner, dann die Einer.`,
         why: (k, v) => { const w = kind[k];
-          if (w === "e") return v === x.z || v === x.b ? `Erst kommen nur die Einer dran. Wie viele Einer hat die ${x.b}?` : numWhy(x.e, v, `Wie viele Einer hat die ${x.b}?`);
-          if (w === "m") return numWhy(x.m, v, `Rechne nur mit den Einern: ${x.a} ${o} ${x.e}. Die Zehner bleiben gleich.`);
-          if (w === "z") return v === x.z / 10 ? `Fast! ${v} Zehner sind ${x.z}.` : numWhy(x.z, v, `Jetzt die Zehner von ${x.b}: ${x.z / 10} Zehner sind wie viel?`);
-          return numWhy(x.r, v, `Jetzt die Zehner ${dazu(x)}: ${x.m} ${o} ${x.z}. Die Einer bleiben gleich.`); },
+          if (w === "z") return v === x.z / 10 ? `Fast! ${v} Zehner sind ${x.z}.` : v === x.e || v === x.b ? `Erst kommen nur die Zehner dran. ${x.b} hat ${x.z / 10} Zehner – wie viel ist das?` : numWhy(x.z, v, `Wie viele Zehner hat die ${x.b}? ${x.z / 10} Zehner sind wie viel?`);
+          if (w === "m") return numWhy(x.m, v, `Rechne nur mit den Zehnern: ${x.a} ${o} ${x.z}. Die Einer bleiben gleich.`);
+          if (w === "e") return numWhy(x.e, v, `Jetzt die Einer von ${x.b}. Schau auf die hintere Ziffer.`);
+          return numWhy(x.r, v, `Jetzt die Einer ${dazu(x)}: ${x.m} ${o} ${x.e}. Die Zehner bleiben gleich.`); },
         onSlot: (k) => { st[kind[k]] = true; if (box) box.innerHTML = rsHTML(x, st); },
         onDone: () => { const q = col.querySelector(".qmark"); if (q) { q.textContent = x.r; q.classList.add("ok"); } },
         okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${w1(x)} ${x.b} gleich ${x.r}.` });
     }
     const missing = (ops) => ({   // Experten: eine Zahl fehlt
       task: () => "Welche Zahl fehlt?",
-      intro: () => XI + "Hier fehlt eine Zahl: 34 + ? = 59. Schau erst auf die Einer, dann auf die Zehner – oder rechne rückwärts!",
+      intro: () => XI + "Hier fehlt eine Zahl: 34 + ? = 59. Schau erst auf die Zehner, dann auf die Einer – oder rechne rückwärts!",
       ex: () => ops.length > 1 ? "34 + <b>25</b> = 59 · <b>58</b> − 23 = 35" : ops[0] === "+" ? "34 + <b>25</b> = 59 · <b>43</b> + 36 = 79" : "58 − <b>23</b> = 35 · <b>87</b> − 42 = 45",
-      say: () => "Experten-Aufgabe! Hier fehlt eine Zahl. Schau erst auf die Einer, dann auf die Zehner. Oder rechne rückwärts.",
+      say: () => "Experten-Aufgabe! Hier fehlt eine Zahl. Schau erst auf die Zehner, dann auf die Einer. Oder rechne rückwärts.",
       build() { return gen(8, (k) => { const x = stepZE(ops[k % ops.length], "schwer"); if (!x) return null; x.form = k % 2 ? "pa" : "pb"; x.lab += x.form; return x; }); },
       render(x, stage) {
         const col = mathRow(stage, null), o = o1(x), P = x.op === "+", ans = x.form === "pa" ? x.b : x.a;
         padTask(col, { layout: eqLayout([{ t: x.form === "pa" ? [x.a, o, { a: x.b }, "=", x.r] : [{ a: x.a }, o, x.b, "=", x.r] }]), say: x.form === "pa" ? `${x.a} ${w1(x)} wie viel gleich ${x.r}?` : `Wie viel ${w1(x)} ${x.b} gleich ${x.r}?`,
-          why: (k, v) => numWhy(ans, v, x.form === "pa" ? `Schau auf die Einer: von ${x.a % 10} zu ${x.r % 10}. Dann auf die Zehner: von ${Math.floor(x.a / 10)} zu ${Math.floor(x.r / 10)}.` : `Rechne rückwärts: ${x.r} ${P ? MI : "+"} ${x.b}.`),
+          why: (k, v) => numWhy(ans, v, x.form === "pa" ? `Schau auf die Zehner: von ${Math.floor(x.a / 10)} zu ${Math.floor(x.r / 10)}. Dann auf die Einer: von ${x.a % 10} zu ${x.r % 10}.` : `Rechne rückwärts: ${x.r} ${P ? MI : "+"} ${x.b}.`),
           okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${w1(x)} ${x.b} gleich ${x.r}.`, factor: 2 });
       },
       tafel: null,
       explain: (x) => x.form === "pa"
-        ? { html: `<p>${x.a} ${o1(x)} <b>?</b> = ${x.r}</p><p>Schau auf die <b>Einer</b>: von ${x.a % 10} zu ${x.r % 10}. Wie viele sind das?</p><p>Schau auf die <b>Zehner</b>: von ${Math.floor(x.a / 10)} zu ${Math.floor(x.r / 10)}. Wie viele Zehner sind das?</p>`, say: "Schau erst auf die Einer, dann auf die Zehner. Wie viel ist jeweils dazugekommen oder weggekommen?" }
-        : { html: `<p><b>?</b> ${o1(x)} ${x.b} = ${x.r}</p><p>Rechne <b>rückwärts</b>: ${x.r} ${x.op === "+" ? MI : "+"} ${x.b}.</p><p>Erst die Einer, dann die Zehner.</p>`, say: `Rechne rückwärts: ${x.r} ${x.op === "+" ? "minus" : "plus"} ${x.b}. Erst die Einer, dann die Zehner.` }
+        ? { html: `<p>${x.a} ${o1(x)} <b>?</b> = ${x.r}</p><p>Schau auf die <b>Zehner</b>: von ${Math.floor(x.a / 10)} zu ${Math.floor(x.r / 10)}. Wie viele Zehner sind das?</p><p>Schau auf die <b>Einer</b>: von ${x.a % 10} zu ${x.r % 10}. Wie viele sind das?</p>`, say: "Schau erst auf die Zehner, dann auf die Einer. Wie viel ist jeweils dazugekommen oder weggekommen?" }
+        : { html: `<p><b>?</b> ${o1(x)} ${x.b} = ${x.r}</p><p>Rechne <b>rückwärts</b>: ${x.r} ${x.op === "+" ? MI : "+"} ${x.b}.</p><p>Erst die Zehner, dann die Einer.</p>`, say: `Rechne rückwärts: ${x.r} ${x.op === "+" ? "minus" : "plus"} ${x.b}. Erst die Zehner, dann die Einer.` }
     });
     const stepLevel = (id, name, icon, color, ops) => {
-      const one = ops.length === 1, P = ops[0] === "+", exP = "34 + 5 = 39 · 39 + 20 = <b>59</b>", exM = "58 − 3 = 55 · 55 − 20 = <b>35</b>";
-      const what = one ? (P ? "Erst die Einer dazu, dann die Zehner dazu." : "Erst die Einer weg, dann die Zehner weg.") : "Schau genau: Plus oder Minus? Erst die Einer, dann die Zehner.";
+      const one = ops.length === 1, P = ops[0] === "+", exP = "34 + 20 = 54 · 54 + 5 = <b>59</b>", exM = "58 − 20 = 38 · 38 − 3 = <b>35</b>";
+      const what = one ? (P ? "Erst die Zehner dazu, dann die Einer dazu." : "Erst die Zehner weg, dann die Einer weg.") : "Schau genau: Plus oder Minus? Erst die Zehner, dann die Einer.";
       return {
         id, name, icon, color,
         task: () => one ? "Rechne in zwei Schritten!" : "Plus oder Minus? Rechne in zwei Schritten!",
@@ -5414,25 +5414,25 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     return [
       {
         id: "zerlegen", name: "Zerlege-Zweig", icon: "🧩", color: "#f77f00",
-        task: (d) => d === "leicht" ? "Zerlege die Zahl in Einer und Zehner!" : "Zerlege die zweite Zahl!",
-        intro: (d) => d === "leicht" ? "Jede zweistellige Zahl hat Einer und Zehner: 25 hat 5 Einer und 2 Zehner. 2 Zehner sind 20."
-          : d === "mittel" ? "Bei 34 + 25 zerlegst du die zweite Zahl: erst 5 dazu, dann 20 dazu." : "Jetzt bei Plus und Minus: Zerlege die zweite Zahl in Einer und Zehner.",
-        ex: (d) => d === "leicht" ? "25 = <b>5</b> + <b>20</b>" : d === "mittel" ? "34 + 25 → erst + <b>5</b>, dann + <b>20</b>" : "58 − 23 → erst − <b>3</b>, dann − <b>20</b>",
-        say: (d) => d === "leicht" ? "Jede zweistellige Zahl hat Einer und Zehner. 25 hat 5 Einer und 2 Zehner. 2 Zehner sind 20."
-          : d === "mittel" ? "Bei 34 plus 25 zerlegst du die zweite Zahl. Erst 5 dazu, dann 20 dazu." : "Jetzt bei Plus und Minus. Zerlege die zweite Zahl in Einer und Zehner.",
+        task: (d) => d === "leicht" ? "Zerlege die Zahl in Zehner und Einer!" : "Zerlege die zweite Zahl!",
+        intro: (d) => d === "leicht" ? "Jede zweistellige Zahl hat Zehner und Einer: 25 hat 2 Zehner und 5 Einer. 2 Zehner sind 20."
+          : d === "mittel" ? "Bei 34 + 25 zerlegst du die zweite Zahl: erst 20 dazu, dann 5 dazu." : "Jetzt bei Plus und Minus: Zerlege die zweite Zahl in Zehner und Einer.",
+        ex: (d) => d === "leicht" ? "25 = <b>20</b> + <b>5</b>" : d === "mittel" ? "34 + 25 → erst + <b>20</b>, dann + <b>5</b>" : "58 − 23 → erst − <b>20</b>, dann − <b>3</b>",
+        say: (d) => d === "leicht" ? "Jede zweistellige Zahl hat Zehner und Einer. 25 hat 2 Zehner und 5 Einer. 2 Zehner sind 20."
+          : d === "mittel" ? "Bei 34 plus 25 zerlegst du die zweite Zahl. Erst 20 dazu, dann 5 dazu." : "Jetzt bei Plus und Minus. Zerlege die zweite Zahl in Zehner und Einer.",
         build(d) { return gen(8, (k) => { const x = stepZE(d === "schwer" && k % 2 ? "−" : "+", d === "leicht" ? "mittel" : d); if (x && d === "leicht") x.lab = "b" + x.b; return x; }); },
         render(x, stage, d) {
           const o = o1(x), g = d === "leicht", col = mathRow(stage, g ? dienes([{ z: x.z / 10, e: x.e, c: "o" }], []) : null);
-          const lines = g ? [{ t: [{ t: String(x.b), c: "stepnum" }, "=", { a: x.e }, "+", { a: x.z }] }]
-            : [{ t: [x.a, o, { t: String(x.b), c: "stepnum" }], c: "eqhead" }, { t: [{ t: "erst", c: "tag" }, o, { a: x.e }], c: "step" }, { t: [{ t: "dann", c: "tag" }, o, { a: x.z }], c: "step" }];
-          padTask(col, { layout: eqLayout(lines), say: g ? `Zerlege die ${x.b}. Wie viele Einer? Und wie viel sind die Zehner?` : `${x.a} ${w1(x)} ${x.b}. Zerlege die ${x.b}: erst die Einer, dann die Zehner.`,
+          const lines = g ? [{ t: [{ t: String(x.b), c: "stepnum" }, "=", { a: x.z }, "+", { a: x.e }] }]
+            : [{ t: [x.a, o, { split: [{ a: x.z }, { a: x.e }], n: x.b }], c: "eqhead" }, { t: [{ t: "1. erst die Zehner", c: "tag" }, o, { ref: 0 }], c: "step" }, { t: [{ t: "2. dann die Einer", c: "tag" }, o, { ref: 1 }], c: "step" }];
+          padTask(col, { layout: eqLayout(lines), say: g ? `Zerlege die ${x.b}. Wie viel sind die Zehner? Und wie viele Einer?` : `${x.a} ${w1(x)} ${x.b}. Zerlege die ${x.b}: erst die Zehner, dann die Einer.`,
             anyOrder: g,
-            why: (k, v, tr, want) => want === x.e ? (v === x.z || v === x.z / 10 ? `Zuerst kommen die Einer. Das ist die hintere Ziffer von ${x.b}.` : numWhy(x.e, v, `Wie viele Einer hat die ${x.b}? Schau auf die hintere Ziffer.`))
-              : (v === x.z / 10 ? `Fast! ${v} Zehner sind ${x.z}.` : numWhy(x.z, v, `${x.b} hat ${x.z / 10} Zehner. Wie viel ist das?`)),
-            okText: `${x.b} = ${x.e} + ${x.z}`, okSay: `${x.b} gleich ${x.e} plus ${x.z}.` });
+            why: (k, v, tr, want) => want === x.z ? (v === x.z / 10 ? `Fast! ${v} Zehner sind ${x.z}.` : v === x.e ? `Zuerst kommen die Zehner. ${x.b} hat ${x.z / 10} Zehner – wie viel ist das?` : numWhy(x.z, v, `${x.b} hat ${x.z / 10} Zehner. Wie viel ist das?`))
+              : numWhy(x.e, v, `Wie viele Einer hat die ${x.b}? Schau auf die hintere Ziffer.`),
+            okText: `${x.b} = ${x.z} + ${x.e}`, okSay: `${x.b} gleich ${x.z} plus ${x.e}.` });
         },
-        explain: (x) => ({ html: `<div class="dn-row">${dnSVG({ z: x.z / 10, e: x.e, c: "o" })}</div><p><b>${x.b}</b> hat <b>${x.e}</b> Einer und <b>${x.z / 10}</b> Zehner. ${x.z / 10} Zehner sind <b>${x.z}</b>.</p><p>${x.b} = ${x.e} + ${x.z}</p>`,
-          say: `${x.b} hat ${x.e} Einer und ${x.z / 10} Zehner. ${x.z / 10} Zehner sind ${x.z}.` })
+        explain: (x) => ({ html: `<div class="dn-row">${dnSVG({ z: x.z / 10, e: x.e, c: "o" })}</div><p><b>${x.b}</b> hat <b>${x.z / 10}</b> Zehner und <b>${x.e}</b> Einer. ${x.z / 10} Zehner sind <b>${x.z}</b>.</p><p>${x.b} = ${x.z} + ${x.e}</p>`,
+          say: `${x.b} hat ${x.z / 10} Zehner und ${x.e} Einer. ${x.z / 10} Zehner sind ${x.z}.` })
       },
       stepLevel("plus", "Plus-Treppe", "➕", "#2a9d8f", ["+"]),
       stepLevel("minus", "Minus-Treppe", "➖", "#e63946", ["−"]),
@@ -5440,32 +5440,32 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       {
         id: "kopf", name: "Kopf-Gipfel", icon: "🏔️", color: "#3a86ff",
         task: () => "Rechne im Kopf – in zwei Schritten!",
-        intro: (d) => (d === "leicht" ? "Plus oder Minus? Rechne die Aufgabe. Der Rechenstrich hilft dir: erst der kleine Sprung für die Einer, dann der große für die Zehner."
-          : d === "mittel" ? "Jetzt ohne Bild. Denk dir die zwei Sprünge: erst die Einer, dann die Zehner." : "Jetzt mit großen Zahlen – und ohne Bild. Schau genau auf das Zeichen!"),
+        intro: (d) => (d === "leicht" ? "Plus oder Minus? Rechne die Aufgabe. Der Rechenstrich hilft dir: erst der große Sprung für die Zehner, dann der kleine für die Einer."
+          : d === "mittel" ? "Jetzt ohne Bild. Denk dir die zwei Sprünge: erst die Zehner, dann die Einer." : "Jetzt mit großen Zahlen – und ohne Bild. Schau genau auf das Zeichen!"),
         ex: () => "34 + 25 = <b>59</b> · 58 − 23 = <b>35</b>",
-        say: (d) => (d === "leicht" ? "Plus oder Minus? Rechne die Aufgabe. Der Rechenstrich hilft dir. Erst der kleine Sprung für die Einer, dann der große für die Zehner."
-          : d === "mittel" ? "Jetzt ohne Bild. Denk dir die zwei Sprünge: erst die Einer, dann die Zehner." : "Jetzt mit großen Zahlen, und ohne Bild. Schau genau auf das Zeichen!"),
+        say: (d) => (d === "leicht" ? "Plus oder Minus? Rechne die Aufgabe. Der Rechenstrich hilft dir. Erst der große Sprung für die Zehner, dann der kleine für die Einer."
+          : d === "mittel" ? "Jetzt ohne Bild. Denk dir die zwei Sprünge: erst die Zehner, dann die Einer." : "Jetzt mit großen Zahlen, und ohne Bild. Schau genau auf das Zeichen!"),
         build(d) { return gen(8, (k) => stepZE(k % 2 ? "−" : "+", d === "schwer" ? "schwer" : "leicht")); },
         render(x, stage, d) {
           const o = o1(x), col = mathRow(stage, d === "leicht" ? el("div", "rs-box", rsHTML(x, { e: 1, z: 1 })) : null);
           padTask(col, { layout: eqLayout([{ t: [x.a, o, x.b, "=", { a: x.r }] }]), say: `${x.a} ${w1(x)} ${x.b}`,
-            why: (k, v, tr) => numWhy(x.r, v, tr >= 2 ? `Rechne in zwei Schritten: ${x.a} ${o} ${x.e} = ${x.m}, dann ${x.m} ${o} ${x.z} = ${x.r}.` : `Rechne in zwei Schritten: erst ${x.a} ${o} ${x.e}, dann ${o} ${x.z}.`),
+            why: (k, v, tr) => numWhy(x.r, v, (tr >= 2 ? `Rechne in zwei Schritten: ${x.a} ${o} ${x.z} = ${x.m}, dann ${x.m} ${o} ${x.e} = ${x.r}.` : `Rechne in zwei Schritten: erst ${x.a} ${o} ${x.z}, dann ${o} ${x.e}.`) + (d !== "leicht" && helpPic(stage, () => el("div", "rs-box", rsHTML(x, { e: 1, z: 1 }))) ? " Schau dir das Bild an." : "")),
             okText: `${x.a} ${o} ${x.b} = ${x.r}`, okSay: `${x.a} ${w1(x)} ${x.b} gleich ${x.r}.` });
         },
         tafel: tafelWay("+"), tafelAuto: false, explain: explainWay,
         expert: {
           task: () => "Rechenkette!", intro: () => XI + "Zwei Aufgaben hintereinander: 34 + 25 = 59, dann 59 − 36 = 23. Rechne jede in zwei Schritten!",
           ex: () => "34 + 25 = <b>59</b> · 59 − 36 = <b>23</b>",
-          say: () => "Experten-Aufgabe! Zwei Aufgaben hintereinander. Rechne jede in zwei Schritten: erst die Einer, dann die Zehner.",
+          say: () => "Experten-Aufgabe! Zwei Aufgaben hintereinander. Rechne jede in zwei Schritten: erst die Zehner, dann die Einer.",
           build() { return gen(8, () => {
             const x1 = stepZE("+", "schwer"); if (!x1) return null; const m = x1.r, e = m % 10; if (e < 1 || m < 23) return null;
             const e2 = rint(1, e), z2 = rint(1, Math.floor(m / 10) - 1), b2 = 10 * z2 + e2, r = m - b2; if (r < 1) return null;
-            const x2 = { a: m, op: "−", b: b2, e: e2, z: 10 * z2, m: m - e2, r };
+            const x2 = { a: m, op: "−", b: b2, e: e2, z: 10 * z2, m: m - 10 * z2, r };
             return { a: x1.a, b: x1.b, mid: m, b2, r, chain: [x1, x2], lab: `${x1.a}+${x1.b}-${b2}` }; }); },
           render(x, stage) {
             const col = mathRow(stage, null);
             padTask(col, { layout: eqLayout([{ t: [x.a, "+", x.b, "=", { a: x.mid }] }, { t: [{ ref: 0 }, MI, x.b2, "=", { a: x.r }] }]), say: `${x.a} plus ${x.b}, dann minus ${x.b2}`,
-              why: (k, v) => { const c = x.chain[k]; return numWhy(c.r, v, `Rechne in zwei Schritten: erst ${c.a} ${o1(c)} ${c.e}, dann ${o1(c)} ${c.z}.`); },
+              why: (k, v) => { const c = x.chain[k]; return numWhy(c.r, v, `Rechne in zwei Schritten: erst ${c.a} ${o1(c)} ${c.z}, dann ${o1(c)} ${c.e}.`); },
               okText: `${x.a} + ${x.b} ${MI} ${x.b2} = ${x.r}`, okSay: `${x.a} plus ${x.b} minus ${x.b2} gleich ${x.r}.`, factor: 2 });
           }
         }
@@ -7606,7 +7606,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       bonusPlan: [["zurueck", "schwer", 2], ["zerlegen", "mittel", 2], ["schritte", "mittel", 2], ["blitz", "schwer", 4]] },
     { id: "rechnen", world: "polly", name: "Plus & Minus", title: "Plus-Minus-Inseln", sub: "Rechnen bis 100", icon: "🧮", ready: true, levels: RECHENLEVELS, award: "Rechen-Profi", hunter: "Rechen",
       bonusPlan: [["zehner", "schwer", 2], ["einer", "schwer", 2], ["zehnerdazu", "schwer", 2], ["uebergang", "schwer", 2], ["zweistellig", "schwer", 1], ["profi", "schwer", 1]] },
-    { id: "schrittweise", world: "polly", name: "Rechnen in Schritten", title: "Schritte-Inseln", sub: "Erst die Einer, dann die Zehner", icon: "👟", ready: true, levels: STEPLEVELS, award: "Schritte-Profi", hunter: "Schritte", treasureAs: "rechnen",
+    { id: "schrittweise", world: "polly", name: "Rechnen in Schritten", title: "Schritte-Inseln", sub: "Erst die Zehner, dann die Einer", icon: "👟", ready: true, levels: STEPLEVELS, award: "Schritte-Profi", hunter: "Schritte", treasureAs: "rechnen",
       bonusPlan: [["zerlegen", "schwer", 2], ["plus", "mittel", 2], ["minus", "mittel", 2], ["gemischt", "schwer", 2], ["kopf", "schwer", 3]] },
     // Förderinsel: Zahlen und Aufgaben mit Material legen (ohne Experten-Insel)
     { id: "werkstatt", world: "polly", name: "Werkstatt", title: "Pollys Werkstatt", sub: "Zahlen mit Material legen", icon: "🧰", ready: true, levels: WERKLEVELS, award: "Zahlen-Baumeister", hunter: "Werkstatt", noExpert: true,
@@ -9178,7 +9178,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       { x: pos.wk[0], y: pos.wk[1], r: pos.r0 * 0.88, icon: "🧰", grass: "#ffe0a3", label: "Pollys Werkstatt", big: true, sub: chapSub(wc),
         deco: [[-0.56, -0.26, "🔨", 0.34], [0.55, -0.3, "🌴", 0.44]], aria: "Pollys Werkstatt: Zahlen mit Material legen", ch: wc, tap: enter(wc) },
       { x: pos.s[0], y: pos.s[1], r: pos.r0, icon: "👟", grass: "#f3d1f4", label: "Rechnen in Schritten", big: true, sub: starTotal(sc) ? chapSub(sc) : "✨ Neu!", subGold: !starTotal(sc),
-        deco: [[-0.55, -0.28, "🌴", 0.46], [0.56, -0.24, "🌺", 0.34]], aria: "Schritte-Inseln: erst die Einer, dann die Zehner", ch: sc, tap: enter(sc) }
+        deco: [[-0.55, -0.28, "🌴", 0.46], [0.56, -0.24, "🌺", 0.34]], aria: "Schritte-Inseln: erst die Zehner, dann die Einer", ch: sc, tap: enter(sc) }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
@@ -9580,9 +9580,9 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     "eddiewerk:kniff": "Ich nutze Tauschaufgaben, Nachbaraufgaben und Zerlegen.",
     "eddiewerk:gross": "Ich rechne mal und geteilt mit Zehnern und Hundertern.",
     "eddiewerk:sach": "Ich löse Rechengeschichten mit mal und geteilt.",
-    "schrittweise:zerlegen": "Ich zerlege eine Zahl in Einer und Zehner.",
-    "schrittweise:plus": "Ich rechne plus in zwei Schritten: erst die Einer, dann die Zehner.",
-    "schrittweise:minus": "Ich rechne minus in zwei Schritten: erst die Einer, dann die Zehner.",
+    "schrittweise:zerlegen": "Ich zerlege eine Zahl in Zehner und Einer.",
+    "schrittweise:plus": "Ich rechne plus in zwei Schritten: erst die Zehner, dann die Einer.",
+    "schrittweise:minus": "Ich rechne minus in zwei Schritten: erst die Zehner, dann die Einer.",
     "schrittweise:gemischt": "Ich rechne Plus und Minus in zwei Schritten.",
     "schrittweise:kopf": "Ich rechne zweistellige Aufgaben im Kopf.",
     "schachbrett:brett": "Ich kenne Linien, Reihen und Diagonalen auf dem Schachbrett.",
@@ -9777,8 +9777,8 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     "rechnen:zweistellig": { k: "merk", t: "Erst die Zehner, dann die Einer", s: "Zerlege die zweite Zahl in <b>Zehner</b> und <b>Einer</b>. Rechne erst die Zehner, dann die Einer.",
       ex: [["1️⃣", "34 + *20* = 54", "erst Zehner"], ["2️⃣", "54 + *5* = 59", "dann Einer"]], v: "🧩 25 = 20 + 5",
       say: "Erst die Zehner, dann die Einer. 34 plus 25: Zerlege 25 in 20 und 5. Erst 34 plus 20 gleich 54, dann 54 plus 5 gleich 59." },
-    "schrittweise:zerlegen": { k: "merk", t: "Einer und Zehner", s: "Jede zweistellige Zahl kannst du zerlegen: in ihre <b>Einer</b> und ihre <b>Zehner</b>.",
-      ex: [["🧩", "25", "die Zahl"], ["1️⃣", "*5*", "Einer"], ["🔟", "*20*", "2 Zehner"]], v: "25 = 5 + 20", say: "Jede zweistellige Zahl kannst du zerlegen: in ihre Einer und ihre Zehner. 25 ist 5 plus 20." },
+    "schrittweise:zerlegen": { k: "merk", t: "Zehner und Einer", s: "Jede zweistellige Zahl kannst du zerlegen: in ihre <b>Zehner</b> und ihre <b>Einer</b>.",
+      ex: [["🧩", "25", "die Zahl"], ["🔟", "*20*", "2 Zehner"], ["1️⃣", "*5*", "Einer"]], v: "25 = 20 + 5", say: "Jede zweistellige Zahl kannst du zerlegen: in ihre Zehner und ihre Einer. 25 ist 20 plus 5." },
     "eddiewerk:kern": { k: "merk", t: "Malnehmen", s: "<b>3 · 5</b> heißt: 3-mal die 5. Das ist 5 + 5 + 5 = 15.",
       ex: [["🔵", "3 · 5 = *15*", "3-mal die 5"], ["🔁", "5 · 3 = *15*", "tauschen geht"]], say: "Malnehmen. 3 mal 5 heißt: 3 mal die 5. Das ist 5 plus 5 plus 5 gleich 15." },
     "eddiewerk:geteilt": { k: "merk", t: "Geteilt", s: "Geteilt ist die <b>Umkehrung</b> von mal. Geht es nicht auf, bleibt ein <b>Rest</b>.",
@@ -9791,14 +9791,14 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       ex: [["1️⃣", "3 · 4 = 12", "Einmaleins"], ["🔟", "3 · 40 = *120*", "eine Null dazu"]], say: "Rechne die Einmaleins-Aufgabe und denk dann an die Nullen. 3 mal 4 gleich 12, also 3 mal 40 gleich 120." },
     "eddiewerk:sach": { k: "tipp", t: "Rechengeschichten", s: "<b>Je</b> und <b>in jeder</b> heißt oft <b>mal</b>. <b>Gerecht verteilen</b> heißt <b>geteilt</b>.",
       ex: [["📦", "4 Kisten, je 6", "4 · 6 = 24"], ["🤝", "24 auf 4 verteilen", "24 : 4 = 6"]], say: "Je und in jeder heißt oft mal. Gerecht verteilen heißt geteilt." },
-    "schrittweise:plus": { k: "merk", t: "Plus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Einer</b> dazu. <b>2.</b> Dann die <b>Zehner</b> dazu.",
-      ex: [["1️⃣", "34 + *5* = 39", "erst Einer"], ["2️⃣", "39 + *20* = 59", "dann Zehner"]], v: "🧩 25 = 5 + 20", say: "Plus in zwei Schritten. 34 plus 25: Erst die Einer: 34 plus 5 gleich 39. Dann die Zehner: 39 plus 20 gleich 59." },
-    "schrittweise:minus": { k: "merk", t: "Minus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Einer</b> weg. <b>2.</b> Dann die <b>Zehner</b> weg.",
-      ex: [["1️⃣", "58 − *3* = 55", "erst Einer"], ["2️⃣", "55 − *20* = 35", "dann Zehner"]], v: "🧩 23 = 3 + 20", say: "Minus in zwei Schritten. 58 minus 23: Erst die Einer: 58 minus 3 gleich 55. Dann die Zehner: 55 minus 20 gleich 35." },
-    "schrittweise:gemischt": { k: "tipp", t: "Erst das Zeichen!", s: "Schau zuerst: <b>Plus</b> oder <b>Minus</b>? Dann rechnest du wie immer: erst die Einer, dann die Zehner.",
-      ex: [["➕", "34 + 25", "dazu"], ["➖", "58 − 23", "weg"]], say: "Schau zuerst: Plus oder Minus? Dann rechnest du wie immer: erst die Einer, dann die Zehner." },
-    "schrittweise:kopf": { k: "tipp", t: "Zwei Sprünge im Kopf", s: "Denk an den Rechenstrich: erst der <b>kleine Sprung</b> für die Einer, dann der <b>große Sprung</b> für die Zehner.",
-      ex: [["🐸", "34 → 39", "kleiner Sprung"], ["🦘", "39 → 59", "großer Sprung"]], say: "Denk an den Rechenstrich. Erst der kleine Sprung für die Einer, dann der große Sprung für die Zehner." },
+    "schrittweise:plus": { k: "merk", t: "Plus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Zehner</b> dazu. <b>2.</b> Dann die <b>Einer</b> dazu.",
+      ex: [["1️⃣", "34 + *20* = 54", "erst Zehner"], ["2️⃣", "54 + *5* = 59", "dann Einer"]], v: "🧩 25 = 20 + 5", say: "Plus in zwei Schritten. 34 plus 25: Erst die Zehner: 34 plus 20 gleich 54. Dann die Einer: 54 plus 5 gleich 59." },
+    "schrittweise:minus": { k: "merk", t: "Minus in 2 Schritten", s: "Zerlege die zweite Zahl. <b>1.</b> Erst die <b>Zehner</b> weg. <b>2.</b> Dann die <b>Einer</b> weg.",
+      ex: [["1️⃣", "58 − *20* = 38", "erst Zehner"], ["2️⃣", "38 − *3* = 35", "dann Einer"]], v: "🧩 23 = 20 + 3", say: "Minus in zwei Schritten. 58 minus 23: Erst die Zehner: 58 minus 20 gleich 38. Dann die Einer: 38 minus 3 gleich 35." },
+    "schrittweise:gemischt": { k: "tipp", t: "Erst das Zeichen!", s: "Schau zuerst: <b>Plus</b> oder <b>Minus</b>? Dann rechnest du wie immer: erst die Zehner, dann die Einer.",
+      ex: [["➕", "34 + 25", "dazu"], ["➖", "58 − 23", "weg"]], say: "Schau zuerst: Plus oder Minus? Dann rechnest du wie immer: erst die Zehner, dann die Einer." },
+    "schrittweise:kopf": { k: "tipp", t: "Zwei Sprünge im Kopf", s: "Denk an den Rechenstrich: erst der <b>große Sprung</b> für die Zehner, dann der <b>kleine Sprung</b> für die Einer.",
+      ex: [["🦘", "34 → 54", "großer Sprung"], ["🐸", "54 → 59", "kleiner Sprung"]], say: "Denk an den Rechenstrich. Erst der große Sprung für die Zehner, dann der kleine Sprung für die Einer." },
     "schachbrett:brett": { k: "merk", t: "Linien und Reihen", s: "<b>Linien</b> laufen von unten nach oben: a bis h. <b>Reihen</b> laufen von links nach rechts: 1 bis 8. Unten rechts ist immer ein helles Feld.",
       ex: [["⬆️", "Linie", "a bis h"], ["➡️", "Reihe", "1 bis 8"], ["↗️", "Diagonale", "schräg"]], say: "Linien laufen von unten nach oben und haben Buchstaben. Reihen laufen von links nach rechts und haben Zahlen. Unten rechts ist immer ein helles Feld." },
     "schachbrett:felder": { k: "merk", t: "So heißt ein Feld", s: "Erst der <b>Buchstabe</b> der Linie, dann die <b>Zahl</b> der Reihe.", ex: [["🔤", "e", "Linie"], ["🔢", "4", "Reihe"], ["🎯", "e4", "Feld"]], say: "Erst der Buchstabe der Linie, dann die Zahl der Reihe. Zum Beispiel e 4." },
@@ -10503,7 +10503,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     const word = "Neugierburg".split("").map((c, i) => `<tspan fill="${cols[i % cols.length]}">${c}</tspan>`).join("");
     const tower = (x, y, k, flip) => `<g transform="translate(${x} ${y}) scale(${flip ? -k : k} ${k})"><rect x="-26" y="-60" width="52" height="64" rx="4" fill="#e9d8b4" stroke="#17324a" stroke-width="5"/><path d="M-30 -60 v-14 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v14 Z" fill="#e9d8b4" stroke="#17324a" stroke-width="5" stroke-linejoin="round"/><path d="M-8 4 v-22 a8 8 0 0 1 16 0 v22" fill="#6b4a2a" stroke="#17324a" stroke-width="4"/><path d="M0 -74 v-34" stroke="#17324a" stroke-width="5"/><path d="M0 -108 l30 9 l-30 9 Z" fill="#e63946" stroke="#17324a" stroke-width="4" stroke-linejoin="round"/></g>`;
     const star = (x, y, k) => `<path transform="translate(${x} ${y}) scale(${k})" d="M0 -20 L5 -5 L20 0 L5 5 L0 20 L-5 5 L-20 0 L-5 -5 Z" fill="#fff6c9" stroke="#e0a400" stroke-width="3" stroke-linejoin="round"/>`;
-    return `<g class="burg-banner" aria-hidden="true">
+    return `<g class="burg-banner" aria-hidden="true" transform="translate(700 -230) scale(.78) translate(-700 100)">
       <path d="M118 30 l-70 4 l34 -46 l-40 -40 l96 -6 Z" fill="#c9971f" stroke="#17324a" stroke-width="6" stroke-linejoin="round"/>
       <path d="M1282 30 l70 4 l-34 -46 l40 -40 l-96 -6 Z" fill="#c9971f" stroke="#17324a" stroke-width="6" stroke-linejoin="round"/>
       <path d="${arc}" fill="none" stroke="rgba(10,40,70,.28)" stroke-width="176" transform="translate(8 14)"/>
@@ -10517,7 +10517,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   }
   // ganze Außenansicht als ein Bild (Startbildschirm): Insel mit Umgebung, Schule von außen, Polly auf dem Dach
   function outsideSVG() {
-    let s = `<svg viewBox="-280 -232 1960 1340" class="school outside" role="img" aria-label="Die Neugierburg: unsere Schule mit dem Schriftzug Die Neugierburg">`;
+    let s = `<svg viewBox="-280 -350 1960 1458" class="school outside" role="img" aria-label="Die Neugierburg: unsere Schule mit dem Schriftzug Die Neugierburg">`;
     s += sceneBits("stSky", false) + skyBits() + gableBits() + facadePart("kg") + facadePart("eg") + facadePart("og") + fasciaBits() + treeBits();
     s += `<svg x="560" y="76" width="84" height="84" viewBox="0 0 100 100" class="roofpolly">${ART.polly ? shade3d(ART.polly) : ""}</svg>`;
     return s + burgBanner() + `</svg>`;
