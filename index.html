@@ -1282,11 +1282,15 @@ svg.trace .trguide { fill: none; stroke: #9fb3c8; stroke-width: 1.4; stroke-dash
 svg.trace .trdone { fill: none; stroke: #2b9348; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .3s; }
 svg.trace .trdone.on { opacity: 1; }
 svg.trace .truser { fill: none; stroke: #1f6fd1; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+svg.trace .trarrow { fill: #2f6fb0; opacity: .75; }
+.trmini .trmini-a { fill: #17324a; }
+.trmini .trmini-s { fill: #2b9348; stroke: #fff; stroke-width: 1.5; }
+.trmini .trmini-n { fill: #fff; font-size: 8px; font-weight: 900; }
 svg.trace .trstart circle { fill: #2b9348; stroke: #fff; stroke-width: 1.5; } svg.trace .trstart text { fill: #fff; font-size: 7px; font-weight: 900; }
 svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
 .trtools { display: flex; gap: 10px; justify-content: center; }
-.trmini { width: 64px; height: 72px; vertical-align: middle; background: #fff; border-radius: 10px; }
-.trmini .tl { stroke: #d5dde5; stroke-width: 1; } .trmini-p { fill: none; stroke: #1f6fd1; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.trmini { width: 84px; height: 94px; vertical-align: middle; background: #fff; border-radius: 10px; margin: 2px; }
+.trmini .tl { stroke: #d5dde5; stroke-width: 1; } .trmini-p { fill: none; stroke: #9cc4ef; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 </head>
 <body>
@@ -7479,30 +7483,33 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   ];
   // Schreibspuren (Koordinaten 0–100 breit, Lineatur: Oberlinie 12, Mittellinie 50, Grundlinie 90, Unterlinie 108).
   // Jede Zeichenkette ist ein Strich in der Reihenfolge, wie man ihn schreibt.
+  // Schreibbewegungen wie in der Grundschule üblich: Großbuchstaben beginnen oben – außer A, M und N (unten links).
+  // Senkrechte Striche zuerst, dann Querstriche von links nach rechts; Rundungen gegen den Uhrzeigersinn (a, d, o, O wie c).
+  // m, n, r, u in einem Zug: „runter, zurück, Bogen …“ (der Rückweg läuft auf dem Strich zurück).
   const TRACE = {
     print: {
-      A: ["M50 12 L20 90", "M50 12 L80 90", "M31 62 L69 62"],
-      L: ["M30 12 L30 90 L72 90"],
-      E: ["M30 12 L30 90", "M30 12 L72 12", "M30 51 L66 51", "M30 90 L72 90"],
+      A: ["M20 90 L50 12 L80 90", "M31 62 L69 62"],                       // schräg rauf – Spitze – schräg runter, dann Querstrich
+      L: ["M30 12 L30 90 L72 90"],                                          // runter – rüber
+      E: ["M30 12 L30 90", "M30 12 L72 12", "M30 51 L66 51", "M30 90 L72 90"], // Strich runter – rüber, rüber, rüber
       O: ["M50 12 C26 12 18 34 18 51 C18 70 28 90 50 90 C72 90 82 70 82 51 C82 32 72 12 50 12"],
-      M: ["M22 90 L22 12", "M22 12 L50 62 L78 12 L78 90"],
+      M: ["M22 90 L22 12 L50 62 L78 12 L78 90"],                            // zick und zack, zick und zack
       S: ["M76 24 C70 12 56 11 48 12 C34 13 24 21 25 33 C26 46 44 48 54 51 C68 55 77 61 76 73 C75 86 60 91 48 90 C36 89 27 85 22 77"],
-      T: ["M20 12 L80 12", "M50 12 L50 90"],
+      T: ["M50 12 L50 90", "M20 12 L80 12"],                                // Strich runter, Dach drauf
       U: ["M24 12 L24 64 C24 82 34 90 50 90 C66 90 76 82 76 64 L76 12"],
-      R: ["M28 90 L28 12", "M28 12 L54 12 C70 12 76 22 76 32 C76 44 66 52 54 52 L28 52", "M50 52 L76 90"],
-      N: ["M26 90 L26 12", "M26 12 L74 90 L74 12"],
-      D: ["M28 90 L28 12", "M28 12 L46 12 C70 12 82 30 82 51 C82 74 68 90 46 90 L28 90"],
-      a: ["M70 58 C64 50 56 48 50 48 C36 48 28 58 28 70 C28 82 37 91 49 91 C60 91 68 84 70 74", "M70 50 L70 90"],
+      R: ["M28 12 L28 90", "M28 12 L52 12 C68 12 76 21 76 32 C76 44 67 52 52 52 L30 52 L76 90"], // Strich runter – Bauch und Bein
+      N: ["M26 90 L26 12 L74 90 L74 12"],                                   // rauf – schräg runter – rauf
+      D: ["M28 12 L28 90", "M28 12 L46 12 C70 12 82 30 82 51 C82 74 68 90 46 90 L28 90"],
+      a: ["M69 56 C64 50 57 48 50 48 C36 48 28 58 28 70 C28 82 37 91 49 91 C60 91 68 84 70 74", "M70 50 L70 90"],   // rundherum – kurzer Strich
       l: ["M50 12 L50 90"],
-      e: ["M30 70 L70 70 C70 57 62 49 50 49 C37 49 29 58 29 70 C29 83 38 91 51 91 C60 91 66 87 70 82"],
+      e: ["M30 70 L70 70 C70 57 62 49 50 49 C37 49 29 58 29 70 C29 83 38 91 51 91 C60 91 66 87 70 82"],          // rüber – stopp – halb herum
       o: ["M50 49 C36 49 28 59 28 70 C28 82 37 91 50 91 C63 91 72 82 72 70 C72 59 64 49 50 49"],
-      m: ["M24 50 L24 90", "M24 64 C26 54 32 49 39 49 C46 49 50 54 50 62 L50 90", "M50 64 C52 54 58 49 65 49 C72 49 76 54 76 62 L76 90"],
+      m: ["M24 50 L24 90 L24 62 C26 54 32 49 39 49 C46 49 50 54 50 62 L50 90 L50 62 C52 54 58 49 65 49 C72 49 76 54 76 62 L76 90"],
       s: ["M68 56 C64 51 58 49 51 49 C41 49 34 53 34 60 C34 67 42 69 51 70 C61 71 68 74 68 81 C68 88 60 91 50 91 C41 91 34 88 31 83"],
-      t: ["M50 24 L50 80 C50 88 55 91 61 91 C64 91 67 90 69 88", "M34 50 L66 50"],
-      u: ["M30 50 L30 74 C30 85 38 91 48 91 C60 91 70 84 70 72", "M70 50 L70 90"],
-      r: ["M36 50 L36 90", "M36 66 C39 55 46 49 56 49 C61 49 65 51 68 54"],
-      n: ["M30 50 L30 90", "M30 64 C33 54 41 49 51 49 C62 49 70 55 70 66 L70 90"],
-      d: ["M70 60 C64 51 57 48 50 48 C36 48 28 58 28 70 C28 82 37 91 49 91 C60 91 68 84 70 74", "M70 12 L70 90"]
+      t: ["M50 24 L50 80 C50 88 55 91 61 91 C64 91 67 90 69 88", "M34 50 L66 50"],                                // Strich runter, dann Querstrich
+      u: ["M30 50 L30 74 C30 85 38 91 48 91 C60 91 70 84 70 72 L70 50 L70 90"],                                    // runter – Bogen – rauf – runter
+      r: ["M36 50 L36 90 L36 64 C39 55 46 49 56 49 C61 49 65 51 68 54"],                                           // runter – zurück – kleiner Bogen
+      n: ["M30 50 L30 90 L30 62 C33 54 41 49 51 49 C62 49 70 55 70 66 L70 90"],                                    // runter – zurück – Bogen runter
+      d: ["M69 57 C64 51 57 48 50 48 C36 48 28 58 28 70 C28 82 37 91 49 91 C60 91 68 84 70 74", "M70 12 L70 90"]    // rundherum – langer Strich
     },
     // Lateinische Ausgangsschrift: verbundene Schreibschrift mit An- und Abstrich (ein Zug)
     la: {
@@ -7513,7 +7520,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       m: ["M4 88 C10 76 14 62 16 50 L16 90 L16 72 C19 58 25 50 32 50 C39 50 42 56 42 64 L42 90 L42 72 C45 58 51 50 58 50 C65 50 68 56 68 64 L68 82 C68 90 73 92 79 89 C85 86 90 81 94 76"],
       s: ["M6 86 C18 76 30 62 40 50 C46 58 52 68 52 78 C52 89 42 93 33 90 C29 88 28 84 31 82 C40 86 52 88 62 86 C70 84 76 80 82 75"],
       t: ["M6 86 C22 72 36 52 44 22 L44 80 C44 89 49 92 55 90 C63 87 71 81 78 74", "M30 50 L60 50"],
-      u: ["M6 80 C14 70 20 60 24 50 L24 76 C24 87 30 92 38 91 C48 90 54 80 56 66 L56 50 L56 82 C56 90 61 92 67 90 C73 87 79 82 84 76"],
+      u: ["M6 80 C14 70 20 60 24 50 L24 76 C24 87 30 92 38 91 C48 90 54 80 56 66 L56 50 L56 82 C56 90 61 92 67 90 C73 87 79 82 84 76", "M30 32 C34 40 46 40 50 32"],   // zuletzt der u-Bogen
       r: ["M6 86 C16 74 24 62 28 50 C32 54 36 55 42 53 C40 62 38 72 38 90 L38 72 C42 58 50 51 58 51 C62 51 65 53 66 56"],
       n: ["M6 88 C14 76 20 62 22 50 L22 90 L22 72 C25 58 32 50 41 50 C50 50 54 57 54 66 L54 82 C54 90 59 92 65 90 C72 87 78 82 84 76"],
       d: ["M58 56 C52 49 40 48 32 54 C24 61 22 75 28 84 C34 92 46 90 52 80 C56 72 58 62 58 50 L58 12 L58 80 C58 89 62 92 68 90 C74 88 79 82 84 76"]
@@ -7550,7 +7557,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     const NS = "http://www.w3.org/2000/svg", wrap = el("div", "trwrap"), svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 100 112"); svg.setAttribute("class", "trace"); svg.setAttribute("role", "img"); svg.setAttribute("aria-label", o.aria || "Buchstabe zum Nachspuren");
     svg.innerHTML = TRACE_LINES + o.strokes.map(d => `<path class="trghost" d="${d}"/><path class="trguide" d="${d}"/>`).join("") + o.strokes.map(d => `<path class="trdone" d="${d}"/>`).join("")
-      + '<path class="truser" d=""/><g class="trstart"><circle r="5.5"/><text y="2.6" text-anchor="middle">1</text></g><circle class="trdemo" r="4" hidden/>';
+      + '<g class="trarrows"></g><path class="truser" d=""/><g class="trstart"><circle r="5.5"/><text y="2.6" text-anchor="middle">1</text></g><circle class="trdemo" r="4" hidden/>';
     wrap.appendChild(svg);
     const tools = el("div", "trtools"), demo = el("button", "opt small", "▶️ Zeig mir wie"), again = el("button", "opt small", "🧽 Nochmal");
     tools.appendChild(demo); tools.appendChild(again);
@@ -7563,6 +7570,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       if (si >= samp.length) { start.setAttribute("hidden", ""); return; }
       const s0 = samp[si][0]; start.removeAttribute("hidden"); start.setAttribute("transform", `translate(${s0[0].toFixed(1)} ${s0[1].toFixed(1)})`); start.querySelector("text").textContent = si + 1;
       ghosts.forEach((g, i) => g.classList.toggle("now", i === si));
+      svg.querySelector(".trarrows").innerHTML = trArrows(ghosts[si]);
     };
     const pt = (e) => { const m = svg.getScreenCTM().inverse(), p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const q = p.matrixTransform(m); return [q.x, q.y]; };
     const drawUser = () => user.setAttribute("d", pts.length ? "M" + pts.map(p => p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" L") : "");
@@ -7844,7 +7852,29 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     explain: (x) => ({ html: `<p class="lwexp">${lwFont(Lt.K + " " + Lt.k)} <span class="lw-big">${pix(Lt.key)}</span></p><p><b>${Lt.K}</b> wie <b>${Lt.key}</b>. Sprich das Wort langsam – am Anfang hörst du das ${Lt.K}.</p>`
       + `<p>So schreibst du es: ${tracePic(TRACE.print[Lt.K])} ${tracePic(TRACE.print[Lt.k])} ${tracePic(TRACE.la[Lt.k])}</p>`, say: `${Lt.K} wie ${Lt.key}. Sprich das Wort langsam. Am Anfang hörst du das ${Lt.k}.` })
   }));
-  const tracePic = (strokes) => `<svg class="trmini" viewBox="0 0 100 112" aria-hidden="true">${TRACE_LINES}${strokes.map(d => `<path class="trmini-p" d="${d}"/>`).join("")}</svg>`;
+  // Richtungspfeile entlang eines Strichs (etwa alle 34 Einheiten einer; bei „runter – zurück“ zeigen sie auch den Rückweg)
+  function trArrows(path, cls) {
+    const len = path.getTotalLength(), n = Math.max(1, Math.round(len / 34)); let out = "";
+    for (let i = 0; i < n; i++) {
+      const l = len * (i + 0.55) / n, a = path.getPointAtLength(Math.max(0, l - 1.5)), b = path.getPointAtLength(Math.min(len, l + 1.5));
+      const ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI, q = path.getPointAtLength(l);
+      out += `<path class="${cls || "trarrow"}" transform="translate(${q.x.toFixed(1)} ${q.y.toFixed(1)}) rotate(${ang.toFixed(0)})" d="M-3.2 -3.4 L3.6 0 L-3.2 3.4 Z"/>`;
+    }
+    return out;
+  }
+  // kleines Bild mit allen Strichen: Startpunkt mit Nummer und Pfeile zeigen Reihenfolge und Richtung
+  let trMeasure = null;
+  const tracePic = (strokes) => {
+    if (!trMeasure) { trMeasure = document.createElementNS("http://www.w3.org/2000/svg", "svg"); trMeasure.setAttribute("style", "position:absolute;width:0;height:0;overflow:hidden"); trMeasure.setAttribute("aria-hidden", "true"); document.body.appendChild(trMeasure); }
+    const seen = [];
+    const marks = strokes.map((d, i) => { const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", d); trMeasure.appendChild(p);
+      const s0 = p.getPointAtLength(0); let x = s0.x, y = s0.y;
+      if (seen.some(q => Math.hypot(q[0] - x, q[1] - y) < 10)) { x += 10; y -= 7; }   // gleicher Startpunkt wie ein früherer Strich: Nummer daneben
+      seen.push([x, y]);
+      const out = trArrows(p, "trmini-a") + `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle r="6" class="trmini-s"/><text y="2.8" text-anchor="middle" class="trmini-n">${i + 1}</text></g>`;
+      p.remove(); return out; }).join("");
+    return `<svg class="trmini" viewBox="-4 0 108 112" aria-hidden="true">${TRACE_LINES}${strokes.map(d => `<path class="trmini-p" d="${d}"/>`).join("")}${marks}</svg>`;
+  };
   const CHAPTERS = [
     { id: "nomen", name: "Nomen", sub: "Namenwörter", icon: "🐟", ready: true, levels: NOMEN, award: "Nomen-Profi",
       bonusPlan: [["fischen", "schwer", 1], ["versteckt", "mittel", 1], ["versteckt", "schwer", 1], ["grossklein", "schwer", 1], ["artikel", "schwer", 2],
