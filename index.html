@@ -7511,19 +7511,31 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       n: ["M30 50 L30 90 L30 62 C33 54 41 49 51 49 C62 49 70 55 70 66 L70 90"],                                    // runter – zurück – Bogen runter
       d: ["M69 57 C64 51 57 48 50 48 C36 48 28 58 28 70 C28 82 37 91 49 91 C60 91 68 84 70 74", "M70 12 L70 90"]    // rundherum – langer Strich
     },
-    // Lateinische Ausgangsschrift: verbundene Schreibschrift mit An- und Abstrich (ein Zug)
+    // Lateinische Ausgangsschrift wie auf dem ABC-Fries der Klasse: schräg, mit Schleifen, An- und Ausstrich; Groß- und Kleinbuchstaben
+    // (u ohne u-Bogen, wie auf dem Fries). Großbuchstaben: A beginnt unten links, T: Stamm, dann Dach; R: Stamm, dann Bauch und Bein.
     la: {
-      a: ["M58 56 C52 49 40 48 32 54 C24 61 22 75 28 84 C34 92 46 90 52 80 C56 72 58 62 58 50 L57 80 C57 89 61 92 67 90 C73 88 79 82 84 76"],
-      l: ["M6 86 C26 74 44 56 54 36 C60 24 60 12 52 12 C44 12 42 24 42 40 L42 80 C42 89 47 92 53 90 C61 87 70 81 78 74"],
-      e: ["M6 86 C22 82 38 74 50 64 C58 57 58 49 50 49 C40 49 32 60 32 72 C32 85 40 92 52 90 C62 88 70 82 78 75"],
-      o: ["M52 52 C38 48 26 58 26 72 C26 86 36 92 46 90 C56 88 60 76 58 64 C57 56 54 52 50 52 C56 58 66 56 80 51"],
-      m: ["M4 88 C10 76 14 62 16 50 L16 90 L16 72 C19 58 25 50 32 50 C39 50 42 56 42 64 L42 90 L42 72 C45 58 51 50 58 50 C65 50 68 56 68 64 L68 82 C68 90 73 92 79 89 C85 86 90 81 94 76"],
-      s: ["M6 86 C18 76 30 62 40 50 C46 58 52 68 52 78 C52 89 42 93 33 90 C29 88 28 84 31 82 C40 86 52 88 62 86 C70 84 76 80 82 75"],
-      t: ["M6 86 C22 72 36 52 44 22 L44 80 C44 89 49 92 55 90 C63 87 71 81 78 74", "M30 50 L60 50"],
-      u: ["M6 80 C14 70 20 60 24 50 L24 76 C24 87 30 92 38 91 C48 90 54 80 56 66 L56 50 L56 82 C56 90 61 92 67 90 C73 87 79 82 84 76", "M30 32 C34 40 46 40 50 32"],   // zuletzt der u-Bogen
-      r: ["M6 86 C16 74 24 62 28 50 C32 54 36 55 42 53 C40 62 38 72 38 90 L38 72 C42 58 50 51 58 51 C62 51 65 53 66 56"],
-      n: ["M6 88 C14 76 20 62 22 50 L22 90 L22 72 C25 58 32 50 41 50 C50 50 54 57 54 66 L54 82 C54 90 59 92 65 90 C72 87 78 82 84 76"],
-      d: ["M58 56 C52 49 40 48 32 54 C24 61 22 75 28 84 C34 92 46 90 52 80 C56 72 58 62 58 50 L58 12 L58 80 C58 89 62 92 68 90 C74 88 79 82 84 76"]
+      a: ["M62.9 55 C59.2 49 49.4 48 40.5 52 30.4 57 23.8 69 23.6 79 23.6 88 31.8 92 40.4 89 50.3 85 56.7 74 65 50 L55.9 82 C53.4 89 56.8 92 62.2 90 66.6 88 71.5 84 76.4 80"],
+      l: ["M21.5 84 C37.3 76 54.8 60 66.8 42 75.8 28 78.5 16 73.1 13 66.8 10 59.6 20 56.1 36 L46.4 80 C44.6 88 47.8 92 55 91 61.2 90 69.3 85 76.6 79"],
+      e: ["M19.7 84 C30.6 80 45.9 74 55.7 66 63 60 66.3 54 63 51 58.6 48 50.8 52 46 60 41 69 38.6 80 43.1 87 48 92 58.2 91 67.3 86 72 83 76.6 80 80.3 77"],
+      o: ["M54.5 52 C47.6 47 35.7 51 28.5 61 21.1 72 21.2 85 28.3 89 36.5 93 46.8 87 52 77 57.2 67 58.6 56 54.5 52 56.6 56 61.8 55 67.5 52 70.9 50 75.1 49 78.9 50"],
+      m: ["M11.8 82 C17.5 74 24.2 62 30.8 50 L22 90 26.4 70 C31.1 58 37.8 50 43.8 50 49.8 50 51.5 56 49.7 64 L44 90 48.4 70 C53.1 58 59.8 50 65.8 50 71.8 50 73.5 56 71.7 64 L67.8 82 C66.2 89 69.6 92 75 90 79.5 88 84.3 84 88.2 80"],
+      s: ["M22.6 84 C32.8 74 43.4 62 54 50 56.3 58 60.5 66 60.8 74 60.6 84 53 91 45 91 39 91 35.7 88 38.6 84 41.2 81 46.6 84 52.1 86 59.7 88 68.1 86 77.4 80"],
+      t: ["M27.6 84 C38.2 72 49.7 56 62.8 24 L48.4 80 C45.7 88 48.8 92 55.2 90 61.7 88 67.6 84 72.4 80", "M45 50 L71 50"],
+      u: ["M17.6 84 C25.8 74 32.4 62 37 50 L31.3 76 C29.1 86 34 91 42.2 90 50.5 89 58.4 80 63.5 66 L67 50 60 82 C58.5 89 61.8 92 67.2 90 72.7 88 77.6 84 82.4 80"],
+      r: ["M22.2 84 C30.4 74 39 62 44.4 51 46.3 47 50.5 46 50.9 49 51.2 52 46.8 54 45.2 52 49.5 55 57 53 63.4 51 67.6 50 69 53 66.9 58 L58.2 84 C56.1 89 58.4 92 63.8 90 69.3 88 74.2 84 77.8 81"],
+      n: ["M18.8 82 C24.5 74 31.2 62 37.8 50 L29 90 33.4 70 C38.1 58 45.8 50 53.8 50 61.8 50 64.5 56 62.7 64 L58.8 82 C57.2 89 60.6 92 66 90 71.5 88 76.3 84 81.2 80"],
+      d: ["M61.5 55 C57.8 49 48.1 48 39.2 52 29.1 57 22.4 69 22.2 79 22.3 88 30.4 92 39 89 48.9 85 57.2 70 70 30 73.2 20 77.8 13 76 12 73.2 11 70.7 18 68 30 L54.6 82 C52 89 55.4 92 60.8 90 65.3 88 70.1 84 75 80"],
+      A: ["M16.1 88 C30.1 70 50.7 40 70.8 12 L63.4 82 C62.9 89 66.5 91 71.9 89 76.3 87 80 84 83.9 80", "M40.7 58 L70.7 58"],
+      L: ["M57 26 C63.7 14 76.6 10 79.2 16 81.5 24 68.2 30 59.1 44 50 58 42.5 74 34.3 84 28.5 92 18.5 92 19.8 86 21.2 80 30.7 82 37.8 86 48.5 92 62.5 92 77.8 86"],
+      E: ["M77 22 C73.2 12 55.7 10 45.9 18 36.2 26 36.6 42 49.5 47 53.3 48 53.7 51 49.7 51 36.4 52 24.2 62 23.6 74 23 86 33.6 92 48.1 90 58.5 88 67.8 82 75.2 76"],
+      O: ["M64.6 14 C49.5 10 30 26 22.7 50 15.4 74 23.9 90 39.9 90 57.9 90 73.8 72 79.1 48 84 26 76.6 14 64.6 14 59.7 18 60.4 24 66.8 22 73.3 20 78.2 16 84.6 14"],
+      M: ["M5.6 86 C10.9 80 19.3 60 29.9 30 35 16 39.8 12 43.4 14 47 16 44.8 26 41.7 40 L31.1 88 39.5 50 C47.2 24 57.8 12 63.4 14 69 16 66.8 26 63.7 40 L53.1 88 61.5 50 C69.2 24 79.8 12 85.4 14 91 16 88.8 26 85.7 40 L76.4 82 C74.9 89 78.2 92 83.7 90 88.1 88 91.8 85 94.4 82"],
+      S: ["M79.4 20 C75.1 12 61.4 11 53.4 20 45.2 30 53 40 59.2 48 65.5 56 66.4 70 55.7 82 45.5 92 29.5 92 23.3 84 20.6 78 25.5 74 30.8 77"],
+      T: ["M56.6 18 C49.8 40 42 66 34.5 82 30.8 90 22.3 92 17.2 88 14.1 84 17 80 21.5 82", "M23.7 22 C33.5 14 45 16 54.6 18 64.2 20 74.6 18 85.9 12"],
+      U: ["M22.9 20 C28.2 14 36.6 12 37.3 18 L23.9 70 C20.8 84 27.5 90 37.5 90 49.5 90 59.7 80 65.2 64 L78.2 14 61.2 82 C59.7 89 63 92 68.5 90 72.9 88 76.6 85 79.2 82"],
+      R: ["M43.4 16 C36.1 40 28.8 64 19.5 88", "M34 22 C46.2 12 62.7 10 71.8 14 80.5 20 74.5 38 60.8 46 53.9 50 45.9 50 37.9 50 49 54 52.4 66 53.7 78 54 86 59.1 90 67.5 88"],
+      N: ["M12.6 86 C17.9 80 26.3 60 36.9 30 42 16 46.8 12 50.4 14 54 16 51.8 26 48.7 40 L38.1 88 46.5 50 C54.2 24 66.8 12 74.4 14 82 16 81.8 26 78.7 40 L69.4 82 C67.9 89 71.2 92 76.7 90 81.1 88 84.8 85 87.4 82"],
+      D: ["M49.8 14 C42.1 40 34.4 66 26.4 84 22.9 91 14.7 92 12.6 88 11.4 84 17.9 82 24 86 32.7 92 50.7 92 65.3 80 80.4 66 88.6 38 80.1 22 72.7 10 54.7 10 39.4 16"]
     }
   };
 
@@ -7771,7 +7783,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     const build = () => { const w = pick(words); return { kind: "build", w }; };
     if (d === "leicht") out.push(anlautPick(6), find("up"), trace("print", Lt.K), anlautPick(6), find("lo"), trace("print", Lt.k));
     else if (d === "mittel") out.push(posQ(), gap(), trace("print", Lt.k), posQ(), find("both"), syls.length >= 3 ? syl() : gap(), gap());
-    else out.push(trace("la", Lt.k), words.length ? read() : posQ(), words.length && i >= 4 ? build() : gap(), trace("print", Lt.K), syls.length >= 3 ? syl() : anlautPick(8), words.length ? read() : find("both"), trace("la", Lt.k));
+    else out.push(trace("la", Lt.k), words.length ? read() : posQ(), words.length && i >= 4 ? build() : gap(), trace("print", Lt.K), syls.length >= 3 ? syl() : anlautPick(8), words.length ? read() : find("both"), trace("la", Lt.K));
     return out.map((x, n) => Object.assign(x, { li: i, lab: Lt.k + d + n + (x.w || x.t || x.ch || "") }));
   }
   function lwRender(x, stage, d) {
@@ -7791,10 +7803,10 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     }
     if (x.kind === "trace") {
       const la = x.font === "la", up = x.ch !== x.ch.toLowerCase();
-      task(la ? `Schreibschrift: Spur das ${Lt.k} nach!` : `Spur das ${up ? "große" : "kleine"} ${x.ch} nach!`);
+      task(la ? `Schreibschrift: Spur das ${up ? "große" : "kleine"} ${x.ch} nach!` : `Spur das ${up ? "große" : "kleine"} ${x.ch} nach!`);
       return traceTask(stage, { strokes: TRACE[la ? "la" : "print"][x.ch], factor: f, aria: `Buchstabe ${x.ch} zum Nachspuren`,
-        say: la ? `Spur das kleine ${Lt.k} in Schreibschrift nach. Fang beim grünen Punkt an.` : `Spur das ${up ? "große" : "kleine"} ${Lt.k} nach. Fang beim grünen Punkt an und folge den Zahlen.`,
-        okText: `So schreibt man ${la ? "das " + Lt.k + " in Schreibschrift" : x.ch}!`, okSay: `${Lt.K} wie ${Lt.key}.` });
+        say: la ? `Spur das ${up ? "große" : "kleine"} ${Lt.k} in Schreibschrift nach. Fang beim grünen Punkt an.` : `Spur das ${up ? "große" : "kleine"} ${Lt.k} nach. Fang beim grünen Punkt an und folge den Zahlen.`,
+        okText: `So schreibt man ${la ? "das " + x.ch + " in Schreibschrift" : x.ch}!`, okSay: `${Lt.K} wie ${Lt.key}.` });
     }
     if (x.kind === "pos") {
       task(`Wo hörst du das ${Lt.K}?`);
@@ -7850,7 +7862,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     build(d) { return lwItems(i, d === "experte" ? "schwer" : d); },
     render: lwRender,
     explain: (x) => ({ html: `<p class="lwexp">${lwFont(Lt.K + " " + Lt.k)} <span class="lw-big">${pix(Lt.key)}</span></p><p><b>${Lt.K}</b> wie <b>${Lt.key}</b>. Sprich das Wort langsam – am Anfang hörst du das ${Lt.K}.</p>`
-      + `<p>So schreibst du es: ${tracePic(TRACE.print[Lt.K])} ${tracePic(TRACE.print[Lt.k])} ${tracePic(TRACE.la[Lt.k])}</p>`, say: `${Lt.K} wie ${Lt.key}. Sprich das Wort langsam. Am Anfang hörst du das ${Lt.k}.` })
+      + `<p>So schreibst du es: ${tracePic(TRACE.print[Lt.K])} ${tracePic(TRACE.print[Lt.k])} ${tracePic(TRACE.la[Lt.K])} ${tracePic(TRACE.la[Lt.k])}</p>`, say: `${Lt.K} wie ${Lt.key}. Sprich das Wort langsam. Am Anfang hörst du das ${Lt.k}.` })
   }));
   // Richtungspfeile entlang eines Strichs (etwa alle 34 Einheiten einer; bei „runter – zurück“ zeigen sie auch den Rückweg)
   function trArrows(path, cls) {
