@@ -1686,9 +1686,9 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     // Schachschule auf der Schach-Insel: eigene Belohnungswelt „Hopsis Schachpalast“ (eigenes Brett, sehr teure Spezialfiguren)
     schach: { id: "schach", name: "Schachschule", room: "Schachschule", hero: "Hopsi", emo: "🐴", goes: "hüpft", go: "hüpfen", place: "Schachpalast", inPlace: "in deinem Schachpalast", forPlace: "für deinen Schachpalast",
       shopTitle: "🏰 Hopsis Schachpalast", chest: "Hopsis Schatzkiste", start: "🏁", art: "hopsi", klasse: "die Schachschule", conf: ["⭐", "✨", "🏆", "🐴", "👑", "🎉"], buyConf: ["✨", "⭐"] },
-    // Löwenklasse (1. Klasse): Vorläuferfähigkeiten und erste Buchstaben mit Leo, dem Löwen
-    loewe: { id: "loewe", name: "Leos Spielplatz", room: "Löwenklasse", hero: "Leo", emo: "🦁", goes: "läuft", go: "laufen", place: "Savanne", inPlace: "in deiner Savanne", forPlace: "für deine Savanne",
-      shopTitle: "🦁 Leos Savanne", chest: "Leos Schatzkiste", start: "🌻", art: "leo", klasse: "die Löwenklasse", conf: ["⭐", "✨", "🦁", "🌻", "🔤", "🎉"], buyConf: ["✨", "⭐"] }
+    // Löwenklasse (1. Klasse): Vorläuferfähigkeiten und erste Buchstaben mit Lino, dem Löwen
+    loewe: { id: "loewe", name: "Linos Spielplatz", room: "Löwenklasse", hero: "Lino", emo: "🦁", goes: "läuft", go: "laufen", place: "Savanne", inPlace: "in deiner Savanne", forPlace: "für deine Savanne",
+      shopTitle: "🦁 Linos Savanne", chest: "Linos Schatzkiste", start: "🌻", art: "leo", klasse: "die Löwenklasse", conf: ["⭐", "✨", "🦁", "🌻", "🔤", "🎉"], buyConf: ["✨", "⭐"] }
   };
   let W = WORLDS.nemo;
   const isPolly = () => W.id === "polly";
@@ -7540,7 +7540,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     }
   };
 
-  /* ======================= Löwenklasse (1. Klasse) mit Leo, dem Löwen =======================
+  /* ======================= Löwenklasse (1. Klasse) mit Lino, dem Löwen =======================
      Kapitel „Hör-Inseln“ (Vorläuferfähigkeiten) und „Buchstaben-Inseln“ (A L E O M S T U R N D). */
   // Bilder zu Wörtern (Emoji)
   const PIX = { Affe: "🐒", Apfel: "🍎", Ameise: "🐜", Ananas: "🍍", Anker: "⚓", Ampel: "🚦", Arm: "💪", Auto: "🚗", Atlas: "🗺️",
@@ -7551,7 +7551,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     Gabel: "🍴", Geige: "🎻", Giraffe: "🦒", Gurke: "🥒", Glocke: "🔔",
     Hund: "🐶", Haus: "🏠", Hut: "👒", Hase: "🐰", Herz: "❤️", Hose: "👖", Hand: "✋", Hubschrauber: "🚁",
     Igel: "🦔", Kamera: "📷", Katze: "🐱", Kuh: "🐄", Kerze: "🕯️", Keks: "🍪", Krone: "👑", Krokodil: "🐊", Kokosnuss: "🥥", Klee: "🍀",
-    Lampe: "💡", Leiter: "🪜", Löffel: "🥄", Lama: "🦙", Löwe: "🦁", Lupe: "🔍", Leo: "🦁", Laterne: "🏮",
+    Lampe: "💡", Leiter: "🪜", Löffel: "🥄", Lama: "🦙", Löwe: "🦁", Lupe: "🔍", Lino: "🦁", Laterne: "🏮",
     Maus: "🐭", Mond: "🌙", Möhre: "🥕", Messer: "🔪", Milch: "🥛", Mais: "🌽", Mund: "👄", Mama: "👩", Mann: "👨", Meer: "🌊",
     Nase: "👃", Nuss: "🌰", Nudeln: "🍝", Nashorn: "🦏", Nilpferd: "🦛", Nadel: "🪡", Note: "🎵",
     Oma: "👵", Ohr: "👂", Opa: "👴", Orange: "🍊", Oktopus: "🐙", Oase: "🏝️",
@@ -7562,7 +7562,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     Tomate: "🍅", Tiger: "🐯", Tasse: "☕", Taxi: "🚕", Teddy: "🧸", Trommel: "🥁", Tee: "🍵", Tor: "🥅", Torte: "🎂", Tonne: "🗑️", Tür: "🚪", Tanne: "🌲", Tatze: "🐾",
     Ufo: "🛸", Uhr: "⌚", Unterhose: "🩲", Vase: "🏺", Wal: "🐋", Wolke: "☁️", Würfel: "🎲", Zebra: "🦓", Zitrone: "🍋", Zahn: "🦷", Ziege: "🐐", Zug: "🚂", Avocado: "🥑" };
   const pix = (w) => PIX[w] || "❓";
-  const ALLPIX = Object.keys(PIX).filter(w => w !== "Leo" && w !== "Löwe");
+  const ALLPIX = Object.keys(PIX).filter(w => w !== "Lino" && w !== "Löwe");
 
   /* ---------- Nachspuren: Buchstaben mit dem Finger nachfahren ---------- */
   const trLines = (lo, hi) => [[12, ""], [50, " mid"], [90, " base"], [108, ""]].map(([y, c]) => `<line class="tl${c}" x1="${lo + 2}" x2="${hi - 2}" y1="${y}" y2="${y}"/>`).join("");
@@ -7672,8 +7672,8 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     {
       id: "hoerbild", name: "Hör-Bild-Insel", icon: "🎧", color: "#e76f51",
       task: () => "Hör zu und tippe das passende Bild an!",
-      intro: (d) => d === "leicht" ? "Leo sagt ein Wort. Hör genau zu und tippe auf das passende Bild!" : d === "mittel" ? "Jetzt gibt es mehr Bilder. Hör ganz genau hin!" : "Jetzt klingen die Wörter fast gleich: Maus – Haus. Hör ganz genau hin!",
-      ex: () => "🔊 „Maus“ → 🐭", say: (d) => d === "schwer" ? "Jetzt klingen die Wörter fast gleich, zum Beispiel Maus und Haus. Hör ganz genau hin!" : "Leo sagt ein Wort. Hör genau zu und tippe auf das passende Bild!",
+      intro: (d) => d === "leicht" ? "Lino sagt ein Wort. Hör genau zu und tippe auf das passende Bild!" : d === "mittel" ? "Jetzt gibt es mehr Bilder. Hör ganz genau hin!" : "Jetzt klingen die Wörter fast gleich: Maus – Haus. Hör ganz genau hin!",
+      ex: () => "🔊 „Maus“ → 🐭", say: (d) => d === "schwer" ? "Jetzt klingen die Wörter fast gleich, zum Beispiel Maus und Haus. Hör ganz genau hin!" : "Lino sagt ein Wort. Hör genau zu und tippe auf das passende Bild!",
       build(d) { return gen(8, () => { if (d === "schwer") { const g = MIN_PAIRS[rint(0, MIN_PAIRS.length - 1)], t = g[rint(0, g.length - 1)], mates = pickN(g.filter(w => w !== t), 3); return { t, opts: shuffle([t, ...mates, ...pickN(ALLPIX, 5 - mates.length, g)]), lab: t }; }
         const t = ALLPIX[rint(0, ALLPIX.length - 1)]; return { t, opts: shuffle([t].concat(pickN(ALLPIX, d === "leicht" ? 2 : 3, rhymeOf(t).concat([t])))), lab: t }; }); },
       render(x, stage, d) { picTask(stage, { opts: x.opts, right: [x.t], say: x.t, factor: d === "schwer" ? 2 : 1, sayTap: d !== "schwer", why: (w) => d === "schwer" ? "Hör nochmal genau hin – das klingt nur ähnlich!" : `Das ist: ${w}. Hör nochmal genau hin!`, okText: `${pix(x.t)} ${x.t}` }); },
@@ -7723,12 +7723,12 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     },
     {
       id: "silbenzauber", name: "Silben-Zauber", icon: "🪄", color: "#f4a261",
-      task: () => "Leo zaubert Silben zusammen – was ist es?",
-      intro: (d) => "Leo spricht ein Wort in Silben: Ba – na – ne. Setz die Silben im Kopf zusammen und tippe das Bild an!" + (d === "schwer" ? " Jetzt sind es lange Wörter und mehr Bilder." : ""),
-      ex: () => "🔊 Ba – na – ne → 🍌", say: () => "Leo spricht ein Wort in Silben. Ba, na, ne. Setz die Silben im Kopf zusammen und tippe das Bild an!",
+      task: () => "Lino zaubert Silben zusammen – was ist es?",
+      intro: (d) => "Lino spricht ein Wort in Silben: Ba – na – ne. Setz die Silben im Kopf zusammen und tippe das Bild an!" + (d === "schwer" ? " Jetzt sind es lange Wörter und mehr Bilder." : ""),
+      ex: () => "🔊 Ba – na – ne → 🍌", say: () => "Lino spricht ein Wort in Silben. Ba, na, ne. Setz die Silben im Kopf zusammen und tippe das Bild an!",
       build(d) { const pool = (d === "leicht" ? Object.keys(SPLIT2).map(w => SPLIT2[w]) : d === "mittel" ? SILB[3] : SILB[3].concat(SILB[4])); return gen(8, () => { const s = pool[rint(0, pool.length - 1)], w = s.replace(/-/g, "");
         return { w, s, opts: shuffle([w].concat(pickN(ALLPIX, d === "leicht" ? 1 : d === "mittel" ? 2 : 3, [w]))), lab: w }; }); },
-      render(x, stage, d) { picTask(stage, { opts: x.opts, right: [x.w], say: x.s.split("-").join(" ... "), sayTap: false, factor: d === "schwer" ? 2 : 1, why: () => "Hör nochmal: Leo spricht die Silben langsam.", okText: `${x.s.replace(/-/g, " – ")} → ${x.w}`, okSay: x.w });
+      render(x, stage, d) { picTask(stage, { opts: x.opts, right: [x.w], say: x.s.split("-").join(" ... "), sayTap: false, factor: d === "schwer" ? 2 : 1, why: () => "Hör nochmal: Lino spricht die Silben langsam.", okText: `${x.s.replace(/-/g, " – ")} → ${x.w}`, okSay: x.w });
         stage.insertBefore(el("div", "lwsyls", x.s.split("-").map(() => '<span class="lwsylbox">🔊</span>').join("")), stage.firstChild); },
       explain: (x) => ({ html: `<p>Sprich die Silben schneller und schneller hintereinander:</p><p class="lwexp">${x.s.split("-").map(s => `<span class="lwsyl">${s}</span>`).join(" ")} → ${pix(x.w)} ${x.w}</p>`, say: `Sprich die Silben schneller hintereinander: ${x.s.replace(/-/g, ", ")}. ${x.w}!` })
     },
@@ -7768,7 +7768,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     { k: "d", K: "D", key: "Dose", anl: ["Dose", "Dino", "Daumen", "Drache", "Delfin", "Diamant"], pos: [["Dose", "A"], ["Dino", "A"], ["Daumen", "A"], ["Nudeln", "M"], ["Feder", "M"], ["Nadel", "M"]], sim: ["b", "p", "q", "a"], SIM: ["O", "B", "P", "Q"] }
   ];
   // Lesewörter: werden nur benutzt, wenn alle Buchstaben schon gelernt sind
-  const LW_READ = ["Leo", "Oma", "Mama", "Lama", "Oase", "Tomate", "Tasse", "Tee", "Salat", "Atlas", "Auto", "Maus", "Rose", "Ratte", "Tor", "Torte", "Meer", "Nase", "Sonne", "Tonne", "Ente", "Mann", "Note", "Laterne", "Dose", "Mond", "Rad", "Sand", "Nadel", "Daumen"];
+  const LW_READ = ["Oma", "Mama", "Lama", "Oase", "Tomate", "Tasse", "Tee", "Salat", "Atlas", "Auto", "Maus", "Rose", "Ratte", "Tor", "Torte", "Meer", "Nase", "Sonne", "Tonne", "Ente", "Mann", "Note", "Laterne", "Dose", "Mond", "Rad", "Sand", "Nadel", "Daumen"];
   const LW_VOW = ["a", "e", "o", "u"];
   const lwKnown = (i) => LETTERS.slice(0, i + 1).map(l => l.k);
   const lwWords = (i) => { const k = lwKnown(i); return LW_READ.filter(w => Array.from(w.toLowerCase()).every(c => k.includes(c))); };
@@ -7945,7 +7945,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       bonusPlan: [["gabel", "leicht", 2], ["gabel", "mittel", 2], ["gabel", "schwer", 2]] },
     { id: "schachmeister", world: "schach", name: "Hopsis Herausforderungen", title: "Meister-Inseln", sub: "Taktik und Endspiele", icon: "🏆", ready: true, levels: SCHACH_E, award: "Schach-Meister", hunter: "Meister", noExpert: true,
       bonusPlan: [["sternenjagd", "mittel", 1], ["gratis", "mittel", 2], ["gratis", "schwer", 2], ["kroenung", "mittel", 2]] },
-    // ---- Löwenklasse (1. Klasse) mit Leo, dem Löwen ----
+    // ---- Löwenklasse (1. Klasse) mit Lino, dem Löwen ----
     { id: "vorlaeufer", world: "loewe", name: "Hören und Sehen", title: "Hör-Inseln", sub: "Laute, Reime und Silben", icon: "👂", ready: true, levels: VORL, award: "Hör-Profi", hunter: "Hör", noExpert: true,
       bonusPlan: [["hoerbild", "schwer", 2], ["reime", "mittel", 2], ["silbentrommel", "mittel", 2], ["anlautohr", "mittel", 2]] },
     { id: "buchstaben", world: "loewe", name: "Buchstaben-Inseln", title: "ABC-Inseln", sub: "A L E O M S T U R N D", icon: "🔤", ready: true, levels: BUCH, award: "Buchstaben-Profi", hunter: "Buchstaben", noExpert: true,
@@ -8505,7 +8505,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     <rect x="13" y="36" width="74" height="52" rx="8" fill="#ffc300" ${OL}/><rect x="13" y="51" width="74" height="7" fill="#e0a400"/><rect x="43" y="47" width="14" height="15" rx="3" fill="#fff3b0" ${OL}/>
     <text x="50" y="81" text-anchor="middle" font-size="15" font-weight="900" fill="#8a5a2b">1×1</text>${SPARK(88, 30, 6)}${SPARK(10, 44, 5)}${SPARK(84, 90, 4)}`;
   Object.assign(ART, EART);
-  // Leo, der Löwe (Löwenklasse)
+  // Lino, der Löwe (Löwenklasse)
   ART.leo = `${Array.from({ length: 14 }, (_, i) => { const a = i / 14 * Math.PI * 2; return `<circle cx="${(50 + Math.cos(a) * 33).toFixed(1)}" cy="${(52 + Math.sin(a) * 33).toFixed(1)}" r="13" fill="${i % 2 ? "#c8741a" : "#d9822b"}"/>`; }).join("")}
     <circle cx="50" cy="52" r="34" fill="#d9822b"/><circle cx="29" cy="27" r="9" fill="#ffcf6b" ${OL}/><circle cx="71" cy="27" r="9" fill="#ffcf6b" ${OL}/><circle cx="29" cy="27" r="4.5" fill="#f4a261"/><circle cx="71" cy="27" r="4.5" fill="#f4a261"/>
     <ellipse cx="50" cy="55" rx="27" ry="25" fill="#ffcf6b" ${OL}/><ellipse cx="50" cy="67" rx="14" ry="10" fill="#fff3d6"/>
@@ -8656,7 +8656,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     { id: "goldeichel", n: "Goldene Eichel", p: 260, k: "deco", c: "schatz", z: 82 },
     { id: "goldeddie", n: "Goldener Eddie", p: 400, k: "deco", c: "schatz", z: 114 }
   ].map(w => Object.assign(w, { w: "eule" }));
-  // Leos Savanne (Löwenklasse): eigene Zeichnungen; k wie im Aquarium (swim = läuft/fliegt hin und her, float = schwebt, deco = steht unten)
+  // Linos Savanne (Löwenklasse): eigene Zeichnungen; k wie im Aquarium (swim = läuft/fliegt hin und her, float = schwebt, deco = steht unten)
   const LEG = (x, y1, y2, w, c) => `<rect x="${x}" y="${y1}" width="${w}" height="${y2 - y1}" rx="${w / 2.4}" fill="${c}" ${OL}/>`;
   const HOOF = (x, y, w) => `<rect x="${x - 0.5}" y="${y - 4}" width="${w + 1}" height="5" rx="2" fill="#3d2b1f"/>`;
   const LART = {
@@ -8732,7 +8732,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     { id: "skarabaeus", n: "Goldener Skarabäus", p: 160, k: "deco", c: "schatz", z: 70 },
     { id: "kristallfels", n: "Kristall-Felsen", p: 200, k: "deco", c: "schatz", z: 100 },
     { id: "regenbogen", n: "Regenbogen", p: 220, k: "float", c: "schatz", z: 130 },
-    { id: "goldleo", n: "Goldener Leo", p: 400, k: "deco", c: "schatz", z: 114 }
+    { id: "goldleo", n: "Goldener Lino", p: 400, k: "deco", c: "schatz", z: 114 }
   ].map(w => Object.assign(w, { w: "loewe" }));
   const SHOP_CATS_L = [["tiere", "🦓 Savannen-Tiere"], ["voegel", "🦅 Vögel"], ["deko", "🌳 Pflanzen & Deko"], ["schatz", "💰 Schätze"]];
   // Experten-Schätze: gibt es nur auf der Experten-Insel des Kapitels (nicht im Laden zu kaufen)
@@ -8830,7 +8830,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     return { uid, id: w.id, sq };
   }
   Object.assign(ART, PALAST_ART);
-  // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle), Eddie im Wald (S.wald), Leo in der Savanne (S.savanne). Die Münzen gelten in allen Welten.
+  // Nemo sammelt im Aquarium (S.aqua), Polly im Dschungel (S.jungle), Eddie im Wald (S.wald), Lino in der Savanne (S.savanne). Die Münzen gelten in allen Welten.
   const shopW = () => isPolly() ? SHOP_P : W.id === "eule" ? SHOP_E : W.id === "schach" ? SHOP_S : W.id === "loewe" ? SHOP_L : SHOP;
   const treasW = () => TREASURES.filter(t => (t.w || "nemo") === W.id);
   const invOf = (w) => { if (w.w === "schach") return palastInv(); if (w.w === "polly") { if (!Array.isArray(S.jungle)) S.jungle = []; return S.jungle; } if (w.w === "eule") { if (!Array.isArray(S.wald)) S.wald = []; return S.wald; } if (w.w === "loewe") { if (!Array.isArray(S.savanne)) S.savanne = []; return S.savanne; } return S.aqua; };
@@ -8909,7 +8909,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       nm.style.setProperty("--t", sa ? "18s" : pol || eu ? "13s" : "16s"); nm.style.setProperty("--w", "76px"); nm.style.height = "76px"; nm.style.top = sa ? "64%" : pol || eu ? "22%" : "34%";
       nm.style.animationDelay = nm.firstChild.style.animationDelay = "-3s"; t.appendChild(nm);
     }
-    if (!inv.length) t.appendChild(el("div", "empty", sa ? "Leos Savanne ist noch leer. Kauf im Laden Tiere, Bäume und schöne Sachen! 🛒" : eu ? "Eddies Wald ist noch leer. Kauf im Laden Bäume, Waldtiere und schöne Sachen! 🛒" : pol ? "Polly wartet auf Freunde. Kauf im Laden Vögel, Tiere und schöne Sachen! 🛒" : "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
+    if (!inv.length) t.appendChild(el("div", "empty", sa ? "Linos Savanne ist noch leer. Kauf im Laden Tiere, Bäume und schöne Sachen! 🛒" : eu ? "Eddies Wald ist noch leer. Kauf im Laden Bäume, Waldtiere und schöne Sachen! 🛒" : pol ? "Polly wartet auf Freunde. Kauf im Laden Vögel, Tiere und schöne Sachen! 🛒" : "Nemo ist noch allein. Kauf ihm im Laden Freunde und schöne Sachen! 🛒"));
   }
   // Einrichten: Sachen mit dem Finger verschieben
   function makeDraggable(it, a, w) {
@@ -9032,7 +9032,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         else { const t = sv("text", { x, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 30, opacity: 0.92 }, dg); t.textContent = kind; }
       }
     }
-    if (sav) {   // Leos Savanne: Grasbüschel, Akazien, Termitenhügel und Tiere statt Wellen
+    if (sav) {   // Linos Savanne: Grasbüschel, Akazien, Termitenhügel und Tiere statt Wellen
       for (let i = 0; i < 46; i++) {
         const x = 30 + rnd() * (cfg.w - 60), y = 20 + rnd() * (cfg.h - 40), q = 0.8 + rnd() * 0.6;
         if (!free(x, y, 1.75)) continue;
@@ -9217,7 +9217,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
       im.style.animationDelay = (-k * 0.4) + "s";
     });
   }
-  // Leos Savanne auf der Karte: große Akazie, Wasserloch und Giraffe – darum herum die gekauften Sachen
+  // Linos Savanne auf der Karte: große Akazie, Wasserloch und Giraffe – darum herum die gekauften Sachen
   function drawSavanne(g, r, n, P) {
     sv("ellipse", { cx: r * 0.34, cy: r * 0.2, rx: r * 0.34, ry: r * 0.11, fill: "#4fb3d9", stroke: "#c4823c", "stroke-width": 4 }, g);
     sv("path", { d: `M${r * 0.18} ${r * 0.19} q${r * 0.08} -${r * 0.04} ${r * 0.16} 0`, stroke: "#fff", "stroke-width": 3, fill: "none", opacity: 0.8 }, g);
@@ -9287,7 +9287,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     sv("circle", { r: 30, fill: U("glow"), class: "lamp-glow" }, a);
   }
   // Farbverläufe für Inseln, Palmen und Leuchtturm (je Karte eigene IDs)
-  // Akazie (Schirmbaum) für Leos Savanne; x/y = Fuß des Stamms
+  // Akazie (Schirmbaum) für Linos Savanne; x/y = Fuß des Stamms
   function drawAcacia(parent, x, y, k) {
     const g = sv("g", { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${k.toFixed(2)})`, "aria-hidden": "true" }, parent);
     sv("ellipse", { cx: 4, cy: 2, rx: 40, ry: 7, fill: "rgba(90,50,10,.22)" }, g);
@@ -9527,7 +9527,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
   // Karte der Löwenklasse: Schule, Hör-Inseln (Vorläuferfähigkeiten) und Buchstaben-Inseln
   function renderHomeLoewe() {
     const tier = ACC && ACC.kind ? TIERE[ACC.kind.tier] : null;
-    $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Leo laufen?` : S.name ? `Hallo ${S.name}! Wohin soll Leo laufen?` : "Wohin soll Leo laufen?";
+    $("homeHello").textContent = tier ? `Hallo ${tier[1]} ${tier[0]}! Wohin soll Lino laufen?` : S.name ? `Hallo ${S.name}! Wohin soll Lino laufen?` : "Wohin soll Lino laufen?";
     updateFoot(); freiHello();
     show("scrHome");
     const P = portrait(), A = CHAPTERS.find(c => c.id === "vorlaeufer"), B = CHAPTERS.find(c => c.id === "buchstaben");
@@ -9542,13 +9542,13 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
         deco: [[0.56, -0.26, "🌻", 0.4], [-0.58, -0.2, "🎵", 0.3]], aria: "Hör-Inseln: Laute, Reime und Silben", ch: A, tap: enter(A) },
       { x: pos.b[0], y: pos.b[1], r: pos.r0, icon: "🔤", grass: "#ffd6a5", label: "Buchstaben-Inseln", big: true, sub: starTotal(B) ? chapSub(B) : "11 Buchstaben", subGold: !!starTotal(A) && !starTotal(B), next: !!starTotal(A) && !starTotal(B),
         deco: [[-0.55, -0.28, "🌴", 0.44], [0.58, -0.2, "✏️", 0.3]], aria: "Buchstaben-Inseln: A, L, E, O, M, S, T, U, R, N und D", ch: B, tap: enter(B) },
-      { x: pos.sav[0], y: pos.sav[1], r: pos.r0 * 0.9, icon: "🦒", draw: "savanne", subGold: canBuy, label: "Leos Savanne", big: true,
+      { x: pos.sav[0], y: pos.sav[1], r: pos.r0 * 0.9, icon: "🦒", draw: "savanne", subGold: canBuy, label: "Linos Savanne", big: true,
         sub: canBuy ? `💰 ${S.coins} Münzen – ab in den Laden! 🛒` : (Lv.length ? `🦒 ${Lv.length} ${Lv.length === 1 ? "Sache" : "Sachen"} in der Savanne` : "Sammle Münzen! 🪙"),
-        items: Lv.slice(-10).map(a => a.id), next: canBuy, aria: "Leos Savanne mit dem Laden", aqua: true, tap: (i) => { S.homeAtL = i; swimTo(i, renderAqua); } }
+        items: Lv.slice(-10).map(a => a.id), next: canBuy, aria: "Linos Savanne mit dem Laden", aqua: true, tap: (i) => { S.homeAtL = i; swimTo(i, renderAqua); } }
     ];
     const dn = (ch) => islandsDoneCount(ch) ? "done" : "";
     if (FREI) freiLock(nodes);
-    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 3, ""], [3, 1, dn(A)], [1, 2, dn(B)]], at: S.homeAtL == null ? 0 : S.homeAtL, label: "Leos Savanne und Inseln", seed: 13, nemo: 64, wrapBig: true, clouds: 2, savDeco: 8 });
+    drawSea($("homeMap"), { w: pos.w, h: pos.h, nodes, edges: [[0, 3, ""], [3, 1, dn(A)], [1, 2, dn(B)]], at: S.homeAtL == null ? 0 : S.homeAtL, label: "Linos Savanne und Inseln", seed: 13, nemo: 64, wrapBig: true, clouds: 2, savDeco: 8 });
     setCoins(false);
   }
   function renderHomeSchach() {
@@ -11109,7 +11109,7 @@ svg.trace .trdemo { fill: #ffb703; stroke: #fff; stroke-width: 1.5; }
     speak((who ? `Hallo ${who}! ` : "") + (inside ? "Lauf mit deinem Superhelden durch die Schule! Nemos Klasse ist im Erdgeschoss, da übst du Deutsch. Pollys Klasse ist oben, da übst du Mathe."
       : "Da ist unsere Schule, die Neugierburg. Tippe auf Rein, dann gehen wir hinein!"));
   }
-  function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); if (id === "loewe" && S.homeAtL == null) speak("Hallo! Ich bin Leo, der Löwe. Willkommen in der Löwenklasse! Hier hörst du genau hin und lernst die ersten Buchstaben."); if (id === "schach" && S.homeAtS == null) speak("Willkommen in der Schachschule! Ich bin Hopsi, das Schachpferd."); renderHome(); }
+  function enterWorld(id) { setWorld(id); tone(id === "polly" ? [660, 880, 990] : [520, 660], 0.08); if (id === "loewe" && S.homeAtL == null) speak("Hallo! Ich bin Lino, der Löwe. Willkommen in der Löwenklasse! Hier hörst du genau hin und lernst die ersten Buchstaben."); if (id === "schach" && S.homeAtS == null) speak("Willkommen in der Schachschule! Ich bin Hopsi, das Schachpferd."); renderHome(); }
 
   /* ---------- Freigabe-Link (nur freie Version) ----------
      Ein Link wie …/2a/#f=… schaltet nur bestimmte Kapitel (und auf Wunsch das Aquarium) frei und gilt bis zu einem Zeitpunkt.
